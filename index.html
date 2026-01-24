@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-Based-Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="scripts.js"></script>
+</head>
+
+<body>
+    <div alt="Background" id="background-image" class="background-image">
+        <div id="overlay-transparency" class="overlay-transparency"></div>
+        <div id="screen" class="screen">
+            <div id="new-player" class="new-player">
+                <p style="text-align: center; font-size: 30px;">Welcome to</p>
+                <h1 style="text-align: center; font-size: 60px;">Text - Based - Game</h1>
+                <div class="new-name" x-data="{ name: '' }">
+                    <h1 style="text-align: center; font-size: 60px;"
+                        x-text="`${name ? `Oh, it's you, ${name}!` : 'What is your name, Traveler?'}`">What is your
+                        name, Traveler?</h1>
+                    <input class="name-input" type="text" id="name" name="name" required minlength="1" maxlength="16"
+                        size="100" placeholder="My name is... I'm..." x-model="name" autocomplete="off" />
+                </div>
+                <div class="credits">
+                    <span>Made by Jgouken &amp; SavorySam</span>
+                    <span>Art by MoBroPro</span>
+                </div>
+            </div>
+            <div id="returning" class="returning">
+
+            </div>
+            <div id="how-to-play" class="how-to-play">
+
+            </div>
+            <div id="inventory" class="inventory">
+
+            </div>
+            <div id="journal" class="journal">
+
+            </div>
+            <div id="crafting" class="crafting">
+
+            </div>
+            <div id="travel" class="travel">
+
+            </div>
+            <div id="encounters" class="encounters">
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
