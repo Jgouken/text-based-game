@@ -6,50 +6,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text-Based-Game</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="scripts.js"></script>
+    <script src="script.js"></script>
 </head>
 
 <body>
-    <div alt="Background" id="background-image" class="background-image">
+    <div alt="Background" id="background-image" class="background-image" x-data="{ name: 'n', location: 'Warhamshire' }">
         <div id="overlay-transparency" class="overlay-transparency"></div>
-        <div id="screen" class="screen">
-            <div id="new-player" class="new-player">
-                <p style="text-align: center; font-size: 30px;">Welcome to</p>
-                <h1 style="text-align: center; font-size: 60px;">Text - Based - Game</h1>
-                <div class="new-name" x-data="{ name: '' }">
-                    <h1 style="text-align: center; font-size: 60px;"
-                        x-text="`${name ? `Oh, it's you, ${name}!` : 'What is your name, Traveler?'}`">What is your
+        <div id="screen" class="screen" x-data="{ screen: name ? 'debug' : 'new-player' }">
+            <!-- New Player (Title Screen)-->
+            <div id="new-player" class="new-player" x-show="screen === 'new-player'" x-transition.opacity>
+                <p style="text-align: center; font-size: 30px; top: 25px;">Welcome to</p>
+                <h1 style="text-align: center; font-size: 60px; top: 50px; font-weight: bold;">Text - Based - Game</h1>
+                <div class="new-name">
+                    <h1 style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif;"
+                        x-text="`${name ? `Why hello, ${name}!` : 'What is your name, Traveler?'}`">What is your
                         name, Traveler?</h1>
                     <input class="name-input" type="text" id="name" name="name" required minlength="1" maxlength="16"
-                        size="100" placeholder="My name is... I'm..." x-model="name" autocomplete="off" />
+                        size="100" placeholder="I'm..." x-model="name" autocomplete="off"
+                        @keyup.enter="if (name) startGame(name)" />
+                    <button class="start-button" @click="startGame(name)" x-show="name"
+                        x-transition.opacity>Onwards</button>
                 </div>
                 <div class="credits">
-                    <span>Made by Jgouken &amp; SavorySam</span>
-                    <span>Art by MoBroPro</span>
+                    <span style="color: grey;">Made by Jgouken &amp; SavorySam</span>
+                    <span>Your gameplay is saved through cache and
+                        cookies. If you clear or block either on this website, <u>you will lose your data.</u></span>
+                    <span style="color: grey;">Art by MoBroPro</span>
                 </div>
             </div>
-            <div id="returning" class="returning">
+
+            <!-- Returning Player (Landing Screen)-->
+            <div id="returning" class="returning" x-show="screen === 'returning'" x-transition.opacity
+                style="display: none;">
+                <p style="text-align: center; font-size: 30px; top: 25px;">Text-Based-Game</p>
+                <p style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif; top: 400px;"
+                    x-text="location.toUpperCase()"></p>
+                <div class="credits">
+                    <span style="color: grey;">Made by Jgouken &amp; SavorySam</span>
+                    <span>Your gameplay is saved through cache and
+                        cookies. If you clear or block either on this website, <u>you will lose your data.</u></span>
+                    <span style="color: grey;">Art by MoBroPro</span>
+                </div>
+            </div>
+
+            <!-- How To Play -->
+            <div id="how-to-play" class="how-to-play" x-show="screen === 'how-to-play'" x-transition.opacity>
 
             </div>
-            <div id="how-to-play" class="how-to-play">
+
+            <!-- Inventory -->
+            <div id="inventory" class="inventory" x-show="screen === 'inventory'" x-transition.opacity>
 
             </div>
-            <div id="inventory" class="inventory">
+
+            <!-- Journal -->
+            <div id="journal" class="journal" x-show="screen === 'journal'" x-transition.opacity>
 
             </div>
-            <div id="journal" class="journal">
+
+            <!-- Crafting-->
+            <div id="crafting" class="crafting" x-show="screen === 'crafting'" x-transition.opacity>
 
             </div>
-            <div id="crafting" class="crafting">
+
+            <!-- Travel -->
+            <div id="travel" class="travel" x-show="screen === 'travel'" x-transition.opacity>
 
             </div>
-            <div id="travel" class="travel">
+
+            <!-- Encounters -->
+            <div id="encounters" class="encounters" x-show="screen === 'encounters'" x-transition.opacity>
 
             </div>
-            <div id="encounters" class="encounters">
 
+            <!-- Debug -->
+            <div id="debug" class="encounters" x-show="screen === 'debug'" x-transition.opacity>
+                
             </div>
         </div>
     </div>
