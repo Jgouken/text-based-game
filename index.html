@@ -14,9 +14,9 @@
 </head>
 
 <body>
-    <div alt="Background" id="background-image" class="background-image" x-data="{ name: 'n', location: 'Warhamshire' }">
+    <div alt="Background" id="background-image" class="background-image" x-data="{ name: '', location: 'Warhamshire' }">
         <div id="overlay-transparency" class="overlay-transparency"></div>
-        <div id="screen" class="screen" x-data="{ screen: name ? 'debug' : 'new-player' }">
+        <div id="screen" class="screen" x-data="{ screen: name ? 'returning' : 'new-player' }">
             <!-- New Player (Title Screen)-->
             <div id="new-player" class="new-player" x-show="screen === 'new-player'" x-transition.opacity>
                 <p style="text-align: center; font-size: 30px; top: 25px;">Welcome to</p>
@@ -85,7 +85,7 @@
 
             <!-- Debug -->
             <div id="debug" class="encounters" x-show="screen === 'debug'" x-transition.opacity>
-                
+
             </div>
         </div>
     </div>
