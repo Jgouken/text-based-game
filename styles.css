@@ -100,3 +100,94 @@ span {
     cursor: pointer;
     opacity: 1;
 }
+
+.player {
+    position: fixed;
+    top: 700px;
+    left: 10px;
+    z-index: 2;
+    width: 700px;
+    height: auto;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+.player img {
+    width: 100%;
+    height: auto;
+    margin-top: -30px;
+    position: relative;
+    z-index: 2;
+}
+
+.experience-bar {
+    position: absolute;
+    top: 80px;
+    left: 121px;
+    width: 455px;
+    /* 455px at max */
+    height: 35px;
+    background-color: rgba(0, 140, 255, 1);
+    border-right: 3px solid white;
+    z-index: 1;
+}
+
+.experience-bar-stats {
+    position: absolute;
+    top: 82px;
+    left: 320px;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 20px;
+    color: white;
+    -webkit-text-stroke-width: .5px;
+    -webkit-text-stroke-color: black;
+    z-index: 2;
+}
+
+.health-bar {
+    position: absolute;
+    top: 110px;
+    left: 110px;
+    width: 560px;
+    /* 560px at max */
+    height: 35px;
+    background-color: rgb(0, 255, 13);
+    border-right: 6px solid white;
+    transform: skewX(-45deg);
+    z-index: 1;
+}
+
+.health-bar-stats {
+    position: absolute;
+    top: 108px;
+    left: 380px;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 30px;
+    color: white;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
+    z-index: 2;
+}
+
+.stamina-bar {
+    position: absolute;
+    top: 145px;
+    left: 100px;
+    width: 310px;
+    /* 310px at max */
+    height: 25px;
+    background-color: rgb(251, 255, 0);
+    z-index: 1;
+}
+
+.stamina-bar-stats {
+    position: absolute;
+    top: 148px;
+    left: 240px;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 20px;
+    color: black;
+    -webkit-text-stroke-width: .5px;
+    -webkit-text-stroke-color: white;
+    z-index: 2;
+}

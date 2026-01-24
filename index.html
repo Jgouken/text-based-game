@@ -14,7 +14,8 @@
 </head>
 
 <body>
-    <div alt="Background" id="background-image" class="background-image" x-data="{ name: '', location: 'Warhamshire' }">
+    <div alt="Background" id="background-image" class="background-image"
+        x-data="{ name: 'Jgouken', location: 'Warhamshire' }">
         <div id="overlay-transparency" class="overlay-transparency"></div>
         <div id="screen" class="screen" x-data="{ screen: name ? 'returning' : 'new-player' }">
             <!-- New Player (Title Screen)-->
@@ -45,6 +46,18 @@
                 <p style="text-align: center; font-size: 30px; top: 25px;">Text-Based-Game</p>
                 <p style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif; top: 400px;"
                     x-text="location.toUpperCase()"></p>
+
+                <div class="player" id="player">
+                    <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif;" x-text="name.toUpperCase()">
+                    </p>
+                    <div class="experience-bar"></div>
+                    <div class="health-bar"></div>
+                    <div class="stamina-bar"></div>
+                    <div class="experience-bar-stats">0/0</div>
+                    <div class="health-bar-stats">0/0</div>
+                    <div class="stamina-bar-stats">0/0</div>
+                    <img src="assets/playerbar.png">
+                </div>
                 <div class="credits">
                     <span style="color: grey;">Made by Jgouken &amp; SavorySam</span>
                     <span>Your gameplay is saved through cache and
