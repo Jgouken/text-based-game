@@ -34,13 +34,13 @@ span {
 }
 
 .screen {
-    transition: all 0.5s ease-in-out;
+    
 }
 
 .background-image {
     position: fixed;
     background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
-        url('assets/WarhamshirePlaceholder.jpg');
+        url('assets/backgrounds/WarhamshirePlaceholder.jpg');
     background-color: rgba(0, 0, 0, 0.125);
     background-position: center;
     background-repeat: no-repeat;
@@ -52,13 +52,21 @@ span {
     z-index: 1;
 }
 
-.new-name {
+.centered-inputs {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 20px;
     margin-top: 300px;
+}
+
+.centered-buttons {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 400px;
+    gap: 50px;
 }
 
 .name-input {
@@ -90,104 +98,119 @@ span {
     color: #fff;
 }
 
-.start-button {
+.regular-button {
     font-family: "Pixelify Sans", sans-serif;
     font-size: 32px;
     padding: 10px 24px;
-    background-color: rgb(0, 255, 195);
+    background-color: rgb(20, 5, 228);
     color: black;
-    border: 2px solid white;
+    border: 5px solid rgb(1, 0, 88);
     cursor: pointer;
     opacity: 1;
 }
 
+/* Player HUD Styles */
+
 .player {
     position: fixed;
-    top: 700px;
+    top: 77vh;
     left: 10px;
     z-index: 2;
     width: 700px;
     height: auto;
     overflow: hidden;
     object-fit: cover;
-}
 
-.player img {
-    width: 100%;
-    height: auto;
-    margin-top: -30px;
-    position: relative;
-    z-index: 2;
+    img {
+        width: 100%;
+        height: auto;
+        margin-top: -30px;
+        position: relative;
+        z-index: 2;
+    }
 }
 
 .experience-bar {
     position: absolute;
     top: 80px;
     left: 121px;
-    width: 455px;
+    width: 0px;
     /* 455px at max */
-    height: 35px;
+    height: 31px;
     background-color: rgba(0, 140, 255, 1);
     border-right: 3px solid white;
     z-index: 1;
-}
-
-.experience-bar-stats {
-    position: absolute;
-    top: 82px;
-    left: 320px;
-    font-family: 'Pixelify Sans', sans-serif;
-    font-size: 20px;
-    color: white;
-    -webkit-text-stroke-width: .5px;
-    -webkit-text-stroke-color: black;
-    z-index: 2;
+    transition: width 2s ease-out;
 }
 
 .health-bar {
     position: absolute;
     top: 110px;
     left: 110px;
-    width: 560px;
+    width: 0px;
     /* 560px at max */
     height: 35px;
     background-color: rgb(0, 255, 13);
     border-right: 6px solid white;
     transform: skewX(-45deg);
     z-index: 1;
-}
-
-.health-bar-stats {
-    position: absolute;
-    top: 108px;
-    left: 380px;
-    font-family: 'Pixelify Sans', sans-serif;
-    font-size: 30px;
-    color: white;
-    -webkit-text-stroke-width: 2px;
-    -webkit-text-stroke-color: black;
-    z-index: 2;
+    transition: width 2s ease-in-out;
 }
 
 .stamina-bar {
     position: absolute;
     top: 145px;
     left: 100px;
-    width: 310px;
+    width: 0px;
     /* 310px at max */
     height: 25px;
     background-color: rgb(251, 255, 0);
     z-index: 1;
+    transition: width 2s ease-in-out;
+}
+
+.experience-bar-stats {
+    position: absolute;
+    top: 87px;
+    left: 300px;
+    font-family: 'Pixel-Font', sans-serif;
+    font-size: 20px;
+    color: black;
+    z-index: 2;
+}
+
+.health-bar-stats {
+    position: absolute;
+    top: 116px;
+    left: 340px;
+    font-family: 'Pixel-Font', sans-serif;
+    font-size: 30px;
+    color: black;
+    z-index: 2;
 }
 
 .stamina-bar-stats {
     position: absolute;
-    top: 148px;
-    left: 240px;
-    font-family: 'Pixelify Sans', sans-serif;
+    top: 153px;
+    left: 230px;
+    font-family: 'Pixel-Font', sans-serif;
     font-size: 20px;
     color: black;
-    -webkit-text-stroke-width: .5px;
-    -webkit-text-stroke-color: white;
     z-index: 2;
 }
+
+.mini-stats {
+    position: absolute;
+    top: 160px;
+    left: 430px;
+    font-family: 'Pixel-Font', sans-serif;
+    font-size: 16px;
+    color: white;
+    z-index: 2;
+
+    span {
+        margin-right: 7px;
+    }
+}
+
+/* Returning Player Screen */

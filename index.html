@@ -14,22 +14,22 @@
 </head>
 
 <body>
-    <div alt="Background" id="background-image" class="background-image"
-        x-data="{ name: 'Jgouken', location: 'Warhamshire' }">
+    <div alt="Background" id="background-image" class="background-image" x-init="startup()"
+        x-data="{ name: '', location: 'Warhamshire' }">
         <div id="overlay-transparency" class="overlay-transparency"></div>
         <div id="screen" class="screen" x-data="{ screen: name ? 'returning' : 'new-player' }">
             <!-- New Player (Title Screen)-->
             <div id="new-player" class="new-player" x-show="screen === 'new-player'" x-transition.opacity>
                 <p style="text-align: center; font-size: 30px; top: 25px;">Welcome to</p>
                 <h1 style="text-align: center; font-size: 60px; top: 50px; font-weight: bold;">Text - Based - Game</h1>
-                <div class="new-name">
+                <div class="centered-inputs">
                     <h1 style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif;"
                         x-text="`${name ? `Why hello, ${name}!` : 'What is your name, Traveler?'}`">What is your
                         name, Traveler?</h1>
                     <input class="name-input" type="text" id="name" name="name" required minlength="1" maxlength="16"
                         size="100" placeholder="I'm..." x-model="name" autocomplete="off"
                         @keyup.enter="if (name) startGame(name)" />
-                    <button class="start-button" @click="startGame(name)" x-show="name"
+                    <button class="regular-button" @click="startGame(name)" x-show="name" style="color: white;"
                         x-transition.opacity>Onwards</button>
                 </div>
                 <div class="credits">
@@ -47,17 +47,82 @@
                 <p style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif; top: 400px;"
                     x-text="location.toUpperCase()"></p>
 
-                <div class="player" id="player">
-                    <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif;" x-text="name.toUpperCase()">
+                <div class="centered-buttons" style="justify-content: right; margin-top: -100px; margin-right: 10px;">
+                    <button class="regular-button"
+                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); justify-content: right; font-size: large;"
+                        @click="howToPlay()" x-transition.opacity>How To Play</button>
+                </div>
+
+                <div class="centered-buttons"
+                    style="justify-content: left; margin-top: -54px; margin-left: 10px; gap: 20px; width: fit-content;">
+                    <button class="regular-button"
+                        style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0); font-size: large;"
+                        @click="deleteButton()" x-transition.opacity>DELETE</button>
+                    <button class="regular-button"
+                        style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0); font-size: large;"
+                        @click="exportButton()" x-transition.opacity>EXPORT</button>
+                    <button class="regular-button"
+                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
+                        @click="importButton()" x-transition.opacity>IMPORT</button>
+                </div>
+
+                <div class="centered-buttons" style="margin-top: 440px;">
+                    <button class="regular-button"
+                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88);"
+                        @click="travel()" x-transition.opacity>Travel</button>
+                    <button class=" regular-button"
+                        style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0);"
+                        @click="encounter()" x-transition.opacity>Encounter</button>
+                    <button class="regular-button"
+                        style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0);"
+                        @click="quitButton()" x-transition.opacity>Quit</button>
+                </div>
+
+                <div class="centered-buttons" style="margin-top: 20px; gap: 20px;">
+                    <button class="regular-button"
+                        style="background-color: rgb(92, 80, 255); color: black; border: 5px solid rgb(6, 4, 122);"
+                        @click="inventory()" x-transition.opacity>Inventory</button>
+                    <button class="regular-button"
+                        style="background-color: rgb(184, 111, 218); border: 5px solid rgb(153, 9, 219);"
+                        @click="journal()" x-transition.opacity>Journal</button>
+                    <button class="regular-button"
+                        style="background-color: rgb(184, 255, 150); color: black; border: 5px solid rgb(15, 160, 1);"
+                        @click="crafting()" x-transition.opacity>Crafting</button>
+                </div>
+
+                <div class="centered-buttons" style="margin-top: 20px; gap: 20px;">
+
+                </div>
+
+                <div class="player" id="player-returning" x-init="returningStartup()"
+                    x-data="{ crit: 0, accuracy: 0, evasion: 0, armor: 10, experience: 0, health: 500, maxHealth: 500, stamina: 30, maxStamina: 30, level: 1}">
+                    <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px;"
+                        x-text="name">
+                        Who are you?
                     </p>
-                    <div class="experience-bar"></div>
-                    <div class="health-bar"></div>
-                    <div class="stamina-bar"></div>
-                    <div class="experience-bar-stats">0/0</div>
-                    <div class="health-bar-stats">0/0</div>
-                    <div class="stamina-bar-stats">0/0</div>
+                    <div class="experience-bar" id="experience-returning"></div>
+                    <div class="health-bar" id="health-returning"></div>
+                    <div class="stamina-bar" id="stamina-returning"></div>
+                    <div class="experience-bar-stats" x-text="`${experience}/${Math.floor((level/0.07)**2)}`">0/0</div>
+                    <div class="health-bar-stats" x-text="`${health}/${maxHealth}`">0/0</div>
+                    <div class="stamina-bar-stats" x-text="`${stamina}/${maxStamina}`">0/0</div>
+                    <div class="mini-stats">
+                        <img src="assets/effects/Luck.png" alt="Crit Icon"
+                            style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
+                        <span x-text="`${crit * 100}%`"></span>
+                        <img src="assets/effects/Focus.png" alt="Focus Icon"
+                            style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
+                        <span x-text="`${accuracy * 100}%`"></span>
+                        <img src="assets/effects/Evasion.png" alt="Evasion Icon"
+                            style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
+                        <span x-text="`${evasion * 100}%`"></span>
+                        <img src="assets/effects/Fortification.png" alt="Fortification Icon"
+                            style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
+                        <span x-text="`${armor}`"></span>
+                    </div>
                     <img src="assets/playerbar.png">
                 </div>
+
                 <div class="credits">
                     <span style="color: grey;">Made by Jgouken &amp; SavorySam</span>
                     <span>Your gameplay is saved through cache and
