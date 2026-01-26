@@ -40,11 +40,11 @@ span {
 .background-image {
     position: fixed;
     background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
-        url('assets/backgrounds/WarhamshirePlaceholder.jpg');
+        url('assets/backgrounds/WarhamshirePlaceholder.gif');
     background-color: rgba(0, 0, 0, 0.125);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: fit;
+    background-size: cover;
 
     height: 100%;
     width: 100%;
@@ -76,7 +76,7 @@ span {
     display: flex;
     justify-content: center;
     margin-top: 400px;
-    gap: 50px;
+    gap: 15px;
 }
 
 .name-input {
