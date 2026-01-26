@@ -2,18 +2,7 @@ let started = false;
 
 function startup() {
     console.log("Startup function called.");
-}
-
-async function returningStartup() {
-    console.log("Returning startup function called.");
-    updateBars("returning", Alpine.$data(document.getElementById("player-returning")));
-}
-
-async function updateBars(screen, alpinePlayerData) {
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Forces it to wait a tick to allow CSS transition to work
-    document.getElementById(`health-${screen}`).style.width = `${Math.floor((alpinePlayerData.health / alpinePlayerData.maxHealth) * 560)}px`;
-    document.getElementById(`stamina-${screen}`).style.width = `${Math.floor((alpinePlayerData.stamina / alpinePlayerData.maxStamina) * 310)}px`;
-    document.getElementById(`experience-${screen}`).style.width = `${Math.floor((alpinePlayerData.experience / Math.floor((alpinePlayerData.level/0.07)**2)) * 450)}px`;
+    fadeOutEffect();
 }
 
 async function startGame(name) {
@@ -23,7 +12,11 @@ async function startGame(name) {
     Alpine.$data(document.getElementById("background-image")).name = name;
     console.log("Game started with name: " + name);
 
-    fadeInOutEffect("new-player", "returning");
+    await fadeInOutEffect("returning");
+    Alpine.$data(document.getElementById("background-image")).showPlayerBar = true;
+    updateBars();
+
+    localStorage.setItem('name', name);
 }
 
 async function importButton() {
@@ -38,12 +31,14 @@ async function deleteButton() {
     console.log("Delete");
 }
 
-async function travel(from) {
-    console.log("Travel");
+async function howToPlay() {
+    console.log("How To Play");
 }
 
-async function encounter(from) {
-    console.log("Encounter");
+async function transition(from, to) {
+    console.log(to.toUpperCase());
+    await fadeInOutEffect(to);
+    Alpine.$data(document.getElementById("background-image")).showPlayerBar = true;
 }
 
 async function quitButton() {
@@ -51,49 +46,32 @@ async function quitButton() {
     alert("Close the tab to quit the game.");
 }
 
-async function inventory(from) {
-    console.log("Inventory");
-}
-
-async function journal(from) {
-    console.log("Journal");
-}
-
-async function crafting(from) {
-    console.log("Crafting");
-}
-
-async function howToPlay() {
-    console.log("How To Play");
-}
-
-async function fadeInOutEffect(from, to) {
-    await fadeOutEffect(document.getElementById(from));
-    await new Promise(resolve => setTimeout(resolve, 1200));
+async function fadeInOutEffect(to) {
+    await fadeInEffect();
+    await new Promise(resolve => setTimeout(resolve, 1000));
     Alpine.$data(document.getElementById("screen")).screen = to;
-
-    await fadeInEffect(document.getElementById(to));
-    // Not needed with Alpine.js x-transition
+    await fadeOutEffect();
 }
 
-async function fadeOutEffect(element) {
+async function fadeOutEffect() {
     var opacity = 1;
+    var element = document.getElementById("overlay-transparency");
+    element.style.opacity = 1;
     var fadeInterval = setInterval(function () {
         if (opacity > 0) {
             opacity -= 0.05;
             element.style.opacity = opacity;
         } else {
             clearInterval(fadeInterval);
-            element.style.display = 'none';
         }
     }, 50);
 }
 
-async function fadeInEffect(element) {
+async function fadeInEffect() {
     var opacity = 0;
+    var element = document.getElementById("overlay-transparency");
     element.style.opacity = 0;
     var fadeInterval = setInterval(function () {
-        console.log("Fading in, current opacity: " + opacity);
         if (opacity < 1) {
             opacity += 0.05;
             element.style.opacity = opacity;
@@ -103,3 +81,17 @@ async function fadeInEffect(element) {
     }, 50);
 }
 
+async function resetBars(screen) {
+    document.getElementById(`health-${screen}`).style.width = "0px";
+    document.getElementById(`stamina-${screen}`).style.width = "0px";
+    document.getElementById(`experience-${screen}`).style.width = "0px";
+}
+
+async function updateBars() {
+    await new Promise(resolve => setTimeout(resolve, 100)); // Forces it to wait a tick to allow CSS transition to work
+    const alpinePlayerData = Alpine.$data(document.getElementById(`player`));
+
+    document.getElementById(`health`).style.width = `${Math.floor((alpinePlayerData.health / alpinePlayerData.maxHealth) * 560)}px`;
+    document.getElementById(`stamina`).style.width = `${Math.floor((alpinePlayerData.stamina / alpinePlayerData.maxStamina) * 310)}px`;
+    document.getElementById(`experience`).style.width = `${Math.floor((alpinePlayerData.experience / Math.floor((alpinePlayerData.level / 0.07) ** 2)) * 450)}px`;
+}

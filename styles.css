@@ -1,3 +1,7 @@
+[x-cloak] {
+    display: none !important
+}
+
 @font-face {
     font-family: 'Pixel-Font';
     src: url('https://jgouken.github.io/PRToolVersionCheck/RD%20Pixel%20Font/rhythm-doctor-pixel-font.otf.woff2') format('woff2');
@@ -46,6 +50,16 @@ span {
     width: 100%;
     top: 0;
     z-index: 1;
+}
+
+.overlay-transparency {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    background-color: rgba(0, 0, 0, 1);
+    z-index: 99;
+    pointer-events: none;
 }
 
 .centered-inputs {
@@ -109,13 +123,14 @@ span {
 
 .player {
     position: fixed;
-    top: 77vh;
+    top: 75vh;
     left: 10px;
     z-index: 2;
     width: 700px;
     height: auto;
     overflow: hidden;
     object-fit: cover;
+    transition: all 2.5s ease-in-out;
 
     img {
         width: 100%;
@@ -124,6 +139,8 @@ span {
         position: relative;
         z-index: 2;
     }
+
+    ;
 }
 
 .experience-bar-background {
