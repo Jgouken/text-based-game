@@ -33,10 +33,6 @@ span {
     z-index: 1;
 }
 
-.screen {
-    
-}
-
 .background-image {
     position: fixed;
     background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
@@ -130,6 +126,37 @@ span {
     }
 }
 
+.experience-bar-background {
+    position: absolute;
+    top: 80px;
+    left: 121px;
+    width: 455px;
+    height: 31px;
+    background-color: rgba(0, 140, 255, 0.37);
+    z-index: 1;
+}
+
+.health-bar-background {
+    position: absolute;
+    top: 110px;
+    left: 110px;
+    width: 560px;
+    height: 35px;
+    background-color: rgba(255, 0, 0, 0.308);
+    transform: skewX(-45deg);
+    z-index: 1;
+}
+
+.stamina-bar-background {
+    position: absolute;
+    top: 145px;
+    left: 100px;
+    width: 310px;
+    height: 25px;
+    background-color: rgba(255, 238, 0, 0.164);
+    z-index: 1;
+}
+
 .experience-bar {
     position: absolute;
     top: 80px;
@@ -138,7 +165,8 @@ span {
     /* 455px at max */
     height: 31px;
     background-color: rgba(0, 140, 255, 1);
-    border-right: 3px solid white;
+    transform: skewX(-45deg);
+    border-right: 6px solid white;
     z-index: 1;
     transition: width 2s ease-out;
 }
@@ -165,6 +193,8 @@ span {
     /* 310px at max */
     height: 25px;
     background-color: rgb(251, 255, 0);
+    border-right: 6px solid white;
+    transform: skewX(-45deg);
     z-index: 1;
     transition: width 2s ease-in-out;
 }
@@ -172,7 +202,7 @@ span {
 .experience-bar-stats {
     position: absolute;
     top: 87px;
-    left: 300px;
+    left: 307px;
     font-family: 'Pixel-Font', sans-serif;
     font-size: 20px;
     color: black;
@@ -182,7 +212,7 @@ span {
 .health-bar-stats {
     position: absolute;
     top: 116px;
-    left: 340px;
+    left: 319px;
     font-family: 'Pixel-Font', sans-serif;
     font-size: 30px;
     color: black;
@@ -192,7 +222,7 @@ span {
 .stamina-bar-stats {
     position: absolute;
     top: 153px;
-    left: 230px;
+    left: 227px;
     font-family: 'Pixel-Font', sans-serif;
     font-size: 20px;
     color: black;

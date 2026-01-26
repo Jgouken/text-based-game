@@ -95,17 +95,24 @@
                 </div>
 
                 <div class="player" id="player-returning" x-init="returningStartup()"
-                    x-data="{ crit: 0, accuracy: 0, evasion: 0, armor: 10, experience: 0, health: 500, maxHealth: 500, stamina: 30, maxStamina: 30, level: 1}">
+                    x-data="{ crit: 0, accuracy: 0, evasion: 0, armor: 10, experience: 204, health: 500, maxHealth: 500, stamina: 30, maxStamina: 30, level: 1}">
                     <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px;"
                         x-text="name">
                         Who are you?
                     </p>
-                    <div class="experience-bar" id="experience-returning"></div>
-                    <div class="health-bar" id="health-returning"></div>
-                    <div class="stamina-bar" id="stamina-returning"></div>
+
+                    <div class="experience-bar-background"></div>
+                    <div class="health-bar-background"></div>
+                    <div class="stamina-bar-background"></div>
+
+                    <div class="experience-bar" :id="`experience-${screen}`"></div>
+                    <div class="health-bar" :id="`health-${screen}`"></div>
+                    <div class="stamina-bar" :id="`stamina-${screen}`"></div>
+
                     <div class="experience-bar-stats" x-text="`${experience}/${Math.floor((level/0.07)**2)}`">0/0</div>
                     <div class="health-bar-stats" x-text="`${health}/${maxHealth}`">0/0</div>
                     <div class="stamina-bar-stats" x-text="`${stamina}/${maxStamina}`">0/0</div>
+
                     <div class="mini-stats">
                         <img src="assets/effects/Luck.png" alt="Crit Icon"
                             style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
