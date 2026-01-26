@@ -162,8 +162,10 @@
             </div>
 
             <!-- Encounter -->
-            <div id="encounter" class="encounters" x-show="screen === 'encounter'" x-transition.opacity>
-
+            <div id="encounter" class="encounters" x-show="screen === 'encounter'" x-data="{
+                text: `${name} used Stab and hit Lazy Goblin for ⚔️38\nLazy Goblin used Stab and hit\n${name} used Stab and hit Lazy Goblin for ⚔️32\n🎉 ${name} won the battle! 🎉\n${name} gained 🩵294!\n⬆️${name} leveled up to level 2! ⬆️`
+            }" x-transition.opacity>
+                <div class="battle-log" x-text="text" style="white-space: pre-line;"></div>
             </div>
             <!-- Debug -->
             <div id="debug" class="encounters" x-show="screen === 'debug'" x-transition.opacity>
