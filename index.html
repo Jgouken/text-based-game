@@ -22,7 +22,7 @@
         <div id="overlay-transparency" class="overlay-transparency"></div>
 
         <div class="player" id="player" x-show="showPlayerBar" x-init="updateBars()"
-            x-data="{ crit: 0, accuracy: 0, evasion: 0, armor: 10, experience: 0, health: 500, maxHealth: 500, stamina: 30, maxStamina: 30, weaponry: 'Dual Hatchets', armory: 'T-Shirt', level: 1 }">
+            x-data="{ crit: 0, accuracy: 0, evasion: 0, armor: 10, experience: 0, health: 500, maxHealth: 500, stamina: 30, maxStamina: 30, weaponry: 'Broken Dagger', armory: 'Damaged Cloak', level: 1 }">
             <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px;" x-text="name"></p>
 
             <div class="experience-bar-background"></div>
@@ -167,9 +167,10 @@
                 <div class="battle-log" x-text="text" style="white-space: pre-line;"></div>
             </div>
 
-            <div class="battle-station" x-data="{ round: 1 }">
+            <div class="battle-station"
+                x-data="{ round: 1, synergized: assets.items.find(item => item.name == Alpine.$data(player).armory) ?.synergies.some(syn => syn.weapon == Alpine.$data(player).weaponry) ?? false }">
                 <div class="battle-weaponry"
-                    x-text="`⚔️ 32\n\n${Alpine.$data(player).weaponry}\n\n${Alpine.$data(player).armory}`"
+                    x-html="`⚔️32\n\n${synergized ? `<u>` : ''}${Alpine.$data(player).weaponry}\n\n${Alpine.$data(player).armory}`"
                     style="white-space: pre-line; text-align: center;"></div>
                 <div class="battle-buttons">
                     <div class="battle-actions" style="display: flex; gap: 20px;">
