@@ -1638,7 +1638,6 @@ function getAssets() {
 						name: "Transform",
 						estatus: ["💢"],
 						pstatus: ["💫"],
-						times: 10,
 						chance: 0.05,
 						attack: false
 					},
@@ -2559,7 +2558,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: "The Perfect Stick",
+				name: "Perfect Stick",
 				maxlvl: 12,
 				minlvl: 6,
 				description: `A truly magnificent stick. It naturally has the right amount of weight and rigidity.`,
@@ -3739,7 +3738,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: "The Perfect Leaf",
+				name: "Perfect Leaf",
 				description: "A leaf with a vibrant hue of green, no missing leaves, damage, and a impressive shape that seems completely symmetrical it must be special.",
 
 				armor: 18,
@@ -3750,7 +3749,7 @@ function getAssets() {
 
 				synergies: [
 					{
-						weapon: "The Perfect Stick",
+						weapon: "Perfect Stick",
 						name: "Light",
 						evasion: 0.025,
 					},
@@ -4001,7 +4000,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: "Holy Knight's Armor",
+				name: "Holy Knights Armor",
 				description: "A shiny suit of iron armor that's been blessed by the holy church and made from the finest iron",
 
 				armor: 714,

@@ -130,6 +130,7 @@ span {
     height: auto;
     overflow: hidden;
     object-fit: cover;
+    pointer-events: none;
     transition: all 2.5s ease-in-out;
 
     img {

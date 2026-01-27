@@ -22,7 +22,7 @@
         <div id="overlay-transparency" class="overlay-transparency"></div>
 
         <div class="player" id="player" x-show="showPlayerBar" x-init="updateBars()"
-            x-data="{ crit: 0, accuracy: 0, evasion: 0, armor: 10, experience: 0, health: 500, maxHealth: 500, stamina: 30, maxStamina: 30, weaponry: 'Broken Dagger', armory: 'Damaged Cloak', level: 1, get attack() { return 32 + ((this.level - 1) * 50) } }">
+            x-data="{ crit: 0, accuracy: 0, evasion: 0, armor: 10, experience: 0, health: 500, maxHealth: 500, stamina: 30, maxStamina: 30, weaponry: 'Perfect Stick', armory: 'Perfect Leaf', level: 1, get attack() { return 32 + ((this.level - 1) * 50) } }">
             <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px;" x-text="name"></p>
 
             <div class="experience-bar-background"></div>
@@ -161,7 +161,7 @@
             </div>
 
             <!-- Encounter -->
-            <div id="encounter" class="encounters" x-show="screen === 'encounter'" x-data="{
+            <div id="encounter" class="encounter" x-show="screen === 'encounter'" x-data="{
                 text: `${name} used Stab and hit Lazy Goblin for ⚔️38\nLazy Goblin used Stab and hit\n${name} used Stab and hit Lazy Goblin for ⚔️32\n🎉 ${name} won the battle! 🎉\n${name} gained 🩵294!\n⬆️${name} leveled up to level 2! ⬆️`
             }" x-transition.opacity>
                 <div class="battle-log" x-text="text" style="white-space: pre-line;"></div>
@@ -173,18 +173,18 @@
                     <div class="battle-buttons">
                         <div class="battle-actions" style="display: flex; gap: 20px;">
                             <button class="battle-base-attack"
-                                style="background-color: rgb(253, 113, 113); color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif;"
+                                style="background-color: rgb(253, 113, 113); color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
                                 x-text="assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[0].name"
                                 @click="" x-transition.opacity>Attack</button>
                             <button class="battle-pass"
-                                style="background-color: rgb(42, 143, 201); border: 5px solid rgb(6, 0, 88); font-size: 40px;font-family: 'Pixelify Sans', sans-serif;"
+                                style="background-color: rgb(42, 143, 201); border: 5px solid rgb(6, 0, 88); font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
                                 @click="" x-transition.opacity>Pass</button>
                             <button class="battle-item"
-                                style="background-color: rgb(138, 233, 138); color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif;"
+                                style="background-color: rgb(138, 233, 138); color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
                                 @click="" x-transition.opacity>Item</button>
                             <button class="battle-flee"
-                                style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0); font-size: 40px; font-size: 40px;font-family: 'Pixelify Sans', sans-serif;"
-                                @click="" x-transition.opacity>Flee</button>
+                                style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0); font-size: 40px; font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
+                                @click="transition('encounter', 'returning')" x-transition.opacity>Flee</button>
                         </div>
 
                         <div class="battle-skills"
@@ -196,12 +196,13 @@
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                     <button class="battle-skill1" id="battle-skill1"
                                         x-text="assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[1].name"
-                                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif;">
+                                        :disabled="Alpine.$data(player).stamina < assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[1].cost"
+                                        :style="`${ (Alpine.$data(player).stamina < assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[1].cost) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[1].cost) ? 'not-allowed' : 'pointer' };`">
                                         ?
                                     </button>
                                     <span class="battle-skill1-cost" id="battle-skill1-cost"
                                         style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px;"
-                                        x-text="assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[1].cost">?</span>
+                                        x-text="`⚡${assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[1].cost}`">?</span>
                                 </div>
                             </div>
 
@@ -210,13 +211,14 @@
                                 x-show="assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[2]">
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                     <button class="battle-skill2" id="battle-skill2"
-                                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif;"
+                                        :style="`${ (Alpine.$data(player).stamina < assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[2].cost) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[2].cost) ? 'not-allowed' : 'pointer' };`"
+                                        :disabled="Alpine.$data(player).stamina < assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[2].cost"
                                         x-text="assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[2].name">
                                         ?
                                     </button>
                                     <span class="battle-skill2-cost" id="battle-skill2-cost"
                                         style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px;"
-                                        x-text="assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[2].cost">?</span>
+                                        x-text="`⚡${assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[2].cost}`">?</span>
                                 </div>
                             </div>
 
@@ -226,13 +228,15 @@
                                 x-show="assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[3]">
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                     <button class="battle-skill3" id="battle-skill3"
-                                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif;"
+                                        :style="`${ (Alpine.$data(player).stamina < assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[3].cost) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[3].cost) ? 'not-allowed' : 'pointer' };`"
+                                        :disabled="Alpine.$data(player).stamina < assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[3].cost"
                                         x-text="assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[3].name">
-                                        ?
                                     </button>
+
+
                                     <span class="battle-skill3-cost" id="battle-skill3-cost"
                                         style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px;"
-                                        x-text="assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[3].cost">?</span>
+                                        x-text="`⚡${assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[1].cost}`">?</span>
                                 </div>
                             </div>
 
