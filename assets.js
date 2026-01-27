@@ -218,12 +218,11 @@ function getAssets() {
 				name: `Lazy Goblin`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1117502969370382366/New_Piskel_4_2.gif',
 				weapon: "Rusted Dagger",
-				maxHealth: 50 * Math.round(mult / 2),
-				attack: 10,
+				health: 50,
+				attack: 25,
 				accuracy: 0.75,
 				critical: 0.05,
-				maxdef: 1,
-				mindef: 0,
+				defense: 40,
 				skills: [
 					{
 						name: "Stab",
@@ -290,12 +289,12 @@ function getAssets() {
 				name: `Blacksmith Goblin`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1121514870832124034/image_2.gif',
 				weapon: "Blacksmith's Hammer",
-				maxHealth: 75 * mult,
-				attack: 30,
-				accuracy: 0.8,
-				critical: 0.05,
-				maxdef: 2,
-				mindef: 0,
+				health: 125,
+				attack: 50,
+				defense: 75,
+				critical: 0.2,
+				accuracy: 0.7,
+				
 				skills: [
 					{
 						name: "Slam",
@@ -370,12 +369,11 @@ function getAssets() {
 				name: `Armorer Goblin`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1131295696910303342/image_3.gif',
 				weapon: "Spear & Shield",
-				maxHealth: 100 * mult,
-				attack: 20,
-				accuracy: 0.75,
-				critical: 0.08,
-				maxdef: 5,
-				mindef: 2,
+				health: 250,
+				attack: 75,
+				defense: 300,
+				critical: 0.1,
+				accuracy: 0.55,
 				skills: [
 					{
 						name: "Jab",
@@ -428,12 +426,11 @@ function getAssets() {
 				name: `Cursed Goblin`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1121510851543842907/image_1.gif',
 				weapon: "Cursed Rusted Dagger",
-				accuracy: 0.75,
-				critical: 0.08,
-				maxHealth: 75 * mult,
-				maxdef: 4,
-				mindef: 1,
-				attack: 45,
+				health: 333,
+				attack: 333,
+				defense: 666,
+				critical: 0.33,
+				accuracy: 0.66,
 				skills: [
 					{
 						name: "Stab",
@@ -498,12 +495,11 @@ function getAssets() {
 				name: `Orc`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1131306751464067102/New_Piskel_5_1.gif',
 				weapon: "Orc Club",
-				accuracy: 0.8,
+				health: 400,
+				attack: 200,
+				defense: 300,
 				critical: 0.1,
-				maxHealth: 150 * mult,
-				attack: 50,
-				maxdef: 4,
-				mindef: 2,
+				accuracy: 0.5,
 				skills: [
 					{
 						name: "Smash",
@@ -577,10 +573,11 @@ function getAssets() {
 				name: `Health Slime`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1131691728290713620/Health_Slime.gif',
 				weapon: null,
-				accuracy: 1,
+				health: 100,
+				attack: 25,
+				defense: 50,
 				critical: 0.1,
-				maxHealth: 50 * Math.round(mult / 3),
-				attack: 10,
+				accuracy: 0.55,
 				skills: [
 					{
 						name: "Jump",
@@ -636,10 +633,11 @@ function getAssets() {
 				name: `Attack Slime`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1130925994115608797/Attack_Slime.gif',
 				weapon: null,
-				accuracy: 0.75,
-				critical: 0.07,
-				maxHealth: 50 * Math.round(mult / 4),
-				attack: 40,
+				health: 75,
+				attack: 100,
+				defense: 50,
+				critical: 0.2,
+				accuracy: 0.55,
 				skills: [
 					{
 						name: "Jump",
@@ -697,12 +695,11 @@ function getAssets() {
 				name: `Defense Slime`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1130931422882955345/Defense_Slime.gif',
 				weapon: null,
-				maxHealth: 50 * mult,
-				attack: 20,
-				accuracy: 0.85,
+				health: 125,
+				attack: 50,
+				defense: 200,
 				critical: 0.05,
-				maxdef: 8,
-				mindef: 4,
+				accuracy: 0.55,
 				skills: [
 					{
 						name: "Jump",
@@ -758,24 +755,23 @@ function getAssets() {
 				name: `Stamina Slime`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1130933661861154876/Stamina_Slime.gif',
 				weapon: null,
-				accuracy: 0.8,
-				critical: 0.05,
-				maxHealth: 50 * mult,
-				attack: 25,
-				maxdef: 3,
-				mindef: 0,
+				health: 45,
+				attack: 50,
+				defense: 50,
+				critical: 0.2,
+				accuracy: 0.7,
 				skills: [
 					{
 						name: "Jump",
-						chance: 0.7,
+						chance: 0.6,
 						attack: true
 					},
 					{
-						name: "Slippery Coat",
-						pstatus: ["👁️"],
-						chance: 0.1,
+						name: "Electric Coat",
+						pstatus: ["💫"],
+						chance: 0.2,
 						attack: false,
-						wait: 3
+						wait: 1
 					},
 					{
 						name: "Slime Barrage",
@@ -784,8 +780,8 @@ function getAssets() {
 						attack: true,
 					},
 					{
-						name: "Lucky Dance",
-						estatus: ["🍀"],
+						name: "Dodgy Dance",
+						estatus: ["☁️"],
 						chance: 0.1,
 						attack: false,
 						wait: 3
@@ -818,12 +814,11 @@ function getAssets() {
 				name: `Orange Fox`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1117522664253300907/New_Piskel_4_2_1.gif',
 				weapon: "Steel Dagger",
-				accuracy: 0.85,
+				health: 1000,
+				attack: 150,
+				defense: 180,
 				critical: 0.1,
-				maxHealth: 175 * mult,
-				attack: 35,
-				maxdef: 3,
-				mindef: 1,
+				accuracy: 0.72,
 				skills: [
 					{
 						name: "Stab",
@@ -906,12 +901,11 @@ function getAssets() {
 				name: `White Fox`,
 				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
 				weapon: "Steel Dagger",
-				accuracy: 0.8,
-				critical: 0.1,
-				maxHealth: 150 * mult,
-				attack: 45,
-				maxdef: 3,
-				mindef: 2,
+				health: 750,
+				attack: 100,
+				defense: 150,
+				critical: 0.15,
+				accuracy: 0.67,
 				skills: [
 					{
 						name: "Stab",
@@ -996,12 +990,11 @@ function getAssets() {
 				name: `Blue Fox`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1121537810432794684/image_3.gif',
 				weapon: "Steel Dagger",
-				accuracy: 0.8,
-				critical: 0.1,
-				maxHealth: 175 * mult,
-				attack: 55,
-				maxdef: 3,
-				mindef: 2,
+				health: 500,
+				attack: 50,
+				defense: 120,
+				critical: 0.35,
+				accuracy: 0.62,
 				skills: [
 					{
 						name: "Stab",
@@ -1096,12 +1089,11 @@ function getAssets() {
 				name: `Vampire`,
 				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
 				weapon: "Fangs",
-				accuracy: 0.95,
-				critical: 0.2,
-				maxHealth: 90 * mult,
-				attack: 40,
-				maxdef: 6,
-				mindef: 0,
+				health: 1000,
+				attack: 500,
+				defense: 400,
+				critical: 0.15,
+				accuracy: 0.7,
 				skills: [
 					{
 						name: "Lunge",
@@ -1170,12 +1162,11 @@ function getAssets() {
 				name: `Demon`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1128734411375005777/New_Piskel_4.gif',
 				weapon: null,
-				accuracy: 0.85,
-				critical: 0.15,
-				maxHealth: 100 * mult,
-				attack: 50,
-				maxdef: 6,
-				mindef: 2,
+				health: 666,
+				attack: 666,
+				defense: 666,
+				critical: 0.33,
+				accuracy: 0.66,
 				skills: [
 					{
 						name: "Punch",
@@ -1259,12 +1250,11 @@ function getAssets() {
 				name: `Werewolf`,
 				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
 				weapon: null,
-				accuracy: 0.8,
-				critical: 0.25,
-				maxHealth: 115 * mult,
-				attack: 40,
-				maxdef: 4,
-				mindef: 0,
+				health: 400,
+				attack: 350,
+				defense: 750,
+				critical: 0.35,
+				accuracy: 0.65,
 				skills: [
 					{
 						name: "Bite",
@@ -1332,12 +1322,11 @@ function getAssets() {
 				name: `Witch`,
 				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
 				weapon: null,
-				accuracy: 0.9,
-				critical: 0.05,
-				maxHealth: 75 * mult,
-				attack: 45,
-				maxdef: 3,
-				mindef: 0,
+				health: 750,
+				attack: 400,
+				defense: 250,
+				critical: 0.1,
+				accuracy: 0.7,
 				skills: [
 					{
 						name: "Whack",
@@ -1419,12 +1408,11 @@ function getAssets() {
 				name: `Cow`,
 				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
 				weapon: null,
+				health: 200,
+				attack: 200,
+				defense: 150,
+				critical: 0.2,
 				accuracy: 0.5,
-				critical: 0.1,
-				maxHealth: 10 * mult,
-				attack: 15,
-				maxdef: 1,
-				mindef: 0,
 				skills: [
 					{
 						name: "Moo",
@@ -1452,12 +1440,11 @@ function getAssets() {
 				name: `Sheep`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1127670108970561648/New_Piskel_3.gif',
 				weapon: null,
-				accuracy: 0.5,
+				health: 125,
+				attack: 65,
+				defense: 200,
 				critical: 0.1,
-				maxHealth: 20 * mult,
-				attack: 0,
-				maxdef: 2,
-				mindef: 0,
+				accuracy: 0.4,
 				skills: [
 					{
 						name: "Baa",
@@ -1485,10 +1472,11 @@ function getAssets() {
 				name: `Chicken`,
 				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
 				weapon: null,
-				accuracy: 0.5,
+				health: 45,
+				attack: 20,
+				defense: 10,
 				critical: 0.1,
-				maxHealth: 5 * mult,
-				attack: 10,
+				accuracy: 0.4,
 				skills: [
 					{
 						name: "Cluck",
@@ -1516,12 +1504,11 @@ function getAssets() {
 				name: `Cyclops Overlord`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1127658659657298050/New_Piskel_2_1.gif',
 				weapon: null,
-				accuracy: 0.78,
-				critical: 0.15,
-				maxHealth: 250 * Math.round(mult / 1.5),
-				attack: 80,
-				maxdef: 7,
-				mindef: 5,
+				health: 750,
+				attack: 225,
+				defense: 175,
+				critical: 0.3,
+				accuracy: 0.64,
 				skills: [
 					{
 						name: "Swing",
@@ -1569,12 +1556,11 @@ function getAssets() {
 				name: `Fox King`,
 				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1132724236050505798/image_5_1.gif',
 				weapon: null,
-				accuracy: 1,
-				critical: 0.15,
-				maxHealth: 225 * mult,
-				attack: 150,
-				maxdef: 7,
-				mindef: 4,
+				health: 6000,
+				attack: 600,
+				defense: 600,
+				critical: 0.25,
+				accuracy: 0.73,
 				skills: [
 					{
 						name: "Stab",
@@ -1622,12 +1608,11 @@ function getAssets() {
 				name: `Goblin King`,
 				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
 				weapon: null,
-				accuracy: 0.9,
-				critical: 0.15,
-				maxHealth: 300 * mult,
-				attack: 175,
-				maxdef: 7,
-				mindef: 5,
+				health: 9999,
+				attack: 1111,
+				defense: 1111,
+				critical: 0.44,
+				accuracy: 0.77,
 				skills: [
 					{
 						name: "Smash",
@@ -1684,12 +1669,11 @@ function getAssets() {
 				name: `Demon Queen`,
 				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
 				weapon: null,
-				accuracy: 0.99,
-				critical: 0.15,
-				maxHealth: 550 * mult,
-				attack: 125,
-				maxdef: 10,
-				mindef: 0,
+				health: 13666,
+				attack: 1666,
+				defense: 1666,
+				critical: 0.66,
+				accuracy: 0.85,
 				skills: [
 					{
 						name: "Slap",
@@ -2341,9 +2325,13 @@ function getAssets() {
 				maxlvl: 1,
 				minlvl: 1,
 				description: `The enemies can catch these hands.`,
-				attack: 1,
-				plvlmult: 0,
-				crit: 0,
+
+				attack: 32,
+				attackPerLevel: 0,
+				crit: 0.05,
+				critdmg: 1.6,
+				accuracy: 0.8,
+
 				skills: [
 					{
 						name: "Punch",
@@ -2369,35 +2357,39 @@ function getAssets() {
 				name: "Twig",
 				maxlvl: 5,
 				minlvl: 1,
+
+				attack: 2,
+				attackPerLevel: 2,
+				crit: 0.1,
+				critdmg: 1.3,
+				accuracy: 0.6,
+
 				description: `A stick.`,
-				attack: 5,
-				plvlmult: 0.2,
-				crit: 0.005,
 				skills: [
 					{
 						name: "Whack",
 						attack: true
 					},
 					{
-						name: "Thwack",
-						description: `Thwack them with your stick!`,
-						cost: 5,
-						damage: 1.2,
+						name: "Poke Eye",
+						description: `Poke 'em in the eye.`,
+						cost: 10,
+						damage: 0.6,
+						estatus: ["👁️"],
 						attack: true
 					},
 					{
-						name: "Poke Eye",
-						description: `Poke 'em in the eye.`,
-						cost: 7,
-						damage: 0.9,
-						estatus: ["👁️"],
+						name: "Thwack",
+						description: `Thwack them with your stick!`,
+						cost: 15,
+						damage: 1.25,
 						attack: true
 					},
 					{
 						name: "Treat Wounds",
 						description: `Rub some dirt on your wounds.`,
 						cost: 10,
-						health: 0.15,
+						flatHealth: 120,
 						attack: false
 					},
 				]
@@ -2406,10 +2398,14 @@ function getAssets() {
 				name: "Branch",
 				maxlvl: 8,
 				minlvl: 1,
+
+				attack: 5,
+				attackPerLevel: 2,
+				crit: 0.05,
+				critdmg: 1.5,
+				accuracy: 0.7,
+
 				description: `A heftier stick.`,
-				attack: 8,
-				plvlmult: 0.5,
-				crit: 0.01,
 				skills: [
 					{
 						name: "Whack",
@@ -2418,7 +2414,7 @@ function getAssets() {
 					{
 						name: "Hefty Swing",
 						description: `Batter up!`,
-						cost: 8,
+						cost: 15,
 						damage: 1.4,
 						attack: true
 					},
@@ -2426,14 +2422,14 @@ function getAssets() {
 						name: "Barbaric Shout",
 						description: `Scream at the top of your lungs.`,
 						pstatus: ["💪"],
-						cost: 6,
+						cost: 10,
 						attack: false
 					},
 					{
 						name: "Treat Wounds",
 						description: `Rub some dirt on your wounds.`,
-						cost: 10,
-						health: 0.15,
+						cost: 15,
+						flatHealth: 120,
 						attack: false
 					},
 				]
@@ -2442,10 +2438,14 @@ function getAssets() {
 				name: "Broken Dagger",
 				maxlvl: 10,
 				minlvl: 2,
+
+				attack: 10,
+				attackPerLevel: 2,
+				crit: 0.2,
+				critdmg: 1.65,
+				accuracy: 0.7,
+
 				description: `A mysteriously sharpened broken dagger.`,
-				attack: 9,
-				plvlmult: 0.5,
-				crit: 0.025,
 				skills: [
 					{
 						name: "Stab",
@@ -2462,15 +2462,15 @@ function getAssets() {
 						name: "Wild Stab",
 						description: `Stabby stabby stab.`,
 						estatus: ["🩸"],
-						damage: 1.3,
-						cost: 12,
+						damage: 0.7,
+						cost: 20,
 						attack: true
 					},
 					{
 						name: "Treat Wounds",
 						description: `Rub some dirt on your wounds.`,
 						cost: 15,
-						health: 0.15,
+						flatHealth: 120,
 						attack: false
 					},
 				]
@@ -2479,10 +2479,14 @@ function getAssets() {
 				name: "Rusty Dagger",
 				maxlvl: 10,
 				minlvl: 4,
+
+				attack: 15,
+				attackPerLevel: 2,
+				crit: 0.1,
+				critdmg: 1.6,
+				accuracy: 0.8,
+
 				description: `A dagger that's lost its edge due to rust, but is still useable.`,
-				attack: 12,
-				plvlmult: 0.7,
-				crit: 0.0125,
 				skills: [
 					{
 						name: "Stab",
@@ -2491,23 +2495,23 @@ function getAssets() {
 					{
 						name: "Slash",
 						description: `Slice with ferocity.`,
-						cost: 12,
+						cost: 15,
 						damage: 1.5,
 						attack: true
 					},
 					{
 						name: "Kick",
 						description: `Give 'em a roundhouse kick in the face!`,
-						estatus: ["💫", "🌀"],
-						damage: 0.85,
-						cost: 15,
+						estatus: ["🌀"],
+						damage: 0.65,
+						cost: 25,
 						attack: true
 					},
 					{
 						name: "Treat Wounds",
 						description: `Rub some dirt on your wounds.`,
 						cost: 15,
-						health: 0.15,
+						flatHealth: 120,
 						attack: false
 					},
 				]
@@ -2517,35 +2521,38 @@ function getAssets() {
 				maxlvl: 12,
 				minlvl: 6,
 				description: `A clean dagger that feels reliable with a nicely sharpened edge.`,
-				attack: 14,
-				plvlmult: 0.7,
-				crit: 0.03,
+
+				attack: 20,
+				attackPerLevel: 2,
+				crit: 0.4,
+				critdmg: 1.75,
+				accuracy: 0.6,
+
 				skills: [
 					{
 						name: "Stab",
 						attack: true
 					},
 					{
-						name: "Repeated Slash",
-						description: `Slash with ferocity.`,
-						cost: 13,
-						damage: 0.75,
-						estatus: ["🩸"],
+						name: "Swift Attack",
+						description: `Stab faster than they can see!`,
+						cost: 15,
+						damage: 0.4,
 						times: 3,
 						attack: true
 					},
 					{
-						name: "Swift Attack",
-						description: `Stab faster than they can see!`,
+						name: "Deep Slash",
+						description: `Slash with ferocity.`,
 						cost: 10,
-						pstatus: ["💨"],
 						damage: 1.1,
+						estatus: ["🩸"],
 						attack: true
 					},
 					{
 						name: "Quick Fix",
 						description: `Wrap your wound in cloth.`,
-						cost: 15,
+						cost: 25,
 						health: 0.1,
 						attack: false
 					},
@@ -2556,9 +2563,13 @@ function getAssets() {
 				maxlvl: 12,
 				minlvl: 6,
 				description: `A truly magnificent stick. It naturally has the right amount of weight and rigidity.`,
-				attack: 15,
-				plvlmult: 0.7,
-				crit: 0.05,
+
+				attack: 30,
+				attackPerLevel: 2,
+				crit: 0.25,
+				critdmg: 1.5,
+				accuracy: 0.9,
+
 				skills: [
 					{
 						name: "Perfect Whack",
@@ -2567,23 +2578,23 @@ function getAssets() {
 					{
 						name: "Perfect Swing",
 						description: `Swing at the the enemy with perfect trajectory.`,
-						cost: 15,
+						cost: 20,
 						damage: 1.25,
-						pstatus: ["💪"],
+						pstatus: ["🎯"],
 						attack: true
 					},
 					{
 						name: "All or Nothing",
 						description: `Put all your eggs in one basket.`,
-						cost: 20,
-						pstatus: ["💫"],
-						damage: 3.25,
+						cost: 40,
+						pstatus: ["💫", "🌀"],
+						damage: 3,
 						attack: true
 					},
 					{
 						name: "Quick Fix",
 						description: `Wrap your wound in cloth.`,
-						cost: 15,
+						cost: 25,
 						health: 0.1,
 						attack: false
 					},
@@ -2594,9 +2605,13 @@ function getAssets() {
 				maxlvl: 14,
 				minlvl: 6,
 				description: `A polished short sword that was clearly in good care.`,
-				attack: 12,
-				plvlmult: 1,
-				crit: 0.065,
+
+				attack: 40,
+				attackPerLevel: 4,
+				crit: 0.3,
+				critdmg: 1.4,
+				accuracy: 0.7,
+
 				skills: [
 					{
 						name: "Strike",
@@ -2605,25 +2620,25 @@ function getAssets() {
 					{
 						name: "Double Strike",
 						description: `Two-Sword Style.`,
-						cost: 15,
+						cost: 25,
 						times: 2,
-						damage: 0.9,
+						damage: 0.6,
 						attack: true
-					},
-					{
-						name: "Warrior's Resolve",
-						description: `Howl like the warrior you are!`,
-						cost: 20,
-						pstatus: ["💗", "💪"],
-						attack: false
 					},
 					{
 						name: "Kick",
 						description: `Foot!`,
-						estatus: ["💫", "🌀"],
-						cost: 15,
-						damage: 0.85,
+						estatus: ["🌀"],
+						cost: 25,
+						damage: 0.65,
 						attack: true
+					},
+					{
+						name: "Determined Resolve",
+						description: `Howl like the warrior you are!`,
+						cost: 20,
+						pstatus: ["💗", "💪"],
+						attack: false
 					},
 				]
 			},
@@ -2632,9 +2647,13 @@ function getAssets() {
 				maxlvl: 45,
 				minlvl: 25,
 				description: `The absolute perfect stick with no imperfections. Made from a wood that is as shiny as gold.`,
-				attack: 25,
-				plvlmult: 1.5,
-				crit: 0.2,
+
+				attack: 221,
+				attackPerLevel: 6,
+				crit: 0.62,
+				critdmg: 1.77,
+				accuracy: 0.52,
+
 				skills: [
 					{
 						name: "Golden Whack",
@@ -2643,7 +2662,7 @@ function getAssets() {
 					{
 						name: "Golden Rush",
 						description: `Bother the enemy to the finest several times.`,
-						cost: 25,
+						cost: 177,
 						times: 7,
 						damage: 0.77,
 						attack: true
@@ -2652,16 +2671,16 @@ function getAssets() {
 						name: "Brandish",
 						description: `Show off your weapon and use it to reflect light into the enemy's eye.`,
 						cost: 30,
-						pstatus: ["💢", "🍀"],
-						estatus: ["👁️", "🌀"],
+						pstatus: ["💢"],
+						estatus: ["👁️"],
 						attack: false
 					},
 					{
 						name: "Golden Standard",
 						description: `You are perfect, so act like it.`,
-						pstatus: ["🏳️", "✨", "💨"],
-						cost: 20,
-						haelth: 0.25,
+						pstatus: ["🍀", "🎯"],
+						cost: 77,
+						flatHealth: 777,
 						attack: false
 					},
 				]
@@ -2671,9 +2690,13 @@ function getAssets() {
 				maxlvl: 24,
 				minlvl: 13,
 				description: `A pair of iron daggers that looks as if they are to be used in tadem.`,
-				attack: 16,
-				plvlmult: 1.2,
+
+				attack: 58,
+				attackPerLevel: 4,
 				crit: 0.1,
+				critdmg: 1.75,
+				accuracy: 0.65,
+
 				skills: [
 					{
 						name: "Dual Strike",
@@ -2684,22 +2707,23 @@ function getAssets() {
 					{
 						name: "Swift Barrage",
 						description: `Unleash a quick barrage of slashes.`,
-						cost: 16,
-						times: 7,
-						damage: 0.25,
+						cost: 25,
+						estatus: ["🩸"],
+						times: 5,
+						damage: 0.55,
 						attack: true
 					},
 					{
 						name: "Rogue’s Gambit",
 						description: `You're a winner!`,
-						cost: 14,
-						pstatus: ["🍀"],
+						cost: 77,
+						pstatus: ["🍀", "🌀"],
 						attack: false
 					},
 					{
 						name: "Quick Fix",
 						description: `Wrap your wound in cloth.`,
-						cost: 15,
+						cost: 25,
 						health: 0.1,
 						attack: false
 					},
@@ -2710,9 +2734,13 @@ function getAssets() {
 				maxlvl: 24,
 				minlvl: 13,
 				description: `A pair of lumberjack hatches good for damage!`,
-				attack: 20,
-				plvlmult: 1.2,
-				crit: 0.15,
+
+				attack: 78,
+				attackPerLevel: 4,
+				crit: 0.1,
+				critdmg: 1.60,
+				accuracy: 0.7,
+
 				skills: [
 					{
 						name: "Dual Strike",
@@ -2723,24 +2751,25 @@ function getAssets() {
 					{
 						name: "Ferocious Combo",
 						description: "Strike the axes together and rush the enemy.",
-						cost: 16,
+						cost: 50,
 						damage: 0.8,
+						estatus: ["🩸"],
 						times: 3,
 						attack: true
 					},
 					{
 						name: "Berserker's Cry",
 						description: "Let out an intimidating shout.",
-						cost: 15,
-						pstatus: ["💢", "🎯", "💪"],
+						cost: 60,
+						pstatus: ["💢"],
 						estatus: ["🌀"],
 						attack: false
 					},
 					{
 						name: "Walk it Off",
 						description: "Grit your teeth and power through the pain.",
-						cost: 25,
-						health: 0.35,
+						cost: 45,
+						health: 0.2,
 						attack: false
 					}
 				]
@@ -2750,9 +2779,13 @@ function getAssets() {
 				maxlvl: 27,
 				minlvl: 15,
 				description: `A heavy-weight classic weapon of attack and defense.`,
-				attack: 20,
-				plvlmult: 1.1,
-				crit: 0.095,
+
+				attack: 106,
+				attackPerLevel: 4,
+				crit: 0.2,
+				critdmg: 1.45,
+				accuracy: 0.6,
+
 				skills: [
 					{
 						name: "Strike",
@@ -2761,7 +2794,7 @@ function getAssets() {
 					{
 						name: "Triple Strike",
 						description: "Poke poke poke.",
-						cost: 18,
+						cost: 40,
 						damage: 0.8,
 						times: 3,
 						attack: true
@@ -2769,17 +2802,16 @@ function getAssets() {
 					{
 						name: "Knight's Resolve",
 						description: "Read yourself for combat.",
-						cost: 15,
-						pstatus: ["💪", "💗", "🛡️"],
+						cost: 35,
+						pstatus: ["💪", "💗", "🛡️", "🏳️"],
 						attack: false
 					},
 					{
-						name: "Kick",
-						description: "Give 'em a roundhouse kick to the face.",
-						cost: 15,
-						estatus: ["💫", "🌀"],
-						damage: 0.85,
-						attack: true
+						name: "Grit",
+						description: "Grit your teeth and power through the pain.",
+						cost: 45,
+						flatHealth: 175,
+						attack: false
 					}
 				]
 			},
@@ -2788,9 +2820,13 @@ function getAssets() {
 				maxlvl: 32,
 				minlvl: 19,
 				description: `A lightweight ranged weapon to get your enemies from afar.`,
-				attack: 15,
-				plvlmult: 1,
-				crit: 0.15,
+
+				attack: 130,
+				attackPerLevel: 6,
+				crit: 0.45,
+				critdmg: 1.25,
+				accuracy: 0.65,
+
 				skills: [
 					{
 						name: "Quick Shot",
@@ -2799,16 +2835,16 @@ function getAssets() {
 					{
 						name: "Jackpot",
 						description: "Unleash a powerful shot concentrated on an enemy's weakpoint.",
-						cost: 25,
+						cost: 77,
 						damage: 2,
-						pstatus: ["🎯", "🍀"],
-						estatus: ["🌀", "💫", "🩸"],
+						pstatus: ["🍀"],
+						estatus: ["🌀", "🩸"],
 						attack: true
 					},
 					{
 						name: "Rapid Barrage",
 						description: "Swiftly fire multiple arrows.",
-						cost: 40,
+						cost: 55,
 						damage: 0.2,
 						times: 9,
 						attack: true
@@ -2816,8 +2852,8 @@ function getAssets() {
 					{
 						name: "Combat Heal",
 						description: "Utilize medic knowledge to heal your wounds.",
-						cost: 25,
-						health: 0.15,
+						cost: 45,
+						health: 0.05,
 						pstatus: ["💗"],
 						attack: false
 					},
@@ -2828,33 +2864,38 @@ function getAssets() {
 				maxlvl: 32,
 				minlvl: 19,
 				description: `A lumberjack's best friend.`,
-				attack: 26,
-				plvlmult: 0.8,
-				crit: 0.3,
+
+				attack: 194,
+				attackPerLevel: 6,
+				crit: 0.05,
+				critdmg: 1.75,
+				accuracy: 0.7,
+
 				skills: [
 					{
 						name: "Chop",
 						attack: true
 					},
 					{
-						name: "Mighty Axe Swing",
+						name: "Almighty Swing",
 						description: "Swing your axe with full force.",
-						cost: 40,
-						damage: 3.25,
+						cost: 90,
+						damage: 2.25,
 						attack: true,
 					},
 					{
 						name: "Rallying Shout",
 						description: "Let out a mighty yell.",
-						cost: 15,
-						pstatus: ["💪", "🛡️"],
+						cost: 40,
+						pstatus: ["🏳️", "🛡️"],
 						attack: false
 					},
 					{
 						name: "Hearty Breakfast",
 						description: "Pull out your lunchbox and chomp down on a bacon omelet and grits.",
 						cost: 30,
-						pstatus: ["🏳️", "💗"],
+						pstatus: ["💫", "💢", "💗"],
+						health: 0.15,
 						attack: false
 					}
 				]
@@ -2864,9 +2905,13 @@ function getAssets() {
 				maxlvl: 32,
 				minlvl: 19,
 				description: `A knife colored silver. Great for murder!`,
-				attack: 15,
-				plvlmult: 1.25,
-				crit: 0.15,
+
+				attack: 169,
+				attackPerLevel: 6,
+				crit: 0.2,
+				critdmg: 1.4,
+				accuracy: 0.9,
+
 				skills: [
 					{
 						name: "Stab",
@@ -2875,16 +2920,16 @@ function getAssets() {
 					{
 						name: "Swift Assault",
 						description: "Quickly attack the enemy.",
-						cost: 15,
+						cost: 40,
 						times: 3,
-						damage: 0.8,
-						estatus: ["💀"],
+						damage: 0.75,
+						estatus: ["🩸"],
 						attack: true
 					},
 					{
 						name: "Poison Cloud",
 						description: "Throw a poison smoke bomb.",
-						cost: 25,
+						cost: 50,
 						damage: 0.8,
 						estatus: ["🌀", "👁️", "💀"],
 						attack: true
@@ -2892,8 +2937,8 @@ function getAssets() {
 					{
 						name: "Combat Heal",
 						description: "Utilize medic knowledge to heal your wounds.",
-						cost: 25,
-						health: 0.15,
+						cost: 30,
+						health: 0.05,
 						pstatus: ["💗"],
 						attack: false
 					},
@@ -2904,9 +2949,13 @@ function getAssets() {
 				maxlvl: 40,
 				minlvl: 25,
 				description: `A close-quarter combat "weapon" mainly used for defensive strategies.`,
-				attack: 10,
-				plvlmult: 1.75,
-				crit: 0.2,
+
+				attack: 253,
+				attackPerLevel: 8,
+				crit: 0.25,
+				critdmg: 1.45,
+				accuracy: 0.75,
+
 				skills: [
 					{
 						name: ["Back Fist", "Elbow Strike", "Hammer Fist", "Haymaker Punch", "Hook Punch", "Jab Punch", "Knife Hand Strike", "Palm Strike", "Slap", "Straight Punch", "Uppercut Punch"][Math.floor(Math.random() * 11)],
@@ -2915,25 +2964,25 @@ function getAssets() {
 					{
 						name: "Fighter's Mix",
 						description: "A barrage of punches.",
-						cost: 20,
-						damage: 0.4,
-						pstatus: ["🎯", "💪", "🍀"],
+						cost: 60,
+						damage: 0.6,
+						times: 4,
 						attack: true
 					},
 					{
 						name: "Gut Punch",
 						description: "Powerful swing to the stomach of the enemy.",
-						cost: 20,
+						cost: 80,
 						damage: 1.2,
-						estatus: ["🌀", "💫"],
-						pstatus: ["💢"],
+						estatus: ["🌀"],
+						pstatus: ["🏳️"],
 						attack: true
 					},
 					{
 						name: "Walk it Off",
 						description: "Grit your teeth and power through the pain.",
-						cost: 25,
-						health: 0.35,
+						cost: 45,
+						health: 0.2,
 						attack: false
 					}
 				]
@@ -2943,9 +2992,13 @@ function getAssets() {
 				maxlvl: 40,
 				minlvl: 26,
 				description: `A heavy-duty cutting tool with teeth set on a chain which moves around the edge of a blade.`,
-				attack: 10,
-				plvlmult: 1,
-				crit: 0.1,
+
+				attack: 360,
+				attackPerLevel: 8,
+				crit: 0.5,
+				critdmg: 1.1,
+				accuracy: 0.6,
+
 				skills: [
 					{
 						name: "Saw",
@@ -2955,27 +3008,25 @@ function getAssets() {
 						name: "Rampage",
 						description: "Charge the enemy while swinging your chainsaw.",
 						estatus: ["🩸"],
-						cost: 40,
+						cost: 90,
 						times: 10,
-						damage: 0.8,
+						damage: 0.45,
 						attack: true
 					},
 					{
-						name: "Opening Carnage",
+						name: "Headbutt",
 						description: "Headbutt the enemy before swinging your chainsaw.",
-						cost: 35,
-						estatus: ["🌀"],
-						pstatus: ["🏳️", "💢"],
-						times: 6,
-						damage: 0.2,
+						cost: 40,
+						estatus: ["🌀", "👁️"],
+						damage: 1.4,
 						attack: true
 					},
 					{
-						name: "Unyielding Will",
+						name: "Murderous Intent",
 						description: "Remain an unstoppable force through the power of uncanny determination.",
-						cost: 30,
-						pstatus: ["✨"],
-						health: 0.4,
+						cost: 75,
+						pstatus: ["✨", "💢"],
+						health: 0.3,
 						attack: false
 					}
 				]
@@ -2985,20 +3036,33 @@ function getAssets() {
 				maxlvl: 36,
 				minlvl: 28,
 				description: `A standard super-sized weapon used for disabling great foes!`,
-				attack: 18,
-				plvlmult: 1.2,
-				crit: 0.15,
+
+				attack: 237,
+				attackPerLevel: 6,
+				crit: 0.2,
+				critdmg: 1.4,
+				accuracy: 0.75,
+
 				skills: [
 					{
-						name: "Swing",
+						name: "Slash",
 						attack: true
 					},
 					{
 						name: "Heavy Slash",
 						description: "Send forth a powerful swing with your oversized blade.",
-						cost: 25,
+						cost: 45,
 						damage: 2,
 						estatus: ["🩸"],
+						attack: true
+					},
+					{
+						name: "Shoulder Bash",
+						description: "Ram the enemy with a shoulder.",
+						cost: 20,
+						estatus: ["🌀"],
+						damage: 0.6,
+						health: 0.05,
 						attack: true
 					},
 					{
@@ -3008,15 +3072,6 @@ function getAssets() {
 						pstatus: ["🏳️", "💗", "🛡️"],
 						attack: false
 					},
-					{
-						name: "Shoulder Bash",
-						description: "Ram the enemy with a shoulder.",
-						cost: 20,
-						estatus: ["🌀"],
-						damage: 0.45,
-						health: 0.1,
-						attack: true
-					}
 				]
 			},
 			{
@@ -3024,9 +3079,13 @@ function getAssets() {
 				maxlvl: 36,
 				minlvl: 28,
 				description: `Sometimes big problems require a just as big simple solution like a giant hammer.`,
-				attack: 30,
-				plvlmult: 1,
-				crit: 0.08,
+
+				attack: 387,
+				attackPerLevel: 6,
+				crit: 0.1,
+				critdmg: 2,
+				accuracy: 0.6,
+
 				skills: [
 					{
 						name: "Bash",
@@ -3035,23 +3094,23 @@ function getAssets() {
 					{
 						name: "Immense Impact",
 						description: "Slam your hammer down on a foe with all your might.",
-						estatus: ["🌀", "💫"],
-						cost: 40,
-						damage: 4,
+						estatus: ["💫"],
+						cost: 115,
+						damage: 1.8,
 						attack: true
 					},
 					{
 						name: "Sinister Grin",
 						description: "Lower weapon and give the enemy a 2 free swings while smiling.",
-						cost: 25,
-						pstatus: ["💫", "💢", "🏳️", "💪"],
+						cost: 55,
+						pstatus: ["💢", "🏳️"],
 						attack: false
 					},
 					{
 						name: "Walk it Off",
 						description: "Grit your teeth and power through the pain.",
-						cost: 25,
-						health: 0.35,
+						cost: 45,
+						health: 0.2,
 						attack: false
 					}
 				]
@@ -3061,9 +3120,13 @@ function getAssets() {
 				maxlvl: 40,
 				minlvl: 30,
 				description: `Short-ranged dual weaponry for classic double strikes.`,
-				attack: 10,
-				plvlmult: 1.75,
-				crit: 0.2,
+
+				attack: 252,
+				attackPerLevel: 8,
+				crit: 0.35,
+				critdmg: 1.4,
+				accuracy: 0.6,
+
 				skills: [
 					{
 						name: "Dual Strike",
@@ -3074,23 +3137,23 @@ function getAssets() {
 					{
 						name: "Stylish Barrage",
 						description: "Unleash a swift barrage of attacks that feel very cool to do.",
-						pstatus: ["🏳️"],
-						cost: 25,
+						estatus: ["🩸"],
+						cost: 80,
 						times: 6,
-						damage: 0.4,
+						damage: 0.45,
 						attack: true
 					},
 					{
-						name: "Brandish",
-						description: "Show off your weapon and reflect sunlight into the enemy's eye.",
-						cost: 30,
-						pstatus: ["💢", "🍀"],
+						name: "Plot Armor",
+						description: "Nothing can get to you with the power of god and anime on your side.",
+						cost: 60,
+						pstatus: ["🎯", "🍀", "☁️"],
 						estatus: ["👁️"]
 					},
 					{
-						name: "Combat Heal",
+						name: "Recovery",
 						description: "Utilize medic knowledge to heal your wounds.",
-						cost: 25,
+						cost: 50,
 						health: 0.15,
 						pstatus: ["💗"],
 						attack: false
@@ -3102,9 +3165,13 @@ function getAssets() {
 				maxlvl: 40,
 				minlvl: 30,
 				description: `A pair of gloves laced with knuckle spikes for a deadly victory.`,
-				attack: 15,
-				plvlmult: 1.6,
-				crit: 0.25,
+
+				attack: 355,
+				attackPerLevel: 8,
+				crit: 0.15,
+				critdmg: 1.23,
+				accuracy: 0.75,
+
 				skills: [
 					{
 						name: "Knuckle Sandwich",
@@ -3114,28 +3181,27 @@ function getAssets() {
 					},
 					{
 						name: "3-Piece Combo",
-						cost: 20,
+						cost: 55,
 						description: "Use your hands to give the enemy a 3 piece combo with sauce.",
-						pstatus: ["🎯", "💪"],
 						estatus: ["🩸"],
 						times: 3,
-						damage: 0.7,
+						damage: 0.75,
 						attack: true
 					},
 					{
 						name: "Serve Dessert",
-						cost: 25,
-						description: "A powerful knee aimaed at the enemy's face.",
+						cost: 75,
+						description: "A powerful knee aimed at the enemy's face.",
 						pstatus: ["💢"],
-						estatus: ["🌀"],
-						damage: 1.1,
+						estatus: ["🌀", "👁️"],
+						damage: 1.23,
 						attack: true
 					},
 					{
 						name: "Snack Break",
 						description: "Pull out a protein bar and enjoy.",
-						cost: 25,
-						health: 0.35,
+						cost: 65,
+						health: 0.3,
 						attack: false
 					}
 				]
@@ -3145,9 +3211,13 @@ function getAssets() {
 				maxlvl: 50,
 				minlvl: 32,
 				description: `A survivability combat martial art "weapon" mainly used for concealment and offensive survival strategies.`,
-				attack: 20,
-				plvlmult: 1.75,
-				crit: 0.3,
+
+				attack: 359,
+				attackPerLevel: 8,
+				crit: 0.66,
+				critdmg: 1.33,
+				accuracy: 0.66,
+
 				skills: [
 					{
 						name: "Kunai",
@@ -3155,27 +3225,26 @@ function getAssets() {
 					},
 					{
 						name: "Clean Cut",
-						cost: 15,
+						cost: 70,
 						description: "A swift and precise slash through the enemy.",
-						damage: 2,
+						damage: 1.6,
 						estatus: ["🩸"],
 						attack: true
 					},
 					{
-						name: "Kunai Barrage",
-						cost: 25,
+						name: "Coated Shuriken",
+						cost: 45,
 						description: "Rapidly throw a variety of kunai at the foe.",
-						damage: 0.2,
-						times: 7,
-						pstatus: ["🎯", "🍀"],
-						estatus: ["🌀", "👁️"],
+						damage: 0.25,
+						times: 9,
+						estatus: ["🌀", "💀"],
 						attack: true
 					},
 					{
-						name: "Steady Resolve",
-						cost: 30,
-						description: "Steady your breathing and gather your focus.",
-						pstatus: ["💗", "💨", "🎯"],
+						name: "Body Replacement",
+						cost: 90,
+						description: "Kawarimi no Jutsu",
+						pstatus: ["💗", "💨", "✨"],
 						health: 0.1,
 						attack: false
 					}
@@ -3186,9 +3255,13 @@ function getAssets() {
 				maxlvl: 50,
 				minlvl: 32,
 				description: `A famous weapon given to the leaders of crusades and it’s imbued with the ability to strengthen its wielder utilizing their willpower.`,
-				attack: 20,
-				plvlmult: 2,
-				crit: 0.15,
+
+				attack: 325,
+				attackPerLevel: 8,
+				crit: 0.22,
+				critdmg: 1.77,
+				accuracy: 0.88,
+
 				skills: [
 					{
 						name: "Holy Jab",
@@ -3197,26 +3270,23 @@ function getAssets() {
 					{
 						name: "Righteous Indignation",
 						description: "Confidently charge forth and pierce through your foe.",
-						cost: 30,
-						estatus: ["🩸"],
-						pstatus: ["💢"],
-						damage: 2.55,
+						cost: 77,
+						damage: 1.5,
 						attack: true
 					},
 					{
-						name: "Rally Self",
-						cost: 30,
+						name: "Rally",
+						cost: 60,
 						description: "Declare your utter refusal to give up and convince yourself victory is possible.",
-						pstatus: ["✨", "🏳️", "🍀", "🎯"],
-						health: 0.1,
+						pstatus: ["🏳️", "💪", "🛡️"],
 						attack: false
 					},
 					{
 						name: "Unyielding Will",
 						description: "Remain an unstoppable force through the power of uncanny determination.",
-						cost: 30,
+						cost: 75,
 						pstatus: ["✨"],
-						health: 0.4,
+						health: 0.3,
 						attack: false
 					}
 				]
@@ -3226,9 +3296,13 @@ function getAssets() {
 				maxlvl: 50,
 				minlvl: 32,
 				description: `An unholy weapon made from the bones of the dead with a mysterious ability to make arrows poisonous if shot in quick succession.`,
-				attack: 10,
-				plvlmult: 2,
-				crit: 0.25,
+
+				attack: 252,
+				attackPerLevel: 8,
+				crit: 0.1,
+				critdmg: 2,
+				accuracy: 0.75,
+
 				skills: [
 					{
 						name: "Quick Shot",
@@ -3236,27 +3310,26 @@ function getAssets() {
 					},
 					{
 						name: "Fatal Shot",
-						cost: 40,
+						cost: 99,
 						description: "Unleash a powerful shot that weakens the enemy.",
-						estatus: ["🩸", "🌀"],
-						pstatus: ["🍀", "🎯", "💪"],
-						damage: 2,
+						estatus: ["🩸", "🌀", "🐈‍⬛"],
+						damage: 1.66,
 						attack: true
 					},
 					{
-						name: "Poisoned Barrage",
-						cost: 25,
-						description: "Rapidly fire arrows, inciting the bow's poisonous ability.",
-						estatus: ["💀"],
-						damage: 0.30,
-						times: 5,
+						name: "Cursed Barrage",
+						cost: 66,
+						description: "Rapidly fire arrows.",
+						estatus: ["🖤"],
+						damage: 0.33,
+						times: 6,
 						attack: true
 					},
 					{
 						name: "Steady Resolve",
-						cost: 30,
+						cost: 60,
 						description: "Steady your breathing and gather your focus.",
-						pstatus: ["💗", "💨", "🎯"],
+						pstatus: ["💗", "💨"],
 						health: 0.1,
 						attack: false
 					}
@@ -3267,9 +3340,13 @@ function getAssets() {
 				maxlvl: 50,
 				minlvl: 32,
 				description: `A dual-weilded cursed dagger weapons made from the fangs of vampires and coated in demonic spiders venom to create a truly horrific combo.`,
-				attack: 30,
-				plvlmult: 2.15,
-				crit: 0.2,
+
+				attack: 380,
+				attackPerLevel: 10,
+				crit: 0.5,
+				critdmg: 1.33,
+				accuracy: 0.7,
+
 				skills: [
 					{
 						name: "Dual Stab",
@@ -3278,29 +3355,30 @@ function getAssets() {
 						attack: true,
 					},
 					{
-						name: "Wounding Slash",
-						cost: 40,
+						name: "Gouge",
+						cost: 85,
 						description: "A powerful slash that ripis through the foe.",
-						damage: 2,
+						damage: 1.8,
 						estatus: ["🩸"],
+						pstatus: ["💢"],
 						attack: true
 					},
 					{
 						name: "Draining Stabs",
 						cost: 35,
 						description: "Drive your fangs into your foe draining their blood and seeping poison into them.",
-						estatus: ["🌀", "💀"],
-						pstatus: ["🎯", "💪", "🍀"],
-						damage: 0.8,
+						estatus: ["🌀"],
+						pstatus: ["🛡️"],
+						damage: 0.6,
 						times: 2,
-						health: 0.1,
+						lifesteal: 0.1,
 						attack: true
 					},
 					{
 						name: "Steady Resolve",
-						cost: 30,
+						cost: 60,
 						description: "Steady your breathing and gather your focus.",
-						pstatus: ["💗", "💨", "🎯"],
+						pstatus: ["💗", "💨"],
 						health: 0.1,
 						attack: false
 					}
@@ -3311,9 +3389,13 @@ function getAssets() {
 				maxlvl: 50,
 				minlvl: 38,
 				description: `A holy hammer apparently used by the most righteous as a way for a quick end to evil to limit the suffering of all.`,
-				attack: 50,
-				plvlmult: 1.5,
-				crit: 0.2,
+
+				attack: 1333,
+				attackPerLevel: 10,
+				crit: 0.01,
+				critdmg: 3,
+				accuracy: 0.5,
+
 				skills: [
 					{
 						name: "Bash",
@@ -3321,26 +3403,25 @@ function getAssets() {
 					},
 					{
 						name: "Almightly Smite",
-						cost: 55,
+						cost: 180,
 						description: "Jump and crush your foe with all your strength aided by gravity.",
-						damage: 4,
+						damage: 3,
 						estatus: ["🌀", "🔥"],
 						attack: true
 					},
 					{
 						name: "Quick Prayer",
-						cost: 40,
+						cost: 50,
 						description: "Stop to quickly pray for strength and forgiveness for your enemy.",
-						estatus: ["✨"],
-						pstatus: ["💢", "🏳️", "💪", "🎯", "💗"],
+						estatus: ["✨", "🍀", "🛡️"],
+						pstatus: ["🏳️", "💪", "💗", "🎯"],
 						attack: false
 					},
 					{
-						name: "Unyielding Will",
-						description: "Remain an unstoppable force through the power of uncanny determination.",
-						cost: 30,
-						pstatus: ["✨"],
-						health: 0.4,
+						name: "Shake It Off",
+						description: "I shake it off, I- I-, I shake it off.",
+						cost: 45,
+						health: 0.1,
 						attack: false
 					}
 				]
@@ -3350,9 +3431,13 @@ function getAssets() {
 				maxlvl: 50,
 				minlvl: 40,
 				description: `A weapon once used by highly talented demons that practiced martial arts.`,
-				attack: 40,
-				plvlmult: 2.5,
-				crit: 0.3,
+
+				attack: 546,
+				attackPerLevel: 10,
+				crit: 0.21,
+				critdmg: 2.22,
+				accuracy: 0.66,
+
 				skills: [
 					{
 						name: "Strike",
@@ -3361,26 +3446,27 @@ function getAssets() {
 					{
 						name: "Blazing Fury",
 						description: "Ignite your weapon before unleashing a blazing series of attacks.",
-						cost: 45,
-						damage: 0.45,
+						cost: 100,
+						damage: 0.66,
+						times: 6,
 						pstatus: ["💢"],
 						estatus: ["🏴", "🖤", "🔥"],
 						attack: true
 					},
 					{
-						name: "Warm Up",
-						cost: 40,
+						name: "Heating Up",
+						cost: 66,
 						description: "Unleash a series of attacks against your enemy that doubles as a warm up.",
-						damage: 0.2,
-						times: 4,
+						damage: 0.33,
+						times: 3,
 						pstatus: ["💪", "🍀", "🎯"],
 						attack: true
 					},
 					{
-						name: "Steady Resolve",
-						cost: 30,
+						name: "Swift Recovery",
+						cost: 60,
 						description: "Steady your breathing and gather your focus.",
-						pstatus: ["💗", "💨", "🎯"],
+						pstatus: ["💗", "💨"],
 						health: 0.1,
 						attack: false
 					}
@@ -3391,38 +3477,42 @@ function getAssets() {
 				maxlvl: 50,
 				minlvl: 40,
 				description: `An ancient art of imbuing your body with holy energy to smite foes with your bare hands, unfortunately you could only learn how to kick with it.`,
-				attack: 40,
-				plvlmult: 2,
-				crit: 0.4,
+
+				attack: 500,
+				attackPerLevel: 10,
+				crit: 0.15,
+				critdmg: 1.77,
+				accuracy: 0.75,
+
 				skills: [
 					{
 						name: "Holy Kick",
 						attack: true
 					},
 					{
-						name: "Holy Flying Kick",
+						name: "Blazing Bicycle Kick",
 						description: "Leap forth to deliver a devastating kick imbued with holy energy to the foe.",
-						cost: 55,
-						damage: 2.75,
-						pstatus: ["💪"],
+						cost: 100,
+						damage: 0.77,
+						times: 7,
 						estatus: ["🔥"],
 						attack: true
 					},
 					{
-						name: "Holy Spartan Kick",
-						description: "Imbue your leg with holy energy before unleashing a powerful kick to your foe.",
-						cost: 40,
-						damage: 1.8,
-						estatus: ["🔥", "🌀", "💫"],
-						pstatus: ["🎯", "🏳️", "🛡️"],
+						name: "Golden Spartan Kick",
+						description: "Imbue your leg with holy energy before unleashing a powerful, and blinding, kick to your foe.",
+						cost: 77,
+						damage: 1.40,
+						estatus: ["🔥", "🌀", "👁️"],
+						pstatus: ["🏳️", "🛡️"],
 						attack: true
 					},
 					{
 						name: "Unyielding Will",
 						description: "Remain an unstoppable force through the power of uncanny determination.",
-						cost: 30,
+						cost: 75,
 						pstatus: ["✨"],
-						health: 0.4,
+						health: 0.3,
 						attack: false
 					}
 				]
@@ -3432,9 +3522,13 @@ function getAssets() {
 				maxlvl: 50,
 				minlvl: 45,
 				description: `A weapon of devastating power fabled to once been wielded by the bringer of death himself. The mere presence of this weapon siphons the life from the area.`,
-				attack: 85,
-				plvlmult: 2.3,
-				crit: 0.5,
+
+				attack: 616,
+				attackPerLevel: 10,
+				crit: 0.33,
+				critdmg: 1.66,
+				accuracy: 0.66,
+
 				skills: [
 					{
 						name: "Scythe",
@@ -3444,28 +3538,29 @@ function getAssets() {
 					},
 					{
 						name: "Destined Death",
-						cost: 65,
+						cost: 200,
 						description: "Focus immense power into the Orcus before swinging it to unleash a condensed wave of cursed energy.",
-						damage: 4,
-						estatus: ["🏴", "🖤"],
-						pstatus: ["🏳️", "💢"],
+						damage: 6.66,
+						estatus: ["🏴", "🖤", "🐈‍⬛"],
+						pstatus: ["🎯"],
 						attack: true
 					},
 					{
 						name: "Draining Slash",
-						cost: 35,
+						cost: 66,
+						times: 6,
 						description: "A heavy strike that steals the life of the enemy to invigorate the wielder.",
-						damage: 2.25,
-						estatus: ["🩸"],
-						pstatus: ["💪"],
-						health: 0.1,
+						damage: 0.66,
+						estatus: ["🩸", "🌀"],
+						pstatus: ["💪", "🛡️"],
+						lifesteal: 0.1,
 						attack: true
 					},
 					{
 						name: "Dark Reconstruction",
-						cost: 40,
-						description: "Engulfs the user in a black substance that seems to replace missing parts and reconfigure their body to partial intagibility.",
-						health: 0.45,
+						cost: 113,
+						description: "Engulfs the caster in a black substance that seems to replace missing parts and reconfigure their body to partial intagibility.",
+						health: 0.4,
 						pstatus: ["💨"],
 						attack: false
 					}
@@ -3476,9 +3571,13 @@ function getAssets() {
 				maxlvl: 50,
 				minlvl: 45,
 				description: `A weapon also known simply as the Holy Messengers, thought to be made for cleansing the world of evil and anything else that threatens the balance.`,
-				attack: 45,
-				plvlmult: 2.3,
-				crit: 0.3,
+
+				attack: 727,
+				attackPerLevel: 10,
+				crit: 0.25,
+				critdmg: 1.77,
+				accuracy: 0.65,
+
 				skills: [
 					{
 						name: "Quick Shot",
@@ -3488,29 +3587,30 @@ function getAssets() {
 					},
 					{
 						name: "Twin Banishing Shot",
-						cost: 50,
+						cost: 148,
 						description: "Supercharge Iris & Hermes to fire a bright and powerful beam of holy energy from each barrle.",
-						estatus: ["👁️", "🩸"],
-						damage: 2,
+						estatus: ["👁️", "🔥"],
+						pstatus: ["🏳️"],
+						damage: 1.77,
 						times: 2,
 						attack: true
 					},
 					{
 						name: "Sacred Barrage",
-						cost: 30,
+						cost: 77,
 						description: "Receive a minor blessing and fire off a quick burst of holy blasts at the enemy.",
 						estatus: ["🔥"],
-						pstatus: ["🍀", "💪"],
-						damage: 0.2,
-						times: 8,
+						pstatus: ["🍀", "🎯"],
+						damage: 0.77,
+						times: 7,
 						attack: true
 					},
 					{
-						name: "Holy Restoration",
-						cost: 40,
+						name: "Divine Restoration",
+						cost: 99,
 						description: "Receieve a major blessing and restore health to the user.",
-						pstatus: ["✨", "🛡️", "💗"],
-						health: 0.25,
+						pstatus: ["✨", "🛡️", "💗", "💪"],
+						health: 0.2,
 						attack: false
 					}
 				]
@@ -3520,9 +3620,13 @@ function getAssets() {
 				maxlvl: 50,
 				minlvl: 45,
 				description: `Two legendary swords of conflicting power brought together in an irrational combo. Can you truly harness the power of light & dark without consequence?`,
-				attack: 55,
-				plvlmult: 2.5,
-				crit: 0.35,
+
+				attack: 625,
+				attackPerLevel: 10,
+				crit: 0.15,
+				critdmg: 11.25,
+				accuracy: 0.7,
+
 				skills: [
 					{
 						name: "Dual Strike",
@@ -3532,27 +3636,26 @@ function getAssets() {
 					},
 					{
 						name: "Yin or Yang",
-						cost: 55,
+						cost: 111,
 						description: "Point Melanie or Alectrona upwards then unleashes its power which creates a massive blade of light or darkness before slamming it down on to the enemy and strengthening its wielder.\n\nRandomized for each turn:\nInflict Cursed, Bad Omen, and Weakness\nOR\ninflict Burn, Blindness, and Bleed.\n\nThen, Gain Berserk\nOR\nGain Blessed and Empowerment",
 						damage: 3,
-						estatus: [["🖤", "🏴", "🌀"], ["🔥", "🩸", "👁️"]][Math.floor(Math.random() * 2)],
-						pstatus: [["💢", "🏳️"], ["✨", "🍀", "🛡️"]][Math.floor(Math.random() * 2)],
+						estatus: [["🖤", "🏴", "🐈‍⬛", "🌀"], ["🔥", "👁️"]][Math.floor(Math.random() * 2)],
+						pstatus: [["💢", "☁️"], ["✨", "🍀", "🛡️", "🏳️"]][Math.floor(Math.random() * 2)],
 						attack: true
 					},
 					{
 						name: "Exalted Flash",
-						cost: 35,
+						cost: 77,
 						description: "Unleash insanely fast identical strikes that strengthens the wielder.",
-						damage: 0.4,
-						times: 4,
-						pstatus: ["🎯", "💪"],
+						damage: 0.77,
+						times: 7,
 						attack: true
 					},
 					{
 						name: "Meditation",
-						cost: 40,
+						cost: 67,
 						description: "User partially stabilizes the cursed and holy energy swirling within them from the two swords.",
-						pstatus: ["💗", "💪"],
+						pstatus: ["💗", "🎯"],
 						health: 0.1,
 						attack: false
 					}
@@ -3564,23 +3667,23 @@ function getAssets() {
 			{
 				name: "T-Shirt",
 				description: "Go commando.",
+
 				armor: 0,
-				plvlmult: 0,
+				maxlvl: 1,
 				minlvl: 1,
-				alvlmult: 0,
+				alvlmult: 1,
 				evasion: 0,
-				encounter: 0
 			},
 			{
 				name: "Tattered Rags",
 				description: "Torn clothing together enough to cover the most important part and keep warm.",
-				armor: 27,
-				plvlmult: 5,
+
+				armor: 10,
 				maxlvl: 10,
 				minlvl: 1,
-				alvlmult: 1,
+				alvlmult: 3,
 				evasion: 0.06,
-				encounter: 0.05,
+
 				synergies: [
 					{
 						weapon: "Twig",
@@ -3597,13 +3700,13 @@ function getAssets() {
 			{
 				name: "Damaged Cloak",
 				description: "A brown cloak that seems to have been used extensively based on the heavily faded color and abundant tears",
-				armor: 42,
-				plvlmult: 5,
+
+				armor: 14,
 				maxlvl: 10,
 				minlvl: 1,
-				alvlmult: 2,
-				evasion: 0.05,
-				encounter: 0.05,
+				alvlmult: 3,
+				evasion: 0.01,
+
 				synergies: [
 					{
 						weapon: "Broken Dagger",
@@ -3620,13 +3723,13 @@ function getAssets() {
 			{
 				name: "Rogues Cloak",
 				description: "A brown cloak that's still in good condition that should provide light protection due to it's a strong fabric",
-				armor: 5,
-				plvlmult: 5,
+
+				armor: 29,
 				maxlvl: 12,
 				minlvl: 4,
-				alvlmult: 2,
-				evasion: 0.09,
-				encounter: 0.05,
+				alvlmult: 3,
+				evasion: 0.05,
+
 				synergies: [
 					{
 						weapon: "Trusty Dagger",
@@ -3638,13 +3741,13 @@ function getAssets() {
 			{
 				name: "The Perfect Leaf",
 				description: "A leaf with a vibrant hue of green, no missing leaves, damage, and a impressive shape that seems completely symmetrical it must be special.",
-				armor: 47,
-				plvlmult: 5,
+
+				armor: 18,
 				maxlvl: 12,
 				minlvl: 4,
-				alvlmult: 1,
-				evasion: 0.13,
-				encounter: 0.05,
+				alvlmult: 3,
+				evasion: 0.15,
+
 				synergies: [
 					{
 						weapon: "The Perfect Stick",
@@ -3656,13 +3759,13 @@ function getAssets() {
 			{
 				name: "Padded Clothing",
 				description: "Multiple layers of normal clothing sown together to create a thick set shirt and pants , simple but surprisingly effective.",
-				armor: 17,
-				plvlmult: 5,
+
+				armor: 46,
 				maxlvl: 14,
 				minlvl: 6,
-				alvlmult: 2,
-				evasion: 0.07,
-				encounter: 0.05,
+				alvlmult: 3,
+				evasion: 0.05,
+
 				synergies: [
 					{
 						weapon: "Iron Short Sword",
@@ -3674,13 +3777,13 @@ function getAssets() {
 			{
 				name: "Confidence",
 				description: "Who needs armor or even clothing for that fact when you have such a magnificently strong body and mind? Clearly not you since you're just that impressive of an individual.",
-				armor: 198,
-				plvlmult: 5,
+
+				armor: 183,
 				maxlvl: 45,
 				minlvl: 25,
-				alvlmult: 10,
+				alvlmult: 12,
 				evasion: 0.30,
-				encounter: 0.05,
+
 				synergies: [
 					{
 						weapon: "Golden Stick",
@@ -3692,13 +3795,13 @@ function getAssets() {
 			{
 				name: "Leather Armor",
 				description: "A set of armor made from the tough hide of some kind of unlucky animal which provides good protect from a variety of attacks.",
-				armor: 10,
-				plvlmult: 5,
+
+				armor: 137,
 				maxlvl: 24,
 				minlvl: 13,
-				alvlmult: 4,
-				evasion: 0.12,
-				encounter: 0.05,
+				alvlmult: 6,
+				evasion: 0.1,
+
 				synergies: [
 					{
 						weapon: "Dual Daggers",
@@ -3715,13 +3818,13 @@ function getAssets() {
 			{
 				name: "Light Armor",
 				description: "A set of leather armor that comes with a small set of metal coverings protecting most vital spots.",
-				armor: 3,
-				plvlmult: 5,
+
+				armor: 196,
 				maxlvl: 28,
 				minlvl: 15,
-				alvlmult: 7,
-				evasion: 0.09,
-				encounter: 0.05,
+				alvlmult: 6,
+				evasion: 0.1,
+
 				synergies: [
 					{
 						weapon: "Iron Sword",
@@ -3733,13 +3836,13 @@ function getAssets() {
 			{
 				name: "Hunter Cloak",
 				description: "A set of very light armor made from leather that provides decent protection without inhibiting mobility, topped of with a dark green cloak that conceals movement and provides even more protection.",
-				armor: 70,
-				plvlmult: 5,
+
+				armor: 179,
 				maxlvl: 32,
 				minlvl: 19,
-				alvlmult: 6,
-				evasion: 0.25,
-				encounter: 0.05,
+				alvlmult: 9,
+				evasion: 0.15,
+
 				synergies: [
 					{
 						weapon: "Wooden Bow",
@@ -3751,13 +3854,13 @@ function getAssets() {
 			{
 				name: "Assassin's Cloak",
 				description: "A black cloak made from a very light material with a set of padded clothing underneath.",
-				armor: 25,
-				plvlmult: 5,
+
+				armor: 179,
 				maxlvl: 32,
 				minlvl: 19,
-				alvlmult: 7,
-				evasion: 0.10,
-				encounter: 0.05,
+				alvlmult: 9,
+				evasion: 0.15,
+
 				synergies: [
 					{
 						weapon: "Silver Dagger",
@@ -3769,13 +3872,13 @@ function getAssets() {
 			{
 				name: "Lumberjack Atire",
 				description: "A plaid long shirt and extra large black jeans a combo that just feels right for some unknown reason.",
-				armor: 9,
-				plvlmult: 5,
+
+				armor: 408,
 				maxlvl: 38,
 				minlvl: 26,
-				alvlmult: 14,
-				evasion: 0.08,
-				encounter: 0.05,
+				alvlmult: 9,
+				evasion: 0.1,
+
 				synergies: [
 					{
 						weapon: "Lumberjack Axe",
@@ -3787,13 +3890,13 @@ function getAssets() {
 			{
 				name: "Thick Sleeveless Hoodie",
 				description: "A very large black hoodie that had it's sleeves cut off with a pair of baggy jeans.",
-				armor: 105,
-				plvlmult: 5,
+
+				armor: 297,
 				maxlvl: 40,
 				minlvl: 25,
-				alvlmult: 9,
-				evasion: 0.20,
-				encounter: 0.05,
+				alvlmult: 4,
+				evasion: 0.2,
+
 				synergies: [
 					{
 						weapon: "Martial Arts",
@@ -3805,13 +3908,13 @@ function getAssets() {
 			{
 				name: "Leather Apron & Mask",
 				description: "A stained apron made from leather and cloth facial covering that shields your nose and mouth.",
-				armor: 270,
-				plvlmult: 5,
+
+				armor: 574,
 				maxlvl: 50,
 				minlvl: 26,
-				alvlmult: 19,
-				evasion: 0.14,
-				encounter: 0.05,
+				alvlmult: 12,
+				evasion: 0.15,
+
 				synergies: [
 					{
 						weapon: "Chainsaw",
@@ -3823,13 +3926,13 @@ function getAssets() {
 			{
 				name: "Iron Armor",
 				description: "A full set of iron armor that protects your body from the neck down at the cost of mobility.",
-				armor: 10,
-				plvlmult: 5,
+
+				armor: 444,
 				maxlvl: 38,
 				minlvl: 26,
-				alvlmult: 15,
-				evasion: 0.0,
-				encounter: 0.05,
+				alvlmult: 3,
+				evasion: 0.05,
+
 				synergies: [
 					{
 						weapon: "Great Sword",
@@ -3846,13 +3949,13 @@ function getAssets() {
 			{
 				name: "Dragon Cloak",
 				description: "A stylish jet-black cloak made from a extremely durable material rumored to actually be acquired by slaying a black dragon.",
-				armor: 60,
-				plvlmult: 5,
+
+				armor: 312,
 				maxlvl: 40,
 				minlvl: 30,
 				alvlmult: 12,
-				evasion: 0.15,
-				encounter: 0.05,
+				evasion: 0.25,
+
 				synergies: [
 					{
 						weapon: "Twin Swords",
@@ -3864,13 +3967,13 @@ function getAssets() {
 			{
 				name: "Spiked Leather Armor",
 				description: "Leather armor that's thin at the joints and extremely thick at vitals providing a mix of both maneuverability and protection. Having the mini spikes on it is mostly a bonus.",
-				armor: 21,
-				plvlmult: 5,
+
+				armor: 569,
 				maxlvl: 40,
 				minlvl: 30,
-				alvlmult: 17,
-				evasion: 0.13,
-				encounter: 0.05,
+				alvlmult: 12,
+				evasion: 0.15,
+
 				synergies: [
 					{
 						weapon: "Spiked Gauntlents",
@@ -3882,13 +3985,13 @@ function getAssets() {
 			{
 				name: "Shinobi Garments",
 				description: "The traditionally attire of those who practice ninjutsu consisting of a black jacket, black trousers, light sandals, and a hooded cowl.",
-				armor: 244,
-				plvlmult: 5,
+
+				armor: 357,
 				maxlvl: 50,
 				minlvl: 30,
-				alvlmult: 16,
-				evasion: 0.15,
-				encounter: 0.05,
+				alvlmult: 12,
+				evasion: 0.25,
+
 				synergies: [
 					{
 						weapon: "Ninja Arts",
@@ -3900,13 +4003,13 @@ function getAssets() {
 			{
 				name: "Holy Knight's Armor",
 				description: "A shiny suit of iron armor that's been blessed by the holy church and made from the finest iron",
-				armor: 272,
-				plvlmult: 5,
+
+				armor: 714,
 				maxlvl: 50,
 				minlvl: 30,
-				alvlmult: 24,
-				evasion: 0.07,
-				encounter: 0.05,
+				alvlmult: 12,
+				evasion: 0.1,
+
 				synergies: [
 					{
 						weapon: "Holy Spear",
@@ -3922,14 +4025,14 @@ function getAssets() {
 			},
 			{
 				name: "Coat of Darkness",
-				description: "WORK IN PROGRESS",
-				armor: 244,
-				plvlmult: 5,
+				description: "A sinister dark clock that you're almost positive makes you look like a cultist.",
+
+				armor: 420,
 				maxlvl: 50,
 				minlvl: 30,
-				alvlmult: 16,
-				evasion: 0.15,
-				encounter: 0.05,
+				alvlmult: 45,
+				evasion: 0.2,
+
 				synergies: [
 					{
 						weapon: "Cursed Bone Bow",
@@ -3946,13 +4049,13 @@ function getAssets() {
 			{
 				name: "Blessed Gi",
 				description: "A martial artist Gi that has been extensively blessed by the church till it's been imbued holy energy.",
-				armor: 247,
-				plvlmult: 5,
+
+				armor: 767,
 				maxlvl: 50,
 				minlvl: 40,
-				alvlmult: 28,
-				evasion: 0.14,
-				encounter: 0.05,
+				alvlmult: 15,
+				evasion: 0.2,
+
 				synergies: [
 					{
 						weapon: "Holy Arts",
@@ -3963,14 +4066,14 @@ function getAssets() {
 			},
 			{
 				name: "Sinner Jacket",
-				description: "EXAMPLE",
-				armor: 261,
-				plvlmult: 5,
+				description: "A badass biker jacket with a dragon decal on the back. It's oozing an intangible black substance.",
+
+				armor: 383,
 				maxlvl: 50,
 				minlvl: 40,
-				alvlmult: 19,
-				evasion: 0.23,
-				encounter: 0.05,
+				alvlmult: 15,
+				evasion: 0.3,
+
 				synergies: [
 					{
 						weapon: "Demonic Nunchucks",
@@ -3982,13 +4085,13 @@ function getAssets() {
 			{
 				name: "Walking Church",
 				description: "A sacred treasure of the Holy Church, it's a priest robe bestowed with a blessing of protection of the highest grade that virtually makes the robe indestructible while protecting the wearer from most forms of damage.",
-				armor: 250,
-				plvlmult: 5,
+
+				armor: 1350,
 				maxlvl: 50,
 				minlvl: 45,
-				alvlmult: 37,
-				evasion: 0.0,
-				encounter: 0.05,
+				alvlmult: 15,
+				evasion: 0,
+
 				synergies: [
 					{
 						weapon: "Iris & Hermes",
@@ -4000,13 +4103,13 @@ function getAssets() {
 			{
 				name: "Black Mourning",
 				description: "A black hooded cloak that's constantly secreting a black fog that's unnaturally cold to the touch. Instincts alone is enough to know this isn't a normal cloak...",
-				armor: 47,
-				plvlmult: 5,
+
+				armor: 270,
 				maxlvl: 50,
 				minlvl: 45,
-				alvlmult: 20,
-				evasion: 0.25,
-				encounter: 0.05,
+				alvlmult: 15,
+				evasion: 0.4,
+
 				synergies: [
 					{
 						weapon: "Orcus",
@@ -4017,14 +4120,14 @@ function getAssets() {
 			},
 			{
 				name: "Equinox",
-				description: "EXAMPLE",
-				armor: 247,
-				plvlmult: 5,
+				description: "An impossible robe that has been embued with holy and unholy energy, carefully crafted by an unknown seamstress.",
+
+				armor: 810,
 				maxlvl: 50,
 				minlvl: 45,
-				alvlmult: 24,
-				evasion: 0.15,
-				encounter: 0.05,
+				alvlmult: 15,
+				evasion: 0.2,
+
 				synergies: [
 					{
 						weapon: "Alectrona & Melanie",
@@ -4034,6 +4137,7 @@ function getAssets() {
 					},
 				]
 			},
+
 			// Stamina
 			{
 				name: "Light Stamina Potion",
