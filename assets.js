@@ -216,7 +216,7 @@ function getAssets() {
 		enemies: [
 			{
 				name: `Lazy Goblin`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1117502969370382366/New_Piskel_4_2.gif',
+				sprite: 'assets/enemies/LazyGoblin.gif',
 				weapon: "Rusted Dagger",
 				health: 50,
 				attack: 25,
@@ -287,7 +287,7 @@ function getAssets() {
 			},
 			{
 				name: `Blacksmith Goblin`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1121514870832124034/image_2.gif',
+				sprite: 'assets/enemies/BlacksmithGoblin.gif',
 				weapon: "Blacksmith's Hammer",
 				health: 125,
 				attack: 50,
@@ -366,8 +366,8 @@ function getAssets() {
 				]
 			},
 			{
-				name: `Armorer Goblin`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1131295696910303342/image_3.gif',
+				name: `Armored Goblin`,
+				sprite: 'assets/enemies/ArmoredGoblin.gif',
 				weapon: "Spear & Shield",
 				health: 250,
 				attack: 75,
@@ -424,7 +424,7 @@ function getAssets() {
 			},
 			{
 				name: `Cursed Goblin`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1121510851543842907/image_1.gif',
+				sprite: 'assets/enemies/CursedGoblin.gif',
 				weapon: "Cursed Rusted Dagger",
 				health: 333,
 				attack: 333,
@@ -493,7 +493,7 @@ function getAssets() {
 			},
 			{
 				name: `Orc`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1131306751464067102/New_Piskel_5_1.gif',
+				sprite: 'assets/enemies/Orc.gif',
 				weapon: "Orc Club",
 				health: 400,
 				attack: 200,
@@ -571,7 +571,7 @@ function getAssets() {
 			},
 			{
 				name: `Health Slime`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1131691728290713620/Health_Slime.gif',
+				sprite: 'assets/enemies/HealthSlime.gif',
 				weapon: null,
 				health: 100,
 				attack: 25,
@@ -631,7 +631,7 @@ function getAssets() {
 			},
 			{
 				name: `Attack Slime`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1130925994115608797/Attack_Slime.gif',
+				sprite: 'assets/enemies/AttackSlime.gif',
 				weapon: null,
 				health: 75,
 				attack: 100,
@@ -693,7 +693,7 @@ function getAssets() {
 			},
 			{
 				name: `Defense Slime`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1130931422882955345/Defense_Slime.gif',
+				sprite: 'assets/enemies/DefenseSlime.gif',
 				weapon: null,
 				health: 125,
 				attack: 50,
@@ -753,7 +753,7 @@ function getAssets() {
 			},
 			{
 				name: `Stamina Slime`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1130933661861154876/Stamina_Slime.gif',
+				sprite: 'assets/enemies/StaminaSlime.gif',
 				weapon: null,
 				health: 45,
 				attack: 50,
@@ -812,7 +812,7 @@ function getAssets() {
 			},
 			{
 				name: `Orange Fox`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1117522664253300907/New_Piskel_4_2_1.gif',
+				sprite: 'assets/enemies/OrangeFox.gif',
 				weapon: "Steel Dagger",
 				health: 1000,
 				attack: 150,
@@ -899,7 +899,7 @@ function getAssets() {
 			},
 			{
 				name: `White Fox`,
-				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
+				sprite: 'assets/enemies/WhiteFox.gif',
 				weapon: "Steel Dagger",
 				health: 750,
 				attack: 100,
@@ -988,7 +988,7 @@ function getAssets() {
 			},
 			{
 				name: `Blue Fox`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1121537810432794684/image_3.gif',
+				sprite: 'assets/enemies/BlueFox.gif',
 				weapon: "Steel Dagger",
 				health: 500,
 				attack: 50,
@@ -1087,7 +1087,7 @@ function getAssets() {
 			},
 			{
 				name: `Vampire`,
-				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
+				sprite: 'assets/enemies/Vampire.gif',
 				weapon: "Fangs",
 				health: 1000,
 				attack: 500,
@@ -1160,7 +1160,7 @@ function getAssets() {
 			},
 			{
 				name: `Demon`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1128734411375005777/New_Piskel_4.gif',
+				sprite: 'assets/enemies/Demon.gif',
 				weapon: null,
 				health: 666,
 				attack: 666,
@@ -1248,7 +1248,7 @@ function getAssets() {
 			},
 			{
 				name: `Werewolf`,
-				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
+				sprite: 'assets/enemies/Werewolf.gif',
 				weapon: null,
 				health: 400,
 				attack: 350,
@@ -1320,7 +1320,7 @@ function getAssets() {
 			},
 			{
 				name: `Witch`,
-				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
+				sprite: 'assets/enemies/Witch.gif',
 				weapon: null,
 				health: 750,
 				attack: 400,
@@ -1406,7 +1406,7 @@ function getAssets() {
 			},
 			{
 				name: `Cow`,
-				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
+				sprite: 'assets/enemies/Cow.gif',
 				weapon: null,
 				health: 200,
 				attack: 200,
@@ -1438,7 +1438,7 @@ function getAssets() {
 			},
 			{
 				name: `Sheep`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1127670108970561648/New_Piskel_3.gif',
+				sprite: 'assets/enemies/Sheep.gif',
 				weapon: null,
 				health: 125,
 				attack: 65,
@@ -1470,7 +1470,7 @@ function getAssets() {
 			},
 			{
 				name: `Chicken`,
-				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
+				sprite: 'assets/enemies/Chicken.gif',
 				weapon: null,
 				health: 45,
 				attack: 20,
@@ -1502,7 +1502,7 @@ function getAssets() {
 			},
 			{
 				name: `Cyclops Overlord`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1127658659657298050/New_Piskel_2_1.gif',
+				sprite: 'assets/enemies/CyclopsOverlord.gif',
 				weapon: null,
 				health: 750,
 				attack: 225,
@@ -1554,7 +1554,7 @@ function getAssets() {
 			},
 			{
 				name: `Fox King`,
-				sprite: 'https://media.discordapp.net/attachments/1116445708279615641/1132724236050505798/image_5_1.gif',
+				sprite: 'assets/enemies/FoxKing.gif',
 				weapon: null,
 				health: 6000,
 				attack: 600,
@@ -1606,7 +1606,7 @@ function getAssets() {
 			},
 			{
 				name: `Goblin King`,
-				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
+				sprite: 'assets/enemies/GoblinKing.gif',
 				weapon: null,
 				health: 9999,
 				attack: 1111,
@@ -1666,7 +1666,7 @@ function getAssets() {
 			},
 			{
 				name: `Demon Queen`,
-				sprite: 'https://media0.giphy.com/media/hS42TuYYnANLFR9IRQ/giphy.gif?cid=6c09b952a0cecfa2e65767266c0ca341e9b9222c2dba7ec2&ep=v1_internal_gifs_gifId&rid=giphy.gif&ct=ts',
+				sprite: 'assets/enemies/DemonQueen.gif',
 				weapon: null,
 				health: 13666,
 				attack: 1666,
@@ -2107,7 +2107,7 @@ function getAssets() {
 						chance: 0.09
 					},
 					{
-						name: "Armorer Goblin",
+						name: "Armored Goblin",
 						chance: 0.09
 					},
 					{
@@ -2160,7 +2160,7 @@ function getAssets() {
 						chance: 0.04
 					},
 					{
-						name: "Armorer Goblin",
+						name: "Armored Goblin",
 						chance: 0.12
 					},
 					{

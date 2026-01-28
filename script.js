@@ -57,6 +57,7 @@ async function fadeOutEffect() {
     var opacity = 1;
     var element = document.getElementById("overlay-transparency");
     element.style.opacity = 1;
+    await new Promise(resolve => setTimeout(resolve, 500));
     var fadeInterval = setInterval(function () {
         if (opacity > 0) {
             opacity -= 0.05;
@@ -85,13 +86,16 @@ async function resetBars(screen) {
     document.getElementById(`health-${screen}`).style.width = "0px";
     document.getElementById(`stamina-${screen}`).style.width = "0px";
     document.getElementById(`experience-${screen}`).style.width = "0px";
+    document.getElementById(`enemy`).style.width = "0px";
 }
 
 async function updateBars() {
     await new Promise(resolve => setTimeout(resolve, 100)); // Forces it to wait a tick to allow CSS transition to work
     const alpinePlayerData = Alpine.$data(document.getElementById(`player`));
+    const alpineEnemyData = Alpine.$data(document.getElementById(`enemy`));
 
     document.getElementById(`health`).style.width = `${Math.floor((alpinePlayerData.health / alpinePlayerData.maxHealth) * 560)}px`;
     document.getElementById(`stamina`).style.width = `${Math.floor((alpinePlayerData.stamina / alpinePlayerData.maxStamina) * 310)}px`;
     document.getElementById(`experience`).style.width = `${Math.floor((alpinePlayerData.experience / Math.floor((alpinePlayerData.level / 0.07) ** 2)) * 450)}px`;
+    document.getElementById(`enemy-health`).style.width = `${Math.floor((alpineEnemyData.health / alpineEnemyData.maxHealth) * 80)}%`;
 }

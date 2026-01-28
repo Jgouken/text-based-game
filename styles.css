@@ -7,6 +7,28 @@
     src: url('https://jgouken.github.io/PRToolVersionCheck/RD%20Pixel%20Font/rhythm-doctor-pixel-font.otf.woff2') format('woff2');
 }
 
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+    scrollbar-width: auto;
+    scrollbar-color: #5c5c5c #050101;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #050101;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #5c5c5c;
+    border-radius: 10px;
+    border: 3px solid #000000;
+}
+
 body,
 html {
     position: fixed;
@@ -122,13 +144,13 @@ span {
 /* Player HUD Styles */
 
 .player {
-    position: fixed;
+    position: relative;
     top: 75vh;
     left: 10px;
     z-index: 2;
     width: 700px;
     height: auto;
-    overflow: hidden;
+    overflow: visible;
     object-fit: cover;
     pointer-events: none;
     transition: all 2.5s ease-in-out;
@@ -140,9 +162,53 @@ span {
         position: relative;
         z-index: 2;
     }
-
-    ;
 }
+
+.battle-weaponry {
+    position: absolute;
+    left: 225%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 12px solid rgb(0, 0, 0);
+    padding: 10px 14px;
+    font-family: 'Pixel-Font', sans-serif;
+    font-size: 24px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+}
+
+.pstatus-effects {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px 14px;
+    font-family: 'Pixel-Font', sans-serif;
+    font-size: 64px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: center;
+    width: 120%;
+    gap: 40px;
+
+    img {
+        display: block;
+        width: 55px;
+        height: auto;
+        transform: translateY(20%);
+        flex-shrink: 0;
+    }
+}
+
 
 .experience-bar-background {
     position: absolute;
@@ -200,7 +266,7 @@ span {
     border-right: 6px solid white;
     transform: skewX(-45deg);
     z-index: 1;
-    transition: width 2s ease-in-out;
+    transition: width 2s ease-out;
 }
 
 .stamina-bar {
@@ -214,13 +280,13 @@ span {
     border-right: 6px solid white;
     transform: skewX(-45deg);
     z-index: 1;
-    transition: width 2s ease-in-out;
+    transition: width 2s ease-out;
 }
 
 .experience-bar-stats {
     position: absolute;
     top: 87px;
-    left: 307px;
+    left: 260px;
     font-family: 'Pixel-Font', sans-serif;
     font-size: 20px;
     color: black;
@@ -263,6 +329,114 @@ span {
 
 /* ENCOUNTER */
 
+.enemy {
+    position: fixed;
+    z-index: 2;
+    width: 100%;
+    height: 17%;
+    object-fit: cover;
+    pointer-events: none;
+    transition: all 2.5s ease-in-out;
+}
+
+.enemy-heart {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    margin-top: 30px;
+    z-index: 2;
+}
+
+.enemy-thumbnail {
+    position: absolute;
+    top: 180px;
+    height: 150px;
+    left: 85%;
+    margin-top: -160px;
+    z-index: 2;
+}
+
+.enemy-health-bar-background {
+    position: absolute;
+    width: 80%;
+    height: 30px;
+    left: 50px;
+    margin-top: 50px;
+    background-color: rgb(41, 0, 0);
+    border-radius: 20px;
+    border: 5px solid black;
+}
+
+.enemy-health-bar {
+    position: absolute;
+    /* 80% max */
+    width: 0%;
+    height: 30px;
+    left: 50px;
+    top: 55px;
+    background-color: rgb(117, 0, 0);
+    border-radius: 20px;
+    z-index: 2;
+    transition: all 2.0s ease-out;
+}
+
+.enemy-health-bar-stats {
+    position: absolute;
+    margin-top: 60px;
+    left: 35%;
+    font-family: 'Pixel-Font', sans-serif;
+    font-size: 30px;
+    color: black;
+    z-index: 4;
+}
+
+.enemy-level {
+    position: absolute;
+    top: 8%;
+    left: 5%;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 20px;
+    color: white;
+    z-index: 4;
+}
+
+.enemy-name {
+    position: absolute;
+    top: 20%;
+    left: 5%;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 50px;
+    color: white;
+    z-index: 4;
+}
+
+.estatus-effects {
+    position: absolute;
+    left: 27%;
+    margin-top: 22px;
+    transform: translateY(-50%);
+    padding: 10px 14px;
+    font-family: 'Pixel-Font', sans-serif;
+    font-size: 64px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-content: center;
+    align-items: center;
+    width: 58%;
+    gap: 20px;
+
+    img {
+        display: block;
+        width: 42px;
+        height: auto;
+        transform: translateY(20%);
+        flex-shrink: 0;
+    }
+}
+
 .battle-log {
     position: fixed;
     left: 50%;
@@ -275,10 +449,10 @@ span {
     width: 90%;
     height: 30%;
     background-color: rgba(0, 0, 0, 0.5);
-    border: 2px solid white;
+    border: 10px solid black;
     padding: 10px;
     overflow-y: auto;
-    font-family: 'Pixel-Font', sans-serif;
+    font-family: 'Pixelify Sans', sans-serif;
     font-size: 28px;
     color: white;
     line-height: 2;
@@ -300,23 +474,8 @@ span {
     z-index: 2;
 }
 
-.battle-weaponry {
-    flex: 1;
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 1px solid white;
-    margin: 10px;
-    padding: 10px;
-    font-family: 'Pixel-Font', sans-serif;
-    font-size: 24px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 .battle-buttons {
-    flex: 3;
+    flex: 7;
     display: flex;
     background-color: rgba(0, 0, 0, 0.5);
     margin: 10px;

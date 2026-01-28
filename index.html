@@ -15,14 +15,32 @@
 </head>
 
 <body>
-    <div alt="Background" id="background-image" class="background-image" x-init="startup()"
-        x-data="{ name: localStorage.getItem('name') || '', location: 'Warhamshire', screen: localStorage.getItem('name') ? 'returning' : 'new-player', showPlayerBar: false, assets: getAssets() }"
-        x-effect="showPlayerBar = !['new-player','how-to-play','journal','crafting'].includes(screen)">
+    <div alt="Background" id="background-image" class="background-image" x-init="startup()" x-data="{
+            name: localStorage.getItem('name') || '',
+            location: 'Warhamshire', screen: localStorage.getItem('name') ? 'encounter' : 'new-player',
+            showPlayerBar: false,
+            enemy: getAssets().enemies.find(enemy => enemy.name == 'Fox King'),
+            enemyLevel: 21,
+            assets: getAssets()
+        }" x-effect="showPlayerBar = !['new-player','how-to-play','journal','crafting'].includes(screen)">
 
         <div id="overlay-transparency" class="overlay-transparency"></div>
 
-        <div class="player" id="player" x-show="showPlayerBar" x-init="updateBars()"
-            x-data="{ crit: 0, accuracy: 0, evasion: 0, armor: 10, experience: 0, health: 500, maxHealth: 500, stamina: 30, maxStamina: 30, weaponry: 'Perfect Stick', armory: 'Perfect Leaf', level: 1, get attack() { return 32 + ((this.level - 1) * 50) } }">
+        <div class="player" id="player" x-show="showPlayerBar" x-init="updateBars()" x-data="{
+                crit: 0,
+                accuracy: 0,
+                evasion: 0,
+                armor: 10,
+                experience: 0,
+                health: 500,
+                maxHealth: 500,
+                stamina: 30,
+                maxStamina: 30,
+                weaponry: 'Perfect Stick',
+                armory: 'Perfect Leaf',
+                level: 1,
+                get attack() { return 32 + ((this.level - 1) * 50) },
+                pstatuses: ['🍀', '👁️'] }">
             <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px;" x-text="name"></p>
 
             <div class="experience-bar-background"></div>
@@ -33,7 +51,8 @@
             <div class="health-bar" id="health"></div>
             <div class="stamina-bar" id="stamina"></div>
 
-            <div class="experience-bar-stats" x-text="`${experience}/${Math.floor((level/0.07)**2)}`">0/0</div>
+            <div class="experience-bar-stats" x-text="`Level ${level} - ${experience}/${Math.floor((level/0.07)**2)}`">
+            </div>
             <div class="health-bar-stats" x-text="`${health}/${maxHealth}`">0/0</div>
             <div class="stamina-bar-stats" x-text="`${stamina}/${maxStamina}`">0/0</div>
 
@@ -47,11 +66,31 @@
                 <img src="assets/effects/Evasion.png" alt="Evasion Icon"
                     style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
                 <span x-text="`${evasion * 100}%`"></span>
-                <img src="assets/effects/Fortification.png" alt="Fortification Icon"
-                    style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
-                <span x-text="`${armor}`"></span>
             </div>
             <img src="assets/playerbar.png">
+            <div class="pstatus-effects">
+                <img x-show="pstatuses.includes('🩸')" src="assets/effects/Bleed.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('👁️')" src="assets/effects/Blindness.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('🔥')" src="assets/effects/Burn.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('🖤')" src="assets/effects/Curse.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('🏳️')" src="assets/effects/Empowerment.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('💨')" src="assets/effects/Evasion.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('💀')" src="assets/effects/FatalPoison.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('🎯')" src="assets/effects/Focus.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('🛡️')" src="assets/effects/Fortification.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('🍀')" src="assets/effects/Luck.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('💗')" src="assets/effects/Regeneration.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('💪')" src="assets/effects/Strength.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('🌀')" src="assets/effects/Weakness.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('🐈‍⬛')" src="assets/effects/BadLuck.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('💢')" src="assets/effects/Berserk.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('💫')" src="assets/effects/Stun.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('✨')" src="assets/effects/Blessing.png" alt="Crit Icon">
+                <img x-show="pstatuses.includes('🏴')" src="assets/effects/BadOmen.png" alt="Crit Icon">
+            </div>
+            <div class="battle-weaponry"
+                x-html="`⚔️32 🛡️${armor}\n\n${assets.items.find(item => item.name == Alpine.$data(player).armory) ?.synergies.some(syn => syn.weapon == Alpine.$data(player).weaponry) ?? false ? `<u>` : ''}${weaponry}\n\n${armory}`"
+                style="white-space: pre-line; text-align: center;"></div>
         </div>
 
         <div id="screen" class="screen">
@@ -79,12 +118,12 @@
 
             <!-- Returning Player (Landing Screen)-->
             <div id="returning" class="returning" x-show="screen === 'returning'" x-transition.opacity
-                style="display: none;">
+                style="display: none; top: -210px;">
                 <p style="text-align: center; font-size: 30px; top: 25px;">Text-Based-Game</p>
                 <p style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif; top: 280px;"
                     x-text="location.toUpperCase()"></p>
 
-                <div class="centered-buttons" style="justify-content: right; margin-top: -100px; margin-right: 10px;">
+                <div class="centered-buttons" style="justify-content: right; margin-top: -110px; margin-right: 10px;">
                     <button class="regular-button"
                         style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); justify-content: right; font-size: large;"
                         @click="howToPlay()" x-transition.opacity>How To Play</button>
@@ -162,14 +201,62 @@
 
             <!-- Encounter -->
             <div id="encounter" class="encounter" x-show="screen === 'encounter'" x-data="{
-                text: `${name} used Stab and hit Lazy Goblin for ⚔️38\nLazy Goblin used Stab and hit\n${name} used Stab and hit Lazy Goblin for ⚔️32\n🎉 ${name} won the battle! 🎉\n${name} gained 🩵294!\n⬆️${name} leveled up to level 2! ⬆️`
+                log: `${name} used Stab and hit ${enemy.name} for ⚔️38\n${enemy.name} used Stab and hit\n${name} used Stab and hit ${enemy.name} for ⚔️32\n🎉 ${name} won the battle! 🎉\n${name} gained 🩵294!\n⬆️${name} leveled up to level 2! ⬆️`,
+                health: Number(enemy.health + (Math.floor((enemyLevel / 2) ** 2.82424))),
+                maxHealth: enemy.health + (Math.floor((enemyLevel / 2) ** 2.82424)),
+                estatuses: ['🍀', '👁️']
             }" x-transition.opacity>
-                <div class="battle-log" x-text="text" style="white-space: pre-line;"></div>
-                <div class="battle-station"
-                    x-data="{ round: 1, synergized: assets.items.find(item => item.name == Alpine.$data(player).armory) ?.synergies.some(syn => syn.weapon == Alpine.$data(player).weaponry) ?? false }">
-                    <div class="battle-weaponry"
-                        x-html="`⚔️32\n\n${synergized ? `<u>` : ''}${Alpine.$data(player).weaponry}\n\n${Alpine.$data(player).armory}`"
-                        style="white-space: pre-line; text-align: center;"></div>
+                <div class="enemy" id="enemy">
+                    <div class="enemy-level" x-text="`Level ${enemyLevel}`">?</div>
+                    <div style="margin-top: 40px;">
+                        <div class="enemy-name" x-text="enemy.name">???</div>
+                        <div class="estatus-effects">
+                            <img x-show="estatuses.includes('🩸')" src="assets/effects/Bleed.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('👁️')" src="assets/effects/Blindness.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('🔥')" src="assets/effects/Burn.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('🖤')" src="assets/effects/Curse.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('🏳️')" src="assets/effects/Empowerment.png"
+                                alt="Crit Icon">
+                            <img x-show="estatuses.includes('💨')" src="assets/effects/Evasion.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('💀')" src="assets/effects/FatalPoison.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('🎯')" src="assets/effects/Focus.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('🛡️')" src="assets/effects/Fortification.png"
+                                alt="Crit Icon">
+                            <img x-show="estatuses.includes('🍀')" src="assets/effects/Luck.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('💗')" src="assets/effects/Regeneration.png"
+                                alt="Crit Icon">
+                            <img x-show="estatuses.includes('💪')" src="assets/effects/Strength.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('🌀')" src="assets/effects/Weakness.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('🐈‍⬛')" src="assets/effects/BadLuck.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('💢')" src="assets/effects/Berserk.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('💫')" src="assets/effects/Stun.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('✨')" src="assets/effects/Blessing.png" alt="Crit Icon">
+                            <img x-show="estatuses.includes('🏴')" src="assets/effects/BadOmen.png" alt="Crit Icon">
+                        </div>
+                    </div>
+                    <div style="margin-top: 70px;">
+                        <img class="enemy-heart" :src="
+                        enemy.name == 'Cursed Goblin' ? 'assets/enemy_hearts/Cursed.png'
+                        : enemy.name == 'Attack Slime' ? 'assets/enemy_hearts/AttackSlime.png'
+                        : enemy.name == 'Defense Slime' ? 'assets/enemy_hearts/DefenseSlime.png'
+                        : enemy.name == 'Health Slime' ? 'assets/enemy_hearts/HealthSlime.png'
+                        : enemy.name == 'Stamina Slime' ? 'assets/enemy_hearts/StaminaSlime.png'
+                        : enemy.name == 'Demon' || enemy.name == 'Witch' ? 'assets/enemy_hearts/Demonic.png'
+                        : enemy.name == 'Cyclops Overlord' ? 'assets/enemy_hearts/Cyclops.png'
+                        : enemy.name == 'Fox King' ? 'assets/enemy_hearts/FoxKing.png'
+                        : enemy.name == 'Goblin King' ? 'assets/enemy_hearts/GoblinKing.png'
+                        : enemy.name == 'Demon Queen' ? 'assets/enemy_hearts/DemonQueen.png'
+                        : 'assets/enemy_hearts/Basic.png'
+                        "
+                            style="width: 80px; top: 70%; left: 1%; z-index: 3;">
+                        <div class="enemy-health-bar-stats" x-text="`${health}/${maxHealth}`">0/0</div>
+                        <div class="enemy-health-bar" id="enemy-health"></div>
+                        <div class="enemy-health-bar-background"></div>
+                    </div>
+                    <img class="enemy-thumbnail" :src="enemy.sprite">
+                </div>
+                <div class="battle-log" x-text="log" style="white-space: pre-line;"></div>
+                <div class="battle-station" x-data="{ round: 1 }">
                     <div class="battle-buttons">
                         <div class="battle-actions" style="display: flex; gap: 20px;">
                             <button class="battle-base-attack"
@@ -201,7 +288,7 @@
                                         ?
                                     </button>
                                     <span class="battle-skill1-cost" id="battle-skill1-cost"
-                                        style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px;"
+                                        style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
                                         x-text="`⚡${assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[1].cost}`">?</span>
                                 </div>
                             </div>
@@ -217,7 +304,7 @@
                                         ?
                                     </button>
                                     <span class="battle-skill2-cost" id="battle-skill2-cost"
-                                        style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px;"
+                                        style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
                                         x-text="`⚡${assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[2].cost}`">?</span>
                                 </div>
                             </div>
@@ -232,10 +319,8 @@
                                         :disabled="Alpine.$data(player).stamina < assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[3].cost"
                                         x-text="assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[3].name">
                                     </button>
-
-
                                     <span class="battle-skill3-cost" id="battle-skill3-cost"
-                                        style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px;"
+                                        style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
                                         x-text="`⚡${assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[1].cost}`">?</span>
                                 </div>
                             </div>
