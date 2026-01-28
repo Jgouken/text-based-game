@@ -67,7 +67,14 @@
                     style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
                 <span x-text="`${evasion * 100}%`"></span>
             </div>
-            <img src="assets/playerbar.png">
+            <img :src="
+            health / maxHealth >= 0.8 ? 'assets/playerbar.png'
+            : health / maxHealth >= 0.6 ? 'assets/playerbarcracked1.png'
+            : health / maxHealth >= 0.4 ? 'assets/playerbarcracked2.png'
+            : health / maxHealth >= 0.2 ? 'assets/playerbarcracked3.png'
+            : health / maxHealth > 0 ? 'assets/playerbarcracked4.png'
+            : 'assets/playerbarcrackeddead.png'
+            ">
             <div class="pstatus-effects">
                 <img x-show="pstatuses.includes('🩸')" src="assets/effects/Bleed.png" alt="Crit Icon">
                 <img x-show="pstatuses.includes('👁️')" src="assets/effects/Blindness.png" alt="Crit Icon">
@@ -247,8 +254,7 @@
                         : enemy.name == 'Goblin King' ? 'assets/enemy_hearts/GoblinKing.png'
                         : enemy.name == 'Demon Queen' ? 'assets/enemy_hearts/DemonQueen.png'
                         : 'assets/enemy_hearts/Basic.png'
-                        "
-                            style="width: 80px; top: 70%; left: 1%; z-index: 3;">
+                        " style="width: 80px; top: 70%; left: 1%; z-index: 3;">
                         <div class="enemy-health-bar-stats" x-text="`${health}/${maxHealth}`">0/0</div>
                         <div class="enemy-health-bar" id="enemy-health"></div>
                         <div class="enemy-health-bar-background"></div>
@@ -262,7 +268,7 @@
                             <button class="battle-base-attack"
                                 style="background-color: rgb(253, 113, 113); color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
                                 x-text="assets.items.find(item => item.name == Alpine.$data(player).weaponry).skills[0].name"
-                                @click="" x-transition.opacity>Attack</button>
+                                @click="Alpine.$data(player).health -= 51; updateBars()" x-transition.opacity>Attack</button>
                             <button class="battle-pass"
                                 style="background-color: rgb(42, 143, 201); border: 5px solid rgb(6, 0, 88); font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
                                 @click="" x-transition.opacity>Pass</button>

@@ -94,8 +94,8 @@ async function updateBars() {
     const alpinePlayerData = Alpine.$data(document.getElementById(`player`));
     const alpineEnemyData = Alpine.$data(document.getElementById(`enemy`));
 
-    document.getElementById(`health`).style.width = `${Math.floor((alpinePlayerData.health / alpinePlayerData.maxHealth) * 560)}px`;
-    document.getElementById(`stamina`).style.width = `${Math.floor((alpinePlayerData.stamina / alpinePlayerData.maxStamina) * 310)}px`;
-    document.getElementById(`experience`).style.width = `${Math.floor((alpinePlayerData.experience / Math.floor((alpinePlayerData.level / 0.07) ** 2)) * 450)}px`;
-    document.getElementById(`enemy-health`).style.width = `${Math.floor((alpineEnemyData.health / alpineEnemyData.maxHealth) * 80)}%`;
+    document.getElementById(`health`).style.width = `${Math.floor(((alpinePlayerData.health < 0 ? 0 : alpinePlayerData.health) / alpinePlayerData.maxHealth) * 560)}px`;
+    document.getElementById(`stamina`).style.width = `${Math.floor(((alpinePlayerData.stamina < 0 ? 0 : alpinePlayerData.stamina) / alpinePlayerData.maxStamina) * 310)}px`;
+    document.getElementById(`experience`).style.width = `${Math.floor(((alpinePlayerData.experience < 0 ? 0 : alpinePlayerData.experience) / Math.floor((alpinePlayerData.level / 0.07) ** 2)) * 450)}px`;
+    document.getElementById(`enemy-health`).style.width = `${Math.floor(((alpineEnemyData.health < 0 ? 0 : alpineEnemyData.health) / alpineEnemyData.maxHealth) * 80)}%`;
 }
