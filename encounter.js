@@ -133,9 +133,14 @@ async function skill(index) {
                 encounter.log.push(`${background.name} used ${player.weaponry.weapon.skills[0].name} and hit for ⚔️${damage}`)
 
                 for (let i = 0; i < skill.times - 1; i++) {
+                    // Remember to Add Crit
                     await new Promise(resolve => setTimeout(resolve, 1000));
+                    hitOrMiss = Math.random() >= 1 - player.accuracy;
+                    critOrCrap = Math.random() >= 1 - player.crit;
+                    damage = hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0;
+
                     encounter.health -= damage;
-                    encounter.log[-1] = encounter.log[-1] + g
+                    encounter.log[-1] = encounter.log[-1] + `, ${hitOrMiss ? critOrCrap ? `CRIT ⚔️${Math.floor(damage)}` : `⚔️${Math.floor(damage)}` : 'MISS'}`
                 }
             } else {
                 let hitOrMiss = Math.random() >= 1 - player.accuracy;
