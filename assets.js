@@ -221,7 +221,7 @@ function getAssets() {
 				health: 50,
 				attack: 25,
 				accuracy: 0.75,
-				critical: 0.05,
+				crit: 0.05,
 				defense: 40,
 				skills: [
 					{
@@ -292,7 +292,7 @@ function getAssets() {
 				health: 125,
 				attack: 50,
 				defense: 75,
-				critical: 0.2,
+				crit: 0.2,
 				accuracy: 0.7,
 				
 				skills: [
@@ -372,7 +372,7 @@ function getAssets() {
 				health: 250,
 				attack: 75,
 				defense: 300,
-				critical: 0.1,
+				crit: 0.1,
 				accuracy: 0.55,
 				skills: [
 					{
@@ -429,7 +429,7 @@ function getAssets() {
 				health: 333,
 				attack: 333,
 				defense: 666,
-				critical: 0.33,
+				crit: 0.33,
 				accuracy: 0.66,
 				skills: [
 					{
@@ -498,7 +498,7 @@ function getAssets() {
 				health: 400,
 				attack: 200,
 				defense: 300,
-				critical: 0.1,
+				crit: 0.1,
 				accuracy: 0.5,
 				skills: [
 					{
@@ -576,7 +576,7 @@ function getAssets() {
 				health: 100,
 				attack: 25,
 				defense: 50,
-				critical: 0.1,
+				crit: 0.1,
 				accuracy: 0.55,
 				skills: [
 					{
@@ -636,7 +636,7 @@ function getAssets() {
 				health: 75,
 				attack: 100,
 				defense: 50,
-				critical: 0.2,
+				crit: 0.2,
 				accuracy: 0.55,
 				skills: [
 					{
@@ -698,7 +698,7 @@ function getAssets() {
 				health: 125,
 				attack: 50,
 				defense: 200,
-				critical: 0.05,
+				crit: 0.05,
 				accuracy: 0.55,
 				skills: [
 					{
@@ -758,7 +758,7 @@ function getAssets() {
 				health: 45,
 				attack: 50,
 				defense: 50,
-				critical: 0.2,
+				crit: 0.2,
 				accuracy: 0.7,
 				skills: [
 					{
@@ -817,7 +817,7 @@ function getAssets() {
 				health: 1000,
 				attack: 150,
 				defense: 180,
-				critical: 0.1,
+				crit: 0.1,
 				accuracy: 0.72,
 				skills: [
 					{
@@ -904,7 +904,7 @@ function getAssets() {
 				health: 750,
 				attack: 100,
 				defense: 150,
-				critical: 0.15,
+				crit: 0.15,
 				accuracy: 0.67,
 				skills: [
 					{
@@ -993,7 +993,7 @@ function getAssets() {
 				health: 500,
 				attack: 50,
 				defense: 120,
-				critical: 0.35,
+				crit: 0.35,
 				accuracy: 0.62,
 				skills: [
 					{
@@ -1092,7 +1092,7 @@ function getAssets() {
 				health: 1000,
 				attack: 500,
 				defense: 400,
-				critical: 0.15,
+				crit: 0.15,
 				accuracy: 0.7,
 				skills: [
 					{
@@ -1165,7 +1165,7 @@ function getAssets() {
 				health: 666,
 				attack: 666,
 				defense: 666,
-				critical: 0.33,
+				crit: 0.33,
 				accuracy: 0.66,
 				skills: [
 					{
@@ -1253,7 +1253,7 @@ function getAssets() {
 				health: 400,
 				attack: 350,
 				defense: 750,
-				critical: 0.35,
+				crit: 0.35,
 				accuracy: 0.65,
 				skills: [
 					{
@@ -1325,7 +1325,7 @@ function getAssets() {
 				health: 750,
 				attack: 400,
 				defense: 250,
-				critical: 0.1,
+				crit: 0.1,
 				accuracy: 0.7,
 				skills: [
 					{
@@ -1411,7 +1411,7 @@ function getAssets() {
 				health: 200,
 				attack: 200,
 				defense: 150,
-				critical: 0.2,
+				crit: 0.2,
 				accuracy: 0.5,
 				skills: [
 					{
@@ -1443,7 +1443,7 @@ function getAssets() {
 				health: 125,
 				attack: 65,
 				defense: 200,
-				critical: 0.1,
+				crit: 0.1,
 				accuracy: 0.4,
 				skills: [
 					{
@@ -1475,7 +1475,7 @@ function getAssets() {
 				health: 45,
 				attack: 20,
 				defense: 10,
-				critical: 0.1,
+				crit: 0.1,
 				accuracy: 0.4,
 				skills: [
 					{
@@ -1507,7 +1507,7 @@ function getAssets() {
 				health: 750,
 				attack: 225,
 				defense: 175,
-				critical: 0.3,
+				crit: 0.3,
 				accuracy: 0.64,
 				skills: [
 					{
@@ -1559,7 +1559,7 @@ function getAssets() {
 				health: 6000,
 				attack: 600,
 				defense: 600,
-				critical: 0.25,
+				crit: 0.25,
 				accuracy: 0.73,
 				skills: [
 					{
@@ -1611,7 +1611,7 @@ function getAssets() {
 				health: 9999,
 				attack: 1111,
 				defense: 1111,
-				critical: 0.44,
+				crit: 0.44,
 				accuracy: 0.77,
 				skills: [
 					{
@@ -1671,7 +1671,7 @@ function getAssets() {
 				health: 13666,
 				attack: 1666,
 				defense: 1666,
-				critical: 0.66,
+				crit: 0.66,
 				accuracy: 0.85,
 				skills: [
 					{
@@ -3711,7 +3711,7 @@ function getAssets() {
 					{
 						weapon: "Broken Dagger",
 						name: "Jagged Edge",
-						critical: 0.025,
+						crit: 0.025,
 					},
 					{
 						weapon: "Rusty Dagger",
@@ -3847,7 +3847,7 @@ function getAssets() {
 					{
 						weapon: "Wooden Bow",
 						name: "Targeted",
-						critical: 0.05,
+						crit: 0.05,
 					},
 				]
 			},
@@ -3901,7 +3901,7 @@ function getAssets() {
 					{
 						weapon: "Martial Arts",
 						name: "Targeted",
-						critical: 0.05,
+						crit: 0.05,
 					},
 				]
 			},
@@ -3919,7 +3919,7 @@ function getAssets() {
 					{
 						weapon: "Chainsaw",
 						name: "Relentless",
-						critical: 0.1,
+						crit: 0.1,
 					},
 				]
 			},
@@ -3960,7 +3960,7 @@ function getAssets() {
 					{
 						weapon: "Twin Swords",
 						name: "Sharp",
-						critical: 0.075,
+						crit: 0.075,
 					},
 				]
 			},
@@ -4037,12 +4037,12 @@ function getAssets() {
 					{
 						weapon: "Cursed Bone Bow",
 						name: "Relentless",
-						critical: 0.1,
+						crit: 0.1,
 					},
 					{
 						weapon: "Cursed Fangs",
 						name: "Relentless",
-						critical: 0.1,
+						crit: 0.1,
 					},
 				]
 			},
@@ -4078,7 +4078,7 @@ function getAssets() {
 					{
 						weapon: "Demonic Nunchucks",
 						name: "Relentless",
-						critical: 0.1,
+						crit: 0.1,
 					},
 				]
 			},
@@ -4096,7 +4096,7 @@ function getAssets() {
 					{
 						weapon: "Iris & Hermes",
 						name: "Dead Eye",
-						critical: 0.15,
+						crit: 0.15,
 					},
 				]
 			},

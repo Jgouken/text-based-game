@@ -75,6 +75,8 @@ async function startBattle() {
     encounter.defense = enemy.defense + (Math.floor((level / 2) ** 1.82424))
     encounter.attack = enemy.attack + (Math.floor((level / 2) ** 1.82424))
     encounter.estatuses = []
+    encounter.crit = enemy.crit
+    encounter.accuracy = enemy.accuracy
 
     encounter.log = []
     encounter.log.push(`⚔️ ${background.name} (${player.level}) vs. ${enemy.name} (${level})⚔️`)
@@ -117,6 +119,7 @@ async function skill(index) {
             break;
         case 0:
             // Basic Attack
+            // Remember to add emoji deductions/additions
             const skill = player.weaponry.weapon.skills[0]
 
             var damage = player.attack
@@ -130,17 +133,18 @@ async function skill(index) {
                 let critOrCrap = Math.random() >= 1 - player.crit;
 
                 encounter.health -= hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0;
-                encounter.log.push(`${background.name} used ${player.weaponry.weapon.skills[0].name} and hit for ⚔️${damage}`)
+                encounter.log.push(`${background.name} used ${player.weaponry.weapon.skills[0].name} on ${background.enemy.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'for a MISS'}`)
+                updateBars()
 
                 for (let i = 0; i < skill.times - 1; i++) {
-                    // Remember to Add Crit
-                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    await new Promise(resolve => setTimeout(resolve, 2000 / skill.times));
                     hitOrMiss = Math.random() >= 1 - player.accuracy;
                     critOrCrap = Math.random() >= 1 - player.crit;
-                    damage = hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0;
+                    tempDamage = hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0;
 
-                    encounter.health -= damage;
-                    encounter.log[-1] = encounter.log[-1] + `, ${hitOrMiss ? critOrCrap ? `CRIT ⚔️${Math.floor(damage)}` : `⚔️${Math.floor(damage)}` : 'MISS'}`
+                    encounter.health -= tempDamage;
+                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `, ${hitOrMiss ? critOrCrap ? `CRIT ⚔️${tempDamage}` : `⚔️${tempDamage}` : 'MISS'}`
+                    updateBars()
                 }
             } else {
                 let hitOrMiss = Math.random() >= 1 - player.accuracy;
@@ -149,8 +153,9 @@ async function skill(index) {
                 damage = hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0
                 encounter.health -= damage
 
-                encounter.log.push(`${background.name} used ${player.weaponry.weapon.skills[0].name} on ${background.enemy.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${Math.floor(damage)}` : `for ⚔️${Math.floor(damage)}` : 'and MISSED!'}`)
+                encounter.log.push(`${background.name} used ${player.weaponry.weapon.skills[0].name} on ${background.enemy.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'and MISSED!'}`)
             }
+
             updateBars()
             break;
         case 1:
@@ -178,7 +183,44 @@ async function enemyMove() {
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
     const player = Alpine.$data(document.getElementById('player'));
 
-    encounter.log.push(`${background.enemy.name} slipped on their own unfinishedness.`)
     battleStation.round += 1;
     battleStation.turn = true;
+
+    const skill = randomByChance(background.enemy.skills)
+
+    var damage = encounter.attack
+
+    if (skill.damage) damage *= skill.damage;
+
+    damage = Math.round(damage / (player.armor / damage));
+
+    if (skill.times) {
+        let hitOrMiss = Math.random() >= 1 - encounter.accuracy;
+        let critOrCrap = Math.random() >= 1 - encounter.crit;
+
+        player.health -= hitOrMiss ? Math.floor(damage * (critOrCrap ? 1.6 : '1')) : 0;
+        encounter.log.push(`${background.enemy.name} used ${skill.name} on ${background.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'for a MISS'}`)
+        updateBars()
+
+        for (let i = 0; i < skill.times - 1; i++) {
+            await new Promise(resolve => setTimeout(resolve, 2000 / skill.times));
+            hitOrMiss = Math.random() >= 1 - encounter.accuracy;
+            critOrCrap = Math.random() >= 1 - encounter.crit;
+            tempDamage = hitOrMiss ? Math.floor(damage * (critOrCrap ? 1.6 : '1')) : 0;
+
+            player.health -= tempDamage;
+            encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `, ${hitOrMiss ? critOrCrap ? `CRIT ⚔️${tempDamage}` : `⚔️${tempDamage}` : 'MISS'}`
+            updateBars()
+        }
+    } else {
+        let hitOrMiss = Math.random() >= 1 - encounter.accuracy;
+        let critOrCrap = Math.random() >= 1 - encounter.crit;
+
+        damage = hitOrMiss ? Math.floor(damage * (critOrCrap ? 1.6 : '1')) : 0
+        player.health -= damage
+
+        encounter.log.push(`${background.enemy.name} used ${skill.name} on ${background.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'and MISSED!'}`)
+    }
+
+    updateBars()
 }

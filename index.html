@@ -43,7 +43,7 @@
                 armory: { armor: getAssets().items.find(armor => armor.name == 'None'), level: 1 },
                 level: 1,
                 attack: 32,
-                pstatuses: ['🍀', '👁️'] }">
+                pstatuses: [] }">
             <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px;" x-text="name"></p>
 
             <div class="experience-bar-background"></div>
@@ -220,6 +220,8 @@
                 maxHealth: 1,
                 defense: 0,
                 attack: 0,
+                crit: 0,
+                accuracy: 0,
                 estatuses: ['🍀', '👁️']
             }" x-transition.opacity>
                 <div class="enemy" id="enemy">
