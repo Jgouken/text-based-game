@@ -45,6 +45,7 @@ async function setPlayer() {
     player.armor = 10 + (((player.level || 1) - 1) * 10) + player.armory.armor.armor + ((player.armory.level - 1) * player.armory.armor.alvlmult)
 
     player.crit = player.weaponry.weapon.crit;
+    player.critdmg = player.weaponry.weapon.critdmg;
     player.accuracy = player.weaponry.weapon.accuracy;
     player.evasion = player.armory.armor.evasion;
 
@@ -79,6 +80,8 @@ async function startBattle() {
     encounter.log.push(`⚔️ ${background.name} (${player.level}) vs. ${enemy.name} (${level})⚔️`)
     battleStation.round = 1;
     battleStation.turn = true;
+
+    updateBars()
 }
 
 /**
@@ -115,26 +118,34 @@ async function skill(index) {
         case 0:
             // Basic Attack
             const skill = player.weaponry.weapon.skills[0]
-            var hitOrMiss = Math.ceil((Math.random() * player.crit) * 20);
 
             var damage = player.attack
 
             if (skill.damage) damage *= skill.damage;
 
-            damage = damage / (encounter.defense / damage);
+            damage = Math.round(damage / (encounter.defense / damage));
 
             if (skill.times) {
-                encounter.health -= damage;
+                let hitOrMiss = Math.random() >= 1 - player.accuracy;
+                let critOrCrap = Math.random() >= 1 - player.crit;
+
+                encounter.health -= hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0;
                 encounter.log.push(`${background.name} used ${player.weaponry.weapon.skills[0].name} and hit for ⚔️${damage}`)
+
                 for (let i = 0; i < skill.times - 1; i++) {
                     await new Promise(resolve => setTimeout(resolve, 1000));
                     encounter.health -= damage;
                     encounter.log[-1] = encounter.log[-1] + g
                 }
-            }
+            } else {
+                let hitOrMiss = Math.random() >= 1 - player.accuracy;
+                let critOrCrap = Math.random() >= 1 - player.crit;
 
-            encounter.health -= damage
-            encounter.log.push(`${background.name} used ${player.weaponry.weapon.skills[0].name} on ${background.enemy.name} for ⚔️${damage}`)
+                damage = hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0
+                encounter.health -= damage
+
+                encounter.log.push(`${background.name} used ${player.weaponry.weapon.skills[0].name} on ${background.enemy.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${Math.floor(damage)}` : `for ⚔️${Math.floor(damage)}` : 'and MISSED!'}`)
+            }
             updateBars()
             break;
         case 1:

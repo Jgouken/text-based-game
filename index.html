@@ -30,6 +30,7 @@
 
         <div class="player" id="player" x-show="showPlayerBar" x-init="setPlayer()" x-data="{
                 crit: 0,
+                critdmg: 0,
                 accuracy: 0,
                 evasion: 0,
                 armor: 10,
@@ -62,6 +63,9 @@
                 <img src="assets/effects/Luck.png" alt="Crit Icon"
                     style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
                 <span x-text="`${crit * 100}%`"></span>
+                <img src="assets/effects/Strength.png" alt="Crit Icon"
+                    style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
+                <span x-text="`${critdmg}x`"></span>
                 <img src="assets/effects/Focus.png" alt="Focus Icon"
                     style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
                 <span x-text="`${accuracy * 100}%`"></span>
