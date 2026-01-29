@@ -2320,12 +2320,12 @@ function getAssets() {
 		items: [
 			// WEAPONS
 			{
-				name: "Fists",
+				name: "Hands",
 				maxlvl: 1,
 				minlvl: 1,
 				description: `The enemies can catch these hands.`,
 
-				attack: 32,
+				attack: 0,
 				attackPerLevel: 0,
 				crit: 0.05,
 				critdmg: 1.6,
@@ -3664,7 +3664,7 @@ function getAssets() {
 			// ARMOR
 
 			{
-				name: "T-Shirt",
+				name: "None",
 				description: "Go commando.",
 
 				armor: 0,
@@ -3672,6 +3672,7 @@ function getAssets() {
 				minlvl: 1,
 				alvlmult: 1,
 				evasion: 0,
+				synergies: []
 			},
 			{
 				name: "Tattered Rags",

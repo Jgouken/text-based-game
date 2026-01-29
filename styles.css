@@ -386,15 +386,15 @@ span {
     left: 35%;
     font-family: 'Pixel-Font', sans-serif;
     font-size: 30px;
-    color: black;
+    color: white;
     z-index: 4;
 }
 
 .enemy-level {
     position: absolute;
-    top: 8%;
+    top: 9%;
     left: 5%;
-    font-family: 'Pixelify Sans', sans-serif;
+    font-family: 'Pixel-Font', sans-serif;
     font-size: 20px;
     color: white;
     z-index: 4;
@@ -444,7 +444,7 @@ span {
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: left;
     width: 90%;
     height: 30%;
@@ -457,6 +457,7 @@ span {
     color: white;
     line-height: 2;
     z-index: 2;
+    white-space: pre-line;
 }
 
 .battle-station {
