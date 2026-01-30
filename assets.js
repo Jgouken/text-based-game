@@ -3,130 +3,145 @@ function getAssets() {
 	return {
 		statuses: [
 			{
-				name: 'Fatal Poison',
+				name: 'Poison',
 				id: '💀',
-				description: `Inflict 5% max HP damage for 3 turns.`,
+				description: `Inflict 4% max HP damage for 5 rounds.`,
 				positive: false,
-				length: 3,
+				maxHP: 0.04,
+				rounds: 5,
 			},
 			{
 				name: 'Regeneration',
 				id: '💗',
-				description: `Gain 5% max HP for 6 turns.`,
+				description: `Gain 5% max HP for 5 rounds.`,
 				positive: true,
-				length: 6,
+				maxHP: 0.05,
+				rounds: 6,
 			},
 			{
 				name: 'Bleed',
 				id: '🩸',
-				description: `Inflict 15% of initial damage for 3 turns.`,
+				description: `Inflict 15% of base damage for 2 rounds.`,
+				baseDam: 0.15,
 				positive: false,
-				length: 3,
+				rounds: 2,
 			},
 			{
 				name: 'Burn',
 				id: '🔥',
-				description: `Inflict 5% of initial damage for 10 turns.`,
+				description: `Inflict 10% of base damage for 5 rounds.`,
+				baseDam: 0.15,
 				positive: false,
-				length: 3,
+				rounds: 5,
 			},
 			{
 				name: 'Weakness',
 				id: '🌀',
-				description: `Deal 25% less damage for 3 turns.`,
+				description: `Deal 15% less damage for 3 rounds.`,
+				damReduc: 0.15,
 				positive: false,
-				length: 3
+				rounds: 3
 			},
 			{
 				name: 'Strength',
 				id: '💪',
-				description: `Deal 15% more damage for 3 turns.`,
+				description: `Deal 20% more damage for 3 rounds.`,
+				damAdd: 0.2,
 				positive: true,
-				length: 3
+				rounds: 3
 			},
 			{
 				name: 'Empowerment',
 				id: '🏳️',
-				description: `Deal 40% more damage for 3 turns.`,
+				description: `Deal 40% more damage for 1 round.`,
+				damAdd: 0.4,
 				positive: true,
-				length: 3
+				rounds: 3
 			},
 			{
 				name: 'Stun',
 				id: '💫',
 				description: `Next turn is skipped.`,
 				positive: false,
-				length: 1,
+				rounds: 1,
 			},
 			{
 				name: 'Fortification',
 				id: `🛡️`,
-				description: `Increases armor by 20% for 3 turns.`,
+				description: `Increases armor by 20% for 3 rounds.`,
 				positive: true,
-				length: 3
+				rounds: 3
 			},
 			{
 				name: 'Blindness',
 				id: '👁️',
-				description: `Decreases accuracy by 20% for 3 turns.`,
+				description: `Decreases accuracy by 15% for 3 rounds.`,
+				decAcc: 0.15,
 				positive: false,
-				length: 3
+				rounds: 3
 			},
 			{
 				name: 'Focus',
 				id: '🎯',
-				description: `Increases accuracy by 50% for 3 turns.`,
+				description: `Increases accuracy by 20% for 3 rounds.`,
+				incAcc: 0.2,
 				positive: true,
-				length: 3
+				rounds: 3
 			},
 			{
 				name: 'Curse',
 				id: '🖤',
-				description: `Inflict 15% of initial damage for 8 turns.`,
+				description: `Inflict 15% of initial damage for 4 rounds.`,
+				baseDam: 0.15,
 				positive: false,
-				length: 8,
+				rounds: 8,
 			},
 			{
 				name: 'Luck',
 				id: '🍀',
-				description: `Increases critical hit chance by 25% for 3 turns.`,
+				description: `Increases critical hit chance by 15% for 3 rounds.`,
+				incCrit: 0.15,
 				positive: true,
-				length: 3
+				rounds: 3
 			},
 			{
 				name: 'Bad Luck',
 				id: '🐈‍⬛',
-				description: `Decreases critical hit chance by 20% for 3 turns.`,
+				description: `Decreases critical hit chance by 10% for 3 rounds.`,
+				decCrit: 0.1,
 				positive: false,
-				length: 3
+				rounds: 3
 			},
 			{
 				name: 'Berserk',
 				id: '💢',
-				description: `Increases attack by 40% but increases damage taken by 30%.`,
+				description: `Increases attack by 40% but increases damage taken by 30% over 3 rounds.`,
+				decAcc: 0.4,
+				incDamTaken: 0.3,
 				positive: true,
-				length: 3
+				rounds: 3
 			},
 			{
 				name: 'Evasion',
 				id: '💨',
-				description: `Decreases enemy attack accuracy by 15% for 3 turns.`,
+				description: `Decreases enemy attack accuracy by 15% for 3 rounds.`,
+				decEnAcc: 0.15,
 				positive: true,
-				length: 3
+				rounds: 3
 			},
 			{
 				name: 'Blessing',
 				id: '✨',
-				description: `Dispel and gain immunity to all negative status effects for 5 turns.`,
+				description: `Dispel and gain immunity to all negative status effects for 2 rounds.`,
 				positive: true,
-				length: 5,
+				rounds: 2,
 			},
 			{
 				name: 'Bad Omen',
 				id: '🏴',
-				description: `Dispel and gain immunity to all positive status effects for 5 turns.`,
+				description: `Dispel and gain immunity to all positive status effects for 2 rounds.`,
 				positive: false,
-				length: 5,
+				rounds: 2,
 			},
 
 		],
@@ -212,7 +227,7 @@ function getAssets() {
 				defense: 75,
 				crit: 0.2,
 				accuracy: 0.7,
-				
+
 				skills: [
 					{
 						name: "Slam",

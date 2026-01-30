@@ -174,7 +174,7 @@ async function skill(index) {
                     encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `${critOrCrap ? 'CRIT ' : ''}💞${finalHealth}`
                 }
 
-                if (finalHealth + player.health > player.maxHealth) finalHealth = player.health + finalHealth - player.maxHealth;
+                if ((player.health + finalHealth) > player.maxHealth) finalHealth = player.maxHealth - player.health;
                 player.health += finalHealth
             }
 
@@ -182,7 +182,7 @@ async function skill(index) {
                 if (skill.pstatus) {
                     encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `, Gained: [`
                     skill.pstatus.forEach(status => {
-                        player.pstatus.push(assets.statuses.find(s => s.id == status))
+                        player.pstatus.push({ ...assets.statuses.find(s => s.id == status), damage })
                         encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + status
                     });
                 }
@@ -190,7 +190,7 @@ async function skill(index) {
                 if (skill.estatus) {
                     encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `, Inflicted: [`
                     skill.estatus.forEach(status => {
-                        encounter.estatus.push(assets.statuses.find(s => s.id == status))
+                        encounter.estatus.push({ ...assets.statuses.find(s => s.id == status), damage })
                         encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + status
                     });
                 }
@@ -204,10 +204,15 @@ async function skill(index) {
             break;
     }
 
-    pstatus.forEach(s => {
-        switch (s) {
-            case '🩸': {
+    updateBars()
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
+    encounter.estatus.forEach(s => {
+        switch (s.id) {
+            case '🩸': {
+                let damage = s.baseDam * s.damage;
+                encounter.log.push(`${background.enemy.name} is bleeding - 🩸${damage}`);
+                encounter.health -= damage;
                 break;
             }
             case '👁️': {
@@ -215,11 +220,15 @@ async function skill(index) {
                 break;
             }
             case '🔥': {
-
+                let damage = s.baseDam * s.damage;
+                encounter.log.push(`${background.enemy.name} is on fire - 🔥${damage}`);
+                encounter.health -= damage;
                 break;
             }
             case '🖤': {
-
+                let damage = s.baseDam * s.damage;
+                encounter.log.push(`${background.enemy.name} is cursed - 🖤${damage}`);
+                encounter.health -= damage;
                 break;
             }
             case '🏳️': {
@@ -231,7 +240,9 @@ async function skill(index) {
                 break;
             }
             case '💀': {
-
+                let damage = s.maxHP * encounter.maxHealth;
+                encounter.log.push(`${background.enemy.name} is poisoned - 💀${damage}`);
+                encounter.health -= damage;
                 break;
             }
             case '🎯': {
@@ -247,7 +258,10 @@ async function skill(index) {
                 break;
             }
             case '💗': {
-
+                var heal = s.maxHP * encounter.maxHealth;
+                if ((enemy.health + heal) > encounter.maxHealth) heal = encounter.maxHealth - encounter.health;
+                encounter.log.push(`${background.enemy.name} is regenerating - 💗${heal}`);
+                encounter.health += heal;
                 break;
             }
             case '💪': {
@@ -278,79 +292,14 @@ async function skill(index) {
 
                 break;
             }
-            case '🩸': {
-
-                break;
-            }
-            case '👁️': {
-
-                break;
-            }
-            case '🔥': {
-
-                break;
-            }
-            case '🖤': {
-
-                break;
-            }
-            case '🏳️': {
-
-                break;
-            }
-            case '💨': {
-
-                break;
-            }
-            case '💀': {
-
-                break;
-            }
-            case '🎯': {
-
-                break;
-            }
-            case '🛡️': {
-
-                break;
-            }
-            case '🍀': {
-
-                break;
-            }
-            case '💗': {
-
-                break;
-            }
-            case '💪': {
-
-                break;
-            }
-            case '🌀': {
-
-                break;
-            }
-            case '🐈‍⬛': {
-
-                break;
-            }
-            case '💢': {
-
-                break;
-            }
-            case '💫': {
-
-                break;
-            }
-            case '✨': {
-
-                break;
-            }
-            case '🏴': {
+            default: {
 
                 break;
             }
         }
+
+        s.rounds -= 1;
+        if (s.rounds <= 0) estatus.splice(estatus.indexOf(s));
     })
 
     enemyMove()
@@ -401,6 +350,105 @@ async function enemyMove() {
     }
 
     updateBars()
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    player.pstatus.forEach(s => {
+        switch (s.id) {
+            case '🩸': {
+                let damage = s.baseDam * s.damage;
+                encounter.log.push(`${background.name} is bleeding - 🩸${damage}`);
+                player.health -= damage;
+                s.rounds -= 1;
+                break;
+            }
+            case '👁️': {
+
+                break;
+            }
+            case '🔥': {
+                let damage = s.baseDam * s.damage;
+                encounter.log.push(`${background.name} is on fire - 🔥${damage}`);
+                player.health -= damage;
+                break;
+            }
+            case '🖤': {
+                let damage = s.baseDam * s.damage;
+                encounter.log.push(`${background.name} is cursed - 🖤${damage}`);
+                player.health -= damage;
+                break;
+            }
+            case '🏳️': {
+
+                break;
+            }
+            case '💨': {
+
+                break;
+            }
+            case '💀': {
+                let damage = s.maxHP * player.maxHealth;
+                encounter.log.push(`${background.name} is poisoned - 💀${damage}`);
+                player.health -= damage;
+                break;
+            }
+            case '🎯': {
+
+                break;
+            }
+            case '🛡️': {
+
+                break;
+            }
+            case '🍀': {
+
+                break;
+            }
+            case '💗': {
+                var heal = s.maxHP * player.maxHealth;
+                if ((player.health + heal) > player.maxHealth) heal = player.maxHealth - player.health;
+                encounter.log.push(`${background.name} is regenerating - 💗${heal}`);
+                player.health += heal;
+                break;
+            }
+            case '💪': {
+
+                break;
+            }
+            case '🌀': {
+
+                break;
+            }
+            case '🐈‍⬛': {
+
+                break;
+            }
+            case '💢': {
+
+                break;
+            }
+            case '💫': {
+
+                break;
+            }
+            case '✨': {
+
+                break;
+            }
+            case '🏴': {
+
+                break;
+            }
+        }
+
+        s.rounds -= 1;
+        if (s.rounds <= 0) player.pstatus.splice(player.pstatus.indexOf(s))
+    })
+
+    var staminaRegen = Math.round(player.stamina * .1)
+    if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
+    player.stamina += staminaRegen
+
     battleStation.round += 1;
     battleStation.turn = true;
+    updateBars()
 }
