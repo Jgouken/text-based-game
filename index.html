@@ -274,17 +274,21 @@
                     <div class="battle-buttons">
                         <div class="battle-actions" style="display: flex; gap: 20px;">
                             <button class="battle-base-attack"
-                                style="background-color: rgb(253, 113, 113); color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
+                                :style="`background-color: ${turn ? 'rgb(253, 113, 113)' : 'background-color: rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
                                 x-text="assets.items.find(item => item.name == Alpine.$data(player).weaponry.weapon.name).skills[0].name"
+                                :disabled="!turn"
                                 @click="skill(0)" x-transition.opacity>Attack</button>
                             <button class="battle-pass"
-                                style="background-color: rgb(42, 143, 201); border: 5px solid rgb(6, 0, 88); font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
+                                :style="`background-color: ${turn ? 'rgb(42, 143, 201)' : 'background-color: rgb(55, 55, 55)'}; border: 5px solid rgb(6, 0, 88); font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                                :disabled="!turn"
                                 @click="skill(-1)" x-transition.opacity>Pass</button>
                             <button class="battle-item"
-                                style="background-color: rgb(138, 233, 138); color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
+                                :style="`background-color: ${turn ? 'rgb(138, 233, 138)' : 'background-color: rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                                :disabled="!turn"
                                 @click="skill(-2)" x-transition.opacity>Item</button>
                             <button class="battle-flee"
-                                style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0); font-size: 40px; font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
+                                :style="`background-color: ${turn ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); font-size: 40px; font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                                :disabled="!turn"
                                 @click="skill(-3)" x-transition.opacity>Flee</button>
                         </div>
 
@@ -338,7 +342,7 @@
                                     </button>
                                     <span class="battle-skill3-cost" id="battle-skill3-cost"
                                         style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
-                                        x-text="`⚡${assets.items.find(item => item.name == Alpine.$data(player).weaponry.weapon.name).skills[1].cost}`">?</span>
+                                        x-text="`⚡${assets.items.find(item => item.name == Alpine.$data(player).weaponry.weapon.name).skills[3].cost}`">?</span>
                                 </div>
                             </div>
 

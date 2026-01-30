@@ -69,6 +69,7 @@ function getAssets() {
 				name: 'Fortification',
 				id: `🛡️`,
 				description: `Increases armor by 20% for 3 rounds.`,
+				armorAdd: 0.2,
 				positive: true,
 				rounds: 3
 			},
@@ -303,8 +304,8 @@ function getAssets() {
 				sprite: 'assets/enemies/ArmoredGoblin.gif',
 				weapon: "Spear & Shield",
 				health: 250,
-				attack: 75,
-				defense: 300,
+				attack: 160,
+				defense: 350,
 				crit: 0.1,
 				accuracy: 0.55,
 				skills: [
@@ -361,7 +362,7 @@ function getAssets() {
 				weapon: "Cursed Rusted Dagger",
 				health: 333,
 				attack: 333,
-				defense: 666,
+				defense: 333,
 				crit: 0.33,
 				accuracy: 0.66,
 				skills: [
@@ -566,7 +567,7 @@ function getAssets() {
 				name: `Attack Slime`,
 				sprite: 'assets/enemies/AttackSlime.gif',
 				weapon: null,
-				health: 75,
+				health: 80,
 				attack: 50,
 				defense: 20,
 				crit: 0.2,
@@ -628,9 +629,9 @@ function getAssets() {
 				name: `Defense Slime`,
 				sprite: 'assets/enemies/DefenseSlime.gif',
 				weapon: null,
-				health: 125,
+				health: 75,
 				attack: 35,
-				defense: 200,
+				defense: 100,
 				crit: 0.05,
 				accuracy: 0.55,
 				skills: [
@@ -747,9 +748,9 @@ function getAssets() {
 				name: `Orange Fox`,
 				sprite: 'assets/enemies/OrangeFox.gif',
 				weapon: "Steel Dagger",
-				health: 1000,
-				attack: 150,
-				defense: 180,
+				health: 1300,
+				attack: 50,
+				defense: 40,
 				crit: 0.1,
 				accuracy: 0.72,
 				skills: [
@@ -834,9 +835,9 @@ function getAssets() {
 				name: `White Fox`,
 				sprite: 'assets/enemies/WhiteFox.gif',
 				weapon: "Steel Dagger",
-				health: 750,
-				attack: 100,
-				defense: 150,
+				health: 1200,
+				attack: 40,
+				defense: 35,
 				crit: 0.15,
 				accuracy: 0.67,
 				skills: [
@@ -923,9 +924,9 @@ function getAssets() {
 				name: `Blue Fox`,
 				sprite: 'assets/enemies/BlueFox.gif',
 				weapon: "Steel Dagger",
-				health: 500,
-				attack: 50,
-				defense: 120,
+				health: 1500,
+				attack: 30,
+				defense: 30,
 				crit: 0.35,
 				accuracy: 0.62,
 				skills: [
@@ -1022,8 +1023,8 @@ function getAssets() {
 				name: `Vampire`,
 				sprite: 'assets/enemies/Vampire.gif',
 				weapon: "Fangs",
-				health: 1000,
-				attack: 500,
+				health: 4500,
+				attack: 200,
 				defense: 400,
 				crit: 0.15,
 				accuracy: 0.7,
@@ -1095,8 +1096,8 @@ function getAssets() {
 				name: `Demon`,
 				sprite: 'assets/enemies/Demon.gif',
 				weapon: null,
-				health: 666,
-				attack: 666,
+				health: 6666,
+				attack: 2666,
 				defense: 666,
 				crit: 0.33,
 				accuracy: 0.66,
@@ -1183,8 +1184,8 @@ function getAssets() {
 				name: `Werewolf`,
 				sprite: 'assets/enemies/Werewolf.gif',
 				weapon: null,
-				health: 400,
-				attack: 350,
+				health: 7500,
+				attack: 200,
 				defense: 750,
 				crit: 0.35,
 				accuracy: 0.65,
@@ -1255,9 +1256,9 @@ function getAssets() {
 				name: `Witch`,
 				sprite: 'assets/enemies/Witch.gif',
 				weapon: null,
-				health: 750,
-				attack: 400,
-				defense: 250,
+				health: 3333,
+				attack: 180,
+				defense: 400,
 				crit: 0.1,
 				accuracy: 0.7,
 				skills: [
@@ -1342,8 +1343,8 @@ function getAssets() {
 				sprite: 'assets/enemies/Cow.gif',
 				weapon: null,
 				health: 200,
-				attack: 200,
-				defense: 150,
+				attack: 45,
+				defense: 80,
 				crit: 0.2,
 				accuracy: 0.5,
 				skills: [
@@ -1374,8 +1375,8 @@ function getAssets() {
 				sprite: 'assets/enemies/Sheep.gif',
 				weapon: null,
 				health: 125,
-				attack: 65,
-				defense: 200,
+				attack: 30,
+				defense: 100,
 				crit: 0.1,
 				accuracy: 0.4,
 				skills: [
@@ -1406,7 +1407,7 @@ function getAssets() {
 				sprite: 'assets/enemies/Chicken.gif',
 				weapon: null,
 				health: 45,
-				attack: 20,
+				attack: 15,
 				defense: 10,
 				crit: 0.1,
 				accuracy: 0.4,
@@ -1437,9 +1438,9 @@ function getAssets() {
 				name: `Cyclops Overlord`,
 				sprite: 'assets/enemies/CyclopsOverlord.gif',
 				weapon: null,
-				health: 750,
-				attack: 225,
-				defense: 175,
+				health: 500,
+				attack: 90,
+				defense: 125,
 				crit: 0.3,
 				accuracy: 0.64,
 				skills: [
@@ -1489,9 +1490,9 @@ function getAssets() {
 				name: `Fox King`,
 				sprite: 'assets/enemies/FoxKing.gif',
 				weapon: null,
-				health: 6000,
-				attack: 600,
-				defense: 600,
+				health: 1250,
+				attack: 100,
+				defense: 120,
 				crit: 0.25,
 				accuracy: 0.73,
 				skills: [
@@ -1541,9 +1542,9 @@ function getAssets() {
 				name: `Goblin King`,
 				sprite: 'assets/enemies/GoblinKing.gif',
 				weapon: null,
-				health: 9999,
-				attack: 1111,
-				defense: 1111,
+				health: 7777,
+				attack: 777,
+				defense: 777,
 				crit: 0.44,
 				accuracy: 0.77,
 				skills: [
@@ -1602,8 +1603,8 @@ function getAssets() {
 				sprite: 'assets/enemies/DemonQueen.gif',
 				weapon: null,
 				health: 13666,
-				attack: 1666,
-				defense: 1666,
+				attack: 666,
+				defense: 666,
 				crit: 0.66,
 				accuracy: 0.85,
 				skills: [
@@ -2271,14 +2272,14 @@ function getAssets() {
 					},
 					{
 						name: "Kick",
-						cost: 3,
+						cost: 5,
 						description: "A complementary can of kick-ass.",
 						damage: 1.2,
 						attack: true
 					},
 					{
 						name: "Relieve",
-						cost: 5,
+						cost: 10,
 						description: "Stop and crack your knuckles.",
 						pstatus: ["💗"],
 						attack: false
@@ -2462,7 +2463,9 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Stab",
+						name: "Double Slash",
+						damage: 0.7,
+						times: 2,
 						attack: true
 					},
 					{
@@ -2505,6 +2508,7 @@ function getAssets() {
 				skills: [
 					{
 						name: "Perfect Whack",
+						damage: 1.11,
 						attack: true
 					},
 					{
@@ -2547,6 +2551,7 @@ function getAssets() {
 				skills: [
 					{
 						name: "Strike",
+						damage: 1.15,
 						attack: true
 					},
 					{
@@ -2589,6 +2594,7 @@ function getAssets() {
 				skills: [
 					{
 						name: "Golden Whack",
+						damage: 1.25,
 						attack: true
 					},
 					{
@@ -2631,8 +2637,8 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Dual Strike",
-						damage: 0.5,
+						name: "Swift Strike",
+						damage: 0.75,
 						times: 2,
 						attack: true,
 					},
@@ -2675,9 +2681,8 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Dual Strike",
-						damage: 0.5,
-						times: 2,
+						name: "Hack",
+						damage: 1.1,
 						attack: true,
 					},
 					{
@@ -2761,7 +2766,9 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Quick Shot",
+						name: "Barrage",
+						damage: 0.45,
+						times: 3,
 						attack: true
 					},
 					{
@@ -2805,7 +2812,8 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Chop",
+						name: "Swing",
+						damage: 1.2,
 						attack: true
 					},
 					{
@@ -2847,6 +2855,7 @@ function getAssets() {
 				skills: [
 					{
 						name: "Stab",
+						damage: 0.95,
 						attack: true
 					},
 					{
@@ -2934,6 +2943,8 @@ function getAssets() {
 				skills: [
 					{
 						name: "Saw",
+						damage: 0.3,
+						times: 5,
 						attack: true
 					},
 					{
@@ -2978,6 +2989,7 @@ function getAssets() {
 				skills: [
 					{
 						name: "Slash",
+						damage: 1.15,
 						attack: true
 					},
 					{
@@ -3020,7 +3032,8 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Bash",
+						name: "CRUSH",
+						damage: 1.25,
 						attack: true
 					},
 					{
@@ -3061,8 +3074,8 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Dual Strike",
-						damage: 0.5,
+						name: "Twin Slash",
+						damage: 0.7,
 						times: 2,
 						attack: true,
 					},
@@ -3107,7 +3120,7 @@ function getAssets() {
 				skills: [
 					{
 						name: "Knuckle Sandwich",
-						damage: 0.5,
+						damage: 0.6,
 						times: 2,
 						attack: true,
 					},
@@ -3152,7 +3165,9 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Kunai",
+						name: "Shuriken",
+						damage: 0.25,
+						times: 5,
 						attack: true,
 					},
 					{
@@ -3196,7 +3211,8 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Holy Jab",
+						name: "Pierce",
+						damage: 1.11,
 						attack: true,
 					},
 					{
@@ -3238,6 +3254,7 @@ function getAssets() {
 				skills: [
 					{
 						name: "Quick Shot",
+						damage: 1.13,
 						attack: true,
 					},
 					{
@@ -3281,8 +3298,8 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Dual Stab",
-						damage: 0.5,
+						name: "Shank",
+						damage: 0.65,
 						times: 2,
 						attack: true,
 					},
@@ -3330,7 +3347,8 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Bash",
+						name: "SMITE",
+						damage: 1.3,
 						attack: true,
 					},
 					{
@@ -3372,7 +3390,9 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Strike",
+						name: "Heated Chain",
+						damage: 0.25,
+						times: 4,
 						attack: true,
 					},
 					{
@@ -3418,7 +3438,8 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Holy Kick",
+						name: "Light Kick",
+						damage: 1.22,
 						attack: true
 					},
 					{
@@ -3463,9 +3484,8 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Scythe",
-						damage: 1,
-						estatus: ["🩸"],
+						name: "Reap",
+						damage: 1.33,
 						attack: true,
 					},
 					{
@@ -3512,9 +3532,9 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Quick Shot",
-						damage: 1,
-						pstatus: ["🎯"],
+						name: "Twin Fire",
+						damage: 0.77,
+						times: 2,
 						attack: true,
 					},
 					{
@@ -3561,18 +3581,18 @@ function getAssets() {
 
 				skills: [
 					{
-						name: "Dual Strike",
-						damage: 0.5,
-						times: 2,
+						name: "Duality",
+						get damage() { return [0.66, 0.77][Math.floor(Math.random() * 2)] },
+						get times() { return Math.ceil(Math.random() * 2) },
 						attack: true,
 					},
 					{
-						name: "Yin or Yang",
+						name: "Yin and Yang",
 						cost: 111,
-						description: "Point Melanie or Alectrona upwards then unleashes its power which creates a massive blade of light or darkness before slamming it down on to the enemy and strengthening its wielder.\n\nRandomized for each turn:\nInflict Cursed, Bad Omen, and Weakness\nOR\ninflict Burn, Blindness, and Bleed.\n\nThen, Gain Berserk\nOR\nGain Blessed and Empowerment",
+						description: "Point Melanie or Alectrona upwards then unleashes its power which creates a massive blade of light or darkness before slamming it down on to the enemy and strengthening its wielder.\n\nRandomized for each turn:\nInflict Cursed, Bad Omen, Bad Luck, and Weakness\nOR\nInflict Burn, Blindness, and Bleed.\n\nThen, Gain Berserk and Evasion\nOR\nGain Blessing, Fortitude, Empowerment, and Luck",
 						damage: 3,
-						estatus: [["🖤", "🏴", "🐈‍⬛", "🌀"], ["🔥", "👁️"]][Math.floor(Math.random() * 2)],
-						pstatus: [["💢", "☁️"], ["✨", "🍀", "🛡️", "🏳️"]][Math.floor(Math.random() * 2)],
+						get estatus() { return [["🖤", "🏴", "🐈‍⬛", "🌀"], ["🔥", "👁️"]][Math.floor(Math.random() * 2)] },
+						get pstatus() { return [["💢", "☁️"], ["✨", "🍀", "🛡️", "🏳️"]][Math.floor(Math.random() * 2)] },
 						attack: true
 					},
 					{
