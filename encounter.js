@@ -13,10 +13,10 @@ async function updateBars() {
     const alpinePlayerData = Alpine.$data(document.getElementById(`player`));
     const alpineEnemyData = Alpine.$data(document.getElementById(`enemy`));
 
-    document.getElementById(`health`).style.width = `${Math.floor(((alpinePlayerData.health < 0 ? 0 : alpinePlayerData.health) / alpinePlayerData.maxHealth) * 560)}px`;
-    document.getElementById(`stamina`).style.width = `${Math.floor(((alpinePlayerData.stamina < 0 ? 0 : alpinePlayerData.stamina) / alpinePlayerData.maxStamina) * 310)}px`;
-    document.getElementById(`experience`).style.width = `${Math.floor(((alpinePlayerData.experience < 0 ? 0 : alpinePlayerData.experience) / Math.floor((alpinePlayerData.level / 0.07) ** 2)) * 450)}px`;
-    document.getElementById(`enemy-health`).style.width = `${Math.floor(((alpineEnemyData.health < 0 ? 0 : alpineEnemyData.health) / alpineEnemyData.maxHealth) * 80)}%`;
+    document.getElementById(`health`).style.width = `${Math.floor(((alpinePlayerData.health < 0.1 ? 0 : alpinePlayerData.health) / alpinePlayerData.maxHealth) * 560)}px`;
+    document.getElementById(`stamina`).style.width = `${Math.floor(((alpinePlayerData.stamina < 0.1 ? 0 : alpinePlayerData.stamina) / alpinePlayerData.maxStamina) * 310)}px`;
+    document.getElementById(`experience`).style.width = `${Math.floor(((alpinePlayerData.experience < 0.1 ? 0 : alpinePlayerData.experience) / Math.floor((alpinePlayerData.level / 0.07) ** 2)) * 450)}px`;
+    document.getElementById(`enemy-health`).style.width = `${Math.floor(((alpineEnemyData.health < 0.1 ? 0 : alpineEnemyData.health) / alpineEnemyData.maxHealth) * 80)}%`;
 }
 
 // Choices - Array of Objects
@@ -36,13 +36,12 @@ async function setPlayer() {
 
     player.maxHealth = 500 + (((player.level || 1) - 1) * 50)
     player.stamina = 30 + (((player.level || 1) - 1) * 5)
-    player.armor = 10 + (((player.level || 1) - 1) * 10)
 
     player.health = 500 + (((player.level || 1) - 1) * 50)
     player.maxStamina = 30 + (((player.level || 1) - 1) * 5)
 
     player.attack = 32 + (((player.level || 1) - 1) * 6) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel)
-    player.armor = 10 + (((player.level || 1) - 1) * 10) + player.armory.armor.armor + ((player.armory.level - 1) * player.armory.armor.alvlmult)
+    player.armor = 60 + (((player.level || 1) - 1) * 10) + player.armory.armor.armor + ((player.armory.level - 1) * player.armory.armor.alvlmult)
 
     player.crit = player.weaponry.weapon.crit;
     player.critdmg = player.weaponry.weapon.critdmg;
@@ -74,7 +73,7 @@ async function startBattle() {
     encounter.health = enemy.health + (Math.floor((level / 2) ** 2.82424))
     encounter.defense = enemy.defense + (Math.floor((level / 2) ** 1.82424))
     encounter.attack = enemy.attack + (Math.floor((level / 2) ** 1.82424))
-    encounter.estatuses = []
+    encounter.estatus = []
     encounter.crit = enemy.crit
     encounter.accuracy = enemy.accuracy
 
@@ -97,14 +96,13 @@ async function startBattle() {
  * 1-3 - a Weapon Skill.
  */
 async function skill(index) {
+    const battleStation = Alpine.$data(document.getElementById('battle-station'));
+    battleStation.turn = false;
+
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
-    const battleStation = Alpine.$data(document.getElementById('battle-station'));
 
-    battleStation.turn = false;
-
-    console.log(index)
     switch (index) {
         case -3:
             // Flee
@@ -118,22 +116,26 @@ async function skill(index) {
             // Pass
             break;
         case 0:
-            // Basic Attack
+        case 1:
+        case 2:
+        case 3:
             // Remember to add emoji deductions/additions
-            const skill = player.weaponry.weapon.skills[0]
+            const skill = player.weaponry.weapon.skills[index]
 
             var damage = player.attack
-
             if (skill.damage) damage *= skill.damage;
+            damage = Math.round((damage ** 2) / encounter.defense);
 
-            damage = Math.round(damage / (encounter.defense / damage));
+            if (skill.cost) player.stamina -= skill.cost
+
+            var hitOrMiss = Math.random() >= 1 - player.accuracy;
+            var critOrCrap = Math.random() >= 1 - player.crit;
+
+            encounter.log.push(`${background.name} used ${player.weaponry.weapon.skills[index].name}`)
 
             if (skill.times) {
-                let hitOrMiss = Math.random() >= 1 - player.accuracy;
-                let critOrCrap = Math.random() >= 1 - player.crit;
-
                 encounter.health -= hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0;
-                encounter.log.push(`${background.name} used ${player.weaponry.weapon.skills[0].name} on ${background.enemy.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'for a MISS'}`)
+                encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` on ${background.enemy.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'for a MISS'}`
                 updateBars()
 
                 for (let i = 0; i < skill.times - 1; i++) {
@@ -146,31 +148,210 @@ async function skill(index) {
                     encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `, ${hitOrMiss ? critOrCrap ? `CRIT ⚔️${tempDamage}` : `⚔️${tempDamage}` : 'MISS'}`
                     updateBars()
                 }
-            } else {
-                let hitOrMiss = Math.random() >= 1 - player.accuracy;
-                let critOrCrap = Math.random() >= 1 - player.crit;
+            } else if (skill.attack) {
+                hitOrMiss = Math.random() >= 1 - player.accuracy;
+                critOrCrap = Math.random() >= 1 - player.crit;
 
                 damage = hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0
                 encounter.health -= damage
 
-                encounter.log.push(`${background.name} used ${player.weaponry.weapon.skills[0].name} on ${background.enemy.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'and MISSED!'}`)
+                encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` on ${background.enemy.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'and MISSED!'}`
+            }
+
+            if (skill.health || skill.flatHealth || skill.lifesteal) {
+                encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `, Healed for `
+                critOrCrap = Math.random() >= 1 - player.crit;
+                var finalHealth = 0
+
+                if (skill.health) {
+                    finalHealth = skill.health * player.maxHealth * (critOrCrap ? player.crit : 1)
+                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `${critOrCrap ? 'CRIT ' : ''}💖${finalHealth}`
+                } else if (skill.flatHealth) {
+                    finalHealth = skill.flatHealth
+                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `${critOrCrap ? 'CRIT ' : ''}❤️${finalHealth}`
+                } else if (skill.lifesteal) {
+                    finalHealth = damage * skill.lifesteal
+                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `${critOrCrap ? 'CRIT ' : ''}💞${finalHealth}`
+                }
+
+                if (finalHealth + player.health > player.maxHealth) finalHealth = player.health + finalHealth - player.maxHealth;
+                player.health += finalHealth
+            }
+
+            if (skill.pstatus || skill.estatus) {
+                if (skill.pstatus) {
+                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `, Gained: [`
+                    skill.pstatus.forEach(status => {
+                        player.pstatus.push(assets.statuses.find(s => s.id == status))
+                        encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + status
+                    });
+                }
+
+                if (skill.estatus) {
+                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `, Inflicted: [`
+                    skill.estatus.forEach(status => {
+                        encounter.estatus.push(assets.statuses.find(s => s.id == status))
+                        encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + status
+                    });
+                }
+                encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `]`
             }
 
             updateBars()
-            break;
-        case 1:
-            // Skill 1
-            break;
-        case 2:
-            // Skill 2
-            break;
-        case 3:
-            // Skill 3
             break;
         default:
             // Not sure how you pressed this button, but suffer the consequences.
             break;
     }
+
+    pstatus.forEach(s => {
+        switch (s) {
+            case '🩸': {
+
+                break;
+            }
+            case '👁️': {
+
+                break;
+            }
+            case '🔥': {
+
+                break;
+            }
+            case '🖤': {
+
+                break;
+            }
+            case '🏳️': {
+
+                break;
+            }
+            case '💨': {
+
+                break;
+            }
+            case '💀': {
+
+                break;
+            }
+            case '🎯': {
+
+                break;
+            }
+            case '🛡️': {
+
+                break;
+            }
+            case '🍀': {
+
+                break;
+            }
+            case '💗': {
+
+                break;
+            }
+            case '💪': {
+
+                break;
+            }
+            case '🌀': {
+
+                break;
+            }
+            case '🐈‍⬛': {
+
+                break;
+            }
+            case '💢': {
+
+                break;
+            }
+            case '💫': {
+
+                break;
+            }
+            case '✨': {
+
+                break;
+            }
+            case '🏴': {
+
+                break;
+            }
+            case '🩸': {
+
+                break;
+            }
+            case '👁️': {
+
+                break;
+            }
+            case '🔥': {
+
+                break;
+            }
+            case '🖤': {
+
+                break;
+            }
+            case '🏳️': {
+
+                break;
+            }
+            case '💨': {
+
+                break;
+            }
+            case '💀': {
+
+                break;
+            }
+            case '🎯': {
+
+                break;
+            }
+            case '🛡️': {
+
+                break;
+            }
+            case '🍀': {
+
+                break;
+            }
+            case '💗': {
+
+                break;
+            }
+            case '💪': {
+
+                break;
+            }
+            case '🌀': {
+
+                break;
+            }
+            case '🐈‍⬛': {
+
+                break;
+            }
+            case '💢': {
+
+                break;
+            }
+            case '💫': {
+
+                break;
+            }
+            case '✨': {
+
+                break;
+            }
+            case '🏴': {
+
+                break;
+            }
+        }
+    })
 
     enemyMove()
 }
@@ -183,16 +364,13 @@ async function enemyMove() {
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
     const player = Alpine.$data(document.getElementById('player'));
 
-    battleStation.round += 1;
-    battleStation.turn = true;
+    var finalLog = ``
 
-    const skill = randomByChance(background.enemy.skills)
+    const skill = randomByChance(background.enemy.skills);
 
-    var damage = encounter.attack
-
+    var damage = encounter.attack;
     if (skill.damage) damage *= skill.damage;
-
-    damage = Math.round(damage / (player.armor / damage));
+    damage = Math.round((damage ** 2) / (player.armor));
 
     if (skill.times) {
         let hitOrMiss = Math.random() >= 1 - encounter.accuracy;
@@ -223,4 +401,6 @@ async function enemyMove() {
     }
 
     updateBars()
+    battleStation.round += 1;
+    battleStation.turn = true;
 }

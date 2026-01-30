@@ -8,22 +8,6 @@ function getAssets() {
 				description: `Inflict 5% max HP damage for 3 turns.`,
 				positive: false,
 				length: 3,
-				use: async function (EorP, statuses, currentHealth, chatLog, name, emaxHealth) {
-					let status = statuses.find(({ id }) => id == this.id)
-					var crit = 1
-					if (Math.random() * 100 < 5) crit = 1.6
-					currentHealth = Math.round(currentHealth - ((EorP.armor ? EorP.maxHealth : emaxHealth) * 0.05 * crit))
-					chatLog.push(`${name} is posioned - ${crit === 2 ? 'CRITICAL ' : ''}💀${Math.round((EorP.armor ? EorP.maxHealth : emaxHealth) * 0.05 * crit)}`)
-					status.length = status.length -= 1
-					if (status.length === 0) statuses.splice(statuses.indexOf(status), 1)
-					return {
-						EorP: EorP,
-						statuses: statuses,
-						currentHealth: currentHealth,
-						chatLog: chatLog,
-						name: name
-					};
-				}
 			},
 			{
 				name: 'Regeneration',
@@ -31,24 +15,6 @@ function getAssets() {
 				description: `Gain 5% max HP for 6 turns.`,
 				positive: true,
 				length: 6,
-				use: async function (EorP, statuses, currentHealth, chatLog, name, emaxHealth) {
-					let status = statuses.find(({ id }) => id == this.id)
-					var crit = 1
-					if (Math.random() * 100 < 5) crit = 1.6
-					var heal = Math.round((EorP.armor ? EorP.maxHealth : emaxHealth) * 0.05 * crit)
-					if (currentHealth + heal > (EorP.armor ? EorP.maxHealth : emaxHealth)) heal = (EorP.armor ? EorP.maxHealth : emaxHealth) - currentHealth
-					currentHealth += heal
-					chatLog.push(`${name} has regeneration - ${crit === 2 ? 'CRITICAL ' : ''}💗${heal}`)
-					status.length = status.length -= 1
-					if (status.length == 0) statuses.splice(statuses.indexOf(status), 1)
-					return {
-						EorP: EorP,
-						statuses: statuses,
-						currentHealth: currentHealth,
-						chatLog: chatLog,
-						name: name
-					};
-				}
 			},
 			{
 				name: 'Bleed',
@@ -56,22 +22,6 @@ function getAssets() {
 				description: `Inflict 15% of initial damage for 3 turns.`,
 				positive: false,
 				length: 3,
-				use: async function (EorP, statuses, currentHealth, chatLog, name, emaxHealth) {
-					let status = statuses.find(({ id }) => id == this.id)
-					var crit = 1
-					if (Math.random() * 100 < 5) crit = 1.6
-					currentHealth = Math.round(currentHealth - (status.damage * 0.15 * crit))
-					chatLog.push(`${name} is bleeding - ${crit === 2 ? 'CRITICAL ' : ''}🩸${Math.round(status.damage * 0.15 * crit)}`)
-					status.length = status.length -= 1
-					if (status.length == 0) statuses.splice(statuses.indexOf(status), 1)
-					return {
-						EorP: EorP,
-						statuses: statuses,
-						currentHealth: currentHealth,
-						chatLog: chatLog,
-						name: name
-					};
-				}
 			},
 			{
 				name: 'Burn',
@@ -79,22 +29,6 @@ function getAssets() {
 				description: `Inflict 5% of initial damage for 10 turns.`,
 				positive: false,
 				length: 3,
-				use: async function (EorP, statuses, currentHealth, chatLog, name, emaxHealth) {
-					let status = statuses.find(({ id }) => id == this.id)
-					var crit = 1
-					if (Math.random() * 100 < 5) crit = 1.6
-					currentHealth = Math.round(currentHealth - (status.damage * 0.05 * crit))
-					chatLog.push(`${name} is burned - ${crit === 2 ? 'CRITICAL ' : ''}🔥${Math.round(status.damage * 0.05 * crit)}`)
-					status.length = status.length -= 1
-					if (status.length == 0) statuses.splice(statuses.indexOf(status), 1)
-					return {
-						EorP: EorP,
-						statuses: statuses,
-						currentHealth: currentHealth,
-						chatLog: chatLog,
-						name: name
-					};
-				}
 			},
 			{
 				name: 'Weakness',
@@ -151,22 +85,6 @@ function getAssets() {
 				description: `Inflict 15% of initial damage for 8 turns.`,
 				positive: false,
 				length: 8,
-				use: async function (EorP, statuses, currentHealth, chatLog, name, emaxHealth) {
-					let status = statuses.find(({ id }) => id == this.id)
-					var crit = 1
-					if (Math.random() * 100 < 5) crit = 1.6
-					currentHealth = Math.round(currentHealth - (status.damage * 0.15 * crit))
-					chatLog.push(`${name} is cursed - ${crit == 2 ? 'CRITICAL ' : ''}🖤${Math.round(status.damage * 0.15 * crit)}`)
-					status.length = status.length -= 1
-					if (status.length == 0) statuses.splice(statuses.indexOf(status), 1)
-					return {
-						EorP: EorP,
-						statuses: statuses,
-						currentHealth: currentHealth,
-						chatLog: chatLog,
-						name: name
-					};
-				}
 			},
 			{
 				name: 'Luck',
@@ -634,8 +552,8 @@ function getAssets() {
 				sprite: 'assets/enemies/AttackSlime.gif',
 				weapon: null,
 				health: 75,
-				attack: 100,
-				defense: 50,
+				attack: 50,
+				defense: 20,
 				crit: 0.2,
 				accuracy: 0.55,
 				skills: [
@@ -696,7 +614,7 @@ function getAssets() {
 				sprite: 'assets/enemies/DefenseSlime.gif',
 				weapon: null,
 				health: 125,
-				attack: 50,
+				attack: 35,
 				defense: 200,
 				crit: 0.05,
 				accuracy: 0.55,
@@ -756,7 +674,7 @@ function getAssets() {
 				sprite: 'assets/enemies/StaminaSlime.gif',
 				weapon: null,
 				health: 45,
-				attack: 50,
+				attack: 20,
 				defense: 50,
 				crit: 0.2,
 				accuracy: 0.7,

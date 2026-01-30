@@ -33,7 +33,7 @@
                 critdmg: 0,
                 accuracy: 0,
                 evasion: 0,
-                armor: 10,
+                armor: 60,
                 experience: 0,
                 health: 500,
                 maxHealth: 500,
@@ -43,7 +43,7 @@
                 armory: { armor: getAssets().items.find(armor => armor.name == 'None'), level: 1 },
                 level: 1,
                 attack: 32,
-                pstatuses: [] }">
+                pstatus: [] }">
             <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px;" x-text="name"></p>
 
             <div class="experience-bar-background"></div>
@@ -82,24 +82,24 @@
             : 'assets/playerbarcrackeddead.png'
             ">
             <div class="pstatus-effects">
-                <img x-show="pstatuses.includes('🩸')" src="assets/effects/Bleed.png">
-                <img x-show="pstatuses.includes('👁️')" src="assets/effects/Blindness.png">
-                <img x-show="pstatuses.includes('🔥')" src="assets/effects/Burn.png">
-                <img x-show="pstatuses.includes('🖤')" src="assets/effects/Curse.png">
-                <img x-show="pstatuses.includes('🏳️')" src="assets/effects/Empowerment.png">
-                <img x-show="pstatuses.includes('💨')" src="assets/effects/Evasion.png">
-                <img x-show="pstatuses.includes('💀')" src="assets/effects/FatalPoison.png">
-                <img x-show="pstatuses.includes('🎯')" src="assets/effects/Focus.png">
-                <img x-show="pstatuses.includes('🛡️')" src="assets/effects/Fortification.png">
-                <img x-show="pstatuses.includes('🍀')" src="assets/effects/Luck.png">
-                <img x-show="pstatuses.includes('💗')" src="assets/effects/Regeneration.png">
-                <img x-show="pstatuses.includes('💪')" src="assets/effects/Strength.png">
-                <img x-show="pstatuses.includes('🌀')" src="assets/effects/Weakness.png">
-                <img x-show="pstatuses.includes('🐈‍⬛')" src="assets/effects/BadLuck.png">
-                <img x-show="pstatuses.includes('💢')" src="assets/effects/Berserk.png">
-                <img x-show="pstatuses.includes('💫')" src="assets/effects/Stun.png">
-                <img x-show="pstatuses.includes('✨')" src="assets/effects/Blessing.png">
-                <img x-show="pstatuses.includes('🏴')" src="assets/effects/BadOmen.png">
+                <img x-show="pstatus.some(status => status.id == '🩸')" src="assets/effects/Bleed.png">
+                <img x-show="pstatus.some(status => status.id == '👁️')" src="assets/effects/Blindness.png">
+                <img x-show="pstatus.some(status => status.id == '🔥')" src="assets/effects/Burn.png">
+                <img x-show="pstatus.some(status => status.id == '🖤')" src="assets/effects/Curse.png">
+                <img x-show="pstatus.some(status => status.id == '🏳️')" src="assets/effects/Empowerment.png">
+                <img x-show="pstatus.some(status => status.id == '💨')" src="assets/effects/Evasion.png">
+                <img x-show="pstatus.some(status => status.id == '💀')" src="assets/effects/FatalPoison.png">
+                <img x-show="pstatus.some(status => status.id == '🎯')" src="assets/effects/Focus.png">
+                <img x-show="pstatus.some(status => status.id == '🛡️')" src="assets/effects/Fortification.png">
+                <img x-show="pstatus.some(status => status.id == '🍀')" src="assets/effects/Luck.png">
+                <img x-show="pstatus.some(status => status.id == '💗')" src="assets/effects/Regeneration.png">
+                <img x-show="pstatus.some(status => status.id == '💪')" src="assets/effects/Strength.png">
+                <img x-show="pstatus.some(status => status.id == '🌀')" src="assets/effects/Weakness.png">
+                <img x-show="pstatus.some(status => status.id == '🐈‍⬛')" src="assets/effects/BadLuck.png">
+                <img x-show="pstatus.some(status => status.id == '💢')" src="assets/effects/Berserk.png">
+                <img x-show="pstatus.some(status => status.id == '💫')" src="assets/effects/Stun.png">
+                <img x-show="pstatus.some(status => status.id == '✨')" src="assets/effects/Blessing.png">
+                <img x-show="pstatus.some(status => status.id == '🏴')" src="assets/effects/BadOmen.png">
             </div>
             <div class="battle-weaponry"
                 x-html="`⚔️${attack} 🛡️${armor}\n\n${assets.items.find(item => item.name == armory.armor.name) ?.synergies.some(syn => syn.weapon == weaponry.weapon.name) ?? false ? `<u>` : ''}${weaponry.weapon.name}\n\n${armory.armor.name}`"
@@ -222,31 +222,31 @@
                 attack: 0,
                 crit: 0,
                 accuracy: 0,
-                estatuses: ['🍀', '👁️']
+                estatus: []
             }" x-transition.opacity>
                 <div class="enemy" id="enemy">
                     <div class="enemy-level" x-text="`Level ${enemyLevel}`">?</div>
                     <div style="margin-top: 40px;">
                         <div class="enemy-name" x-text="enemy.name">???</div>
                         <div class="estatus-effects">
-                            <img x-show="estatuses.includes('🩸')" src="assets/effects/Bleed.png">
-                            <img x-show="estatuses.includes('👁️')" src="assets/effects/Blindness.png">
-                            <img x-show="estatuses.includes('🔥')" src="assets/effects/Burn.png">
-                            <img x-show="estatuses.includes('🖤')" src="assets/effects/Curse.png">
-                            <img x-show="estatuses.includes('🏳️')" src="assets/effects/Empowerment.png">
-                            <img x-show="estatuses.includes('💨')" src="assets/effects/Evasion.png">
-                            <img x-show="estatuses.includes('💀')" src="assets/effects/FatalPoison.png">
-                            <img x-show="estatuses.includes('🎯')" src="assets/effects/Focus.png">
-                            <img x-show="estatuses.includes('🛡️')" src="assets/effects/Fortification.png">
-                            <img x-show="estatuses.includes('🍀')" src="assets/effects/Luck.png">
-                            <img x-show="estatuses.includes('💗')" src="assets/effects/Regeneration.png">
-                            <img x-show="estatuses.includes('💪')" src="assets/effects/Strength.png">
-                            <img x-show="estatuses.includes('🌀')" src="assets/effects/Weakness.png">
-                            <img x-show="estatuses.includes('🐈‍⬛')" src="assets/effects/BadLuck.png">
-                            <img x-show="estatuses.includes('💢')" src="assets/effects/Berserk.png">
-                            <img x-show="estatuses.includes('💫')" src="assets/effects/Stun.png">
-                            <img x-show="estatuses.includes('✨')" src="assets/effects/Blessing.png">
-                            <img x-show="estatuses.includes('🏴')" src="assets/effects/BadOmen.png">
+                            <img x-show="estatus.some(status => status.id == '🩸')" src="assets/effects/Bleed.png">
+                            <img x-show="estatus.some(status => status.id == '👁️')" src="assets/effects/Blindness.png">
+                            <img x-show="estatus.some(status => status.id == '🔥')" src="assets/effects/Burn.png">
+                            <img x-show="estatus.some(status => status.id == '🖤')" src="assets/effects/Curse.png">
+                            <img x-show="estatus.some(status => status.id == '🏳️')" src="assets/effects/Empowerment.png">
+                            <img x-show="estatus.some(status => status.id == '💨')" src="assets/effects/Evasion.png">
+                            <img x-show="estatus.some(status => status.id == '💀')" src="assets/effects/FatalPoison.png">
+                            <img x-show="estatus.some(status => status.id == '🎯')" src="assets/effects/Focus.png">
+                            <img x-show="estatus.some(status => status.id == '🛡️')" src="assets/effects/Fortification.png">
+                            <img x-show="estatus.some(status => status.id == '🍀')" src="assets/effects/Luck.png">
+                            <img x-show="estatus.some(status => status.id == '💗')" src="assets/effects/Regeneration.png">
+                            <img x-show="estatus.some(status => status.id == '💪')" src="assets/effects/Strength.png">
+                            <img x-show="estatus.some(status => status.id == '🌀')" src="assets/effects/Weakness.png">
+                            <img x-show="estatus.some(status => status.id == '🐈‍⬛')" src="assets/effects/BadLuck.png">
+                            <img x-show="estatus.some(status => status.id == '💢')" src="assets/effects/Berserk.png">
+                            <img x-show="estatus.some(status => status.id == '💫')" src="assets/effects/Stun.png">
+                            <img x-show="estatus.some(status => status.id == '✨')" src="assets/effects/Blessing.png">
+                            <img x-show="estatus.some(status => status.id == '🏴')" src="assets/effects/BadOmen.png">
                         </div>
                     </div>
                     <div style="margin-top: 70px;">
