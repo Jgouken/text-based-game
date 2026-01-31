@@ -44,35 +44,91 @@
                 armory: { armor: getAssets().items.find(armor => armor.name == 'None'), level: 1 },
                 level: 1,
                 attack: 32,
-                pstatus: [] }">
-            <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px;" x-text="name"></p>
+                pstatus: [] ,
+                tooltipMessages: [
+                    `It's just you.`,
+                    `Why hello, ${name}.`,
+                    `Me!`,
+                    `${name} is the best.`,
+                    `${name} can't be changed later.`,
+                    `${name}, meet ${name}.`,
+                    `Who am I?`,
+                    `Oh how the tables turn.`,
+                    `Why am I doing this?`,
+                    `Hi, I'm ${name}.`,
+                    name,
+                    `Thank you so much for playing.`,
+                    `Are you lost?`,
+                    `Are you an angel?`,
+                    `Welcome to ${location}`,
+                    `I bet you're afraid of the ${enemy.name}.`,
+                    `Mwahahaha!`,
+                    `Well well well, if it isn't ${name}.`,
+                    `:|`,
+                    `The ruler of them all.`,
+                    `The destroyer.`,
+                    `Are you inflicting 10% of base damage for 3 rounds? Because you are on fire.`,
+                    `Have any plans later today?`,
+                    `Who else but you, right?`,
+                    `Welcome to Text-Based-Game.`,
+                    `My favorite person.`,
+                    `I think you spelled this wrong, btw.`,
+                    `Lil Timmy would be impressed.`,
+                    `I remember you.`,
+                    `Why not craft some capital letters?`,
+                    `The sky falls without you.`,
+                ],
+                tooltipText: 'You!',
+                randomizeTooltip() {
+                    this.tooltipText = this.tooltipMessages[Math.floor(Math.random() * this.tooltipMessages.length)];
+                }
+            }">
+            <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px; width: fit-content;" @mouseenter="randomizeTooltip()"
+                :data-tooltip="tooltipText" x-text="name"></p>
 
-            <div class="experience-bar-background"></div>
-            <div class="health-bar-background"></div>
-            <div class="stamina-bar-background"></div>
-
-            <div class="experience-bar" id="experience"></div>
-            <div class="health-bar" id="health"></div>
-            <div class="stamina-bar" id="stamina"></div>
-
-            <div class="experience-bar-stats" x-text="`Level ${level} - ${experience}/${Math.floor((level/0.07)**2)}`">
+            <div class="experience-bar-background"
+                :data-tooltip="`${Math.round((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
             </div>
-            <div class="health-bar-stats" x-text="`${health}/${maxHealth}`">0/0</div>
-            <div class="stamina-bar-stats" x-text="`${stamina}/${maxStamina}`">0/0</div>
+            <div class="health-bar-background"
+                :data-tooltip="`${Math.round((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`"></div>
+            <div class="stamina-bar-background"
+                :data-tooltip="`${Math.round((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
+            </div>
+
+            <div class="experience-bar" id="experience"
+                :data-tooltip="`${Math.round((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
+            </div>
+            <div class="health-bar" id="health"
+                :data-tooltip="`${Math.round((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`"></div>
+            <div class="stamina-bar" id="stamina"
+                :data-tooltip="`${Math.round((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
+            </div>
+
+            <div class="experience-bar-stats" x-text="`Level ${level} - ${experience}/${Math.floor((level/0.07)**2)}`"
+                :data-tooltip="`${Math.round((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
+            </div>
+            <div class="health-bar-stats" x-text="`${health}/${maxHealth}`"
+                :data-tooltip="`${Math.round((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`">0/0</div>
+            <div class="stamina-bar-stats" x-text="`${stamina}/${maxStamina}`"
+                :data-tooltip="`${Math.round((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
+                0/0</div>
 
             <div class="mini-stats">
-                <img src="assets/effects/Luck.png" alt="Crit Icon"
+                <img src="assets/effects/Luck.png"
                     style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
-                <span x-text="`${crit * 100}%`"></span>
-                <img src="assets/effects/Strength.png" alt="Crit Icon"
+                <span :data-tooltip="`Critical Chance\nThe chance your attack or heal will deal extra.`"
+                    x-text="`${crit * 100}%`"></span>
+                <img src="assets/effects/Strength.png"
                     style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
-                <span x-text="`${critdmg}x`"></span>
-                <img src="assets/effects/Focus.png" alt="Focus Icon"
+                <span :data-tooltip="`Critical Multiplier\nMultiplies your output on a successful crit.`"
+                    x-text="`${critdmg}x`"></span>
+                <img src="assets/effects/Focus.png"
                     style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
-                <span x-text="`${accuracy * 100}%`"></span>
-                <img src="assets/effects/Evasion.png" :data-tooltip="`Evasion`"
+                <span :data-tooltip="`Accuracy\nThe chance to hit with an attack.`"
+                    x-text="`${accuracy * 100}%`"></span>
+                <img src="assets/effects/Evasion.png"
                     style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
-                <span x-text="`${evasion * 100}%`"></span>
+                <span :data-tooltip="`Evasion\nDirectly decreases enemy accuracy.`" x-text="`${evasion * 100}%`"></span>
             </div>
             <img :src="
             health / maxHealth >= 0.8 ? 'assets/playerbar.png'
