@@ -117,7 +117,7 @@ function getAssets() {
 				name: 'Berserk',
 				id: '💢',
 				description: `Increases attack by 40% but increases damage taken by 30% over 3 rounds.`,
-				decAcc: 0.4,
+				damAdd: 0.4,
 				incDamTaken: 0.3,
 				positive: true,
 				rounds: 3
@@ -3954,7 +3954,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: "Holy Knights Armor",
+				name: "Holy Knight Armor",
 				description: "A shiny suit of iron armor that's been blessed by the holy church and made from the finest iron",
 
 				defense: 714,

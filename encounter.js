@@ -112,7 +112,9 @@ async function executeSkill({
 
     const damMult =
         (attackerStatuses.some(s => s.id == '🏳️') ? assets.statuses.find(s => s.id == '🏳️').damAdd : 0)
-        - (attackerStatuses.some(s => s.id == '💪') ? assets.statuses.find(s => s.id == '💪').damAdd : 0)
+        + (attackerStatuses.some(s => s.id == '💪') ? assets.statuses.find(s => s.id == '💪').damAdd : 0)
+        + (attackerStatuses.some(s => s.id == '💢') ? assets.statuses.find(s => s.id == '💢').damAdd : 0)
+        + (defenderStatuses.some(s => s.id == '💢') ? assets.statuses.find(s => s.id == '💢').incDamTaken : 0)
         - (attackerStatuses.some(s => s.id == '🌀') ? assets.statuses.find(s => s.id == '🌀').damReduc : 0)
         + 1;
 
