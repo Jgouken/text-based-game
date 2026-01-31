@@ -134,4 +134,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.body.addEventListener('touchend', hideTooltip);
 });
-

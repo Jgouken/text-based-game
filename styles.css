@@ -533,3 +533,29 @@ span {
     justify-content: center;
     align-items: center;
 }
+
+/* DEBUG */
+
+.debug {
+    top: -27vh;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px;
+    color: white;
+    font-family: 'Pixelify Sans', sans-serif;
+    max-width: 50%;
+}
+
+.debug-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.debug-grid input {
+    padding: 10px;
+    font-size: 18px;
+    background: #111;
+    color: white;
+    border: 2px solid #555;
+    font-family: 'Pixel-Font', sans-serif;
+}

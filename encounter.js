@@ -53,7 +53,7 @@ async function setPlayer() {
     updateBars()
 }
 
-async function startBattle() {
+async function startBattle(enemy = null) {
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
@@ -61,7 +61,7 @@ async function startBattle() {
     const location = assets.areas.find(area => area.name == background.location)
     const randomEnemy = randomByChance(location.enemies).name
 
-    const enemy = assets.enemies.find(enemy => enemy.name == randomEnemy)
+    if (!enemy) enemy = assets.enemies.find(enemy => enemy.name == randomEnemy)
     const level = Math.round(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl)
 
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
@@ -127,10 +127,11 @@ async function executeSkill({
 
     if (skill.cost && isPlayer) player.stamina -= skill.cost;
 
-    let hit = Math.random() >= 1 - attacker.accuracy - accDif;
+    let firstHit = Math.random() >= 1 - attacker.accuracy - accDif;
+    let hit = firstHit;
     let crit = Math.random() >= 1 - attacker.crit - critDif;
 
-    let skillLog = `<span style="color:yellow;" data-tooltip="${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${skill.health}\n` : ''}${skill.lifesteal ? `💞 ${skill.lifesteal}\n` : ''}${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + skill.pstatus.join('') : ''}${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}">${skill.cost ? '⚡' : ''}${skill.name}</span>`
+    let skillLog = `<span style="color:lightblue;" data-tooltip="${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${skill.health}\n` : ''}${skill.lifesteal ? `💞 ${skill.lifesteal}\n` : ''}${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + `${skill.pstatus.join('')}\n` : ''}${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}">${skill.cost ? '⚡' : ''}${skill.name}</span>`
     encounter.log.push(`- ${attackerName} used ${skillLog}`);
     let damageLog = () => { return `<span style="color:lightblue;" data-tooltip="⚔️ (((${attacker.attack} * ${skill.damage || 1})^2 * ${damMult}) / (${defender.defense} * ${fort})) * ${crit ? critMult : 1} = ${damage}">⚔️${damage}</span>` }
 
@@ -188,26 +189,28 @@ async function executeSkill({
         updateBars();
     }
 
-    if (skill.pstatus) {
-        encounter.log[encounter.log.length - 1] += (isPlayer ? `${skill.estatus ? ',' : 'and'} gained [` : ` and inflicted [`)
-        skill.pstatus.forEach(status => {
-            let stasset = assets.statuses.find(s => s.id == status)
-            if (player.pstatus.some(s => s.id == status)) player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
-            else player.pstatus.push({ ...stasset, damage })
-            encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`
-        });
-        encounter.log[encounter.log.length - 1] += `]`
-    }
+    if (firstHit) {
+        if (skill.pstatus) {
+            encounter.log[encounter.log.length - 1] += (isPlayer ? `${skill.estatus ? ',' : 'and'} gained [` : ` and inflicted [`)
+            skill.pstatus.forEach(status => {
+                let stasset = assets.statuses.find(s => s.id == status)
+                if (player.pstatus.some(s => s.id == status)) player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
+                else player.pstatus.push({ ...stasset, damage })
+                encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`
+            });
+            encounter.log[encounter.log.length - 1] += `]`
+        }
 
-    if (skill.estatus) {
-        encounter.log[encounter.log.length - 1] += (!isPlayer ? ` and gained [` : ` and inflicted [`)
-        skill.estatus.forEach(status => {
-            let stasset = assets.statuses.find(s => s.id == status)
-            if (encounter.estatus.some(s => s.id == status)) encounter.estatus[encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
-            else encounter.estatus.push({ ...assets.statuses.find(s => s.id == status), damage })
-            encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`
-        });
-        encounter.log[encounter.log.length - 1] += `]`
+        if (skill.estatus) {
+            encounter.log[encounter.log.length - 1] += (!isPlayer ? ` and gained [` : ` and inflicted [`)
+            skill.estatus.forEach(status => {
+                let stasset = assets.statuses.find(s => s.id == status)
+                if (encounter.estatus.some(s => s.id == status)) encounter.estatus[encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
+                else encounter.estatus.push({ ...assets.statuses.find(s => s.id == status), damage })
+                encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`
+            });
+            encounter.log[encounter.log.length - 1] += `]`
+        }
     }
 }
 
@@ -301,25 +304,25 @@ async function turnManager(toPlayer) {
         switch (s.id) {
             case '🩸': {
                 let damage = Math.round(s.baseDam * s.damage);
-                encounter.log.push(`${actorName} is bleeding - <span data-tooltip="🩸 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🩸${damage}</span>`);
+                encounter.log.push(`${actorName} is bleeding - <span style="color: lightblue;" data-tooltip="🩸 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🩸${damage}</span>`);
                 actor.health -= damage;
                 break;
             }
             case '🔥': {
                 let damage = Math.round(s.baseDam * s.damage);
-                encounter.log.push(`${actorName} is on fire - <span data-tooltip="🔥 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🔥${damage}</span>`);
+                encounter.log.push(`${actorName} is on fire - <span style="color: lightblue;" data-tooltip="🔥 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🔥${damage}</span>`);
                 actor.health -= damage;
                 break;
             }
             case '🖤': {
                 let damage = Math.round(s.baseDam * s.damage);
-                encounter.log.push(`${actorName} is cursed - <span data-tooltip="🖤 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🖤${damage}</span>`);
+                encounter.log.push(`${actorName} is cursed - <span style="color: lightblue;" data-tooltip="🖤 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🖤${damage}</span>`);
                 actor.health -= damage;
                 break;
             }
             case '💀': {
                 let damage = Math.round(s.maxHP * actor.maxHealth);
-                encounter.log.push(`${actorName} is poisoned - <span data-tooltip="💀 ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${damage}">💀${damage}</span>`);
+                encounter.log.push(`${actorName} is poisoned - <span style="color: lightblue;" data-tooltip="💀 ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${damage}">💀${damage}</span>`);
                 actor.health -= damage;
                 break;
             }
@@ -328,7 +331,7 @@ async function turnManager(toPlayer) {
                 if (actor.health + heal > actor.maxHealth)
                     heal = actor.maxHealth - actor.health;
 
-                encounter.log.push(`${actorName} is regenerating - <span data-tooltip="🩸 ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${Math.round(s.maxHP * actor.maxHealth)}${actor.health + Math.round(s.maxHP * actor.maxHealth) > actor.maxHealth ? '\nCapped to max health.' : ''}">💗${heal}</span>`);
+                encounter.log.push(`${actorName} is regenerating - <span style="color: lightblue;" data-tooltip="🩸 ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${Math.round(s.maxHP * actor.maxHealth)}${actor.health + Math.round(s.maxHP * actor.maxHealth) > actor.maxHealth ? '\nCapped to max health.' : ''}">💗${heal}</span>`);
                 actor.health += heal;
                 break;
             }

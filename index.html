@@ -20,7 +20,7 @@
     <div alt="Background" id="background-image" class="background-image" x-init="startup()" x-data="{
             name: localStorage.getItem('name') || '',
             location: 'Warhamshire',
-            screen: localStorage.getItem('name') ? 'returning' : 'new-player',
+            screen: localStorage.getItem('name') ? 'debug' : 'new-player',
             showPlayerBar: false,
             enemy: getAssets().enemies.find(enemy => enemy.name == 'Fox King'),
             enemyLevel: 21,
@@ -140,7 +140,7 @@
                 <div class="centered-buttons" style="justify-content: right; margin-top: -110px; margin-right: 10px;">
                     <button class="regular-button"
                         style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); justify-content: right; font-size: large;"
-                        @click="howToPlay()" x-transition.opacity>How To Play</button>
+                        @click="transition('returning', 'debug')" x-transition.opacity>How To Play</button>
                 </div>
 
                 <div class="centered-buttons"
@@ -293,8 +293,7 @@
                     </div>
                     <img class="enemy-thumbnail" :src="enemy.sprite">
                 </div>
-                <div class="battle-log" x-html="formattedLog"
-                x-init=" $watch('log', () => {
+                <div class="battle-log" x-html="formattedLog" x-init=" $watch('log', () => {
                     $nextTick(() => {
                         $el.scrollTop = $el.scrollHeight
                     })
@@ -380,9 +379,41 @@
             </div>
 
             <!-- Debug -->
-            <div id="debug" class="debug" x-show="screen === 'debug'" x-transition.opacity>
+            <div id="debug" class="debug" x-show="screen === 'debug'" x-transition.opacity x-data="debugPanel()">
 
+                <button class="regular-button"
+                    style="background:red; color:white; border:4px solid darkred; margin-bottom:10px;"
+                    @click="transition('debug', 'returning')">⬅
+                    Back</button>
+                <h1>⚙ Debug Panel</h1>
+                <div class="debug-grid">
+                    <input placeholder="Set Player Name" @keyup.enter="name = $event.target.value" />
+                    <input placeholder="Set Max Health"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = $event.target.value; updateBars(); $event.target.value = ''" />
+                    <input placeholder="Set Health"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).health = $event.target.value; updateBars() $event.target.value = ''" />
+                    <input placeholder="Set Max Stamina"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).stamina = $event.target.value; updateBars() $event.target.value = ''" />
+                    <input placeholder="Set Stamina"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxStamina = $event.target.value; updateBars() $event.target.value = ''" />
+                    <input placeholder="Set XP"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).experience = $event.target.value; updateBars() $event.target.value = ''" />
+                    <input placeholder="Set Weapon"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry = {weapon: assets.items.find(w => w.name == $event.target.value), level: 1}; $event.target.value = ''" />
+                    <input placeholder="Set Weapon Level"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry.level = $event.target.value; setPlayer(); $event.target.value = ''" />
+                    <input placeholder="Set Armor"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry = {weapon: assets.items.find(w => w.name == $event.target.value), level: 1}; $event.target.value = ''" />
+                    <input placeholder="Set Armor Level"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry.level = $event.target.value; setPlayer(); $event.target.value = ''" />
+                    <input placeholder="Set Level"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''" />
+                    <input placeholder="Encounter Enemy"
+                        @keyup.enter="transition('debug', 'encounter'); startBattle(assets.enemies.find(e => e.name == $event.target.value)); $event.target.value = ''" />
+                    <input placeholder="Enemy Level (1-50)" @keyup.enter="enemyLevel = $event.target.value; $event.target.value = ''" />
+                </div>
             </div>
+
         </div>
     </div>
 </body>
