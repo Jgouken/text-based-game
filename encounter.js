@@ -1,5 +1,5 @@
 // This file is for *in-battle* game logic for both the player and enemy.
-const assets = getAssets()
+const assets = () => { return getAssets() }
 
 async function resetBars(screen) {
     document.getElementById(`health-${screen}`).style.width = "0px";
@@ -164,7 +164,7 @@ async function executeSkill({
 
     if (skill.health || skill.flatHealth || skill.lifesteal) {
         encounter.log[encounter.log.length - 1] += ` and healed for `
-        critOrCrap = Math.random() >= 1 - player.crit - critDif;
+        crit = Math.random() >= 1 - player.crit - critDif;
 
         let heal = 0;
         if (skill.health) heal = skill.health * attacker.maxHealth;
@@ -176,15 +176,15 @@ async function executeSkill({
 
         if (skill.health) {
             let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💖 ${attacker.maxHealth} * ${skill.health} * ${crit ? critMult : 1} = ${Math.round(skill.health * attacker.maxHealth * (crit ? critMult : 1))}${(attacker.health + (skill.health * attacker.maxHealth * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💖${heal}</span>` }
-            encounter.log[encounter.log.length - 1] += `${critOrCrap ? 'CRIT ' : ''}${healingLog()}`
+            encounter.log[encounter.log.length - 1] += `${crit ? 'CRIT ' : ''}${healingLog()}`
         }
         else if (skill.flatHealth) {
             let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="❤️ ${skill.flatHealth} * ${crit ? critMult : 1} = ${Math.round(skill.flatHealth * (crit ? critMult : 1))}${(attacker.health + (skill.flatHealth * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">❤️${heal}</span>` }
-            encounter.log[encounter.log.length - 1] += `${critOrCrap ? 'CRIT ' : ''}${healingLog()}`
+            encounter.log[encounter.log.length - 1] += `${crit ? 'CRIT ' : ''}${healingLog()}`
         }
         else if (skill.lifesteal) {
             let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💞 ${damage} * ${skill.lifesteal} * ${crit ? critMult : 1} = ${Math.round(damage * skill.lifesteal * (crit ? critMult : 1))}${(attacker.health + ((damage * skill.lifesteal) * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💞${heal}</span>` }
-            encounter.log[encounter.log.length - 1] += `${critOrCrap ? 'CRIT ' : ''}${healingLog()}`
+            encounter.log[encounter.log.length - 1] += `${crit ? 'CRIT ' : ''}${healingLog()}`
         }
 
         attacker.health += Math.round(heal);
@@ -193,7 +193,7 @@ async function executeSkill({
 
     if (firstHit) {
         if (skill.pstatus) {
-            encounter.log[encounter.log.length - 1] += (isPlayer ? `${skill.estatus ? ',' : 'and'} gained [` : ` and inflicted [`)
+            encounter.log[encounter.log.length - 1] += (isPlayer ? `${skill.estatus ? ',' : ' and'} gained [` : ` and inflicted [`)
             skill.pstatus.forEach(status => {
                 let stasset = assets.statuses.find(s => s.id == status)
                 if (player.pstatus.some(s => s.id == status)) player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
@@ -272,6 +272,8 @@ async function turnManager(toPlayer) {
     const actorStatuses = toPlayer ? player.pstatus : encounter.estatus;
     const actorName = toPlayer ? background.name : background.enemy.name;
 
+    var stunned = false;
+
     updateBars();
     await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -301,6 +303,8 @@ async function turnManager(toPlayer) {
         if (cleansed.length > 0) encounter.log.push(`✨ All of ${actorName}'s negative effects were cleansed [${cleansed.join('')}].`);
         else encounter.log.push(`✨ ${actorName}'s Blessing gleams idly.`);
     }
+
+    if (actorStatuses.some(s => s.id === '💫')) stunned = true;
 
     for (const s of actorStatuses.slice()) {
         switch (s.id) {
@@ -356,9 +360,10 @@ async function turnManager(toPlayer) {
 
     updateBars();
 
-    if (actorStatuses.some(s => s.id == '💫')) {
+    if (stunned) {
         encounter.log.push(`💫 ${actorName} is stunned.`);
-        return turnManager(!toPlayer);
+        await new Promise(r => setTimeout(r, 600));
+        return await turnManager(!toPlayer);
     }
 
     if (toPlayer) battleStation.turn = true;
