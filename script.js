@@ -134,3 +134,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.body.addEventListener('touchend', hideTooltip);
 });
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === '`') {
+        const tag = document.activeElement.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+        const panel = document.getElementById('debug-panel');
+        if (!panel) return;
+
+        Alpine.$data(panel).open = !Alpine.$data(panel).open;
+
+        const weaponry = document.getElementById('battle-weaponry');
+        weaponry.style.right = Alpine.$data(panel).open ? '300px' : '10px';
+    }
+});

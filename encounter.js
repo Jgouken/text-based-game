@@ -1,5 +1,5 @@
 // This file is for *in-battle* game logic for both the player and enemy.
-const assets = {...getAssets()}
+const assets = getAssets()
 
 async function resetBars(screen) {
     document.getElementById(`health-${screen}`).style.width = "0px";
@@ -61,7 +61,7 @@ async function startBattle(enemy = null) {
     const location = assets.areas.find(area => area.name == background.location)
     const randomEnemy = randomByChance(location.enemies).name
 
-    const level = enemy ? background.enemyLevel : (Math.round(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl))
+    const level = enemy ? (background.enemyLevel || 1) : (Math.round(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl))
     if (!enemy) enemy = assets.enemies.find(enemy => enemy.name == randomEnemy)
 
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
@@ -125,43 +125,54 @@ async function executeSkill({
     let damage = attacker.attack;
     if (skill.damage) damage *= skill.damage;
 
-    damage = Math.round(((damage ** 2) * damMult) / (defender.defense * fort));
+    damage = Math.round(((damage ** 2) * damMult) / Math.max(1, defender.defense * fort));
 
     if (skill.cost && isPlayer) player.stamina -= skill.cost;
 
     let firstHit = Math.random() >= 1 - attacker.accuracy - accDif;
     let hit = firstHit;
     let crit = Math.random() >= 1 - attacker.crit - critDif;
+    var totalDealt = 0;
 
-    let skillLog = `<span style="color:lightblue;" data-tooltip="${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${skill.health}\n` : ''}${skill.lifesteal ? `💞 ${skill.lifesteal}\n` : ''}${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + `${skill.pstatus.join('')}\n` : ''}${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}">${skill.cost ? '⚡' : ''}${skill.name}</span>`
+    let skillLog = `<span style="color:lightblue;" data-tooltip="${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.round(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.round(skill.lifesteal * 100)}%\n` : ''}${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + `${skill.pstatus.join('')}\n` : ''}${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}">${skill.cost ? '⚡' : ''}${skill.name}</span>`
     encounter.log.push(`- ${attackerName} used ${skillLog}`);
-    let damageLog = () => { return `<span style="color:lightblue;" data-tooltip="⚔️ (((${attacker.attack} * ${skill.damage || 1})^2 * ${damMult}) / (${defender.defense} * ${fort})) * ${crit ? critMult : 1} = ${damage}">⚔️${damage}</span>` }
+
+    let damageLog = (final) => {
+        return `<span style="color:lightblue;" data-tooltip="⚔️ (((${attacker.attack} * ${skill.damage || 1})^2 * ${damMult}) / (${defender.defense} * ${fort})) * ${crit ? critMult : 1} = ${final}">⚔️${final}</span>`;
+    };
 
     const attack = () => {
         let final = hit ? Math.floor(damage * (crit ? critMult : 1)) : 0;
         defender.health -= final;
+        totalDealt += final;
         return final;
     };
 
     if (skill.times) {
-        attack();
-        encounter.log[encounter.log.length - 1] += ` on ${targetName} ${hit ? (crit ? `for CRIT ${damageLog()}` : `for ${damageLog()}`) : 'for a MISS'}`;
+        const dealt = attack();
+        encounter.log[encounter.log.length - 1] +=
+            ` on ${targetName} ${hit ? (crit ? `for CRIT ${damageLog(dealt)}` : `for ${damageLog(dealt)}`) : 'for a MISS'}`;
         updateBars();
 
         for (let i = 1; i < skill.times; i++) {
             await new Promise(r => setTimeout(r, 1000 / skill.times));
             hit = Math.random() >= 1 - attacker.accuracy - accDif;
             crit = Math.random() >= 1 - attacker.crit - critDif;
-            attack();
-            encounter.log[encounter.log.length - 1] += `, ${hit ? (crit ? `CRIT ${damageLog()}` : `${damageLog()}`) : 'MISS'}`;
+
+            const dealt = attack();
+            encounter.log[encounter.log.length - 1] +=
+                `, ${hit ? (crit ? `CRIT ${damageLog(dealt)}` : `${damageLog(dealt)}`) : 'MISS'}`;
             updateBars();
         }
-    } else if (skill.attack) {
-        attack();
-        encounter.log[encounter.log.length - 1] += ` on ${targetName} ${hit ? (crit ? `for CRIT ${damageLog()}` : `for ${damageLog()}`) : 'and MISSED!'}`;
+    }
+    else if (skill.attack) {
+        const dealt = attack();
+        encounter.log[encounter.log.length - 1] +=
+            ` on ${targetName} ${hit ? (crit ? `for CRIT ${damageLog(dealt)}` : `for ${damageLog(dealt)}`) : 'and MISSED!'}`;
         updateBars();
     }
 
+    // ---- HEALING ----
     if (skill.health || skill.flatHealth || skill.lifesteal) {
         encounter.log[encounter.log.length - 1] += ` and healed for `
         crit = Math.random() >= 1 - player.crit - critDif;
@@ -169,7 +180,7 @@ async function executeSkill({
         let heal = 0;
         if (skill.health) heal = skill.health * attacker.maxHealth;
         else if (skill.flatHealth) heal = skill.flatHealth;
-        else if (skill.lifesteal) heal = damage * skill.lifesteal;
+        else if (skill.lifesteal) heal = totalDealt * skill.lifesteal;
 
         heal = Math.round(heal * (crit ? critMult : 1));
         if (attacker.health + heal > attacker.maxHealth) heal = attacker.maxHealth - attacker.health;
@@ -183,7 +194,7 @@ async function executeSkill({
             encounter.log[encounter.log.length - 1] += `${crit ? 'CRIT ' : ''}${healingLog()}`
         }
         else if (skill.lifesteal) {
-            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💞 ${damage} * ${skill.lifesteal} * ${crit ? critMult : 1} = ${Math.round(damage * skill.lifesteal * (crit ? critMult : 1))}${(attacker.health + ((damage * skill.lifesteal) * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💞${heal}</span>` }
+            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💞 ${totalDealt} * ${skill.lifesteal} * ${crit ? critMult : 1} = ${Math.round(totalDealt * skill.lifesteal * (crit ? critMult : 1))}${(attacker.health + ((totalDealt * skill.lifesteal) * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💞${heal}</span>` }
             encounter.log[encounter.log.length - 1] += `${crit ? 'CRIT ' : ''}${healingLog()}`
         }
 
@@ -191,27 +202,32 @@ async function executeSkill({
         updateBars();
     }
 
+    // ---- STATUS ----
     if (firstHit) {
         if (skill.pstatus) {
-            encounter.log[encounter.log.length - 1] += (isPlayer ? `${skill.estatus ? ',' : ' and'} gained [` : ` and inflicted [`)
+            encounter.log[encounter.log.length - 1] += (isPlayer ? `${skill.estatus ? ',' : ' and'} gained [` : ` and inflicted [`);
             skill.pstatus.forEach(status => {
-                let stasset = assets.statuses.find(s => s.id == status)
-                if (player.pstatus.some(s => s.id == status)) player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
-                else player.pstatus.push({ ...stasset, damage })
+                let stasset = assets.statuses.find(s => s.id == status);
+                if (player.pstatus.some(s => s.id == status))
+                    player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...stasset, damage: totalDealt };
+                else player.pstatus.push({ ...stasset, damage: totalDealt });
+
                 encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`
             });
-            encounter.log[encounter.log.length - 1] += `]`
+            encounter.log[encounter.log.length - 1] += `]`;
         }
 
         if (skill.estatus) {
-            encounter.log[encounter.log.length - 1] += (!isPlayer ? ` and gained [` : ` and inflicted [`)
+            encounter.log[encounter.log.length - 1] += (!isPlayer ? ` and gained [` : ` and inflicted [`);
             skill.estatus.forEach(status => {
-                let stasset = assets.statuses.find(s => s.id == status)
-                if (encounter.estatus.some(s => s.id == status)) encounter.estatus[encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
-                else encounter.estatus.push({ ...assets.statuses.find(s => s.id == status), damage })
+                let stasset = assets.statuses.find(s => s.id == status);
+                if (encounter.estatus.some(s => s.id == status))
+                    encounter.estatus[encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status))] = { ...stasset, damage: totalDealt };
+                else encounter.estatus.push({ ...stasset, damage: totalDealt });
+
                 encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`
             });
-            encounter.log[encounter.log.length - 1] += `]`
+            encounter.log[encounter.log.length - 1] += `]`;
         }
     }
 }
@@ -271,11 +287,20 @@ async function turnManager(toPlayer) {
     const actor = toPlayer ? player : encounter;
     const actorStatuses = toPlayer ? player.pstatus : encounter.estatus;
     const actorName = toPlayer ? background.name : background.enemy.name;
-
     var stunned = false;
-
     updateBars();
     await new Promise(resolve => setTimeout(resolve, 500));
+
+    if (encounter.health <= 0) {
+        encounter.log.push(`--- ${background.enemy.name} has died. ---`)
+        return;
+    }
+
+    if (player.health <= 0) {
+        encounter.log.push(`--- ${background.name} has died. ---`)
+        return;
+    }
+
 
     if (actorStatuses.some(s => s.id == '✨') && actorStatuses.some(s => s.id == '🏴')) {
         actorStatuses.length = 0;
@@ -363,8 +388,12 @@ async function turnManager(toPlayer) {
     if (stunned) {
         encounter.log.push(`💫 ${actorName} is stunned.`);
         await new Promise(r => setTimeout(r, 600));
-        return await turnManager(!toPlayer);
+        actorStatuses.forEach(s => {
+            if (s.id == '💫') s.rounds = Math.max(0, s.rounds - 1);
+        });
+        return turnManager(!toPlayer);
     }
+
 
     if (toPlayer) battleStation.turn = true;
     else {

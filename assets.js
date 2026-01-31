@@ -30,7 +30,7 @@ function getAssets() {
 				name: 'Burn',
 				id: '🔥',
 				description: `Inflicts 10% of initial damage for 5 rounds.`,
-				baseDam: 0.15,
+				baseDam: 0.1,
 				positive: false,
 				rounds: 5,
 			},

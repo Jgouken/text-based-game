@@ -189,9 +189,9 @@ span {
 }
 
 .battle-weaponry {
-    position: absolute;
-    left: 225%;
-    top: 50%;
+    position: fixed;
+    right: 10px;
+    top: 85%;
     transform: translateY(-50%);
     background-color: rgba(0, 0, 0, 0.5);
     border: 12px solid rgb(0, 0, 0);
@@ -203,7 +203,9 @@ span {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 35%;
+    width: 250px;
+    z-index: 20;
+    transition: all 0.2s ease;
 }
 
 .pstatus-effects {
@@ -538,24 +540,28 @@ span {
 
 .debug {
     position: fixed;
-    top: 43%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
+    z-index: 100;
+    top: 50%;
+    right: 0;
+    transform: translate(110%, -50%);
+    transition: transform 0.35s ease;
     padding: 20px;
     color: white;
     font-family: 'Pixelify Sans', sans-serif;
-
-    width: 50%;
-    max-width: 600px;
-
-    max-height: 80vh;
+    max-width: 50%;
+    max-height: 70vh;
     overflow-y: auto;
-
-    background: rgba(0, 0, 0, 0.85);
-    border: 2px solid #555;
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #444;
+    backdrop-filter: blur(6px);
+    box-shadow: -6px 0 20px rgba(0, 0, 0, 0.6);
 }
+
+/* when open */
+.debug.open {
+    transform: translate(0%, -50%);
+}
+
 
 .debug-grid {
     display: grid;
