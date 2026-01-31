@@ -380,7 +380,6 @@
 
             <!-- Debug -->
             <div id="debug" class="debug" x-show="screen === 'debug'" x-transition.opacity x-data="debugPanel()">
-
                 <button class="regular-button"
                     style="background:red; color:white; border:4px solid darkred; margin-bottom:10px;"
                     @click="transition('debug', 'returning')">⬅
@@ -399,18 +398,19 @@
                     <input placeholder="Set XP"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).experience = $event.target.value; updateBars() $event.target.value = ''" />
                     <input placeholder="Set Weapon"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry = {weapon: assets.items.find(w => w.name == $event.target.value), level: 1}; $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry = {weapon: assets.items.find(w => w.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''" />
                     <input placeholder="Set Weapon Level"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry.level = $event.target.value; setPlayer(); $event.target.value = ''" />
                     <input placeholder="Set Armor"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry = {weapon: assets.items.find(w => w.name == $event.target.value), level: 1}; $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).armory = {weapon: assets.items.find(a => a.name == $event.target.value), level: 1}; $event.target.value = ''" />
                     <input placeholder="Set Armor Level"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry.level = $event.target.value; setPlayer(); $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).armory.level = $event.target.value; setPlayer(); $event.target.value = ''" />
                     <input placeholder="Set Level"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''" />
+                    <input placeholder="Enemy Level (1-50)"
+                        @keyup.enter="enemyLevel = $event.target.value; setPlayer(); $event.target.value = ''" />
                     <input placeholder="Encounter Enemy"
                         @keyup.enter="transition('debug', 'encounter'); startBattle(assets.enemies.find(e => e.name == $event.target.value)); $event.target.value = ''" />
-                    <input placeholder="Enemy Level (1-50)" @keyup.enter="enemyLevel = $event.target.value; $event.target.value = ''" />
                 </div>
             </div>
 
