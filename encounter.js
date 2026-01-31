@@ -78,7 +78,7 @@ async function startBattle() {
     encounter.accuracy = enemy.accuracy
 
     encounter.log = []
-    encounter.log.push(`⚔️ ${background.name} (${player.level}) vs. ${enemy.name} (${level})⚔️`)
+    encounter.log.push(`⚔️${background.name} (${player.level}) vs. ${enemy.name} (${level})⚔️`)
     battleStation.round = 1;
     battleStation.turn = true;
 
