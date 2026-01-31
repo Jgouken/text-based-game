@@ -1,5 +1,5 @@
 // This file is for *in-battle* game logic for both the player and enemy.
-const assets = () => { return getAssets() }
+const assets = {...getAssets()}
 
 async function resetBars(screen) {
     document.getElementById(`health-${screen}`).style.width = "0px";
