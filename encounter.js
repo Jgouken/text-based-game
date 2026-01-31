@@ -203,7 +203,7 @@ async function executeSkill({
     }
 
     // ---- STATUS ----
-    if (firstHit) {
+    if (firstHit || !skill.attack) {
         if (skill.pstatus) {
             encounter.log[encounter.log.length - 1] += (isPlayer ? `${skill.estatus ? ',' : ' and'} gained [` : ` and inflicted [`);
             skill.pstatus.forEach(status => {
@@ -211,6 +211,7 @@ async function executeSkill({
                 if (player.pstatus.some(s => s.id == status))
                     player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...stasset, damage: totalDealt };
                 else player.pstatus.push({ ...stasset, damage: totalDealt });
+                console.log(player.pstatus)
 
                 encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`
             });
@@ -292,12 +293,14 @@ async function turnManager(toPlayer) {
     await new Promise(resolve => setTimeout(resolve, 500));
 
     if (encounter.health <= 0) {
-        encounter.log.push(`--- ${background.enemy.name} has died. ---`)
+        encounter.log.push(`--- ${background.enemy.name} has died. ---`);
+        transition('encounter', 'returning')
         return;
     }
 
     if (player.health <= 0) {
-        encounter.log.push(`--- ${background.name} has died. ---`)
+        encounter.log.push(`--- ${background.name} has died. ---`);
+        transition('encounter', 'returning')
         return;
     }
 

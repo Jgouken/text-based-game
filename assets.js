@@ -3181,7 +3181,7 @@ function getAssets() {
 					{
 						name: "Coated Shuriken",
 						cost: 45,
-						description: "Rapidly throw a variety of kunai at the foe.",
+						description: "Rapidly throw a variety of shuriken at the foe.",
 						damage: 0.25,
 						times: 9,
 						estatus: ["🌀", "💀"],
