@@ -13,10 +13,10 @@ function getAssets() {
 			{
 				name: 'Regeneration',
 				id: '💗',
-				description: `Gain 5% max HP for 5 rounds.`,
+				description: `Gain 5% max HP for 3 rounds.`,
 				positive: true,
 				maxHP: 0.05,
-				rounds: 6,
+				rounds: 3,
 			},
 			{
 				name: 'Bleed',
@@ -32,7 +32,7 @@ function getAssets() {
 				description: `Inflict 10% of base damage for 5 rounds.`,
 				baseDam: 0.15,
 				positive: false,
-				rounds: 5,
+				rounds: 3,
 			},
 			{
 				name: 'Weakness',
@@ -92,10 +92,10 @@ function getAssets() {
 			{
 				name: 'Curse',
 				id: '🖤',
-				description: `Inflict 15% of initial damage for 4 rounds.`,
-				baseDam: 0.15,
+				description: `Inflict 25% of initial damage for 4 rounds.`,
+				baseDam: 0.25,
 				positive: false,
-				rounds: 8,
+				rounds: 4,
 			},
 			{
 				name: 'Luck',
@@ -3620,7 +3620,7 @@ function getAssets() {
 				name: "None",
 				description: "Go commando.",
 
-				armor: 0,
+				defense: 0,
 				maxlvl: 1,
 				minlvl: 1,
 				alvlmult: 1,
@@ -3631,7 +3631,7 @@ function getAssets() {
 				name: "Tattered Rags",
 				description: "Torn clothing together enough to cover the most important part and keep warm.",
 
-				armor: 10,
+				defense: 10,
 				maxlvl: 10,
 				minlvl: 1,
 				alvlmult: 3,
@@ -3646,7 +3646,7 @@ function getAssets() {
 					{
 						weapon: "Branch",
 						name: "Thick",
-						armor: 5,
+						defense: 5,
 					},
 				]
 			},
@@ -3654,7 +3654,7 @@ function getAssets() {
 				name: "Damaged Cloak",
 				description: "A brown cloak that seems to have been used extensively based on the heavily faded color and abundant tears",
 
-				armor: 14,
+				defense: 14,
 				maxlvl: 10,
 				minlvl: 1,
 				alvlmult: 3,
@@ -3669,7 +3669,7 @@ function getAssets() {
 					{
 						weapon: "Rusty Dagger",
 						name: "Thick",
-						armor: 5,
+						defense: 5,
 					},
 				]
 			},
@@ -3677,7 +3677,7 @@ function getAssets() {
 				name: "Rogues Cloak",
 				description: "A brown cloak that's still in good condition that should provide light protection due to it's a strong fabric",
 
-				armor: 29,
+				defense: 29,
 				maxlvl: 12,
 				minlvl: 4,
 				alvlmult: 3,
@@ -3695,7 +3695,7 @@ function getAssets() {
 				name: "Perfect Leaf",
 				description: "A leaf with a vibrant hue of green, no missing leaves, damage, and a impressive shape that seems completely symmetrical it must be special.",
 
-				armor: 18,
+				defense: 18,
 				maxlvl: 12,
 				minlvl: 4,
 				alvlmult: 3,
@@ -3713,7 +3713,7 @@ function getAssets() {
 				name: "Padded Clothing",
 				description: "Multiple layers of normal clothing sown together to create a thick set shirt and pants , simple but surprisingly effective.",
 
-				armor: 46,
+				defense: 46,
 				maxlvl: 14,
 				minlvl: 6,
 				alvlmult: 3,
@@ -3723,7 +3723,7 @@ function getAssets() {
 					{
 						weapon: "Iron Short Sword",
 						name: "Hide",
-						armor: 10,
+						defense: 10,
 					},
 				]
 			},
@@ -3731,7 +3731,7 @@ function getAssets() {
 				name: "Confidence",
 				description: "Who needs armor or even clothing for that fact when you have such a magnificently strong body and mind? Clearly not you since you're just that impressive of an individual.",
 
-				armor: 183,
+				defense: 183,
 				maxlvl: 45,
 				minlvl: 25,
 				alvlmult: 12,
@@ -3749,7 +3749,7 @@ function getAssets() {
 				name: "Leather Armor",
 				description: "A set of armor made from the tough hide of some kind of unlucky animal which provides good protect from a variety of attacks.",
 
-				armor: 137,
+				defense: 137,
 				maxlvl: 24,
 				minlvl: 13,
 				alvlmult: 6,
@@ -3772,7 +3772,7 @@ function getAssets() {
 				name: "Light Armor",
 				description: "A set of leather armor that comes with a small set of metal coverings protecting most vital spots.",
 
-				armor: 196,
+				defense: 196,
 				maxlvl: 28,
 				minlvl: 15,
 				alvlmult: 6,
@@ -3782,7 +3782,7 @@ function getAssets() {
 					{
 						weapon: "Iron Sword",
 						name: "Tough",
-						armor: 15,
+						defense: 15,
 					},
 				]
 			},
@@ -3790,7 +3790,7 @@ function getAssets() {
 				name: "Hunter Cloak",
 				description: "A set of very light armor made from leather that provides decent protection without inhibiting mobility, topped of with a dark green cloak that conceals movement and provides even more protection.",
 
-				armor: 179,
+				defense: 179,
 				maxlvl: 32,
 				minlvl: 19,
 				alvlmult: 9,
@@ -3808,7 +3808,7 @@ function getAssets() {
 				name: "Assassin's Cloak",
 				description: "A black cloak made from a very light material with a set of padded clothing underneath.",
 
-				armor: 179,
+				defense: 179,
 				maxlvl: 32,
 				minlvl: 19,
 				alvlmult: 9,
@@ -3826,7 +3826,7 @@ function getAssets() {
 				name: "Lumberjack Atire",
 				description: "A plaid long shirt and extra large black jeans a combo that just feels right for some unknown reason.",
 
-				armor: 408,
+				defense: 408,
 				maxlvl: 38,
 				minlvl: 26,
 				alvlmult: 9,
@@ -3836,7 +3836,7 @@ function getAssets() {
 					{
 						weapon: "Lumberjack Axe",
 						name: "Strong",
-						armor: 20,
+						defense: 20,
 					},
 				]
 			},
@@ -3844,7 +3844,7 @@ function getAssets() {
 				name: "Thick Sleeveless Hoodie",
 				description: "A very large black hoodie that had it's sleeves cut off with a pair of baggy jeans.",
 
-				armor: 297,
+				defense: 297,
 				maxlvl: 40,
 				minlvl: 25,
 				alvlmult: 4,
@@ -3862,7 +3862,7 @@ function getAssets() {
 				name: "Leather Apron & Mask",
 				description: "A stained apron made from leather and cloth facial covering that shields your nose and mouth.",
 
-				armor: 574,
+				defense: 574,
 				maxlvl: 50,
 				minlvl: 26,
 				alvlmult: 12,
@@ -3880,7 +3880,7 @@ function getAssets() {
 				name: "Iron Armor",
 				description: "A full set of iron armor that protects your body from the neck down at the cost of mobility.",
 
-				armor: 444,
+				defense: 444,
 				maxlvl: 38,
 				minlvl: 26,
 				alvlmult: 3,
@@ -3890,7 +3890,7 @@ function getAssets() {
 					{
 						weapon: "Great Sword",
 						name: "Heavy",
-						armor: 25,
+						defense: 25,
 					},
 					{
 						weapon: "Skull Crusher",
@@ -3903,7 +3903,7 @@ function getAssets() {
 				name: "Dragon Cloak",
 				description: "A stylish jet-black cloak made from a extremely durable material rumored to actually be acquired by slaying a black dragon.",
 
-				armor: 312,
+				defense: 312,
 				maxlvl: 40,
 				minlvl: 30,
 				alvlmult: 12,
@@ -3921,7 +3921,7 @@ function getAssets() {
 				name: "Spiked Leather Armor",
 				description: "Leather armor that's thin at the joints and extremely thick at vitals providing a mix of both maneuverability and protection. Having the mini spikes on it is mostly a bonus.",
 
-				armor: 569,
+				defense: 569,
 				maxlvl: 40,
 				minlvl: 30,
 				alvlmult: 12,
@@ -3939,7 +3939,7 @@ function getAssets() {
 				name: "Shinobi Garments",
 				description: "The traditionally attire of those who practice ninjutsu consisting of a black jacket, black trousers, light sandals, and a hooded cowl.",
 
-				armor: 357,
+				defense: 357,
 				maxlvl: 50,
 				minlvl: 30,
 				alvlmult: 12,
@@ -3957,7 +3957,7 @@ function getAssets() {
 				name: "Holy Knights Armor",
 				description: "A shiny suit of iron armor that's been blessed by the holy church and made from the finest iron",
 
-				armor: 714,
+				defense: 714,
 				maxlvl: 50,
 				minlvl: 30,
 				alvlmult: 12,
@@ -3967,7 +3967,7 @@ function getAssets() {
 					{
 						weapon: "Holy Spear",
 						name: "Unbreakable",
-						armor: 50,
+						defense: 50,
 					},
 					{
 						weapon: "Evil Pulverizer",
@@ -3980,7 +3980,7 @@ function getAssets() {
 				name: "Coat of Darkness",
 				description: "A sinister dark clock that you're almost positive makes you look like a cultist.",
 
-				armor: 420,
+				defense: 420,
 				maxlvl: 50,
 				minlvl: 30,
 				alvlmult: 45,
@@ -4003,7 +4003,7 @@ function getAssets() {
 				name: "Blessed Gi",
 				description: "A martial artist Gi that has been extensively blessed by the church till it's been imbued holy energy.",
 
-				armor: 767,
+				defense: 767,
 				maxlvl: 50,
 				minlvl: 40,
 				alvlmult: 15,
@@ -4013,7 +4013,7 @@ function getAssets() {
 					{
 						weapon: "Holy Arts",
 						name: "Reinforced",
-						armor: 35,
+						defense: 35,
 					},
 				]
 			},
@@ -4021,7 +4021,7 @@ function getAssets() {
 				name: "Sinner Jacket",
 				description: "A badass biker jacket with a dragon decal on the back. It's oozing an intangible black substance.",
 
-				armor: 383,
+				defense: 383,
 				maxlvl: 50,
 				minlvl: 40,
 				alvlmult: 15,
@@ -4039,7 +4039,7 @@ function getAssets() {
 				name: "Walking Church",
 				description: "A sacred treasure of the Holy Church, it's a priest robe bestowed with a blessing of protection of the highest grade that virtually makes the robe indestructible while protecting the wearer from most forms of damage.",
 
-				armor: 1350,
+				defense: 1350,
 				maxlvl: 50,
 				minlvl: 45,
 				alvlmult: 15,
@@ -4057,7 +4057,7 @@ function getAssets() {
 				name: "Black Mourning",
 				description: "A black hooded cloak that's constantly secreting a black fog that's unnaturally cold to the touch. Instincts alone is enough to know this isn't a normal cloak...",
 
-				armor: 270,
+				defense: 270,
 				maxlvl: 50,
 				minlvl: 45,
 				alvlmult: 15,
@@ -4075,7 +4075,7 @@ function getAssets() {
 				name: "Equinox",
 				description: "An impossible robe that has been embued with holy and unholy energy, carefully crafted by an unknown seamstress.",
 
-				armor: 810,
+				defense: 810,
 				maxlvl: 50,
 				minlvl: 45,
 				alvlmult: 15,

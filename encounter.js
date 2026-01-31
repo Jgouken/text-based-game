@@ -36,12 +36,12 @@ async function setPlayer() {
 
     player.maxHealth = 500 + (((player.level || 1) - 1) * 50)
     player.health = player.maxHealth
-    
+
     player.maxStamina = 30 + (((player.level || 1) - 1) * 5)
     player.stamina = player.maxStamina
 
     player.attack = 32 + (((player.level || 1) - 1) * 6) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel)
-    player.armor = 60 + (((player.level || 1) - 1) * 10) + player.armory.armor.armor + ((player.armory.level - 1) * player.armory.armor.alvlmult)
+    player.defense = 60 + (((player.level || 1) - 1) * 10) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult)
 
     player.crit = player.weaponry.weapon.crit;
     player.critdmg = player.weaponry.weapon.critdmg;
@@ -85,40 +85,130 @@ async function startBattle() {
     updateBars()
 }
 
-/**
- * 
- * @param {int} index 
- * The index of the skill.
- * -3 is Flee,
- * -2 is Item,
- * -1 is Pass,
- * 0 is Basic Attack,
- * 1-3 - a Weapon Skill.
- */
-async function skill(index) {
-    const battleStation = Alpine.$data(document.getElementById('battle-station'));
-    battleStation.turn = false;
 
-    const background = Alpine.$data(document.getElementById('background-image'));
+
+async function executeSkill({
+    attacker,
+    defender,
+    attackerStatuses,
+    defenderStatuses,
+    skill,
+    attackerName,
+    targetName,
+    critMult = 1,
+    isPlayer = false
+}) {
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
 
-    const accDif = (player.pstatus.some(s => s.id == '🎯') ? assets.statuses.find(s => s.id == '🎯').incAcc : 0)
-        + (player.pstatus.some(s => s.id == '🎯') ? assets.statuses.find(s => s.id == '🎯').incAcc : 0)
-        - (player.pstatus.some(s => s.id == '👁️') ? assets.statuses.find(s => s.id == '👁️').decAcc : 0)
-        - (player.pstatus.some(s => s.id == '💢') ? assets.statuses.find(s => s.id == '💢').decAcc : 0)
-        - (encounter.estatus.some(s => s.id == '💨') ? assets.statuses.find(s => s.id == '💨').decEnAcc : 0)
+    const accDif =
+        (attackerStatuses.some(s => s.id == '🎯') ? assets.statuses.find(s => s.id == '🎯').incAcc : 0)
+        - (attackerStatuses.some(s => s.id == '👁️') ? assets.statuses.find(s => s.id == '👁️').decAcc : 0)
+        - (defenderStatuses.some(s => s.id == '💨') ? assets.statuses.find(s => s.id == '💨').decEnAcc : 0);
 
-    const critDif = (player.pstatus.some(s => s.id == '🍀') ? assets.statuses.find(s => s.id == '🍀').incCrit : 0)
-        - (player.pstatus.some(s => s.id == '🐈‍⬛') ? assets.statuses.find(s => s.id == '🐈‍⬛').decCrit : 0)
+    const critDif =
+        (attackerStatuses.some(s => s.id == '🍀') ? assets.statuses.find(s => s.id == '🍀').incCrit : 0)
+        - (attackerStatuses.some(s => s.id == '🐈‍⬛') ? assets.statuses.find(s => s.id == '🐈‍⬛').decCrit : 0);
 
-    const damMult = (player.pstatus.some(s => s.id == '🏳️') ? assets.statuses.find(s => s.id == '🏳️').damAdd : 0)
-        - (player.pstatus.some(s => s.id == '💪') ? assets.statuses.find(s => s.id == '💪').damAdd : 0)
-        - (player.pstatus.some(s => s.id == '🌀') ? assets.statuses.find(s => s.id == '🌀').damReduc : 0)
-        + 1
+    const damMult =
+        (attackerStatuses.some(s => s.id == '🏳️') ? assets.statuses.find(s => s.id == '🏳️').damAdd : 0)
+        - (attackerStatuses.some(s => s.id == '💪') ? assets.statuses.find(s => s.id == '💪').damAdd : 0)
+        - (attackerStatuses.some(s => s.id == '🌀') ? assets.statuses.find(s => s.id == '🌀').damReduc : 0)
+        + 1;
 
-    const enemyFortification = (encounter.estatus.some(s => s.id == '🛡️') ? assets.statuses.find(s => s.id == '🛡️').armorAdd : 0)
-        + 1
+    const fort =
+        (defenderStatuses.some(s => s.id == '🛡️') ? assets.statuses.find(s => s.id == '🛡️').armorAdd : 0)
+        + 1;
+
+    let damage = attacker.attack;
+    if (skill.damage) damage *= skill.damage;
+
+    damage = Math.round(((damage ** 2) * damMult) / (defender.defense * fort));
+
+    if (skill.cost && isPlayer) player.stamina -= skill.cost;
+
+    let hit = Math.random() >= 1 - attacker.accuracy - accDif;
+    let crit = Math.random() >= 1 - attacker.crit - critDif;
+
+    encounter.log.push(`- ${attackerName} used ${skill.cost ? '⚡' : ''}${skill.name}`);
+
+    const attack = () => {
+        let final = hit ? Math.floor(damage * (crit ? critMult : 1)) : 0;
+        defender.health -= final;
+        return final;
+    };
+
+    if (skill.times) {
+        let damage = attack();
+        encounter.log[encounter.log.length - 1] += ` on ${targetName} ${hit ? (crit ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}`) : 'for a MISS'}`;
+        updateBars();
+
+        for (let i = 1; i < skill.times; i++) {
+            await new Promise(r => setTimeout(r, 1000 / skill.times));
+            hit = Math.random() >= 1 - attacker.accuracy - accDif;
+            crit = Math.random() >= 1 - attacker.crit - critDif;
+            let t = attack();
+            encounter.log[encounter.log.length - 1] += `, ${hit ? (crit ? `CRIT ⚔️${t}` : `⚔️${t}`) : 'MISS'}`;
+            updateBars();
+        }
+    } else if (skill.attack) {
+        let damage = attack();
+        encounter.log[encounter.log.length - 1] += ` on ${targetName} ${hit ? (crit ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}`) : 'and MISSED!'}`;
+        updateBars();
+    }
+
+    if (skill.health || skill.flatHealth || skill.lifesteal) {
+        encounter.log[encounter.log.length - 1] += ` and healed for `
+        critOrCrap = Math.random() >= 1 - player.crit - critDif;
+
+        let heal = 0;
+        if (skill.health) heal = skill.health * attacker.maxHealth;
+        else if (skill.flatHealth) heal = skill.flatHealth;
+        else if (skill.lifesteal) heal = damage * skill.lifesteal;
+
+        heal = Math.round(heal * (crit ? critMult : 1));
+        if (attacker.health + heal > attacker.maxHealth)
+            heal = attacker.maxHealth - attacker.health;
+        attacker.health += Math.round(heal);
+
+        if (skill.health) encounter.log[encounter.log.length - 1] += `${critOrCrap ? 'CRIT ' : ''}💖${heal}`
+        else if (skill.flatHealth) encounter.log[encounter.log.length - 1] += `${critOrCrap ? 'CRIT ' : ''}❤️${heal}`
+        else if (skill.lifesteal) encounter.log[encounter.log.length - 1] += `${critOrCrap ? 'CRIT ' : ''}💞${heal}`
+
+        updateBars();
+    }
+
+    if (skill.health || skill.flatHealth || skill.lifesteal) {
+
+    }
+
+    if (skill.pstatus) {
+        encounter.log[encounter.log.length - 1] += (isPlayer ? ` and gained [` : ` and inflicted [`)
+        skill.pstatus.forEach(status => {
+            if (player.pstatus.some(s => s.id == status)) player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
+            else player.pstatus.push({ ...assets.statuses.find(s => s.id == status), damage })
+            encounter.log[encounter.log.length - 1] += status
+        });
+        encounter.log[encounter.log.length - 1] += `]`
+    }
+
+    if (skill.estatus) {
+        encounter.log[encounter.log.length - 1] += (!isPlayer ? ` and gained [` : ` and inflicted [`)
+        skill.estatus.forEach(status => {
+            if (encounter.estatus.some(s => s.id == status)) encounter.estatus[encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
+            else encounter.estatus.push({ ...assets.statuses.find(s => s.id == status), damage })
+            encounter.log[encounter.log.length - 1] += status
+        });
+        encounter.log[encounter.log.length - 1] += `]`
+    }
+}
+
+async function skill(index) {
+    const battleStation = Alpine.$data(document.getElementById('battle-station'));
+    battleStation.turn = false;
+    const background = Alpine.$data(document.getElementById('background-image'));
+    const encounter = Alpine.$data(document.getElementById('encounter'));
+    const player = Alpine.$data(document.getElementById('player'));
 
     switch (index) {
         case -3:
@@ -141,209 +231,23 @@ async function skill(index) {
         case 0:
         case 1:
         case 2:
-        case 3:
-            // PREVENT DUPLICATE STATUS EFFECT ADDITIONS
-            // Configure Alectrona & Melanie
-            const skill = player.weaponry.weapon.skills[index]
-
-            var damage = player.attack
-            if (skill.damage) damage *= skill.damage;
-            damage = Math.round((damage ** 2) / (encounter.defense * enemyFortification * damMult));
-
-            if (skill.cost) player.stamina -= skill.cost
-
-            var hitOrMiss = Math.random() >= 1 - player.accuracy - accDif;
-            var critOrCrap = Math.random() >= 1 - player.crit - critDif;
-
-            encounter.log.push(`- ${background.name} used ${skill.cost ? '⚡' : ''}${skill.name}`)
-
-            if (skill.times) {
-                encounter.health -= hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0;
-                encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` on ${background.enemy.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'for a MISS'}`
-                updateBars()
-
-                for (let i = 0; i < skill.times - 1; i++) {
-                    await new Promise(resolve => setTimeout(resolve, 1000 / skill.times));
-                    hitOrMiss = Math.random() >= 1 - player.accuracy - accDif;
-                    critOrCrap = Math.random() >= 1 - player.crit - critDif;
-                    tempDamage = hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0;
-
-                    encounter.health -= tempDamage;
-                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `, ${hitOrMiss ? critOrCrap ? `CRIT ⚔️${tempDamage}` : `⚔️${tempDamage}` : 'MISS'}`
-                    updateBars()
-                }
-            } else if (skill.attack) {
-                hitOrMiss = Math.random() >= 1 - player.accuracy - accDif;
-                critOrCrap = Math.random() >= 1 - player.crit - critDif;
-
-                damage = hitOrMiss ? Math.floor(damage * (critOrCrap ? player.critdmg : '1')) : 0
-                encounter.health -= damage
-
-                encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` on ${background.enemy.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'and MISSED!'}`
-            }
-
-            if (skill.health || skill.flatHealth || skill.lifesteal) {
-                encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` and healed for `
-                critOrCrap = Math.random() >= 1 - player.crit - critDif;
-                var finalHealth = 0
-
-                if (skill.health) {
-                    finalHealth = skill.health * player.maxHealth * (critOrCrap ? player.crit : 1)
-                    finalHealth = Math.round(finalHealth);
-                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `${critOrCrap ? 'CRIT ' : ''}💖${finalHealth}`
-                } else if (skill.flatHealth) {
-                    finalHealth = skill.flatHealth
-                    finalHealth = Math.round(finalHealth);
-                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `${critOrCrap ? 'CRIT ' : ''}❤️${finalHealth}`
-                } else if (skill.lifesteal) {
-                    finalHealth = damage * skill.lifesteal
-                    finalHealth = Math.round(finalHealth);
-                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `${critOrCrap ? 'CRIT ' : ''}💞${finalHealth}`
-                }
-
-                if ((player.health + finalHealth) > player.maxHealth) finalHealth = player.maxHealth - player.health;
-                finalHealth = Math.round(finalHealth);
-                player.health += finalHealth
-            }
-
-            if (skill.pstatus || skill.estatus) {
-                if (skill.pstatus) {
-                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` and gained: [`
-                    skill.pstatus.forEach(status => {
-                        if (player.pstatus.some(s => s.id == status)) player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
-                        else player.pstatus.push({ ...assets.statuses.find(s => s.id == status), damage })
-                        encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + status
-                    });
-                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `]`
-                }
-
-                if (skill.estatus) {
-                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` and inflicted: [`
-                    skill.estatus.forEach(status => {
-                        if (encounter.estatus.some(s => s.id == status)) encounter.estatus[encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
-                        else encounter.estatus.push({ ...assets.statuses.find(s => s.id == status), damage })
-                        encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + status
-                    });
-                    encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `]`
-                }
-            }
+        case 3: {
+            await executeSkill({
+                attacker: player,
+                defender: encounter,
+                attackerStatuses: player.pstatus,
+                defenderStatuses: encounter.estatus,
+                skill: player.weaponry.weapon.skills[index],
+                attackerName: background.name,
+                targetName: background.enemy.name,
+                critMult: player.critdmg,
+                isPlayer: true
+            });
             break;
-        default:
-            // Not sure how you pressed this button, but suffer the consequences.
-            break;
+        }
     }
 
     turnManager(false);
-}
-
-// After the play is done, it's the enemy's turn
-async function enemyMove() {
-    // ADD ENEMY ATTACK COOLDOWNS (wait)
-    const battleStation = Alpine.$data(document.getElementById('battle-station'));
-    const background = Alpine.$data(document.getElementById('background-image'));
-    const encounter = Alpine.$data(document.getElementById('encounter'));
-    const player = Alpine.$data(document.getElementById('player'));
-
-    const accDif = (encounter.estatus.some(s => s.id == '🎯') ? assets.statuses.find(s => s.id == '🎯').incAcc : 0)
-        + (encounter.estatus.some(s => s.id == '🎯') ? assets.statuses.find(s => s.id == '🎯').incAcc : 0)
-        - (encounter.estatus.some(s => s.id == '👁️') ? assets.statuses.find(s => s.id == '👁️').decAcc : 0)
-        - (encounter.estatus.some(s => s.id == '💢') ? assets.statuses.find(s => s.id == '💢').decAcc : 0)
-        - (player.pstatus.some(s => s.id == '💨') ? assets.statuses.find(s => s.id == '💨').decEnAcc : 0)
-
-    const critDif = (encounter.estatus.some(s => s.id == '🍀') ? assets.statuses.find(s => s.id == '🍀').incCrit : 0)
-        - (encounter.estatus.some(s => s.id == '🐈‍⬛') ? assets.statuses.find(s => s.id == '🐈‍⬛').decCrit : 0)
-
-    const damMult = (encounter.estatus.some(s => s.id == '🏳️') ? assets.statuses.find(s => s.id == '🏳️').damAdd : 0)
-        - (encounter.estatus.some(s => s.id == '💪') ? assets.statuses.find(s => s.id == '💪').damAdd : 0)
-        - (encounter.estatus.some(s => s.id == '🌀') ? assets.statuses.find(s => s.id == '🌀').damReduc : 0)
-        + 1
-
-    const enemyFortification = (encounter.estatus.some(s => s.id == '🛡️') ? assets.statuses.find(s => s.id == '🛡️').armorAdd : 0)
-        + 1
-
-    const skill = randomByChance(background.enemy.skills)
-
-    var damage = encounter.attack
-    var hitOrMiss = Math.random() >= 1 - encounter.accuracy - accDif;
-    var critOrCrap = Math.random() >= 1 - encounter.crit - critDif;
-
-    if (skill.damage) damage *= skill.damage;
-    damage = Math.round((damage ** 2) / (player.armor * enemyFortification * damMult));
-
-    encounter.log.push(`- ${background.enemy.name} used ${skill.name}`)
-
-    if (skill.times) {
-        player.health -= hitOrMiss ? Math.floor(damage * (critOrCrap ? 1.6 : '1')) : 0;
-        encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` on ${background.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'for a MISS'}`
-        updateBars()
-
-        for (let i = 0; i < skill.times - 1; i++) {
-            await new Promise(resolve => setTimeout(resolve, 1000 / skill.times));
-            hitOrMiss = Math.random() >= 1 - encounter.accuracy - accDif;
-            critOrCrap = Math.random() >= 1 - encounter.crit - critDif;
-            tempDamage = hitOrMiss ? Math.floor(damage * (critOrCrap ? 1.6 : '1')) : 0;
-
-            player.health -= tempDamage;
-            encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `, ${hitOrMiss ? critOrCrap ? `CRIT ⚔️${tempDamage}` : `⚔️${tempDamage}` : 'MISS'}`
-            updateBars()
-        }
-    } else if (skill.attack) {
-        hitOrMiss = Math.random() >= 1 - encounter.accuracy - accDif;
-        critOrCrap = Math.random() >= 1 - encounter.crit - critDif;
-
-        damage = hitOrMiss ? Math.floor(damage * (critOrCrap ? 1.6 : '1')) : 0
-        player.health -= damage
-
-        encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` on ${background.name} ${hitOrMiss ? critOrCrap ? `for CRIT ⚔️${damage}` : `for ⚔️${damage}` : 'and MISSED!'}`
-    }
-
-    if (skill.health || skill.flatHealth || skill.lifesteal) {
-        encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` and healed for `
-        critOrCrap = Math.random() >= 1 - encounter.crit - critDif;
-        var finalHealth = 0
-
-        if (skill.health) {
-            finalHealth = skill.health * encounter.maxHealth * (critOrCrap ? 1.6 : 1)
-            finalHealth = Math.round(finalHealth);
-            encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `${critOrCrap ? 'CRIT ' : ''}💖${finalHealth}`
-        } else if (skill.flatHealth) {
-            finalHealth = skill.flatHealth
-            finalHealth = Math.round(finalHealth);
-            encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `${critOrCrap ? 'CRIT ' : ''}❤️${finalHealth}`
-        } else if (skill.lifesteal) {
-            finalHealth = damage * skill.lifesteal
-            finalHealth = Math.round(finalHealth);
-            encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `${critOrCrap ? 'CRIT ' : ''}💞${finalHealth}`
-        }
-
-        if ((encounter.health + finalHealth) > encounter.maxHealth) finalHealth = encounter.maxHealth - player.health;
-        finalHealth = Math.round(finalHealth);
-        encounter.health += finalHealth
-    }
-
-    if (skill.pstatus || skill.estatus) {
-        if (skill.pstatus) {
-            encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` and inflicted [`
-            skill.pstatus.forEach(status => {
-                if (player.pstatus.some(s => s.id == status)) player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
-                else player.pstatus.push({ ...assets.statuses.find(s => s.id == status), damage })
-                encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + status
-            });
-            encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `]`
-        }
-
-        if (skill.estatus) {
-            encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + ` and gained [`
-            skill.estatus.forEach(status => {
-                if (encounter.estatus.some(s => s.id == status)) encounter.estatus[encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status))] = { ...assets.statuses.find(s => s.id == status), damage }
-                else encounter.estatus.push({ ...assets.statuses.find(s => s.id == status), damage })
-                encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + status
-            });
-            encounter.log[encounter.log.length - 1] = encounter.log[encounter.log.length - 1] + `]`
-        }
-    }
-
-    turnManager(true);
 }
 
 async function turnManager(toPlayer) {
@@ -351,160 +255,125 @@ async function turnManager(toPlayer) {
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
     const player = Alpine.$data(document.getElementById('player'));
-    updateBars()
+    const actor = toPlayer ? player : encounter;
+    const actorStatuses = toPlayer ? player.pstatus : encounter.estatus;
+    const actorName = toPlayer ? background.name : background.enemy.name;
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    if (toPlayer) {
-        if (player.pstatus.some(s => s.id == '✨') && player.pstatus.some(s => s.id == '🏴')) {
-            player.pstatus = [];
-            encounter.log.push(`✨ All ${background.name}'s effects were evaporated. 🏴`)
-        } else if (player.pstatus.some(s => s.id == '🏴')) {
-            let eviscerated = []
-            player.pstatus.forEach(s => {
-                if (s.positive) {
-                    player.pstatus.splice(player.pstatus.indexOf(s), 1)
-                    eviscerated.push(s.id)
-                }
-            })
-            if (eviscerated.length > 0) encounter.log.push(`🏴 All ${background.name}'s positive effects were eviscerated [${eviscerated.join('')}].`)
-            else encounter.log.push(`🏴 ${background.name}'s Bad Omen lingers idly.`)
-        } else if (player.pstatus.some(s => s.id == '✨')) {
-            let cleansed = []
-            player.pstatus.forEach(s => {
-                if (!s.positive) {
-                    player.pstatus.splice(player.pstatus.indexOf(s), 1)
-                    cleansed.push(s.id)
-                }
-            })
-            if (cleansed.length > 0) encounter.log.push(`✨ All ${background.name}'s negative effects were cleansed [${cleansed.join('')}].`)
-            else encounter.log.push(`✨ ${background.name}'s Blessing gleams idly.`)
-        }
+    updateBars();
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-        player.pstatus.forEach(async s => {
-            switch (s.id) {
-                case '🩸': {
-                    let damage = Math.round(s.baseDam * s.damage);
-                    encounter.log.push(`${background.name} is bleeding - 🩸${damage}`);
-                    player.health -= damage;
-                    break;
-                }
-                case '🔥': {
-                    let damage = Math.round(s.baseDam * s.damage);
-                    encounter.log.push(`${background.name} is on fire - 🔥${damage}`);
-                    player.health -= damage;
-                    break;
-                }
-                case '🖤': {
-                    let damage = Math.round(s.baseDam * s.damage);
-                    encounter.log.push(`${background.name} is cursed - 🖤${damage}`);
-                    player.health -= damage;
-                    break;
-                }
-                case '💀': {
-                    let damage = Math.round(s.maxHP * player.maxHealth);
-                    encounter.log.push(`${background.name} is poisoned - 💀${damage}`);
-                    player.health -= damage;
-                    break;
-                }
-                case '💗': {
-                    var heal = Math.round(s.maxHP * player.maxHealth);
-                    if ((player.health + heal) > player.maxHealth) heal = player.maxHealth - player.health;
-                    encounter.log.push(`${background.name} is regenerating - 💗${heal}`);
-                    player.health += heal;
-                    break;
-                }
+    if (actorStatuses.some(s => s.id == '✨') && actorStatuses.some(s => s.id == '🏴')) {
+        actorStatuses.length = 0;
+        encounter.log.push(`✨ All ${actorName}'s effects were evaporated. 🏴`);
+    } else if (actorStatuses.some(s => s.id == '🏴')) {
+        let eviscerated = [];
+        actorStatuses.slice().forEach(s => {
+            if (s.positive) {
+                actorStatuses.splice(actorStatuses.indexOf(s), 1);
+                eviscerated.push(s.id);
             }
+        });
 
-            s.rounds -= 1;
-            if (s.rounds <= 0) encounter.estatus.splice(estatus.indexOf(s));
-            await new Promise(resolve => setTimeout(resolve, 500));
-        })
-
-        var staminaRegen = Math.round(player.maxStamina * .1)
-        if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
-        player.stamina += staminaRegen
-        battleStation.round += 1;
-
-        updateBars()
-        if (player.pstatus.some(s => s.id == '💫')) {
-            encounter.log.push(`💫 ${background.name} is stunned.`)
-            turnManager(false);
-        } else battleStation.turn = true;
-    } else {
-        if (encounter.estatus.some(s => s.id == '✨') && encounter.estatus.some(s => s.id == '🏴')) {
-            encounter.estatus = [];
-            encounter.log.push(`✨ All ${background.enemy.name}'s effects were evaporated. 🏴`)
-        } else if (encounter.estatus.some(s => s.id == '🏴')) {
-            let eviscerated = []
-            encounter.estatus.forEach(s => {
-                if (s.positive) {
-                    encounter.estatus.splice(encounter.estatus.indexOf(s), 1)
-                    eviscerated.push(s.id)
-                }
-            })
-            if (eviscerated.length > 0) encounter.log.push(`🏴 All ${background.enemy.name}'s positive effects were eviscerated [${eviscerated.join('')}].`)
-            else encounter.log.push(`🏴 ${background.enemy.name}'s Bad Omen lingers idly.`)
-        } else if (encounter.estatus.some(s => s.id == '✨')) {
-            let cleansed = []
-            encounter.estatus.forEach(s => {
-                if (!s.positive) {
-                    encounter.estatus.splice(encounter.estatus.indexOf(s), 1)
-                    cleansed.push(s.id)
-                }
-            })
-            if (cleansed.length > 0) encounter.log.push(`✨ All ${background.enemy.name}'s negative effects were cleansed [${cleansed.join('')}].`)
-            else encounter.log.push(`✨ ${background.enemy.name}'s Blessing gleams idly.`)
-        }
-
-        encounter.estatus.forEach(async s => {
-            switch (s.id) {
-                case '🩸': {
-                    let damage = Math.round(s.baseDam * s.damage);
-                    encounter.log.push(`${background.enemy.name} is bleeding - 🩸${damage}`);
-                    encounter.health -= damage;
-                    break;
-                }
-                case '🔥': {
-                    let damage = Math.round(s.baseDam * s.damage);
-                    encounter.log.push(`${background.enemy.name} is on fire - 🔥${damage}`);
-                    encounter.health -= damage;
-                    break;
-                }
-                case '🖤': {
-                    let damage = Math.round(s.baseDam * s.damage);
-                    encounter.log.push(`${background.enemy.name} is cursed - 🖤${damage}`);
-                    encounter.health -= damage;
-                    break;
-                }
-                case '💀': {
-                    let damage = Math.round(s.maxHP * encounter.maxHealth);
-                    encounter.log.push(`${background.enemy.name} is poisoned - 💀${damage}`);
-                    encounter.health -= damage;
-                    break;
-                }
-                case '💗': {
-                    var heal = Math.round(s.maxHP * encounter.maxHealth);
-                    if ((encounter.health + heal) > encounter.maxHealth) heal = encounter.maxHealth - encounter.health;
-                    encounter.log.push(`${background.enemy.name} is regenerating - 💗${heal}`);
-                    encounter.health += heal;
-                    break;
-                }
+        if (eviscerated.length > 0) encounter.log.push(`🏴 All of ${actorName}'s positive effects were eviscerated [${eviscerated.join('')}].`);
+        else encounter.log.push(`🏴 ${actorName}'s Bad Omen lingers idly.`);
+    } else if (actorStatuses.some(s => s.id == '✨')) {
+        let cleansed = [];
+        actorStatuses.slice().forEach(s => {
+            if (!s.positive) {
+                actorStatuses.splice(actorStatuses.indexOf(s), 1);
+                cleansed.push(s.id);
             }
+        });
 
-            s.rounds -= 1;
-            if (s.rounds <= 0) encounter.estatus.splice(estatus.indexOf(s));
-            await new Promise(resolve => setTimeout(resolve, 500));
-        })
-
-        updateBars()
-        if (encounter.estatus.some(s => s.id == '💫')) {
-            encounter.log.push(`💫 ${background.enemy.name} is stunned.`)
-            battleStation.turn = true;
-            turnManager(true);
-        } else {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            enemyMove()
-        }
+        if (cleansed.length > 0) encounter.log.push(`✨ All of ${actorName}'s negative effects were cleansed [${cleansed.join('')}].`);
+        else encounter.log.push(`✨ ${actorName}'s Blessing gleams idly.`);
     }
 
+    for (const s of actorStatuses.slice()) {
+        switch (s.id) {
+            case '🩸': {
+                let damage = Math.round(s.baseDam * s.damage);
+                encounter.log.push(`${actorName} is bleeding - 🩸${damage}`);
+                actor.health -= damage;
+                break;
+            }
+            case '🔥': {
+                let damage = Math.round(s.baseDam * s.damage);
+                encounter.log.push(`${actorName} is on fire - 🔥${damage}`);
+                actor.health -= damage;
+                break;
+            }
+            case '🖤': {
+                let damage = Math.round(s.baseDam * s.damage);
+                encounter.log.push(`${actorName} is cursed - 🖤${damage}`);
+                actor.health -= damage;
+                break;
+            }
+            case '💀': {
+                let damage = Math.round(s.maxHP * actor.maxHealth);
+                encounter.log.push(`${actorName} is poisoned - 💀${damage}`);
+                actor.health -= damage;
+                break;
+            }
+            case '💗': {
+                let heal = Math.round(s.maxHP * actor.maxHealth);
+                if (actor.health + heal > actor.maxHealth)
+                    heal = actor.maxHealth - actor.health;
+
+                encounter.log.push(`${actorName} is regenerating - 💗${heal}`);
+                actor.health += heal;
+                break;
+            }
+        }
+
+        s.rounds -= 1;
+
+        if (s.rounds <= 0) actorStatuses.splice(actorStatuses.indexOf(s), 1);
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
+    if (toPlayer) {
+        let staminaRegen = Math.round(player.maxStamina * .1);
+        if (player.stamina + staminaRegen > player.maxStamina)
+            staminaRegen = player.maxStamina - player.stamina;
+
+        player.stamina += staminaRegen;
+        battleStation.round += 1;
+    }
+
+    updateBars();
+
+    if (actorStatuses.some(s => s.id == '💫')) {
+        encounter.log.push(`💫 ${actorName} is stunned.`);
+        return turnManager(!toPlayer);
+    }
+
+    if (toPlayer) battleStation.turn = true;
+    else {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        enemyMove();
+    }
 }
+
+async function enemyMove() {
+    const background = Alpine.$data(document.getElementById('background-image'));
+    const encounter = Alpine.$data(document.getElementById('encounter'));
+    const player = Alpine.$data(document.getElementById('player'));
+    const skill = randomByChance(background.enemy.skills);
+
+    await executeSkill({
+        attacker: encounter,
+        defender: player,
+        attackerStatuses: encounter.estatus,
+        defenderStatuses: player.pstatus,
+        skill,
+        attackerName: background.enemy.name,
+        targetName: background.name,
+        critMult: 1.6
+    });
+
+    turnManager(true);
+}
+
+
+

@@ -209,7 +209,6 @@ span {
     }
 }
 
-
 .experience-bar-background {
     position: absolute;
     top: 80px;
@@ -330,6 +329,10 @@ span {
 
 /* ENCOUNTER */
 
+.encounter {
+    display: block;
+}
+
 .enemy {
     position: fixed;
     z-index: 2;
@@ -443,7 +446,7 @@ span {
     left: 50%;
     top: 35%;
     transform: translate(-50%, -50%);
-    display: flex;
+    display: block;
     flex-direction: column;
     justify-content: flex-end;
     align-items: left;
