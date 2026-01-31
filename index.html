@@ -16,6 +16,7 @@
 </head>
 
 <body>
+    <div id="global-tooltip"></div>
     <div alt="Background" id="background-image" class="background-image" x-init="startup()" x-data="{
             name: localStorage.getItem('name') || '',
             location: 'Warhamshire',
@@ -236,8 +237,8 @@
                     return this.log
                         .map(line =>
                             line
-                                .replaceAll(this.playerName, `<span style='color:rgb(0, 255, 13);'>${this.playerName}</span>`)
-                                .replaceAll(this.enemyName, `<span style='color:red;'>${this.enemyName}</span>`)
+                                .replaceAll(this.playerName, `<span style='color:rgb(0, 255, 13);' data-tooltip='You!'>${this.playerName}</span>`)
+                                .replaceAll(this.enemyName, `<span style='color:red;' data-tooltip='Level ${Alpine.$data(document.getElementById('background-image')).enemyLevel}\n⚔️ ${this.attack}\n🛡️ ${this.defense}\n🎯 ${Math.floor(this.accuracy * 100)}%\n🍀 ${Math.floor(this.crit * 100)}%'>${this.enemyName}</span>`)
                                 .replaceAll(`CRIT`, `<span style='color:red;'>CRIT</span>`)
                         )
                         .join('<br>');

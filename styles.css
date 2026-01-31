@@ -59,6 +59,30 @@ span {
     z-index: 1;
 }
 
+#global-tooltip {
+    position: fixed;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    font-size: 16px;
+    padding: 8px 8px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 9999;
+    white-space: pre-line;
+}
+
+[data-tooltip] {
+    cursor: default;
+    text-decoration: none;
+    transition: text-decoration-color 2s ease;
+}
+
+[data-tooltip]:hover {
+    text-decoration: underline;
+}
+
 .background-image {
     position: fixed;
     background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),

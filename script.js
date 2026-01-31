@@ -80,3 +80,58 @@ async function fadeInEffect() {
         }
     }, 50);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const tooltip = document.getElementById('global-tooltip');
+
+    function showTooltip(text) {
+        tooltip.textContent = text;
+        tooltip.style.opacity = 1;
+    }
+
+    function moveTooltip(x, y) {
+        tooltip.style.left = x + 10 + 'px';
+        tooltip.style.top = y + 20 + 'px';
+    }
+
+    function hideTooltip() {
+        tooltip.style.opacity = 0;
+        tooltip.textContent = '';
+    }
+
+    // Desktop hover
+    document.body.addEventListener('mouseover', e => {
+        const target = e.target.closest('[data-tooltip]');
+        if (!target) return;
+        showTooltip(target.dataset.tooltip);
+    });
+
+    document.body.addEventListener('mousemove', e => {
+        if (!tooltip.textContent) return;
+        moveTooltip(e.pageX, e.pageY);
+    });
+
+    document.body.addEventListener('mouseout', e => {
+        const target = e.target.closest('[data-tooltip]');
+        if (!target) return;
+        hideTooltip();
+    });
+
+    // Mobile touch
+    document.body.addEventListener('touchstart', e => {
+        const target = e.target.closest('[data-tooltip]');
+        if (!target) return;
+        showTooltip(target.dataset.tooltip);
+        const touch = e.touches[0];
+        moveTooltip(touch.pageX, touch.pageY);
+    }, { passive: true });
+
+    document.body.addEventListener('touchmove', e => {
+        if (!tooltip.textContent) return;
+        const touch = e.touches[0];
+        moveTooltip(touch.pageX, touch.pageY);
+    }, { passive: true });
+
+    document.body.addEventListener('touchend', hideTooltip);
+});
+

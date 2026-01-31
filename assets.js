@@ -5,7 +5,7 @@ function getAssets() {
 			{
 				name: 'Poison',
 				id: '💀',
-				description: `Inflict 4% max HP damage for 5 rounds.`,
+				description: `Inflicts 4% Max HP damage for 5 rounds.`,
 				positive: false,
 				maxHP: 0.04,
 				rounds: 5,
@@ -13,7 +13,7 @@ function getAssets() {
 			{
 				name: 'Regeneration',
 				id: '💗',
-				description: `Gain 5% max HP for 3 rounds.`,
+				description: `Gain 5% Max HP for 3 rounds.`,
 				positive: true,
 				maxHP: 0.05,
 				rounds: 3,
@@ -21,7 +21,7 @@ function getAssets() {
 			{
 				name: 'Bleed',
 				id: '🩸',
-				description: `Inflict 15% of base damage for 2 rounds.`,
+				description: `Inflicts 15% of initial damage for 2 rounds.`,
 				baseDam: 0.15,
 				positive: false,
 				rounds: 2,
@@ -29,10 +29,10 @@ function getAssets() {
 			{
 				name: 'Burn',
 				id: '🔥',
-				description: `Inflict 10% of base damage for 5 rounds.`,
+				description: `Inflicts 10% of initial damage for 5 rounds.`,
 				baseDam: 0.15,
 				positive: false,
-				rounds: 3,
+				rounds: 5,
 			},
 			{
 				name: 'Weakness',
@@ -92,7 +92,7 @@ function getAssets() {
 			{
 				name: 'Curse',
 				id: '🖤',
-				description: `Inflict 25% of initial damage for 4 rounds.`,
+				description: `Inflicts 25% of initial damage for 4 rounds.`,
 				baseDam: 0.25,
 				positive: false,
 				rounds: 4,
@@ -125,7 +125,7 @@ function getAssets() {
 			{
 				name: 'Evasion',
 				id: '💨',
-				description: `Decreases enemy attack accuracy by 15% for 3 rounds.`,
+				description: `Decreases opponent attack accuracy by 15% for 3 rounds.`,
 				decEnAcc: 0.15,
 				positive: true,
 				rounds: 3
@@ -133,14 +133,14 @@ function getAssets() {
 			{
 				name: 'Blessing',
 				id: '✨',
-				description: `Dispel and gain immunity to all negative status effects for 2 rounds.`,
+				description: `Dispel and negate all negative status effects for 2 rounds.`,
 				positive: true,
 				rounds: 2,
 			},
 			{
 				name: 'Bad Omen',
 				id: '🏴',
-				description: `Dispel and gain immunity to all positive status effects for 2 rounds.`,
+				description: `Dispel and negate all positive status effects for 2 rounds.`,
 				positive: false,
 				rounds: 2,
 			},
@@ -2281,7 +2281,7 @@ function getAssets() {
 						name: "Relieve",
 						cost: 10,
 						description: "Stop and crack your knuckles.",
-						pstatus: ["💗"],
+						flatHealth: 100,
 						attack: false
 					},
 				]
