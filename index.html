@@ -386,7 +386,6 @@
                     Back</button>
                 <h1>⚙ Debug Panel</h1>
                 <div class="debug-grid">
-                    <input placeholder="Set Player Name" @keyup.enter="name = $event.target.value" />
                     <input placeholder="Set Player Max Health"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = $event.target.value; updateBars(); $event.target.value = ''" />
 
