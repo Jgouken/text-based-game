@@ -61,8 +61,8 @@ async function startBattle(enemy = null) {
     const location = assets.areas.find(area => area.name == background.location)
     const randomEnemy = randomByChance(location.enemies).name
 
+    const level = enemy ? background.enemyLevel : (Math.round(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl))
     if (!enemy) enemy = assets.enemies.find(enemy => enemy.name == randomEnemy)
-    const level = Math.round(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl)
 
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
 

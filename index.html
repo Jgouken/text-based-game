@@ -387,29 +387,29 @@
                 <h1>⚙ Debug Panel</h1>
                 <div class="debug-grid">
                     <input placeholder="Set Player Name" @keyup.enter="name = $event.target.value" />
-                    <input placeholder="Set Max Health"
+                    <input placeholder="Set Player Max Health"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = $event.target.value; updateBars(); $event.target.value = ''" />
-                    <input placeholder="Set Health"
+                    <input placeholder="Set Player Health"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).health = $event.target.value; updateBars() $event.target.value = ''" />
-                    <input placeholder="Set Max Stamina"
+                    <input placeholder="Set Player Max Stamina"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).stamina = $event.target.value; updateBars() $event.target.value = ''" />
-                    <input placeholder="Set Stamina"
+                    <input placeholder="Set Player Stamina"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).maxStamina = $event.target.value; updateBars() $event.target.value = ''" />
-                    <input placeholder="Set XP"
+                    <input placeholder="Set Player XP"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).experience = $event.target.value; updateBars() $event.target.value = ''" />
-                    <input placeholder="Set Weapon"
+                    <input placeholder="Set Player Weapon"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry = {weapon: assets.items.find(w => w.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''" />
-                    <input placeholder="Set Weapon Level"
+                    <input placeholder="Set Player Weapon Level"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry.level = $event.target.value; setPlayer(); $event.target.value = ''" />
-                    <input placeholder="Set Armor"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).armory = {weapon: assets.items.find(a => a.name == $event.target.value), level: 1}; $event.target.value = ''" />
-                    <input placeholder="Set Armor Level"
+                    <input placeholder="Set Player Armor"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).armory = {armor: assets.items.find(a => a.name == $event.target.value), level: 1}; $event.target.value = ''" />
+                    <input placeholder="Set Player Armor Level"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).armory.level = $event.target.value; setPlayer(); $event.target.value = ''" />
-                    <input placeholder="Set Level"
+                    <input placeholder="Set Player Level"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''" />
-                    <input placeholder="Enemy Level (1-50)"
+                    <input placeholder="Enemy Level (set this first)"
                         @keyup.enter="enemyLevel = $event.target.value; setPlayer(); $event.target.value = ''" />
-                    <input placeholder="Encounter Enemy"
+                    <input placeholder="Encounter Enemy (sends you to battle)"
                         @keyup.enter="transition('debug', 'encounter'); startBattle(assets.enemies.find(e => e.name == $event.target.value)); $event.target.value = ''" />
                 </div>
             </div>
