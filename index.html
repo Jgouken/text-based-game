@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Text-Based-Game</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -223,29 +224,26 @@
             <div id="returning" class="returning" x-show="screen === 'returning'" x-transition.opacity
                 style="display: none; top: -210px;">
                 <p style="text-align: center; font-size: 30px; top: 25px;">Text-Based-Game</p>
-                <p style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif; top: 280px;"
-                    x-text="location.toUpperCase()"></p>
-
-                <div class="centered-buttons" style="justify-content: right; margin-top: -110px; margin-right: 10px;">
-                    <button class="regular-button"
-                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); justify-content: right; font-size: large;"
-                        @click="transition('returning', 'how-to-play')" x-transition.opacity>How To Play</button>
-                </div>
-
                 <div class="centered-buttons"
-                    style="justify-content: left; margin-top: -54px; margin-left: 10px; gap: 20px; width: fit-content;">
+                    style="margin-top: 5vh;">
                     <button class="regular-button"
-                        style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0); font-size: large;"
+                        style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0); font-size: 16px;"
                         @click="deleteButton()" x-transition.opacity>DELETE</button>
                     <button class="regular-button"
-                        style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0); font-size: large;"
+                        style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0); font-size: 16px;"
                         @click="exportButton()" x-transition.opacity>EXPORT</button>
                     <button class="regular-button"
-                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
+                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: 16px;"
                         @click="importButton()" x-transition.opacity>IMPORT</button>
+                    <button class="regular-button"
+                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: 16px;"
+                        @click="transition('returning', 'how-to-play')" x-transition.opacity>How To Play</button>
                 </div>
+                <p style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif; top: 20vh;"
+                    x-text="location.toUpperCase()">
+                </p>
 
-                <div class="centered-buttons" style="margin-top: 350px;">
+                <div class="centered-buttons" style="margin-top: 20vh;">
                     <button class="regular-button"
                         style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88);"
                         @click="transition('returning', 'travel')" x-transition.opacity>Travel</button>
