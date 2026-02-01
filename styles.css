@@ -31,9 +31,6 @@
 
 body,
 html {
-    width: 100%;
-    overflow: hidden;
-    touch-action: manipulation;
     position: fixed;
     height: 100%;
     margin: 0;
@@ -42,20 +39,6 @@ html {
     color: white;
     z-index: 1;
     font-family: 'Pixel-Font', sans-serif;
-}
-
-
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-:root {
-    --ui-scale: min(1, max(0.75, 100vw / 1200));
-}
-
-body {
-    font-size: calc(16px * var(--ui-scale));
 }
 
 div,
@@ -92,7 +75,7 @@ span {
 }
 
 img {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 [data-tooltip] {
@@ -143,7 +126,7 @@ img {
     position: relative;
     display: flex;
     justify-content: center;
-    margin-top: -54px;
+    margin-top: 400px;
     gap: 15px;
 }
 
@@ -168,7 +151,7 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 1vw;
+    font-size: 18px;
     padding: 10px 20px;
     box-sizing: border-box;
     z-index: 1000;
@@ -191,7 +174,7 @@ img {
 
 .player {
     position: relative;
-    top: 75%;
+    top: 75vh;
     left: 10px;
     z-index: 2;
     width: 700px;
@@ -577,111 +560,4 @@ img {
     color: white;
     border: 2px solid #555;
     font-family: 'Pixel-Font', sans-serif;
-}
-
-/* ================= MOBILE SUPPORT ================= */
-
-@media (max-width: 900px) {
-
-    #global-tooltip {
-        max-width: 70vw;
-        font-size: clamp(12px, 2.5vw, 16px);
-    }
-
-    .player {
-        top: 75vh;
-        width: 90vw;
-        left: -12vw;
-        transform: scale(0.7);
-    }
-
-    .battle-weaponry {
-        left: 115%;
-        top: 50%;
-    }
-
-    .pstatus-effects {
-        left: 0;
-        width: 100%;
-        justify-content: center;
-        font-size: clamp(20px, 5vw, 36px);
-        gap: 10px;
-    }
-
-    .enemy {
-        height: 22vh;
-    }
-
-    .enemy-name {
-        font-size: clamp(22px, 6vw, 40px);
-    }
-
-    .enemy-health-bar-background,
-    .enemy-health-bar {
-        width: 85%;
-        left: 7.5%;
-    }
-
-    .enemy-health-bar-stats {
-        font-size: clamp(16px, 4vw, 26px);
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .battle-log {
-        top: 28%;
-        height: 30vh;
-        font-size: clamp(14px, 3vw, 22px);
-    }
-
-    .battle-station {
-        flex-direction: column;
-        top: auto;
-        bottom: 0;
-        height: 35vh;
-        width: 100%;
-        left: 0;
-        transform: none;
-        gap: 5px;
-    }
-
-    .battle-buttons {
-        flex: 3;
-        font-size: clamp(14px, 3vw, 22px);
-        gap: 10px;
-    }
-
-    .round-info {
-        flex: 1;
-        font-size: clamp(14px, 3vw, 22px);
-    }
-
-    .regular-button {
-        font-size: clamp(16px, 4vw, 26px);
-        padding: 10px 16px;
-        width: 100%;
-    }
-
-    .credits {
-        font-size: clamp(10px, 2.5vw, 14px);
-        padding: 4px 10px;
-    }
-
-}
-
-@media (max-width: 900px) and (orientation: landscape) {
-    .battle-log {
-        height: 25vh;
-        top: 30%;
-    }
-
-    .battle-station {
-        height: 30vh;
-    }
-
-    .player {
-        top: 65vh;
-        transform: scale(0.8);
-    }
-
 }
