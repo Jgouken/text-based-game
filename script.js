@@ -90,8 +90,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function moveTooltip(x, y) {
-        tooltip.style.left = x + 10 + 'px';
-        tooltip.style.top = y + 20 + 'px';
+        const padding = 12;
+
+        const tooltipWidth = tooltip.offsetWidth;
+        const tooltipHeight = tooltip.offsetHeight;
+
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        // Default follow position
+        let left = x + padding;
+        let top = y + padding * 2;
+
+        // Clamp to right edge
+        if (left + tooltipWidth > screenWidth - padding) {
+            left = screenWidth - tooltipWidth - padding;
+        }
+
+        // Clamp to bottom edge
+        if (top + tooltipHeight > screenHeight - padding) {
+            top = screenHeight - tooltipHeight - padding;
+        }
+
+        // Clamp to left edge
+        if (left < padding) {
+            left = padding;
+        }
+
+        // Clamp to top edge
+        if (top < padding) {
+            top = padding;
+        }
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
     }
 
     function hideTooltip() {

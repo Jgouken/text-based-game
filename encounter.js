@@ -68,6 +68,9 @@ async function startBattle(enemy = null) {
 
     background.enemy = enemy
     background.enemyLevel = level
+    enemy.skills.forEach(s => {
+        delete s._cooldown;
+    });
 
     encounter.maxHealth = enemy.health + (Math.floor((level / 2) ** 2.82424))
     encounter.health = enemy.health + (Math.floor((level / 2) ** 2.82424))
@@ -101,6 +104,10 @@ async function executeSkill({
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
 
+    if (!isPlayer && skill.wait) {
+        skill._cooldown = skill.wait;
+    }
+
     const accDif =
         (attackerStatuses.some(s => s.id == '🎯') ? assets.statuses.find(s => s.id == '🎯').incAcc : 0)
         - (attackerStatuses.some(s => s.id == '👁️') ? assets.statuses.find(s => s.id == '👁️').decAcc : 0)
@@ -132,14 +139,13 @@ async function executeSkill({
     let firstHit = Math.random() >= 1 - attacker.accuracy - accDif;
     let hit = firstHit;
     let crit = Math.random() >= 1 - attacker.crit - critDif;
-    var totalDealt = 0;
+    let totalDealt = 0;
 
-    let skillLog = `<span style="color:lightblue;" data-tooltip="${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.round(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.round(skill.lifesteal * 100)}%\n` : ''}${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + `${skill.pstatus.join('')}\n` : ''}${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}">${skill.cost ? '⚡' : ''}${skill.name}</span>`
+    let skillLog = `<span style="color:lightblue;" data-tooltip="${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.round(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.round(skill.lifesteal * 100)}%\n` : ''}${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + `${skill.pstatus.join('')}\n` : ''}${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}">${skill.cost ? '⚡' : ''}${skill.name}</span>`;
     encounter.log.push(`- ${attackerName} used ${skillLog}`);
 
-    let damageLog = (final) => {
-        return `<span style="color:lightblue;" data-tooltip="⚔️ (((${attacker.attack} * ${skill.damage || 1})^2 * ${damMult}) / (${defender.defense} * ${fort})) * ${crit ? critMult : 1} = ${final}">⚔️${final}</span>`;
-    };
+    let damageLog = (final) =>
+        `<span style="color:lightblue;" data-tooltip="⚔️ (((${attacker.attack} * ${skill.damage || 1})^2 * ${damMult}) / (${defender.defense} * ${fort})) * ${crit ? critMult : 1} = ${final}">⚔️${final}</span>`;
 
     const attack = () => {
         let final = hit ? Math.floor(damage * (crit ? critMult : 1)) : 0;
@@ -152,6 +158,7 @@ async function executeSkill({
         const dealt = attack();
         encounter.log[encounter.log.length - 1] +=
             ` on ${targetName} ${hit ? (crit ? `for CRIT ${damageLog(dealt)}` : `for ${damageLog(dealt)}`) : 'for a MISS'}`;
+
         updateBars();
 
         for (let i = 1; i < skill.times; i++) {
@@ -172,10 +179,9 @@ async function executeSkill({
         updateBars();
     }
 
-    // ---- HEALING ----
     if (skill.health || skill.flatHealth || skill.lifesteal) {
         encounter.log[encounter.log.length - 1] += ` and healed for `
-        crit = Math.random() >= 1 - player.crit - critDif;
+        crit = Math.random() >= 1 - attacker.crit - critDif;
 
         let heal = 0;
         if (skill.health) heal = skill.health * attacker.maxHealth;
@@ -202,7 +208,6 @@ async function executeSkill({
         updateBars();
     }
 
-    // ---- STATUS ----
     if (firstHit || !skill.attack) {
         if (skill.pstatus) {
             encounter.log[encounter.log.length - 1] += (isPlayer ? `${skill.estatus ? ',' : ' and'} gained [` : ` and inflicted [`);
@@ -211,9 +216,8 @@ async function executeSkill({
                 if (player.pstatus.some(s => s.id == status))
                     player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...stasset, damage: totalDealt };
                 else player.pstatus.push({ ...stasset, damage: totalDealt });
-                console.log(player.pstatus)
 
-                encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`
+                encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`;
             });
             encounter.log[encounter.log.length - 1] += `]`;
         }
@@ -226,12 +230,13 @@ async function executeSkill({
                     encounter.estatus[encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status))] = { ...stasset, damage: totalDealt };
                 else encounter.estatus.push({ ...stasset, damage: totalDealt });
 
-                encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`
+                encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`;
             });
             encounter.log[encounter.log.length - 1] += `]`;
         }
     }
 }
+
 
 async function skill(index) {
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
@@ -292,18 +297,13 @@ async function turnManager(toPlayer) {
     updateBars();
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    if (encounter.health <= 0) {
-        encounter.log.push(`--- ${background.enemy.name} has died. ---`);
-        transition('encounter', 'returning')
+    if (encounter.health <= 0 || player.health <= 0) {
+        background.enemy.skills.forEach(s => { delete s._cooldown; });
+        if (encounter.health <= 0) encounter.log.push(`--- ${background.enemy.name} has died. ---`);
+        else encounter.log.push(`--- ${background.name} has died. ---`);
+        transition('encounter', 'returning');
         return;
     }
-
-    if (player.health <= 0) {
-        encounter.log.push(`--- ${background.name} has died. ---`);
-        transition('encounter', 'returning')
-        return;
-    }
-
 
     if (actorStatuses.some(s => s.id == '✨') && actorStatuses.some(s => s.id == '🏴')) {
         actorStatuses.length = 0;
@@ -379,9 +379,7 @@ async function turnManager(toPlayer) {
 
     if (toPlayer) {
         let staminaRegen = Math.round(player.maxStamina * .1);
-        if (player.stamina + staminaRegen > player.maxStamina)
-            staminaRegen = player.maxStamina - player.stamina;
-
+        if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
         player.stamina += staminaRegen;
         battleStation.round += 1;
     }
@@ -401,6 +399,9 @@ async function turnManager(toPlayer) {
     if (toPlayer) battleStation.turn = true;
     else {
         await new Promise(resolve => setTimeout(resolve, 1000));
+        background.enemy.skills.forEach(s => {
+            if (s._cooldown > 0) s._cooldown--;
+        });
         enemyMove();
     }
 }
@@ -409,7 +410,8 @@ async function enemyMove() {
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
-    const skill = randomByChance(background.enemy.skills);
+
+    const skill = randomByChance(background.enemy.skills.filter(s => !s._cooldown || s._cooldown <= 0).map(s => ({ ...s, chance: s.chance || 1 })));
 
     await executeSkill({
         attacker: encounter,

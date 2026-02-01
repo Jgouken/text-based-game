@@ -71,6 +71,7 @@ span {
     transition: opacity 0.2s ease;
     z-index: 9999;
     white-space: pre-line;
+    max-width: 20%;
 }
 
 img {
@@ -206,7 +207,7 @@ img {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 250px;
+    min-width: 250px;
     z-index: 20;
     transition: all 0.2s ease;
 }
