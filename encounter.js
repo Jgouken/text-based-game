@@ -313,10 +313,9 @@ async function turnManager(toPlayer) {
         actorStatuses.slice().forEach(s => {
             if (s.positive) {
                 actorStatuses.splice(actorStatuses.indexOf(s), 1);
-                eviscerated.push(s.id);
+                eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
             }
         });
-
         if (eviscerated.length > 0) encounter.log.push(`🏴 All of ${actorName}'s positive effects were eviscerated [${eviscerated.join('')}].`);
         else encounter.log.push(`🏴 ${actorName}'s Bad Omen lingers idly.`);
     } else if (actorStatuses.some(s => s.id == '✨')) {
@@ -324,7 +323,7 @@ async function turnManager(toPlayer) {
         actorStatuses.slice().forEach(s => {
             if (!s.positive) {
                 actorStatuses.splice(actorStatuses.indexOf(s), 1);
-                cleansed.push(s.id);
+                cleansed.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
             }
         });
 

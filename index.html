@@ -486,6 +486,9 @@
                 <h1>⚙ Debug Panel</h1>
                 <br>
                 <div class="debug-grid">
+                    <input placeholder="Set Level"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''" />
+
                     <input placeholder="Set Max Health"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = $event.target.value; updateBars(); $event.target.value = ''" />
 
@@ -512,9 +515,6 @@
 
                     <input placeholder="Set Armor Level"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).armory.level = $event.target.value; setPlayer(); $event.target.value = ''" />
-
-                    <input placeholder="Set Level"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''" />
 
                     <input placeholder="Enemy Level"
                         @keyup.enter="enemyLevel = Number($event.target.value); setPlayer(); $event.target.value = ''" />
