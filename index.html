@@ -87,30 +87,30 @@
                 @mouseenter="randomizeTooltip()" :data-tooltip="tooltipText" x-text="name"></p>
 
             <div class="experience-bar-background"
-                :data-tooltip="`${Math.round((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
+                :data-tooltip="`${Math.floor((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
             </div>
             <div class="health-bar-background"
-                :data-tooltip="`${Math.round((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`"></div>
+                :data-tooltip="`${Math.floor((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`"></div>
             <div class="stamina-bar-background"
-                :data-tooltip="`${Math.round((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
+                :data-tooltip="`${Math.floor((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
             </div>
 
             <div class="experience-bar" id="experience"
-                :data-tooltip="`${Math.round((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
+                :data-tooltip="`${Math.floor((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
             </div>
             <div class="health-bar" id="health"
-                :data-tooltip="`${Math.round((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`"></div>
+                :data-tooltip="`${Math.floor((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`"></div>
             <div class="stamina-bar" id="stamina"
-                :data-tooltip="`${Math.round((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
+                :data-tooltip="`${Math.floor((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
             </div>
 
             <div class="experience-bar-stats" x-text="`Level ${level} - ${experience}/${Math.floor((level/0.07)**2)}`"
-                :data-tooltip="`${Math.round((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
+                :data-tooltip="`${Math.floor((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
             </div>
             <div class="health-bar-stats" x-text="`${health}/${maxHealth}`"
-                :data-tooltip="`${Math.round((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`">0/0</div>
+                :data-tooltip="`${Math.floor((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`">0/0</div>
             <div class="stamina-bar-stats" x-text="`${stamina}/${maxStamina}`"
-                :data-tooltip="`${Math.round((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
+                :data-tooltip="`${Math.floor((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
                 0/0</div>
 
             <div class="mini-stats">
@@ -140,19 +140,19 @@
             ">
             <div class="pstatus-effects">
                 <span x-show="pstatus.some(status => status.id == '🩸')"
-                    :data-tooltip="`🩸 ${pstatus.find(s => s.id == '🩸').name} - ${pstatus.find(s => s.id == '🩸').rounds} round${pstatus.find(s => s.id == '🩸').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🩸').description}\n\n${pstatus.find(s => s.id == '🩸').damage} * ${pstatus.find(s => s.id == '🩸').baseDam} = ${pstatus.find(s => s.id == '🩸').damage * pstatus.find(s => s.id == '🩸').baseDam}`">🩸</span>
+                    :data-tooltip="`🩸 ${pstatus.find(s => s.id == '🩸').name} - ${pstatus.find(s => s.id == '🩸').rounds} round${pstatus.find(s => s.id == '🩸').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🩸').description}\n\n${pstatus.find(s => s.id == '🩸').damage} * ${pstatus.find(s => s.id == '🩸').baseDam} = ${Math.floor(pstatus.find(s => s.id == '🩸').damage * pstatus.find(s => s.id == '🩸').baseDam)}`">🩸</span>
                 <span x-show="pstatus.some(status => status.id == '👁️')"
                     :data-tooltip="`👁️ ${pstatus.find(s => s.id == '👁️').name} - ${pstatus.find(s => s.id == '👁️').rounds} round${pstatus.find(s => s.id == '👁️').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '👁️').description}`">👁️</span>
                 <span x-show="pstatus.some(status => status.id == '🔥')"
-                    :data-tooltip="`🔥 ${pstatus.find(s => s.id == '🔥').name} - ${pstatus.find(s => s.id == '🔥').rounds} round${pstatus.find(s => s.id == '🔥').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🔥').description}\n\n${pstatus.find(s => s.id == '🔥').damage} * ${pstatus.find(s => s.id == '🔥').baseDam} = ${pstatus.find(s => s.id == '🔥').damage * pstatus.find(s => s.id == '🔥').baseDam}`">🔥</span>
+                    :data-tooltip="`🔥 ${pstatus.find(s => s.id == '🔥').name} - ${pstatus.find(s => s.id == '🔥').rounds} round${pstatus.find(s => s.id == '🔥').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🔥').description}\n\n${pstatus.find(s => s.id == '🔥').damage} * ${pstatus.find(s => s.id == '🔥').baseDam} = ${Math.floor(pstatus.find(s => s.id == '🔥').damage * pstatus.find(s => s.id == '🔥').baseDam)}`">🔥</span>
                 <span x-show="pstatus.some(status => status.id == '🖤')"
-                    :data-tooltip="`🖤 ${pstatus.find(s => s.id == '🖤').name} - ${pstatus.find(s => s.id == '🖤').rounds} round${pstatus.find(s => s.id == '🖤').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🖤').description}\n\n${pstatus.find(s => s.id == '🖤').damage} * ${pstatus.find(s => s.id == '🖤').baseDam} = ${pstatus.find(s => s.id == '🖤').damage * pstatus.find(s => s.id == '🖤').baseDam}`">🖤</span>
+                    :data-tooltip="`🖤 ${pstatus.find(s => s.id == '🖤').name} - ${pstatus.find(s => s.id == '🖤').rounds} round${pstatus.find(s => s.id == '🖤').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🖤').description}\n\n${pstatus.find(s => s.id == '🖤').damage} * ${pstatus.find(s => s.id == '🖤').baseDam} = ${Math.floor(pstatus.find(s => s.id == '🖤').damage * pstatus.find(s => s.id == '🖤').baseDam)}`">🖤</span>
                 <span x-show="pstatus.some(status => status.id == '🏳️')"
                     :data-tooltip="`🏳️ ${pstatus.find(s => s.id == '🏳️').name} - ${pstatus.find(s => s.id == '🏳️').rounds} round${pstatus.find(s => s.id == '🏳️').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🏳️').description}`">🏳️</span>
                 <span x-show="pstatus.some(status => status.id == '💨')"
                     :data-tooltip="`💨 ${pstatus.find(s => s.id == '💨').name} - ${pstatus.find(s => s.id == '💨').rounds} round${pstatus.find(s => s.id == '💨').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💨').description}`">💨</span>
                 <span x-show="pstatus.some(status => status.id == '💀')"
-                    :data-tooltip="`💀 ${pstatus.find(s => s.id == '💀').name} - ${pstatus.find(s => s.id == '💀').rounds} round${pstatus.find(s => s.id == '💀').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💀').description}\n\n${maxHealth} * ${pstatus.find(s => s.id == '💀').maxHP} = ${maxHealth * pstatus.find(s => s.id == '💀').maxHP}`">💀</span>
+                    :data-tooltip="`💀 ${pstatus.find(s => s.id == '💀').name} - ${pstatus.find(s => s.id == '💀').rounds} round${pstatus.find(s => s.id == '💀').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💀').description}\n\n${maxHealth} * ${pstatus.find(s => s.id == '💀').maxHP} = ${Math.floor(maxHealth * pstatus.find(s => s.id == '💀').maxHP)}`">💀</span>
                 <span x-show="pstatus.some(status => status.id == '🎯')"
                     :data-tooltip="`🎯 ${pstatus.find(s => s.id == '🎯').name} - ${pstatus.find(s => s.id == '🎯').rounds} round${pstatus.find(s => s.id == '🎯').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🎯').description}`">🎯</span>
                 <span x-show="pstatus.some(status => status.id == '🛡️')"
@@ -160,7 +160,7 @@
                 <span x-show="pstatus.some(status => status.id == '🍀')"
                     :data-tooltip="`🍀 ${pstatus.find(s => s.id == '🍀').name} - ${pstatus.find(s => s.id == '🍀').rounds} round${pstatus.find(s => s.id == '🍀').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🍀').description}`">🍀</span>
                 <span x-show="pstatus.some(status => status.id == '💗')"
-                    :data-tooltip="`💗 ${pstatus.find(s => s.id == '💗').name} - ${pstatus.find(s => s.id == '💗').rounds} round${pstatus.find(s => s.id == '💗').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💗').description}\n\n${maxHealth} * ${pstatus.find(s => s.id == '💗').maxHP} = ${Math.round(pstatus.find(s => s.id == '💗').maxHP * maxHealth)}`">💗</span>
+                    :data-tooltip="`💗 ${pstatus.find(s => s.id == '💗').name} - ${pstatus.find(s => s.id == '💗').rounds} round${pstatus.find(s => s.id == '💗').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💗').description}\n\n${maxHealth} * ${pstatus.find(s => s.id == '💗').maxHP} = ${Math.floor(pstatus.find(s => s.id == '💗').maxHP * maxHealth)}`">💗</span>
                 <span x-show="pstatus.some(status => status.id == '💪')"
                     :data-tooltip="`💪 ${pstatus.find(s => s.id == '💪').name} - ${pstatus.find(s => s.id == '💪').rounds} round${pstatus.find(s => s.id == '💪').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💪').description}`">💪</span>
                 <span x-show="pstatus.some(status => status.id == '🌀')"
@@ -175,23 +175,24 @@
                     :data-tooltip="`✨ ${pstatus.find(s => s.id == '✨').name} - ${pstatus.find(s => s.id == '✨').rounds} round${pstatus.find(s => s.id == '✨').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '✨').description}`">✨</span>
                 <span x-show="pstatus.some(status => status.id == '🏴')"
                     :data-tooltip="`🏴 ${pstatus.find(s => s.id == '🏴').name} - ${pstatus.find(s => s.id == '🏴').rounds} round${pstatus.find(s => s.id == '🏴').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🏴').description}`">🏴</span>
+                <span x-show="health <= 0" data-tooltip="You are dead.">☠️</span>
             </div>
             <div class="battle-weaponry" id="battle-weaponry" style="display: block; text-align: center;">
                 <span
-                    :data-tooltip="`Base Attack\n\n32 + ((${level || 1} - 1) * 6) + ${weaponry.weapon.attack} + ((${weaponry.level} - 1) * ${weaponry.weapon.attackPerLevel}) = ${Math.round(32 + (((level || 1) - 1) * 6) + weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel))}`"
+                    :data-tooltip="`Base Attack\n\n32 + ((${level || 1} - 1) * 6) + ${weaponry.weapon.attack} + ((${weaponry.level} - 1) * ${weaponry.weapon.attackPerLevel}) = ${Math.floor(32 + (((level || 1) - 1) * 6) + weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel))}`"
                     x-text="`⚔️${attack}`"></span>
                 <span
-                    :data-tooltip="`Base Defense\n\n60 + ((${level || 1} - 1) * 10) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult}) = ${Math.round(60 + (((level || 1) - 1) * 10) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult))}`"
+                    :data-tooltip="`Base Defense\n\n60 + ((${level || 1} - 1) * 10) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult}) = ${Math.floor(60 + (((level || 1) - 1) * 10) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult))}`"
                     x-text="`🛡️${defense}`"></span>
                 <br><br>
                 <span
                     :style="armory.armor ?.synergies.some(syn => syn.weapon == weaponry.weapon.name) ?? false ? `text-decoration: underline;` : ''"
-                    :data-tooltip="`${weaponry.weapon.description}\n⚔️${Math.round(weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel))} 🍀${Math.round(weaponry.weapon.crit * 100)}% ⚔️${weaponry.weapon.critdmg}x 🎯${Math.round(weaponry.weapon.accuracy * 100)}%`"
+                    :data-tooltip="`${weaponry.weapon.description}\n⚔️${Math.floor(weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel))} 🍀${Math.floor(weaponry.weapon.crit * 100)}% ⚔️${weaponry.weapon.critdmg}x 🎯${Math.floor(weaponry.weapon.accuracy * 100)}%`"
                     x-text="`${weaponry.weapon.name} - ${weaponry.level}`"></span>
                 <br><br>
                 <span
                     :style="armory.armor ?.synergies.some(syn => syn.weapon == weaponry.weapon.name) ?? false ? `text-decoration: underline;` : ''"
-                    :data-tooltip="`${armory.armor.description}\n🛡️${Math.round(armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult))} 💨${Math.round(armory.armor.evasion * 100)}%`"
+                    :data-tooltip="`${armory.armor.description}\n🛡️${Math.floor(armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult))} 💨${Math.floor(armory.armor.evasion * 100)}%`"
                     x-text="`${armory.armor.name} - ${armory.level}`"></span>
             </div>
         </div>
@@ -341,19 +342,19 @@
                         <div class="enemy-name" x-text="enemy.name">???</div>
                         <div class="estatus-effects">
                             <span x-show="estatus.some(status => status.id == '🩸')"
-                                :data-tooltip="`🩸 ${estatus.find(s => s.id == '🩸').name} - ${estatus.find(s => s.id == '🩸').rounds} round${estatus.find(s => s.id == '🩸').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🩸').description}\n\n${estatus.find(s => s.id == '🩸').damage} * ${estatus.find(s => s.id == '🩸').baseDam} = ${estatus.find(s => s.id == '🩸').damage * estatus.find(s => s.id == '🩸').baseDam}`">🩸</span>
+                                :data-tooltip="`🩸 ${estatus.find(s => s.id == '🩸').name} - ${estatus.find(s => s.id == '🩸').rounds} round${estatus.find(s => s.id == '🩸').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🩸').description}\n\n${estatus.find(s => s.id == '🩸').damage} * ${estatus.find(s => s.id == '🩸').baseDam} = ${Math.floor(estatus.find(s => s.id == '🩸').damage * estatus.find(s => s.id == '🩸').baseDam)}`">🩸</span>
                             <span x-show="estatus.some(status => status.id == '👁️')"
                                 :data-tooltip="`👁️ ${estatus.find(s => s.id == '👁️').name} - ${estatus.find(s => s.id == '👁️').rounds} round${estatus.find(s => s.id == '👁️').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '👁️').description}`">👁️</span>
                             <span x-show="estatus.some(status => status.id == '🔥')"
-                                :data-tooltip="`🔥 ${estatus.find(s => s.id == '🔥').name} - ${estatus.find(s => s.id == '🔥').rounds} round${estatus.find(s => s.id == '🔥').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🔥').description}\n\n${estatus.find(s => s.id == '🔥').damage} * ${estatus.find(s => s.id == '🔥').baseDam} = ${estatus.find(s => s.id == '🔥').damage * estatus.find(s => s.id == '🔥').baseDam}`">🔥</span>
+                                :data-tooltip="`🔥 ${estatus.find(s => s.id == '🔥').name} - ${estatus.find(s => s.id == '🔥').rounds} round${estatus.find(s => s.id == '🔥').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🔥').description}\n\n${estatus.find(s => s.id == '🔥').damage} * ${estatus.find(s => s.id == '🔥').baseDam} = ${Math.floor(estatus.find(s => s.id == '🔥').damage * estatus.find(s => s.id == '🔥').baseDam)}`">🔥</span>
                             <span x-show="estatus.some(status => status.id == '🖤')"
-                                :data-tooltip="`🖤 ${estatus.find(s => s.id == '🖤').name} - ${estatus.find(s => s.id == '🖤').rounds} round${estatus.find(s => s.id == '🖤').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🖤').description}\n\n${estatus.find(s => s.id == '🖤').damage} * ${estatus.find(s => s.id == '🖤').baseDam} = ${estatus.find(s => s.id == '🖤').damage * estatus.find(s => s.id == '🖤').baseDam}`">🖤</span>
+                                :data-tooltip="`🖤 ${estatus.find(s => s.id == '🖤').name} - ${estatus.find(s => s.id == '🖤').rounds} round${estatus.find(s => s.id == '🖤').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🖤').description}\n\n${estatus.find(s => s.id == '🖤').damage} * ${estatus.find(s => s.id == '🖤').baseDam} = ${Math.floor(estatus.find(s => s.id == '🖤').damage * estatus.find(s => s.id == '🖤').baseDam)}`">🖤</span>
                             <span x-show="estatus.some(status => status.id == '🏳️')"
                                 :data-tooltip="`🏳️ ${estatus.find(s => s.id == '🏳️').name} - ${estatus.find(s => s.id == '🏳️').rounds} round${estatus.find(s => s.id == '🏳️').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🏳️').description}`">🏳️</span>
                             <span x-show="estatus.some(status => status.id == '💨')"
                                 :data-tooltip="`💨 ${estatus.find(s => s.id == '💨').name} - ${estatus.find(s => s.id == '💨').rounds} round${estatus.find(s => s.id == '💨').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💨').description}`">💨</span>
                             <span x-show="estatus.some(status => status.id == '💀')"
-                                :data-tooltip="`💀 ${estatus.find(s => s.id == '💀').name} - ${estatus.find(s => s.id == '💀').rounds} round${estatus.find(s => s.id == '💀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💀').description}\n\n${estatus.find(s => s.id == '💀').damage} * ${estatus.find(s => s.id == '💀').baseDam} = ${estatus.find(s => s.id == '💀').damage * estatus.find(s => s.id == '💀').baseDam}`">💀</span>
+                                :data-tooltip="`💀 ${estatus.find(s => s.id == '💀').name} - ${estatus.find(s => s.id == '💀').rounds} round${estatus.find(s => s.id == '💀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💀').description}\n\n${estatus.find(s => s.id == '💀').damage} * ${estatus.find(s => s.id == '💀').baseDam} = ${Math.floor(estatus.find(s => s.id == '💀').damage * estatus.find(s => s.id == '💀').baseDam)}`">💀</span>
                             <span x-show="estatus.some(status => status.id == '🎯')"
                                 :data-tooltip="`🎯 ${estatus.find(s => s.id == '🎯').name} - ${estatus.find(s => s.id == '🎯').rounds} round${estatus.find(s => s.id == '🎯').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🎯').description}`">🎯</span>
                             <span x-show="estatus.some(status => status.id == '🛡️')"
@@ -361,7 +362,7 @@
                             <span x-show="estatus.some(status => status.id == '🍀')"
                                 :data-tooltip="`🍀 ${estatus.find(s => s.id == '🍀').name} - ${estatus.find(s => s.id == '🍀').rounds} round${estatus.find(s => s.id == '🍀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🍀').description}`">🍀</span>
                             <span x-show="estatus.some(status => status.id == '💗')"
-                                :data-tooltip="`💗 ${estatus.find(s => s.id == '💗').name} - ${estatus.find(s => s.id == '💗').rounds} round${estatus.find(s => s.id == '💗').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💗').description}\n\n${maxHealth} * ${estatus.find(s => s.id == '💗').maxHP} = ${Math.round(estatus.find(s => s.id == '💗').maxHP * maxHealth)}`">💗</span>
+                                :data-tooltip="`💗 ${estatus.find(s => s.id == '💗').name} - ${estatus.find(s => s.id == '💗').rounds} round${estatus.find(s => s.id == '💗').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💗').description}\n\n${maxHealth} * ${estatus.find(s => s.id == '💗').maxHP} = ${Math.floor(estatus.find(s => s.id == '💗').maxHP * maxHealth)}`">💗</span>
                             <span x-show="estatus.some(status => status.id == '💪')"
                                 :data-tooltip="`💪 ${estatus.find(s => s.id == '💪').name} - ${estatus.find(s => s.id == '💪').rounds} round${estatus.find(s => s.id == '💪').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💪').description}`">💪</span>
                             <span x-show="estatus.some(status => status.id == '🌀')"
@@ -376,6 +377,7 @@
                                 :data-tooltip="`✨ ${estatus.find(s => s.id == '✨').name} - ${estatus.find(s => s.id == '✨').rounds} round${estatus.find(s => s.id == '✨').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '✨').description}`">✨</span>
                             <span x-show="estatus.some(status => status.id == '🏴')"
                                 :data-tooltip="`🏴 ${estatus.find(s => s.id == '🏴').name} - ${estatus.find(s => s.id == '🏴').rounds} round${estatus.find(s => s.id == '🏴').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🏴').description}`">🏴</span>
+                            <span x-show="health <= 0" :data-tooltip="`This ${enemyName} is dead.`">☠️</span>
                         </div>
                     </div>
                     <div style="margin-top: 70px;">
@@ -410,7 +412,7 @@
                             <button class="battle-base-attack"
                                 :style="`background-color: ${turn ? 'rgb(253, 113, 113)' : 'background-color: rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
                                 x-text="weapon.skills[0].name" :disabled="!turn" @click="skill(0)" x-transition.opacity
-                                :data-tooltip="`${weapon.skills[0].description ? `${weapon.skills[0].description}\n` : ''}${weapon.skills[0].cost ? `⚡${weapon.skills[0].cost}\n` : ''}⚔️ x${weapon.skills[0].attack ? (weapon.skills[0].damage || 1) : 0}\n${weapon.skills[0].times ? `🔄️${weapon.skills[0].times}x\n` : ''}${weapon.skills[0].flatHealth ? `❤️ ${weapon.skills[0].flatHealth}\n` : ''}${weapon.skills[0].health ? `💖 ${Math.round(weapon.skills[0].health * 100)}%\n` : ''}${weapon.skills[0].lifesteal ? `💞 ${Math.round(weapon.skills[0].lifesteal * 100)}%\n` : ''}${weapon.skills[0].pstatus ? `Gains ${weapon.skills[0].pstatus.join('')}\n` : ''}${weapon.skills[0].estatus ? 'Inflicts ' + weapon.skills[0].estatus.join('') : ''}`">Attack</button>
+                                :data-tooltip="`${weapon.skills[0].description ? `${weapon.skills[0].description}\n` : ''}${weapon.skills[0].cost ? `⚡${weapon.skills[0].cost}\n` : ''}⚔️ x${weapon.skills[0].attack ? (weapon.skills[0].damage || 1) : 0}\n${weapon.skills[0].times ? `🔄️${weapon.skills[0].times}x\n` : ''}${weapon.skills[0].flatHealth ? `❤️ ${weapon.skills[0].flatHealth}\n` : ''}${weapon.skills[0].health ? `💖 ${Math.floor(weapon.skills[0].health * 100)}%\n` : ''}${weapon.skills[0].lifesteal ? `💞 ${Math.floor(weapon.skills[0].lifesteal * 100)}%\n` : ''}${weapon.skills[0].pstatus ? `Gains ${weapon.skills[0].pstatus.join('')}\n` : ''}${weapon.skills[0].estatus ? 'Inflicts ' + weapon.skills[0].estatus.join('') : ''}`">Attack</button>
                             <button class="battle-pass"
                                 :style="`background-color: ${turn ? 'rgb(42, 143, 201)' : 'background-color: rgb(55, 55, 55)'}; border: 5px solid rgb(6, 0, 88); font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
                                 :disabled="!turn" @click="skill(-1)" x-transition.opacity>Pass</button>
@@ -431,7 +433,7 @@
                                     <button class="battle-skill1" id="battle-skill1" x-text="weapon.skills[1].name"
                                         :disabled="Alpine.$data(player).stamina < weapon.skills[1].cost || !turn"
                                         :style="`${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'not-allowed' : 'pointer' };`"
-                                        :data-tooltip="`${weapon.skills[1].description ? `${weapon.skills[1].description}\n` : ''}${weapon.skills[1].cost ? `⚡${weapon.skills[1].cost}\n` : ''}⚔️ x${weapon.skills[1].attack ? (weapon.skills[1].damage || 1) : 0}\n${weapon.skills[1].times ? `🔄️${weapon.skills[1].times}x\n` : ''}${weapon.skills[1].flatHealth ? `❤️ ${weapon.skills[1].flatHealth}\n` : ''}${weapon.skills[1].health ? `💖 ${Math.round(weapon.skills[1].health * 100)}%\n` : ''}${weapon.skills[1].lifesteal ? `💞 ${Math.round(weapon.skills[1].lifesteal * 100)}%\n` : ''}${weapon.skills[1].pstatus ? `Gains ${weapon.skills[1].pstatus.join('')}\n` : ''}${weapon.skills[1].estatus ? 'Inflicts ' + weapon.skills[1].estatus.join('') : ''}`"
+                                        :data-tooltip="`${weapon.skills[1].description ? `${weapon.skills[1].description}\n` : ''}${weapon.skills[1].cost ? `⚡${weapon.skills[1].cost}\n` : ''}⚔️ x${weapon.skills[1].attack ? (weapon.skills[1].damage || 1) : 0}\n${weapon.skills[1].times ? `🔄️${weapon.skills[1].times}x\n` : ''}${weapon.skills[1].flatHealth ? `❤️ ${weapon.skills[1].flatHealth}\n` : ''}${weapon.skills[1].health ? `💖 ${Math.floor(weapon.skills[1].health * 100)}%\n` : ''}${weapon.skills[1].lifesteal ? `💞 ${Math.floor(weapon.skills[1].lifesteal * 100)}%\n` : ''}${weapon.skills[1].pstatus ? `Gains ${weapon.skills[1].pstatus.join('')}\n` : ''}${weapon.skills[1].estatus ? 'Inflicts ' + weapon.skills[1].estatus.join('') : ''}`"
                                         @click="skill(1)">
                                         ?
                                     </button>
@@ -447,7 +449,7 @@
                                     <button class="battle-skill2" id="battle-skill2"
                                         :style="`${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'not-allowed' : 'pointer' };`"
                                         :disabled="Alpine.$data(player).stamina < weapon.skills[2].cost || !turn"
-                                        :data-tooltip="`${weapon.skills[2].description ? `${weapon.skills[2].description}\n` : ''}${weapon.skills[2].cost ? `⚡${weapon.skills[2].cost}\n` : ''}⚔️ x${weapon.skills[2].attack ? (weapon.skills[2].damage || 1) : 0}\n${weapon.skills[2].times ? `🔄️${weapon.skills[2].times}x\n` : ''}${weapon.skills[2].flatHealth ? `❤️ ${weapon.skills[2].flatHealth}\n` : ''}${weapon.skills[2].health ? `💖 ${Math.round(weapon.skills[2].health * 100)}%\n` : ''}${weapon.skills[2].lifesteal ? `💞 ${Math.round(weapon.skills[2].lifesteal * 100)}%\n` : ''}${weapon.skills[2].pstatus ? `Gains ${weapon.skills[2].pstatus.join('')}\n` : ''}${weapon.skills[2].estatus ? 'Inflicts ' + weapon.skills[2].estatus.join('') : ''}`"
+                                        :data-tooltip="`${weapon.skills[2].description ? `${weapon.skills[2].description}\n` : ''}${weapon.skills[2].cost ? `⚡${weapon.skills[2].cost}\n` : ''}⚔️ x${weapon.skills[2].attack ? (weapon.skills[2].damage || 1) : 0}\n${weapon.skills[2].times ? `🔄️${weapon.skills[2].times}x\n` : ''}${weapon.skills[2].flatHealth ? `❤️ ${weapon.skills[2].flatHealth}\n` : ''}${weapon.skills[2].health ? `💖 ${Math.floor(weapon.skills[2].health * 100)}%\n` : ''}${weapon.skills[2].lifesteal ? `💞 ${Math.floor(weapon.skills[2].lifesteal * 100)}%\n` : ''}${weapon.skills[2].pstatus ? `Gains ${weapon.skills[2].pstatus.join('')}\n` : ''}${weapon.skills[2].estatus ? 'Inflicts ' + weapon.skills[2].estatus.join('') : ''}`"
                                         x-text="weapon.skills[2].name" @click="skill(2)">
                                         ?
                                     </button>
@@ -464,7 +466,7 @@
                                     <button class="battle-skill3" id="battle-skill3"
                                         :style="`${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'not-allowed' : 'pointer' };`"
                                         :disabled="Alpine.$data(player).stamina < weapon.skills[3].cost || !turn"
-                                        :data-tooltip="`${weapon.skills[3].description ? `${weapon.skills[3].description}\n` : ''}${weapon.skills[3].cost ? `⚡${weapon.skills[3].cost}\n` : ''}⚔️ x${weapon.skills[3].attack ? (weapon.skills[3].damage || 1) : 0}\n${weapon.skills[3].times ? `🔄️${weapon.skills[3].times}x\n` : ''}${weapon.skills[3].flatHealth ? `❤️ ${weapon.skills[3].flatHealth}\n` : ''}${weapon.skills[3].health ? `💖 ${Math.round(weapon.skills[3].health * 100)}%\n` : ''}${weapon.skills[3].lifesteal ? `💞 ${Math.round(weapon.skills[3].lifesteal * 100)}%\n` : ''}${weapon.skills[3].pstatus ? `Gains ${weapon.skills[3].pstatus.join('')}\n` : ''}${weapon.skills[3].estatus ? 'Inflicts ' + weapon.skills[3].estatus.join('') : ''}`"
+                                        :data-tooltip="`${weapon.skills[3].description ? `${weapon.skills[3].description}\n` : ''}${weapon.skills[3].cost ? `⚡${weapon.skills[3].cost}\n` : ''}⚔️ x${weapon.skills[3].attack ? (weapon.skills[3].damage || 1) : 0}\n${weapon.skills[3].times ? `🔄️${weapon.skills[3].times}x\n` : ''}${weapon.skills[3].flatHealth ? `❤️ ${weapon.skills[3].flatHealth}\n` : ''}${weapon.skills[3].health ? `💖 ${Math.floor(weapon.skills[3].health * 100)}%\n` : ''}${weapon.skills[3].lifesteal ? `💞 ${Math.floor(weapon.skills[3].lifesteal * 100)}%\n` : ''}${weapon.skills[3].pstatus ? `Gains ${weapon.skills[3].pstatus.join('')}\n` : ''}${weapon.skills[3].estatus ? 'Inflicts ' + weapon.skills[3].estatus.join('') : ''}`"
                                         x-text="weapon.skills[3].name" @click="skill(3)">
                                     </button>
                                     <span class="battle-skill3-cost" id="battle-skill3-cost"
@@ -487,40 +489,40 @@
                 <br>
                 <div class="debug-grid">
                     <input placeholder="Set Level"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set Max Health"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = $event.target.value; updateBars(); $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set Health"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).health = $event.target.value; updateBars(); $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).health = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set Max Stamina"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxStamina = $event.target.value; updateBars(); $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxStamina = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set Stamina"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).stamina = $event.target.value; updateBars(); $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).stamina = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set XP"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).experience = $event.target.value; updateBars(); $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).experience = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set Weapon"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry = {weapon: assets.items.find(w => w.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry = {weapon: assets.items.find(w => w.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set Weapon Level"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry.level = $event.target.value; setPlayer(); $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry.level = $event.target.value; setPlayer(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set Armor"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).armory = {armor: assets.items.find(a => a.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).armory = {armor: assets.items.find(a => a.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set Armor Level"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).armory.level = $event.target.value; setPlayer(); $event.target.value = ''" />
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).armory.level = $event.target.value; setPlayer(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Enemy Level"
-                        @keyup.enter="enemyLevel = Number($event.target.value); setPlayer(); $event.target.value = ''" />
+                        @keyup.enter="enemyLevel = Number($event.target.value); setPlayer(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Encounter Enemy"
-                        @keyup.enter="transition('debug', 'encounter'); startBattle(assets.enemies.find(e => e.name == $event.target.value)); $event.target.value = ''" />
+                        @keyup.enter="transition('debug', 'encounter'); startBattle(assets.enemies.find(e => e.name == $event.target.value)); $event.target.value = ''; $refs.blur()" />
                 </div>
                 <br>
                 <h2>Press ` to close</h2>

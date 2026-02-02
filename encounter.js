@@ -1,5 +1,6 @@
 // This file is for *in-battle* game logic for both the player and enemy.
 const assets = getAssets()
+var died = false;
 
 async function resetBars(screen) {
     document.getElementById(`health-${screen}`).style.width = "0px";
@@ -40,8 +41,8 @@ async function setPlayer() {
     player.maxStamina = 30 + (((player.level || 1) - 1) * 5)
     player.stamina = player.maxStamina
 
-    player.attack = Math.round(32 + (((player.level || 1) - 1) * 6) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel))
-    player.defense = Math.round(60 + (((player.level || 1) - 1) * 10) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult))
+    player.attack = Math.floor(32 + (((player.level || 1) - 1) * 6) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel))
+    player.defense = Math.floor(60 + (((player.level || 1) - 1) * 10) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult))
 
     player.crit = player.weaponry.weapon.crit;
     player.critdmg = player.weaponry.weapon.critdmg;
@@ -61,10 +62,12 @@ async function startBattle(enemy = null) {
     const location = assets.areas.find(area => area.name == background.location)
     const randomEnemy = randomByChance(location.enemies).name
 
-    const level = enemy ? (background.enemyLevel || 1) : (Math.round(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl))
+    const level = enemy ? (background.enemyLevel || 1) : (Math.floor(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl))
     if (!enemy) enemy = assets.enemies.find(enemy => enemy.name == randomEnemy)
 
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
+
+    died = false;
 
     background.enemy = enemy
     background.enemyLevel = level
@@ -103,6 +106,7 @@ async function executeSkill({
 }) {
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
+    if (player.health <= 0 || encounter.health <= 0) return;
 
     if (!isPlayer && skill.wait) {
         skill._cooldown = skill.wait;
@@ -132,7 +136,7 @@ async function executeSkill({
     let damage = attacker.attack;
     if (skill.damage) damage *= skill.damage;
 
-    damage = Math.round(((damage ** 2) * damMult) / Math.max(1, defender.defense * fort));
+    damage = Math.floor(((damage ** 2) * damMult) / Math.max(1, defender.defense * fort));
 
     if (skill.cost && isPlayer) player.stamina -= skill.cost;
 
@@ -141,7 +145,7 @@ async function executeSkill({
     let crit = Math.random() >= 1 - attacker.crit - critDif;
     let totalDealt = 0;
 
-    let skillLog = `<span style="color:lightblue;" data-tooltip="${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.round(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.round(skill.lifesteal * 100)}%\n` : ''}${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + `${skill.pstatus.join('')}\n` : ''}${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}">${skill.cost ? '⚡' : ''}${skill.name}</span>`;
+    let skillLog = `<span style="color:lightblue;" data-tooltip="${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.floor(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.floor(skill.lifesteal * 100)}%\n` : ''}${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + `${skill.pstatus.join('')}\n` : ''}${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}">${skill.cost ? '⚡' : ''}${skill.name}</span>`;
     encounter.log.push(`- ${attackerName} used ${skillLog}`);
 
     let damageLog = (final) =>
@@ -188,23 +192,23 @@ async function executeSkill({
         else if (skill.flatHealth) heal = skill.flatHealth;
         else if (skill.lifesteal) heal = totalDealt * skill.lifesteal;
 
-        heal = Math.round(heal * (crit ? critMult : 1));
+        heal = Math.floor(heal * (crit ? critMult : 1));
         if (attacker.health + heal > attacker.maxHealth) heal = attacker.maxHealth - attacker.health;
 
         if (skill.health) {
-            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💖 ${attacker.maxHealth} * ${skill.health} * ${crit ? critMult : 1} = ${Math.round(skill.health * attacker.maxHealth * (crit ? critMult : 1))}${(attacker.health + (skill.health * attacker.maxHealth * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💖${heal}</span>` }
+            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💖 ${attacker.maxHealth} * ${skill.health} * ${crit ? critMult : 1} = ${Math.floor(skill.health * attacker.maxHealth * (crit ? critMult : 1))}${(attacker.health + (skill.health * attacker.maxHealth * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💖${heal}</span>` }
             encounter.log[encounter.log.length - 1] += `${crit ? 'CRIT ' : ''}${healingLog()}`
         }
         else if (skill.flatHealth) {
-            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="❤️ ${skill.flatHealth} * ${crit ? critMult : 1} = ${Math.round(skill.flatHealth * (crit ? critMult : 1))}${(attacker.health + (skill.flatHealth * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">❤️${heal}</span>` }
+            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="❤️ ${skill.flatHealth} * ${crit ? critMult : 1} = ${Math.floor(skill.flatHealth * (crit ? critMult : 1))}${(attacker.health + (skill.flatHealth * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">❤️${heal}</span>` }
             encounter.log[encounter.log.length - 1] += `${crit ? 'CRIT ' : ''}${healingLog()}`
         }
         else if (skill.lifesteal) {
-            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💞 ${totalDealt} * ${skill.lifesteal} * ${crit ? critMult : 1} = ${Math.round(totalDealt * skill.lifesteal * (crit ? critMult : 1))}${(attacker.health + ((totalDealt * skill.lifesteal) * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💞${heal}</span>` }
+            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💞 ${totalDealt} * ${skill.lifesteal} * ${crit ? critMult : 1} = ${Math.floor(totalDealt * skill.lifesteal * (crit ? critMult : 1))}${(attacker.health + ((totalDealt * skill.lifesteal) * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💞${heal}</span>` }
             encounter.log[encounter.log.length - 1] += `${crit ? 'CRIT ' : ''}${healingLog()}`
         }
 
-        attacker.health += Math.round(heal);
+        attacker.health += Math.floor(heal);
         updateBars();
     }
 
@@ -256,7 +260,7 @@ async function skill(index) {
             break;
         case -1:
             // Pass
-            var staminaRegen = Math.round(player.maxStamina * .1)
+            var staminaRegen = Math.floor(player.maxStamina * .1)
             if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
             player.stamina += staminaRegen
             battleStation.round += 1;
@@ -286,6 +290,7 @@ async function skill(index) {
 }
 
 async function turnManager(toPlayer) {
+    if (died) return;
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
@@ -298,10 +303,28 @@ async function turnManager(toPlayer) {
     await new Promise(resolve => setTimeout(resolve, 500));
 
     if (encounter.health <= 0 || player.health <= 0) {
+        died = true;
         background.enemy.skills.forEach(s => { delete s._cooldown; });
         if (encounter.health <= 0) encounter.log.push(`--- ${background.enemy.name} has died. ---`);
-        else encounter.log.push(`--- ${background.name} has died. ---`);
-        transition('encounter', 'returning');
+        else return encounter.log.push(`--- ${background.name} has died. ---`);
+        //transition('encounter', 'returning');
+
+        await new Promise(resolve => setTimeout(resolve, 500));
+        let currentLevel = player.level
+        var xpdrop = Math.floor((((background.enemyLevel ** 1.2) * (encounter.maxHealth / encounter.attack)) ** 1.2) * 2);
+        let xptext = `<span color="lightblue" data-tooltip='(((${background.enemyLevel}^1.2) * (${encounter.maxHealth} / ${encounter.attack}))^1.2) * 2 = ${xpdrop}'>${xpdrop}</span>`;
+        encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
+
+        while (player.experience + xpdrop > Math.floor((Math.floor((player.level / 0.07) ** 2)) * 100)) {
+            xpdrop -= Math.floor((Math.floor((player.level / 0.07) ** 2)) * 100) - player.experience
+            player.level += 1;
+            player.experience = 0;
+            encounter.log.push(`'⬆️ ${background.name} leveld up to level ${player.level}! ⬆️'`)
+        }
+
+        player.experience += xpdrop;
+        if (player.level > currentLevel) setPlayer();
+        else updateBars();
         return;
     }
 
@@ -336,35 +359,35 @@ async function turnManager(toPlayer) {
     for (const s of actorStatuses.slice()) {
         switch (s.id) {
             case '🩸': {
-                let damage = Math.round(s.baseDam * s.damage);
+                let damage = Math.floor(s.baseDam * s.damage);
                 encounter.log.push(`${actorName} is bleeding - <span style="color: lightblue;" data-tooltip="🩸 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🩸${damage}</span>`);
                 actor.health -= damage;
                 break;
             }
             case '🔥': {
-                let damage = Math.round(s.baseDam * s.damage);
+                let damage = Math.floor(s.baseDam * s.damage);
                 encounter.log.push(`${actorName} is on fire - <span style="color: lightblue;" data-tooltip="🔥 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🔥${damage}</span>`);
                 actor.health -= damage;
                 break;
             }
             case '🖤': {
-                let damage = Math.round(s.baseDam * s.damage);
+                let damage = Math.floor(s.baseDam * s.damage);
                 encounter.log.push(`${actorName} is cursed - <span style="color: lightblue;" data-tooltip="🖤 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🖤${damage}</span>`);
                 actor.health -= damage;
                 break;
             }
             case '💀': {
-                let damage = Math.round(s.maxHP * actor.maxHealth);
+                let damage = Math.floor(s.maxHP * actor.maxHealth);
                 encounter.log.push(`${actorName} is poisoned - <span style="color: lightblue;" data-tooltip="💀 ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${damage}">💀${damage}</span>`);
                 actor.health -= damage;
                 break;
             }
             case '💗': {
-                let heal = Math.round(s.maxHP * actor.maxHealth);
+                let heal = Math.floor(s.maxHP * actor.maxHealth);
                 if (actor.health + heal > actor.maxHealth)
                     heal = actor.maxHealth - actor.health;
 
-                encounter.log.push(`${actorName} is regenerating - <span style="color: lightblue;" data-tooltip="🩸 ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${Math.round(s.maxHP * actor.maxHealth)}${actor.health + Math.round(s.maxHP * actor.maxHealth) > actor.maxHealth ? '\nCapped to max health.' : ''}">💗${heal}</span>`);
+                encounter.log.push(`${actorName} is regenerating - <span style="color: lightblue;" data-tooltip="💗 ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${Math.floor(s.maxHP * actor.maxHealth)}${actor.health + Math.floor(s.maxHP * actor.maxHealth) > actor.maxHealth ? '\nCapped to max health.' : ''}">💗${heal}</span>`);
                 actor.health += heal;
                 break;
             }
@@ -377,7 +400,7 @@ async function turnManager(toPlayer) {
     }
 
     if (toPlayer) {
-        let staminaRegen = Math.round(player.maxStamina * .1);
+        let staminaRegen = Math.floor(player.maxStamina * .1);
         if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
         player.stamina += staminaRegen;
         battleStation.round += 1;

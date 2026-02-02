@@ -47,7 +47,7 @@ async function quitButton() {
 
 async function fadeInOutEffect(to) {
     await fadeInEffect();
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 500));
     Alpine.$data(document.getElementById("screen")).screen = to;
     await fadeOutEffect();
 }
@@ -59,7 +59,7 @@ async function fadeOutEffect() {
     await new Promise(resolve => setTimeout(resolve, 250));
     var fadeInterval = setInterval(function () {
         if (opacity > 0) {
-            opacity -= 0.05;
+            opacity -= 0.1;
             element.style.opacity = opacity;
         } else {
             clearInterval(fadeInterval);
@@ -73,7 +73,7 @@ async function fadeInEffect() {
     element.style.opacity = 0;
     var fadeInterval = setInterval(function () {
         if (opacity < 1) {
-            opacity += 0.05;
+            opacity += 0.1;
             element.style.opacity = opacity;
         } else {
             clearInterval(fadeInterval);
