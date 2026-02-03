@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
     <script src="script.js"></script>
     <script src="assets.js"></script>
     <script src="encounter.js"></script>
@@ -18,9 +19,9 @@
 <body>
     <div id="global-tooltip"></div>
     <div alt="Background" id="background-image" class="background-image" x-init="startup()" x-data="{
-            name: localStorage.getItem('name') || '',
+            name: JSON.parse(localStorage.getItem('textBasedData'))?.name || '',
             location: 'Warhamshire',
-            screen: localStorage.getItem('name') ? 'returning' : 'new-player',
+            screen: JSON.parse(localStorage.getItem('textBasedData'))?.name ? 'returning' : 'new-player',
             showPlayerBar: false,
             enemy: getAssets().enemies.find(enemy => enemy.name == 'Fox King'),
             enemyLevel: 1,
@@ -29,7 +30,7 @@
 
         <div id="overlay-transparency" class="overlay-transparency"></div>
 
-        <div class="player" id="player" x-show="showPlayerBar" x-init="setPlayer()" x-data="{
+        <div class="player" id="player" x-show="showPlayerBar" x-init="startPlayer()" x-data="{
                 crit: 0,
                 critdmg: 0,
                 accuracy: 0,
@@ -44,7 +45,8 @@
                 armory: { armor: getAssets().items.find(armor => armor.name == 'None'), level: 1 },
                 level: 1,
                 attack: 32,
-                pstatus: [] ,
+                pstatus: [],
+                inventory: [],
                 tooltipMessages: [
                     `It's just you.`,
                     `Why hello, ${name}.`,
@@ -200,6 +202,9 @@
         <div id="screen" class="screen">
             <!-- New Player (Title Screen)-->
             <div id="new-player" class="new-player" x-show="screen === 'new-player'" x-transition.opacity>
+                <button class="regular-button"
+                    style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
+                    @click="importButton()" x-transition.opacity>IMPORT</button>
                 <p style="text-align: center; font-size: 30px; top: 25px;">Welcome to</p>
                 <h1 style="text-align: center; font-size: 60px; top: 50px; font-weight: bold;">Text - Based - Game</h1>
                 <div class="centered-inputs">
@@ -316,7 +321,7 @@
                 estatus: [],
 
                 get playerName() {
-                    return Alpine.$data(document.getElementById('player')).name || 'Player';
+                    return Alpine.$data(document.getElementById('background-image')).name || 'Player';
                 },
 
                 get enemyName() {
@@ -488,20 +493,23 @@
                 <h1>⚙ Debug Panel</h1>
                 <br>
                 <div class="debug-grid">
+                    <button @click="savePlayer()"
+                        style="font-family: 'Pixel-Font', sans-serif; background-color: transparent; border: 2px solid white; cursor: pointer; color: white;">Save
+                        Game</button>
                     <input placeholder="Set Level"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''; $refs.blur()" />
-
-                    <input placeholder="Set Max Health"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set Health"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).health = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
 
-                    <input placeholder="Set Max Stamina"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxStamina = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
+                    <input placeholder="Set Max Health"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set Stamina"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).stamina = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
+
+                    <input placeholder="Set Max Stamina"
+                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxStamina = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
 
                     <input placeholder="Set XP"
                         @keyup.enter="Alpine.$data(document.getElementById('player')).experience = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />

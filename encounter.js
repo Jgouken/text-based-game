@@ -32,26 +32,61 @@ function randomByChance(choices) {
     }
 }
 
+async function startPlayer() {
+    const player = Alpine.$data(document.getElementById('player'));
+    const playerData = JSON.parse(localStorage.getItem('textBasedData'));
+    if (!playerData) return;
+
+    player.level = Number(playerData.level);
+    player.name = playerData.name;
+    player.experience = Number(playerData.experience);
+    player.weaponry = { weapon: assets.items.find(w => w.name == playerData.weaponry.weapon), level: Number(playerData.weaponry.level) };
+    player.armory = { armor: assets.items.find(a => a.name == playerData.armory.armor), level: Number(playerData.armory.level) };
+    player.health = Number(playerData.health);
+    player.stamina = Number(playerData.stamina);
+    player.pstatus = playerData.pstatus;
+    player.inventory = playerData.inventory;
+
+    setPlayer();
+}
+
 async function setPlayer() {
     const player = Alpine.$data(document.getElementById('player'));
+    player.maxHealth = 500 + ((player.level - 1) * 250)
+    player.maxStamina = 30 + ((player.level - 1) * 5)
 
-    player.maxHealth = 500 + (((player.level || 1) - 1) * 250)
-    player.health = player.maxHealth
-
-    player.maxStamina = 30 + (((player.level || 1) - 1) * 5)
-    player.stamina = player.maxStamina
-
-    player.attack = Math.floor(32 + (((player.level || 1) - 1) * 6) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel))
-    player.defense = Math.floor(60 + (((player.level || 1) - 1) * 10) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult))
-
+    player.attack = Math.floor(32 + ((player.level - 1) * 6) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel))
+    player.defense = Math.floor(60 + ((player.level - 1) * 10) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult))
     player.crit = player.weaponry.weapon.crit;
     player.critdmg = player.weaponry.weapon.critdmg;
     player.accuracy = player.weaponry.weapon.accuracy;
     player.evasion = player.armory.armor.evasion;
+    
+    updateBars();
+}
 
-    console.log(player.weaponry)
+async function savePlayer() {
+    const player = Alpine.$data(document.getElementById('player'));
+    localStorage.setItem('textBasedData', JSON.stringify({
+        name: player.name,
+        level: player.level,
+        health: player.health,
+        stamina: player.stamina,
+        experience: player.experience,
+        weaponry: { weapon: player.weaponry.weapon.name, level: player.weaponry.level },
+        armory: { armor: player.armory.armor.name, level: player.armory.level },
+        pstatus: player.pstatus,
+        inventory: player.inventory
+    }));
+    console.log("Game Saved");
+}
 
-    updateBars()
+async function resetPlayer() {
+    // set all player data to maximum values
+    const player = Alpine.$data(document.getElementById('player'));
+    player.health = player.maxHealth;
+    player.stamina = player.maxStamina;
+    updateBars();
 }
 
 async function startBattle(enemy = null) {
@@ -133,10 +168,7 @@ async function executeSkill({
         (defenderStatuses.some(s => s.id == '🛡️') ? assets.statuses.find(s => s.id == '🛡️').armorAdd : 0)
         + 1;
 
-    let damage = attacker.attack;
-    if (skill.damage) damage *= skill.damage;
-
-    damage = Math.floor(((damage ** 2) * damMult) / Math.max(1, defender.defense * fort));
+    let damage = Math.floor((attacker.attack * damMult * (skill.damage || 1)) * (attacker.attack / (defender.defense + (defender.defense * fort))));
 
     if (skill.cost && isPlayer) player.stamina -= skill.cost;
 
@@ -149,7 +181,7 @@ async function executeSkill({
     encounter.log.push(`- ${attackerName} used ${skillLog}`);
 
     let damageLog = (final) =>
-        `<span style="color:lightblue;" data-tooltip="⚔️ (((${attacker.attack} * ${skill.damage || 1})^2 * ${damMult}) / (${defender.defense} * ${fort})) * ${crit ? critMult : 1} = ${final}">⚔️${final}</span>`;
+        `<span style="color:lightblue;" data-tooltip="⚔️ ${crit ? critMult : 1} * ((${attacker.attack} * ${damMult} * ${skill.damage || 1}) * (${attacker.attack} / (${attacker.attack} + (${defender.defense} * ${fort})))) = ${final}">⚔️${final}</span>`;
 
     const attack = () => {
         let final = hit ? Math.floor(damage * (crit ? critMult : 1)) : 0;
@@ -291,6 +323,7 @@ async function skill(index) {
 
 async function turnManager(toPlayer) {
     if (died) return;
+    savePlayer()
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
@@ -306,8 +339,15 @@ async function turnManager(toPlayer) {
         died = true;
         background.enemy.skills.forEach(s => { delete s._cooldown; });
         if (encounter.health <= 0) encounter.log.push(`--- ${background.enemy.name} has died. ---`);
-        else return encounter.log.push(`--- ${background.name} has died. ---`);
-        //transition('encounter', 'returning');
+        else {
+            encounter.log.push(`--- ${background.name} has died. ---`);
+            transition('encounter', 'returning')
+            await new Promise(resolve => setTimeout(resolve, 500));
+            player.health = player.maxHealth;
+            player.pstatus = [];
+            savePlayer()
+            return;
+        }
 
         await new Promise(resolve => setTimeout(resolve, 500));
         let currentLevel = player.level
@@ -325,6 +365,7 @@ async function turnManager(toPlayer) {
         player.experience += xpdrop;
         if (player.level > currentLevel) setPlayer();
         else updateBars();
+        savePlayer();
         return;
     }
 

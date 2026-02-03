@@ -5,7 +5,7 @@ function getAssets() {
 			{
 				name: 'Poison',
 				id: '💀',
-				description: `Inflicts 4% Max HP damage for 5 rounds.`,
+				description: "Inflicts 4% Max HP damage for 5 rounds.",
 				positive: false,
 				maxHP: 0.04,
 				rounds: 5,
@@ -13,7 +13,7 @@ function getAssets() {
 			{
 				name: 'Regeneration',
 				id: '💗',
-				description: `Gain 5% Max HP for 3 rounds.`,
+				description: "Gain 5% Max HP for 3 rounds.",
 				positive: true,
 				maxHP: 0.05,
 				rounds: 3,
@@ -21,7 +21,7 @@ function getAssets() {
 			{
 				name: 'Bleed',
 				id: '🩸',
-				description: `Inflicts 15% of initial damage for 2 rounds.`,
+				description: "Inflicts 15% of initial damage for 2 rounds.",
 				baseDam: 0.15,
 				positive: false,
 				rounds: 2,
@@ -29,7 +29,7 @@ function getAssets() {
 			{
 				name: 'Burn',
 				id: '🔥',
-				description: `Inflicts 10% of initial damage for 5 rounds.`,
+				description: "Inflicts 10% of initial damage for 5 rounds.",
 				baseDam: 0.1,
 				positive: false,
 				rounds: 5,
@@ -37,7 +37,7 @@ function getAssets() {
 			{
 				name: 'Weakness',
 				id: '🌀',
-				description: `Deal 15% less damage for 3 rounds.`,
+				description: "Deal 15% less damage for 3 rounds.",
 				damReduc: 0.15,
 				positive: false,
 				rounds: 3
@@ -45,7 +45,7 @@ function getAssets() {
 			{
 				name: 'Strength',
 				id: '💪',
-				description: `Deal 20% more damage for 3 rounds.`,
+				description: "Deal 20% more damage for 3 rounds.",
 				damAdd: 0.2,
 				positive: true,
 				rounds: 3
@@ -53,7 +53,7 @@ function getAssets() {
 			{
 				name: 'Empowerment',
 				id: '🏳️',
-				description: `Deal 40% more damage for 1 round.`,
+				description: "Deal 40% more damage for 1 round.",
 				damAdd: 0.4,
 				positive: true,
 				rounds: 3
@@ -61,14 +61,14 @@ function getAssets() {
 			{
 				name: 'Stun',
 				id: '💫',
-				description: `Next turn is skipped.`,
+				description: "Next turn is skipped.",
 				positive: false,
 				rounds: 1,
 			},
 			{
 				name: 'Fortification',
-				id: `🛡️`,
-				description: `Increases armor by 20% for 3 rounds.`,
+				id: "🛡️",
+				description: "Increases armor by 20% for 3 rounds.",
 				armorAdd: 0.2,
 				positive: true,
 				rounds: 3
@@ -76,7 +76,7 @@ function getAssets() {
 			{
 				name: 'Blindness',
 				id: '👁️',
-				description: `Decreases accuracy by 15% for 3 rounds.`,
+				description: "Decreases accuracy by 15% for 3 rounds.",
 				decAcc: 0.15,
 				positive: false,
 				rounds: 3
@@ -84,7 +84,7 @@ function getAssets() {
 			{
 				name: 'Focus',
 				id: '🎯',
-				description: `Increases accuracy by 20% for 3 rounds.`,
+				description: "Increases accuracy by 20% for 3 rounds.",
 				incAcc: 0.2,
 				positive: true,
 				rounds: 3
@@ -92,7 +92,7 @@ function getAssets() {
 			{
 				name: 'Curse',
 				id: '🖤',
-				description: `Inflicts 25% of initial damage for 4 rounds.`,
+				description: "Inflicts 25% of initial damage for 4 rounds.",
 				baseDam: 0.25,
 				positive: false,
 				rounds: 4,
@@ -100,7 +100,7 @@ function getAssets() {
 			{
 				name: 'Luck',
 				id: '🍀',
-				description: `Increases critical hit chance by 15% for 3 rounds.`,
+				description: "Increases critical hit chance by 15% for 3 rounds.",
 				incCrit: 0.15,
 				positive: true,
 				rounds: 3
@@ -108,7 +108,7 @@ function getAssets() {
 			{
 				name: 'Bad Luck',
 				id: '🐈‍⬛',
-				description: `Decreases critical hit chance by 10% for 3 rounds.`,
+				description: "Decreases critical hit chance by 10% for 3 rounds.",
 				decCrit: 0.1,
 				positive: false,
 				rounds: 3
@@ -116,7 +116,7 @@ function getAssets() {
 			{
 				name: 'Berserk',
 				id: '💢',
-				description: `Increases attack by 40% but increases damage taken by 30% over 3 rounds.`,
+				description: "Increases attack by 40% but increases damage taken by 30% over 3 rounds.",
 				damAdd: 0.4,
 				incDamTaken: 0.3,
 				positive: true,
@@ -125,7 +125,7 @@ function getAssets() {
 			{
 				name: 'Evasion',
 				id: '💨',
-				description: `Decreases opponent attack accuracy by 15% for 3 rounds.`,
+				description: "Decreases opponent attack accuracy by 15% for 3 rounds.",
 				decEnAcc: 0.15,
 				positive: true,
 				rounds: 3
@@ -133,14 +133,14 @@ function getAssets() {
 			{
 				name: 'Blessing',
 				id: '✨',
-				description: `Dispel and negate all negative status effects for 2 rounds.`,
+				description: "Dispel and negate all negative status effects for 2 rounds.",
 				positive: true,
 				rounds: 2,
 			},
 			{
 				name: 'Bad Omen',
 				id: '🏴',
-				description: `Dispel and negate all positive status effects for 2 rounds.`,
+				description: "Dispel and negate all positive status effects for 2 rounds.",
 				positive: false,
 				rounds: 2,
 			},
@@ -149,7 +149,7 @@ function getAssets() {
 
 		enemies: [
 			{
-				name: `Lazy Goblin`,
+				name: "Lazy Goblin",
 				sprite: 'assets/enemies/LazyGoblin.gif',
 				weapon: "Rusted Dagger",
 				health: 50,
@@ -175,52 +175,52 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 0.22
+						chance: 0.60
 					},
 					{
 						name: "Wooden Key",
-						chance: 0.03
+						chance: 0.06
 					},
 					{
 						name: "Iron Key",
-						chance: 0.01
+						chance: 0.03
 					},
 					{
 						name: "Twig",
-						chance: 0.045
+						chance: 0.025
 					},
 					{
 						name: "Branch",
-						chance: 0.045
+						chance: 0.025
 					},
 					{
 						name: "Broken Dagger",
-						chance: 0.025
+						chance: 0.015
 					},
 					{
 						name: "Tattered Rags",
-						chance: 0.025
+						chance: 0.015
 					},
 					{
 						name: "Cloth",
-						chance: 0.25
+						chance: 0.05
 					},
 					{
 						name: "Empty Flask",
-						chance: 0.15
+						chance: 0.08
 					},
 					{
 						name: "Water Flask",
-						chance: 0.14
+						chance: 0.05
 					},
 					{
 						name: "Booze",
-						chance: 0.15
+						chance: 0.05
 					},
 				]
 			},
 			{
-				name: `Blacksmith Goblin`,
+				name: "Blacksmith Goblin",
 				sprite: 'assets/enemies/BlacksmithGoblin.gif',
 				weapon: "Blacksmith's Hammer",
 				health: 125,
@@ -255,7 +255,7 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 0.4
+						chance: 0.65
 					},
 					{
 						name: "Wooden Key",
@@ -267,40 +267,40 @@ function getAssets() {
 					},
 					{
 						name: "Broken Dagger",
-						chance: 0.04
-					},
-					{
-						name: "Rusty Dagger",
 						chance: 0.02
 					},
 					{
+						name: "Rusty Dagger",
+						chance: 0.01
+					},
+					{
 						name: "Damaged Cloak",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Whetstone",
-						chance: 0.05
+						chance: 0.06
 					},
 					{
 						name: "Gunpowder",
-						chance: 0.1
+						chance: 0.05
 					},
 					{
 						name: "Empty Flask",
-						chance: 0.1
+						chance: 0.05
 					},
 					{
 						name: "Water Flask",
-						chance: 0.1
+						chance: 0.05
 					},
 					{
 						name: "Booze",
-						chance: 0.1
+						chance: 0.05
 					},
 				]
 			},
 			{
-				name: `Armored Goblin`,
+				name: "Armored Goblin",
 				sprite: 'assets/enemies/ArmoredGoblin.gif',
 				weapon: "Spear & Shield",
 				health: 250,
@@ -336,28 +336,28 @@ function getAssets() {
 					},
 					{
 						name: "Golden Key",
-						chance: 0.02
+						chance: 0.06
 					},
 					{
 						name: "Platinum Key",
-						chance: 0.01
+						chance: 0.03
 					},
 					{
 						name: "Great Sword",
-						chance: 0.035
+						chance: 0.015
 					},
 					{
 						name: "Skull Crusher",
-						chance: 0.035
+						chance: 0.015
 					},
 					{
 						name: "Iron Armor",
-						chance: 0.05
+						chance: 0.03
 					},
 				]
 			},
 			{
-				name: `Cursed Goblin`,
+				name: "Cursed Goblin",
 				sprite: 'assets/enemies/CursedGoblin.gif',
 				weapon: "Cursed Rusted Dagger",
 				health: 333,
@@ -417,7 +417,7 @@ function getAssets() {
 					},
 					{
 						name: "Whetstone",
-						chance: 0.025
+						chance: 0.045
 					},
 					{
 						name: "Cloth",
@@ -426,7 +426,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: `Orc`,
+				name: "Orc",
 				sprite: 'assets/enemies/Orc.gif',
 				weapon: "Orc Club",
 				health: 400,
@@ -471,7 +471,7 @@ function getAssets() {
 					},
 					{
 						name: "Iron Key",
-						chance: 0.01
+						chance: 0.1
 					},
 					{
 						name: "Golden Key",
@@ -483,7 +483,7 @@ function getAssets() {
 					},
 					{
 						name: "Cloth",
-						chance: 0.015
+						chance: 0.15
 					},
 					{
 						name: "Red Gem",
@@ -504,7 +504,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: `Health Slime`,
+				name: "Health Slime",
 				sprite: 'assets/enemies/HealthSlime.gif',
 				weapon: null,
 				health: 100,
@@ -555,16 +555,21 @@ function getAssets() {
 					},
 					{
 						name: "Light Health Potion",
-						chance: 0.08
+						chance: 0.05
 					},
 					{
 						name: "Medium Health Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Health Potion",
 						chance: 0.01
 					},
+
 				]
 			},
 			{
-				name: `Attack Slime`,
+				name: "Attack Slime",
 				sprite: 'assets/enemies/AttackSlime.gif',
 				weapon: null,
 				health: 80,
@@ -617,16 +622,21 @@ function getAssets() {
 					},
 					{
 						name: "Light Attack Potion",
-						chance: 0.08
+						chance: 0.05
 					},
 					{
 						name: "Medium Attack Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Attack Potion",
 						chance: 0.01
 					},
+
 				]
 			},
 			{
-				name: `Defense Slime`,
+				name: "Defense Slime",
 				sprite: 'assets/enemies/DefenseSlime.gif',
 				weapon: null,
 				health: 75,
@@ -677,16 +687,21 @@ function getAssets() {
 					},
 					{
 						name: "Light Defense Potion",
-						chance: 0.08
+						chance: 0.05
 					},
 					{
 						name: "Medium Defense Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Defense Potion",
 						chance: 0.01
 					},
+
 				]
 			},
 			{
-				name: `Stamina Slime`,
+				name: "Stamina Slime",
 				sprite: 'assets/enemies/StaminaSlime.gif',
 				weapon: null,
 				health: 45,
@@ -736,16 +751,21 @@ function getAssets() {
 					},
 					{
 						name: "Light Stamina Potion",
-						chance: 0.08
+						chance: 0.05
 					},
 					{
 						name: "Medium Stamina Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Stamina Potion",
 						chance: 0.01
 					},
+
 				]
 			},
 			{
-				name: `Orange Fox`,
+				name: "Orange Fox",
 				sprite: 'assets/enemies/OrangeFox.gif',
 				weapon: "Steel Dagger",
 				health: 650,
@@ -783,56 +803,66 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 0.2
+						chance: 0.55
 					},
 					{
 						name: "Iron Key",
-						chance: 0.04
+						chance: 0.06
 					},
 					{
 						name: "Golden Key",
-						chance: 0.02
+						chance: 0.04
 					},
 					{
 						name: "Dual Hatchets",
-						chance: 0.09
+						chance: 0.03
 					},
 					{
 						name: "Leather Armor",
-						chance: 0.05
+						chance: 0.02
 					},
 					{
 						name: "Purified Salt",
-						chance: 0.05
+						chance: 0.03
 					},
 					{
 						name: "Gunpowder",
-						chance: 0.1
+						chance: 0.03
 					},
 					{
 						name: "Empty Flask",
-						chance: 0.1
+						chance: 0.03
 					},
 					{
 						name: "Water Flask",
-						chance: 0.1
+						chance: 0.03
 					},
 					{
 						name: "Booze",
-						chance: 0.10
+						chance: 0.03
 					},
 					{
 						name: "Pepper",
-						chance: 0.1
+						chance: 0.02
 					},
 					{
 						name: "Pepper Bomb",
-						chance: 0.05
+						chance: 0.1
 					},
+					{
+						name: "Whetstone & Polish",
+						chance: 0.01
+					},
+					{
+						name: "Whetstone",
+						chance: 0.02
+					},
+
+
 				]
 			},
 			{
-				name: `White Fox`,
+				name: "White Fox",
 				sprite: 'assets/enemies/WhiteFox.gif',
 				weapon: "Steel Dagger",
 				health: 600,
@@ -872,56 +902,67 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 0.2
+						chance: 0.55
 					},
 					{
 						name: "Iron Key",
-						chance: 0.03
+						chance: 0.05
 					},
 					{
 						name: "Golden Key",
-						chance: 0.03
+						chance: 0.05
 					},
 					{
 						name: "Dual Daggers",
-						chance: 0.09
+						chance: 0.03
 					},
 					{
 						name: "Leather Armor",
-						chance: 0.05
+						chance: 0.02
 					},
 					{
 						name: "Purified Salt",
-						chance: 0.05
+						chance: 0.03
 					},
 					{
 						name: "Gunpowder",
-						chance: 0.1
+						chance: 0.03
 					},
 					{
 						name: "Empty Flask",
-						chance: 0.1
+						chance: 0.03
 					},
 					{
 						name: "Water Flask",
-						chance: 0.1
+						chance: 0.03
 					},
 					{
 						name: "Booze",
-						chance: 0.1
+						chance: 0.03
 					},
 					{
 						name: "Pepper",
-						chance: 0.1
+						chance: 0.02
 					},
 					{
 						name: "Pepper Bomb",
-						chance: 0.05
+						chance: 0.1
 					},
+					{
+						name: "Whetstone & Polish",
+						chance: 0.01
+					},
+					{
+						name: "Whetstone",
+						chance: 0.02
+					},
+
+
+
 				]
 			},
 			{
-				name: `Blue Fox`,
+				name: "Blue Fox",
 				sprite: 'assets/enemies/BlueFox.gif',
 				weapon: "Steel Dagger",
 				health: 750,
@@ -967,60 +1008,70 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 0.2
+						chance: 0.55
 					},
 					{
 						name: "Iron Key",
-						chance: 0.02
+						chance: 0.05
 					},
 					{
 						name: "Golden Key",
-						chance: 0.04
+						chance: 0.05
 					},
 					{
 						name: "Dual Daggers",
-						chance: 0.045
+						chance: 0.015
 					},
 					{
 						name: "Dual Hatchets",
-						chance: 0.045
+						chance: 0.015
 					},
 					{
 						name: "Leather Armor",
-						chance: 0.05
+						chance: 0.02
 					},
 					{
 						name: "Purified Salt",
-						chance: 0.05
+						chance: 0.03
 					},
 					{
 						name: "Gunpowder",
-						chance: 0.1
+						chance: 0.03
 					},
 					{
 						name: "Empty Flask",
-						chance: 0.1
+						chance: 0.03
 					},
 					{
 						name: "Water Flask",
-						chance: 0.1
+						chance: 0.03
 					},
 					{
 						name: "Booze",
-						chance: 0.1
+						chance: 0.03
 					},
 					{
 						name: "Pepper",
-						chance: 0.1
+						chance: 0.02
 					},
 					{
 						name: "Pepper Bomb",
-						chance: 0.05
+						chance: 0.1
 					},
+					{
+						name: "Venom",
+						chance: 0.02
+					},
+					{
+						name: "Whetstone & Polish",
+						chance: 0.02
+					},
+
+
 				]
 			},
 			{
-				name: `Vampire`,
+				name: "Vampire",
 				sprite: 'assets/enemies/Vampire.gif',
 				weapon: "Fangs",
 				health: 4500,
@@ -1060,19 +1111,19 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 0.5
+						chance: 0.6
 					},
 					{
 						name: "Platinum Key",
-						chance: 0.03
+						chance: 0.06
 					},
 					{
 						name: "Adamantine Key",
-						chance: 0.01
+						chance: 0.04
 					},
 					{
 						name: "Vampire Fangs",
-						chance: 0.16
+						chance: 0.1
 					},
 					{
 						name: "Red Gem",
@@ -1088,12 +1139,12 @@ function getAssets() {
 					},
 					{
 						name: "Venom",
-						chance: 0.175
+						chance: 0.075
 					},
 				]
 			},
 			{
-				name: `Demon`,
+				name: "Demon",
 				sprite: 'assets/enemies/Demon.gif',
 				weapon: null,
 				health: 6666,
@@ -1148,19 +1199,19 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 0.5
+						chance: 0.6
 					},
 					{
 						name: "Platinum Key",
-						chance: 0.03
+						chance: 0.06
 					},
 					{
 						name: "Adamantine Key",
-						chance: 0.01
+						chance: 0.04
 					},
 					{
 						name: "Demon Horn",
-						chance: 0.16
+						chance: 0.10
 					},
 					{
 						name: "Red Gem",
@@ -1181,7 +1232,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: `Werewolf`,
+				name: "Werewolf",
 				sprite: 'assets/enemies/Werewolf.gif',
 				weapon: null,
 				health: 7500,
@@ -1220,40 +1271,40 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 0.5
+						chance: 0.6
 					},
 					{
 						name: "Platinum Key",
-						chance: 0.03
+						chance: 0.07
 					},
 					{
 						name: "Adamantine Key",
-						chance: 0.01
+						chance: 0.04
 					},
 					{
 						name: "Werewolf Claw",
-						chance: 0.16
+						chance: 0.9
 					},
 					{
 						name: "Red Gem",
-						chance: 0.05
+						chance: 0.06
 					},
 					{
 						name: "Blue Gem",
-						chance: 0.05
+						chance: 0.06
 					},
 					{
 						name: "Purple Gem",
-						chance: 0.025
+						chance: 0.035
 					},
 					{
 						name: "Cloth",
-						chance: 0.175
+						chance: 0.035
 					},
 				]
 			},
 			{
-				name: `Witch`,
+				name: "Witch",
 				sprite: 'assets/enemies/Witch.gif',
 				weapon: null,
 				health: 3333,
@@ -1268,7 +1319,7 @@ function getAssets() {
 						attack: true
 					},
 					{
-						name: "Poisionous Potion",
+						name: "Poisonous Potion",
 						pstatus: ["💀"],
 						damage: 2,
 						chance: 0.15,
@@ -1306,20 +1357,25 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 0.5
+						chance: 0.6
 					},
 					{
 						name: "Platinum Key",
-						chance: 0.03
+						chance: 0.09
 					},
 					{
 						name: "Adamantine Key",
-						chance: 0.01
+						chance: 0.05
 					},
 					{
 						name: "Mana Infused Crystal",
-						chance: 0.2
+						chance: 0.02
 					},
+					{
+						name: "Witch Crystal",
+						chance: 0.06
+					},
+
 					{
 						name: "Red Gem",
 						chance: 0.05
@@ -1333,13 +1389,18 @@ function getAssets() {
 						chance: 0.025
 					},
 					{
-						name: "Venom",
-						chance: 0.175
+						name: "Purification Gem",
+						chance: 0.025
 					},
+					{
+						name: "Venom",
+						chance: 0.05
+					},
+
 				]
 			},
 			{
-				name: `Cow`,
+				name: "Cow",
 				sprite: 'assets/enemies/Cow.gif',
 				weapon: null,
 				health: 200,
@@ -1371,7 +1432,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: `Sheep`,
+				name: "Sheep",
 				sprite: 'assets/enemies/Sheep.gif',
 				weapon: null,
 				health: 125,
@@ -1403,7 +1464,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: `Chicken`,
+				name: "Chicken",
 				sprite: 'assets/enemies/Chicken.gif',
 				weapon: null,
 				health: 45,
@@ -1435,7 +1496,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: `Cyclops Overlord`,
+				name: "Cyclops Overlord",
 				sprite: 'assets/enemies/CyclopsOverlord.gif',
 				weapon: null,
 				health: 500,
@@ -1482,12 +1543,27 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 1
-					}
+						chance: 0.3
+					},
+					{
+						name: "Wooden Key",
+						chance: 0.35
+					},
+					{
+						name: "Iron Key",
+						chance: 0.25
+					},
+					{
+						name: "Gold Key",
+						chance: 0.1
+					},
+
+
+
 				]
 			},
 			{
-				name: `Fox King`,
+				name: "Fox King",
 				sprite: 'assets/enemies/FoxKing.gif',
 				weapon: null,
 				health: 1250,
@@ -1534,12 +1610,27 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 1
-					}
+						chance: 0.25
+					},
+					{
+						name: "Iron Key",
+						chance: 0.35
+					},
+					{
+						name: "Gold Key",
+						chance: 0.25
+					},
+
+					{
+						name: "Platinum Key",
+						chance: 0.15
+					},
+
+
 				]
 			},
 			{
-				name: `Goblin King`,
+				name: "Goblin King",
 				sprite: 'assets/enemies/GoblinKing.gif',
 				weapon: null,
 				health: 7777,
@@ -1594,12 +1685,27 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 1
-					}
+						chance: 0.2
+					},
+					{
+						name: "Gold Key",
+						chance: 0.4
+					},
+					{
+						name: "Platinum Key",
+						chance: 0.25
+					},
+					{
+						name: "Adamantine Key",
+						chance: 0.15
+					},
+
+
+
 				]
 			},
 			{
-				name: `Demon Queen`,
+				name: "Demon Queen",
 				sprite: 'assets/enemies/DemonQueen.gif',
 				weapon: null,
 				health: 13666,
@@ -1674,8 +1780,24 @@ function getAssets() {
 				drops: [
 					{
 						name: null,
-						chance: 1
-					}
+						chance: 0.15
+					},
+					{
+						name: "Gold Key",
+						chance: 0.35
+					},
+					{
+						name: "Platinum Key",
+						chance: 0.3
+					},
+					{
+						name: "Adamantine Key",
+						chance: 0.2
+					},
+
+
+
+
 				]
 			},
 		],
@@ -2257,7 +2379,7 @@ function getAssets() {
 				name: "Hands",
 				maxlvl: 1,
 				minlvl: 1,
-				description: `The enemies can catch these hands.`,
+				description: "The enemies can catch these hands.",
 
 				attack: 0,
 				attackPerLevel: 0,
@@ -2297,7 +2419,7 @@ function getAssets() {
 				critdmg: 1.3,
 				accuracy: 0.6,
 
-				description: `A stick.`,
+				description: "A stick.",
 				skills: [
 					{
 						name: "Whack",
@@ -2305,7 +2427,7 @@ function getAssets() {
 					},
 					{
 						name: "Poke Eye",
-						description: `Poke 'em in the eye.`,
+						description: "Poke 'em in the eye.",
 						cost: 10,
 						damage: 0.6,
 						estatus: ["👁️"],
@@ -2313,14 +2435,14 @@ function getAssets() {
 					},
 					{
 						name: "Thwack",
-						description: `Thwack them with your stick!`,
+						description: "Thwack them with your stick!",
 						cost: 15,
 						damage: 1.25,
 						attack: true
 					},
 					{
 						name: "Treat Wounds",
-						description: `Rub some dirt on your wounds.`,
+						description: "Rub some dirt on your wounds.",
 						cost: 10,
 						flatHealth: 120,
 						attack: false
@@ -2338,7 +2460,7 @@ function getAssets() {
 				critdmg: 1.5,
 				accuracy: 0.7,
 
-				description: `A heftier stick.`,
+				description: "A heftier stick.",
 				skills: [
 					{
 						name: "Whack",
@@ -2346,21 +2468,21 @@ function getAssets() {
 					},
 					{
 						name: "Hefty Swing",
-						description: `Batter up!`,
+						description: "Batter up!",
 						cost: 15,
 						damage: 1.4,
 						attack: true
 					},
 					{
 						name: "Barbaric Shout",
-						description: `Scream at the top of your lungs.`,
+						description: "Scream at the top of your lungs.",
 						pstatus: ["💪"],
 						cost: 10,
 						attack: false
 					},
 					{
 						name: "Treat Wounds",
-						description: `Rub some dirt on your wounds.`,
+						description: "Rub some dirt on your wounds.",
 						cost: 15,
 						flatHealth: 120,
 						attack: false
@@ -2378,7 +2500,7 @@ function getAssets() {
 				critdmg: 1.65,
 				accuracy: 0.7,
 
-				description: `A mysteriously sharpened broken dagger.`,
+				description: "A mysteriously sharpened broken dagger.",
 				skills: [
 					{
 						name: "Stab",
@@ -2386,14 +2508,14 @@ function getAssets() {
 					},
 					{
 						name: "Hope For The Best",
-						description: `Hope for the best.`,
+						description: "Hope for the best.",
 						cost: 10,
 						pstatus: ["🍀"],
 						attack: false
 					},
 					{
 						name: "Wild Stab",
-						description: `Stabby stabby stab.`,
+						description: "Stabby stabby stab.",
 						estatus: ["🩸"],
 						damage: 0.7,
 						cost: 20,
@@ -2401,7 +2523,7 @@ function getAssets() {
 					},
 					{
 						name: "Treat Wounds",
-						description: `Rub some dirt on your wounds.`,
+						description: "Rub some dirt on your wounds.",
 						cost: 15,
 						flatHealth: 120,
 						attack: false
@@ -2419,7 +2541,7 @@ function getAssets() {
 				critdmg: 1.6,
 				accuracy: 0.8,
 
-				description: `A dagger that's lost its edge due to rust, but is still useable.`,
+				description: "A dagger that's lost its edge due to rust, but is still useable.",
 				skills: [
 					{
 						name: "Stab",
@@ -2427,14 +2549,14 @@ function getAssets() {
 					},
 					{
 						name: "Slash",
-						description: `Slice with ferocity.`,
+						description: "Slice with ferocity.",
 						cost: 15,
 						damage: 1.5,
 						attack: true
 					},
 					{
 						name: "Kick",
-						description: `Give 'em a roundhouse kick in the face!`,
+						description: "Give 'em a roundhouse kick in the face!",
 						estatus: ["🌀"],
 						damage: 0.65,
 						cost: 25,
@@ -2442,7 +2564,7 @@ function getAssets() {
 					},
 					{
 						name: "Treat Wounds",
-						description: `Rub some dirt on your wounds.`,
+						description: "Rub some dirt on your wounds.",
 						cost: 15,
 						flatHealth: 120,
 						attack: false
@@ -2453,7 +2575,7 @@ function getAssets() {
 				name: "Trusty Dagger",
 				maxlvl: 12,
 				minlvl: 6,
-				description: `A clean dagger that feels reliable with a nicely sharpened edge.`,
+				description: "A clean dagger that feels reliable with a nicely sharpened edge.",
 
 				attack: 20,
 				attackPerLevel: 2,
@@ -2470,7 +2592,7 @@ function getAssets() {
 					},
 					{
 						name: "Swift Attack",
-						description: `Stab faster than they can see!`,
+						description: "Stab faster than they can see!",
 						cost: 15,
 						damage: 0.4,
 						times: 3,
@@ -2478,7 +2600,7 @@ function getAssets() {
 					},
 					{
 						name: "Deep Slash",
-						description: `Slash with ferocity.`,
+						description: "Slash with ferocity.",
 						cost: 10,
 						damage: 1.1,
 						estatus: ["🩸"],
@@ -2486,7 +2608,7 @@ function getAssets() {
 					},
 					{
 						name: "Quick Fix",
-						description: `Wrap your wound in cloth.`,
+						description: "Wrap your wound in cloth.",
 						cost: 25,
 						health: 0.1,
 						attack: false
@@ -2497,7 +2619,7 @@ function getAssets() {
 				name: "Perfect Stick",
 				maxlvl: 12,
 				minlvl: 6,
-				description: `A truly magnificent stick. It naturally has the right amount of weight and rigidity.`,
+				description: "A truly magnificent stick. It naturally has the right amount of weight and rigidity.",
 
 				attack: 30,
 				attackPerLevel: 2,
@@ -2513,7 +2635,7 @@ function getAssets() {
 					},
 					{
 						name: "Perfect Swing",
-						description: `Swing at the the enemy with perfect trajectory.`,
+						description: "Swing at the the enemy with perfect trajectory.",
 						cost: 20,
 						damage: 1.25,
 						pstatus: ["🎯"],
@@ -2521,7 +2643,7 @@ function getAssets() {
 					},
 					{
 						name: "All or Nothing",
-						description: `Put all your eggs in one basket.`,
+						description: "Put all your eggs in one basket.",
 						cost: 40,
 						pstatus: ["💫", "🌀"],
 						damage: 3,
@@ -2529,7 +2651,7 @@ function getAssets() {
 					},
 					{
 						name: "Quick Fix",
-						description: `Wrap your wound in cloth.`,
+						description: "Wrap your wound in cloth.",
 						cost: 25,
 						health: 0.1,
 						attack: false
@@ -2540,7 +2662,7 @@ function getAssets() {
 				name: "Iron Short Sword",
 				maxlvl: 14,
 				minlvl: 6,
-				description: `A polished short sword that was clearly in good care.`,
+				description: "A polished short sword that was clearly in good care.",
 
 				attack: 40,
 				attackPerLevel: 4,
@@ -2556,7 +2678,7 @@ function getAssets() {
 					},
 					{
 						name: "Double Strike",
-						description: `Two-Sword Style.`,
+						description: "Two-Sword Style.",
 						cost: 25,
 						times: 2,
 						damage: 0.6,
@@ -2564,7 +2686,7 @@ function getAssets() {
 					},
 					{
 						name: "Kick",
-						description: `Foot!`,
+						description: "Foot!",
 						estatus: ["🌀"],
 						cost: 25,
 						damage: 0.65,
@@ -2572,7 +2694,7 @@ function getAssets() {
 					},
 					{
 						name: "Determined Resolve",
-						description: `Howl like the warrior you are!`,
+						description: "Howl like the warrior you are!",
 						cost: 20,
 						pstatus: ["💗", "💪"],
 						attack: false
@@ -2583,7 +2705,7 @@ function getAssets() {
 				name: "Golden Stick",
 				maxlvl: 45,
 				minlvl: 25,
-				description: `The absolute perfect stick with no imperfections. Made from a wood that is as shiny as gold.`,
+				description: "The absolute perfect stick with no imperfections. Made from a wood that is as shiny as gold.",
 
 				attack: 221,
 				attackPerLevel: 6,
@@ -2599,7 +2721,7 @@ function getAssets() {
 					},
 					{
 						name: "Golden Rush",
-						description: `Bother the enemy to the finest several times.`,
+						description: "Bother the enemy to the finest several times.",
 						cost: 177,
 						times: 7,
 						damage: 0.77,
@@ -2607,7 +2729,7 @@ function getAssets() {
 					},
 					{
 						name: "Brandish",
-						description: `Show off your weapon and use it to reflect light into the enemy's eye.`,
+						description: "Show off your weapon and use it to reflect light into the enemy's eye.",
 						cost: 30,
 						pstatus: ["💢"],
 						estatus: ["👁️"],
@@ -2615,7 +2737,7 @@ function getAssets() {
 					},
 					{
 						name: "Golden Standard",
-						description: `You are perfect, so act like it.`,
+						description: "You are perfect, so act like it.",
 						pstatus: ["🍀", "🎯"],
 						cost: 77,
 						flatHealth: 777,
@@ -2627,7 +2749,7 @@ function getAssets() {
 				name: "Dual Daggers",
 				maxlvl: 24,
 				minlvl: 13,
-				description: `A pair of iron daggers that looks as if they are to be used in tadem.`,
+				description: "A pair of iron daggers that looks as if they are to be used in tandem.",
 
 				attack: 58,
 				attackPerLevel: 4,
@@ -2644,7 +2766,7 @@ function getAssets() {
 					},
 					{
 						name: "Swift Barrage",
-						description: `Unleash a quick barrage of slashes.`,
+						description: "Unleash a quick barrage of slashes.",
 						cost: 25,
 						estatus: ["🩸"],
 						times: 5,
@@ -2653,14 +2775,14 @@ function getAssets() {
 					},
 					{
 						name: "Rogue’s Gambit",
-						description: `You're a winner!`,
+						description: "You're a winner!",
 						cost: 77,
 						pstatus: ["🍀", "🌀"],
 						attack: false
 					},
 					{
 						name: "Quick Fix",
-						description: `Wrap your wound in cloth.`,
+						description: "Wrap your wound in cloth.",
 						cost: 25,
 						health: 0.1,
 						attack: false
@@ -2671,7 +2793,7 @@ function getAssets() {
 				name: "Dual Hatchets",
 				maxlvl: 24,
 				minlvl: 13,
-				description: `A pair of lumberjack hatches good for damage!`,
+				description: "A pair of lumberjack hatches good for damage!",
 
 				attack: 78,
 				attackPerLevel: 4,
@@ -2715,7 +2837,7 @@ function getAssets() {
 				name: "Iron Sword",
 				maxlvl: 27,
 				minlvl: 15,
-				description: `A heavy-weight classic weapon of attack and defense.`,
+				description: "A heavy-weight classic weapon of attack and defense.",
 
 				attack: 106,
 				attackPerLevel: 4,
@@ -2756,7 +2878,7 @@ function getAssets() {
 				name: "Wooden Bow",
 				maxlvl: 32,
 				minlvl: 19,
-				description: `A lightweight ranged weapon to get your enemies from afar.`,
+				description: "A lightweight ranged weapon to get your enemies from afar.",
 
 				attack: 130,
 				attackPerLevel: 6,
@@ -2802,7 +2924,7 @@ function getAssets() {
 				name: "Lumberjack Axe",
 				maxlvl: 32,
 				minlvl: 19,
-				description: `A lumberjack's best friend.`,
+				description: "A lumberjack's best friend.",
 
 				attack: 194,
 				attackPerLevel: 6,
@@ -2844,7 +2966,7 @@ function getAssets() {
 				name: "Silver Dagger",
 				maxlvl: 32,
 				minlvl: 19,
-				description: `A knife colored silver. Great for murder!`,
+				description: "A knife colored silver. Great for murder!",
 
 				attack: 169,
 				attackPerLevel: 6,
@@ -2889,7 +3011,7 @@ function getAssets() {
 				name: "Martial Arts",
 				maxlvl: 40,
 				minlvl: 25,
-				description: `A close-quarter combat "weapon" mainly used for defensive strategies.`,
+				description: "A close-quarter combat ‘weapon’ mainly used for defensive strategies.",
 
 				attack: 253,
 				attackPerLevel: 8,
@@ -2932,7 +3054,7 @@ function getAssets() {
 				name: "Chainsaw",
 				maxlvl: 40,
 				minlvl: 26,
-				description: `A heavy-duty cutting tool with teeth set on a chain which moves around the edge of a blade.`,
+				description: "A heavy-duty cutting tool with teeth set on a chain which moves around the edge of a blade.",
 
 				attack: 360,
 				attackPerLevel: 8,
@@ -2978,7 +3100,7 @@ function getAssets() {
 				name: "Great Sword",
 				maxlvl: 36,
 				minlvl: 28,
-				description: `A standard super-sized weapon used for disabling great foes!`,
+				description: "A standard super-sized weapon used for disabling great foes!",
 
 				attack: 237,
 				attackPerLevel: 6,
@@ -3022,7 +3144,7 @@ function getAssets() {
 				name: "Skull Crusher",
 				maxlvl: 36,
 				minlvl: 28,
-				description: `Sometimes big problems require a just as big simple solution like a giant hammer.`,
+				description: "Sometimes big problems require a just as big simple solution like a giant hammer.",
 
 				attack: 387,
 				attackPerLevel: 6,
@@ -3064,7 +3186,7 @@ function getAssets() {
 				name: "Twin Swords",
 				maxlvl: 40,
 				minlvl: 30,
-				description: `Short-ranged dual weaponry for classic double strikes.`,
+				description: "Short-ranged dual weaponry for classic double strikes.",
 
 				attack: 252,
 				attackPerLevel: 8,
@@ -3106,10 +3228,10 @@ function getAssets() {
 				]
 			},
 			{
-				name: "Spiked Gauntlents",
+				name: "Spiked Gauntlets",
 				maxlvl: 40,
 				minlvl: 30,
-				description: `A pair of gloves laced with knuckle spikes for a deadly victory.`,
+				description: "A pair of gloves laced with knuckle spikes for a deadly victory.",
 
 				attack: 355,
 				attackPerLevel: 8,
@@ -3155,7 +3277,7 @@ function getAssets() {
 				name: "Ninja Arts",
 				maxlvl: 50,
 				minlvl: 32,
-				description: `A survivability combat martial art "weapon" mainly used for concealment and offensive survival strategies.`,
+				description: "A survivability combat martial art ‘weapon’ mainly used for concealment and offensive survival strategies.",
 
 				attack: 359,
 				attackPerLevel: 8,
@@ -3201,7 +3323,7 @@ function getAssets() {
 				name: "Holy Spear",
 				maxlvl: 50,
 				minlvl: 32,
-				description: `A famous weapon given to the leaders of crusades and it’s imbued with the ability to strengthen its wielder utilizing their willpower.`,
+				description: "A famous weapon given to the leaders of crusades and it’s imbued with the ability to strengthen its wielder utilizing their willpower.",
 
 				attack: 325,
 				attackPerLevel: 8,
@@ -3243,7 +3365,7 @@ function getAssets() {
 				name: "Cursed Bone Bow",
 				maxlvl: 50,
 				minlvl: 32,
-				description: `An unholy weapon made from the bones of the dead with a mysterious ability to make arrows poisonous if shot in quick succession.`,
+				description: "An unholy weapon made from the bones of the dead with a mysterious ability to make arrows poisonous if shot in quick succession.",
 
 				attack: 252,
 				attackPerLevel: 8,
@@ -3288,7 +3410,7 @@ function getAssets() {
 				name: "Cursed Fangs",
 				maxlvl: 50,
 				minlvl: 32,
-				description: `A dual-weilded cursed dagger weapons made from the fangs of vampires and coated in demonic spiders venom to create a truly horrific combo.`,
+				description: "A dual-wielded cursed dagger weapons made from the fangs of vampires and coated in demonic spiders venom to create a truly horrific combo.",
 
 				attack: 380,
 				attackPerLevel: 10,
@@ -3306,7 +3428,7 @@ function getAssets() {
 					{
 						name: "Gouge",
 						cost: 85,
-						description: "A powerful slash that ripis through the foe.",
+						description: "A powerful slash that rips through the foe.",
 						damage: 1.8,
 						estatus: ["🩸"],
 						pstatus: ["💢"],
@@ -3337,7 +3459,7 @@ function getAssets() {
 				name: "Evil Pulverizer",
 				maxlvl: 50,
 				minlvl: 38,
-				description: `A holy hammer apparently used by the most righteous as a way for a quick end to evil to limit the suffering of all.`,
+				description: "A holy hammer apparently used by the most righteous as a way for a quick end to evil to limit the suffering of all.",
 
 				attack: 1333,
 				attackPerLevel: 10,
@@ -3352,7 +3474,7 @@ function getAssets() {
 						attack: true,
 					},
 					{
-						name: "Almightly Smite",
+						name: "Almighty Smite",
 						cost: 180,
 						description: "Jump and crush your foe with all your strength aided by gravity.",
 						damage: 3,
@@ -3380,7 +3502,7 @@ function getAssets() {
 				name: "Demonic Nunchucks",
 				maxlvl: 50,
 				minlvl: 40,
-				description: `A weapon once used by highly talented demons that practiced martial arts.`,
+				description: "A weapon once used by highly talented demons that practiced martial arts.",
 
 				attack: 546,
 				attackPerLevel: 10,
@@ -3428,7 +3550,7 @@ function getAssets() {
 				name: "Holy Arts",
 				maxlvl: 50,
 				minlvl: 40,
-				description: `An ancient art of imbuing your body with holy energy to smite foes with your bare hands, unfortunately you could only learn how to kick with it.`,
+				description: "An ancient art of imbuing your body with holy energy to smite foes with your bare hands, unfortunately you could only learn how to kick with it.",
 
 				attack: 500,
 				attackPerLevel: 10,
@@ -3474,7 +3596,7 @@ function getAssets() {
 				name: "Orcus",
 				maxlvl: 50,
 				minlvl: 45,
-				description: `A weapon of devastating power fabled to once been wielded by the bringer of death himself. The mere presence of this weapon siphons the life from the area.`,
+				description: "A weapon of devastating power fabled to once been wielded by the bringer of death himself. The mere presence of this weapon siphons the life from the area.",
 
 				attack: 616,
 				attackPerLevel: 10,
@@ -3511,7 +3633,7 @@ function getAssets() {
 					{
 						name: "Dark Reconstruction",
 						cost: 113,
-						description: "Engulfs the caster in a black substance that seems to replace missing parts and reconfigure their body to partial intagibility.",
+						description: "Engulfs the caster in a black substance that seems to replace missing parts and reconfigure their body to partial intangibility.",
 						health: 0.4,
 						pstatus: ["💨"],
 						attack: false
@@ -3522,7 +3644,7 @@ function getAssets() {
 				name: "Iris & Hermes",
 				maxlvl: 50,
 				minlvl: 45,
-				description: `A weapon also known simply as the Holy Messengers, thought to be made for cleansing the world of evil and anything else that threatens the balance.`,
+				description: "A weapon also known simply as the Holy Messengers, thought to be made for cleansing the world of evil and anything else that threatens the balance.",
 
 				attack: 727,
 				attackPerLevel: 10,
@@ -3540,7 +3662,7 @@ function getAssets() {
 					{
 						name: "Twin Banishing Shot",
 						cost: 148,
-						description: "Supercharge Iris & Hermes to fire a bright and powerful beam of holy energy from each barrle.",
+						description: "Supercharge Iris & Hermes to fire a bright and powerful beam of holy energy from each barrel.",
 						estatus: ["👁️", "🔥"],
 						pstatus: ["🏳️"],
 						damage: 1.77,
@@ -3560,7 +3682,7 @@ function getAssets() {
 					{
 						name: "Divine Restoration",
 						cost: 99,
-						description: "Receieve a major blessing and restore health to the user.",
+						description: "Receive a major blessing and restore health to the user.",
 						pstatus: ["✨", "🛡️", "💗", "💪"],
 						health: 0.2,
 						attack: false
@@ -3571,12 +3693,12 @@ function getAssets() {
 				name: "Alectrona & Melanie",
 				maxlvl: 50,
 				minlvl: 45,
-				description: `Two legendary swords of conflicting power brought together in an irrational combo. Can you truly harness the power of light & dark without consequence?`,
+				description: "Two legendary swords of conflicting power brought together in an irrational combo. Can you truly harness the power of light & dark without consequence?",
 
 				attack: 625,
 				attackPerLevel: 10,
 				crit: 0.15,
-				critdmg: 11.25,
+				critdmg: 1.25,
 				accuracy: 0.7,
 
 				skills: [
@@ -3693,7 +3815,7 @@ function getAssets() {
 			},
 			{
 				name: "Perfect Leaf",
-				description: "A leaf with a vibrant hue of green, no missing leaves, damage, and a impressive shape that seems completely symmetrical it must be special.",
+				description: "A leaf with a vibrant hue of green, no missing leaves, damage, and an impressive shape that seems completely symmetrical it must be special.",
 
 				defense: 18,
 				maxlvl: 12,
@@ -3711,7 +3833,7 @@ function getAssets() {
 			},
 			{
 				name: "Padded Clothing",
-				description: "Multiple layers of normal clothing sown together to create a thick set shirt and pants , simple but surprisingly effective.",
+				description: "Multiple layers of normal clothing sewn together to create a thick set shirt and pants , simple but surprisingly effective.",
 
 				defense: 46,
 				maxlvl: 14,
@@ -3823,7 +3945,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: "Lumberjack Atire",
+				name: "Lumberjack Attire",
 				description: "A plaid long shirt and extra large black jeans a combo that just feels right for some unknown reason.",
 
 				defense: 408,
@@ -3842,7 +3964,7 @@ function getAssets() {
 			},
 			{
 				name: "Thick Sleeveless Hoodie",
-				description: "A very large black hoodie that had it's sleeves cut off with a pair of baggy jeans.",
+				description: "A very large black hoodie that had its sleeves cut off with a pair of baggy jeans.",
 
 				defense: 297,
 				maxlvl: 40,
@@ -3901,7 +4023,7 @@ function getAssets() {
 			},
 			{
 				name: "Dragon Cloak",
-				description: "A stylish jet-black cloak made from a extremely durable material rumored to actually be acquired by slaying a black dragon.",
+				description: "A stylish jet-black cloak made from an extremely durable material rumored to actually be acquired by slaying a black dragon.",
 
 				defense: 312,
 				maxlvl: 40,
@@ -3929,7 +4051,7 @@ function getAssets() {
 
 				synergies: [
 					{
-						weapon: "Spiked Gauntlents",
+						weapon: "Spiked Gauntlets",
 						name: "Strength",
 						attack: 20
 					},
@@ -3937,7 +4059,7 @@ function getAssets() {
 			},
 			{
 				name: "Shinobi Garments",
-				description: "The traditionally attire of those who practice ninjutsu consisting of a black jacket, black trousers, light sandals, and a hooded cowl.",
+				description: "The traditional attire of those who practice ninjutsu consisting of a black jacket, black trousers, light sandals, and a hooded cowl.",
 
 				defense: 357,
 				maxlvl: 50,
@@ -4073,7 +4195,7 @@ function getAssets() {
 			},
 			{
 				name: "Equinox",
-				description: "An impossible robe that has been embued with holy and unholy energy, carefully crafted by an unknown seamstress.",
+				description: "An impossible robe that has been imbued with holy and unholy energy, carefully crafted by an unknown seamstress.",
 
 				defense: 810,
 				maxlvl: 50,
@@ -4549,7 +4671,7 @@ function getAssets() {
 				key: "Iron Key",
 				drops: [
 					{
-						name: "Iron Short Sowrd",
+						name: "Iron Short Sword",
 						chance: 0.07
 					},
 					{
@@ -4693,7 +4815,7 @@ function getAssets() {
 				key: "Golden Key",
 				drops: [
 					{
-						name: "Iron Sowrd",
+						name: "Iron Sword",
 						chance: 0.05
 					},
 					{
@@ -5209,3 +5331,4 @@ function getAssets() {
 		],
 	}
 }
+

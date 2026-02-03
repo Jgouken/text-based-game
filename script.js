@@ -9,25 +9,102 @@ function startup() {
 }
 
 async function startGame(name) {
+    const player = Alpine.$data(document.getElementById('player'));
     Alpine.$data(document.getElementById("background-image")).name = name;
     console.log("Game started with name: " + name);
 
     await fadeInOutEffect("returning");
     Alpine.$data(document.getElementById("background-image")).showPlayerBar = true;
 
-    localStorage.setItem('name', name);
+    localStorage.setItem('textBasedData', JSON.stringify({
+        name: player.name,
+        level: player.level,
+        health: player.health,
+        stamina: player.stamina,
+        experience: player.experience,
+        weaponry: { weapon: player.weaponry.weapon.name, level: player.weaponry.level },
+        armory: { armor: player.armory.armor.name, level: player.armory.level },
+        pstatus: player.pstatus,
+        inventory: player.inventory
+    }));
 }
 
 async function importButton() {
     console.log("Import");
+    const saveData = window.prompt("Please paste your save data key:");
+    if (!saveData) return;
+    const decrypted = CryptoJS.TripleDES.decrypt(saveData, CryptoJS.enc.Utf8.parse("TextBasedGameKeyByJgouken"), {
+        iv: CryptoJS.enc.Utf8.parse("TBGSMJGMBP"),
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    }).toString(CryptoJS.enc.Utf8);
+
+    try {
+        // Validate the decrypted data
+        const parsed = JSON.parse(decrypted);
+
+        const requiredKeys = [
+            'name', 'level', 'health', 'stamina', 'experience',
+            'weaponry', 'armory', 'pstatus', 'inventory'
+        ];
+
+        const hasRequired = requiredKeys.every(k => Object.prototype.hasOwnProperty.call(parsed, k));
+
+        const weaponryOk = parsed.weaponry && typeof parsed.weaponry === 'object' &&
+            (parsed.weaponry.weapon || (parsed.weaponry.weapon && parsed.weaponry.weapon.name)) &&
+            ('level' in parsed.weaponry);
+
+        const armoryOk = parsed.armory && typeof parsed.armory === 'object' &&
+            (parsed.armory.armor || (parsed.armory.armor && parsed.armory.armor.name)) &&
+            ('level' in parsed.armory);
+
+        if (!hasRequired || !weaponryOk || !armoryOk) {
+            throw new Error('Missing required fields');
+        }
+
+        if (typeof parsed.name !== 'string' || typeof parsed.level !== 'number') {
+            throw new Error('Invalid field types');
+        }
+
+        localStorage.setItem('textBasedData', JSON.stringify(parsed));
+        window.location.reload();
+    } catch (err) {
+        console.error('Import failed:', err);
+        alert('Hmm, this data looks weird. Check the key and try again.');
+    }
 }
 
 async function exportButton() {
     console.log("Export");
+    const player = Alpine.$data(document.getElementById('player'));
+    const saveData = JSON.stringify({
+        name: player.name,
+        level: player.level,
+        health: player.health,
+        stamina: player.stamina,
+        experience: player.experience,
+        weaponry: { weapon: player.weaponry.weapon.name, level: player.weaponry.level },
+        armory: { armor: player.armory.armor.name, level: player.armory.level },
+        pstatus: player.pstatus,
+        inventory: player.inventory
+    });
+
+    const encrypted = CryptoJS.TripleDES.encrypt(saveData, CryptoJS.enc.Utf8.parse("TextBasedGameKeyByJgouken"), {
+        iv: CryptoJS.enc.Utf8.parse("TBGSMJGMBP"),
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+
+    await navigator.clipboard.writeText(encrypted.toString());
+    alert("Your save data key has been copied to your clipboard.");
 }
 
 async function deleteButton() {
     console.log("Delete");
+    if (window.confirm("Are you sure you want to delete your save? This action cannot be undone.")) {
+        localStorage.removeItem('textBasedData');
+        window.location.reload();
+    }
 }
 
 async function howToPlay() {
