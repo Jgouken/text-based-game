@@ -5,7 +5,7 @@ function getAssets() {
 			{
 				name: 'Poison',
 				id: '💀',
-				description: "Inflicts 4% Max HP damage for 5 rounds.",
+				description: "Inflicts 4% Max HP damage for 5 turns.",
 				positive: false,
 				maxHP: 0.04,
 				rounds: 5,
@@ -13,7 +13,7 @@ function getAssets() {
 			{
 				name: 'Regeneration',
 				id: '💗',
-				description: "Gain 5% Max HP for 3 rounds.",
+				description: "Gain 5% Max HP for 3 turns.",
 				positive: true,
 				maxHP: 0.05,
 				rounds: 3,
@@ -21,7 +21,7 @@ function getAssets() {
 			{
 				name: 'Bleed',
 				id: '🩸',
-				description: "Inflicts 15% of initial damage for 2 rounds.",
+				description: "Inflicts 15% of initial damage for 2 turns.",
 				baseDam: 0.15,
 				positive: false,
 				rounds: 2,
@@ -29,7 +29,7 @@ function getAssets() {
 			{
 				name: 'Burn',
 				id: '🔥',
-				description: "Inflicts 10% of initial damage for 5 rounds.",
+				description: "Inflicts 10% of initial damage for 5 turns.",
 				baseDam: 0.1,
 				positive: false,
 				rounds: 5,
@@ -37,26 +37,26 @@ function getAssets() {
 			{
 				name: 'Weakness',
 				id: '🌀',
-				description: "Deal 15% less damage for 3 rounds.",
+				description: "Deal 15% less damage for 3 caster's turns.",
 				damReduc: 0.15,
 				positive: false,
-				rounds: 3
+				rounds: 4
 			},
 			{
 				name: 'Strength',
 				id: '💪',
-				description: "Deal 20% more damage for 3 rounds.",
+				description: "Deal 20% more damage for 3 caster's turns.",
 				damAdd: 0.2,
 				positive: true,
-				rounds: 3
+				rounds: 4
 			},
 			{
 				name: 'Empowerment',
 				id: '🏳️',
-				description: "Deal 40% more damage for 1 round.",
+				description: "Deal 40% more damage for 1 caster's turn.",
 				damAdd: 0.4,
 				positive: true,
-				rounds: 3
+				rounds: 2
 			},
 			{
 				name: 'Stun',
@@ -68,7 +68,7 @@ function getAssets() {
 			{
 				name: 'Fortification',
 				id: "🛡️",
-				description: "Increases armor by 20% for 3 rounds.",
+				description: "Increases armor by 20% for 3 turns.",
 				armorAdd: 0.2,
 				positive: true,
 				rounds: 3
@@ -76,23 +76,23 @@ function getAssets() {
 			{
 				name: 'Blindness',
 				id: '👁️',
-				description: "Decreases accuracy by 15% for 3 rounds.",
+				description: "Decreases accuracy by 15% for 3 caster's turns.",
 				decAcc: 0.15,
 				positive: false,
-				rounds: 3
+				rounds: 4
 			},
 			{
 				name: 'Focus',
 				id: '🎯',
-				description: "Increases accuracy by 20% for 3 rounds.",
+				description: "Increases accuracy by 20% for 3 caster's turns.",
 				incAcc: 0.2,
 				positive: true,
-				rounds: 3
+				rounds: 4
 			},
 			{
 				name: 'Curse',
 				id: '🖤',
-				description: "Inflicts 25% of initial damage for 4 rounds.",
+				description: "Inflicts 25% of initial damage for 4 turns.",
 				baseDam: 0.25,
 				positive: false,
 				rounds: 4,
@@ -100,15 +100,15 @@ function getAssets() {
 			{
 				name: 'Luck',
 				id: '🍀',
-				description: "Increases critical hit chance by 15% for 3 rounds.",
+				description: "Increases critical hit chance by 15% for 3 caster's turns.",
 				incCrit: 0.15,
 				positive: true,
-				rounds: 3
+				rounds: 4
 			},
 			{
 				name: 'Bad Luck',
 				id: '🐈‍⬛',
-				description: "Decreases critical hit chance by 10% for 3 rounds.",
+				description: "Decreases critical hit chance by 10% for 3 turns.",
 				decCrit: 0.1,
 				positive: false,
 				rounds: 3
@@ -116,16 +116,16 @@ function getAssets() {
 			{
 				name: 'Berserk',
 				id: '💢',
-				description: "Increases attack by 40% but increases damage taken by 30% over 3 rounds.",
+				description: "Increases attack by 40% but increases damage taken by 30% over 3 caster's turns.",
 				damAdd: 0.4,
 				incDamTaken: 0.3,
 				positive: true,
-				rounds: 3
+				rounds: 4
 			},
 			{
 				name: 'Evasion',
 				id: '💨',
-				description: "Decreases opponent attack accuracy by 15% for 3 rounds.",
+				description: "Decreases opponent attack accuracy by 15% for 3 turns.",
 				decEnAcc: 0.15,
 				positive: true,
 				rounds: 3
@@ -133,14 +133,14 @@ function getAssets() {
 			{
 				name: 'Blessing',
 				id: '✨',
-				description: "Dispel and negate all negative status effects for 2 rounds.",
+				description: "Dispel and negate all negative status effects for 2 turns.",
 				positive: true,
 				rounds: 2,
 			},
 			{
 				name: 'Bad Omen',
 				id: '🏴',
-				description: "Dispel and negate all positive status effects for 2 rounds.",
+				description: "Dispel and negate all positive status effects for 2 turns.",
 				positive: false,
 				rounds: 2,
 			},
