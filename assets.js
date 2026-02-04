@@ -37,7 +37,7 @@ function getAssets() {
 			{
 				name: 'Weakness',
 				id: '🌀',
-				description: "Deal 15% less damage for 3 caster's turns.",
+				description: "Deal 15% less damage for 3 turns.",
 				damReduc: 0.15,
 				positive: false,
 				rounds: 4
@@ -45,7 +45,7 @@ function getAssets() {
 			{
 				name: 'Strength',
 				id: '💪',
-				description: "Deal 20% more damage for 3 caster's turns.",
+				description: "Deal 20% more damage for 3 turns.",
 				damAdd: 0.2,
 				positive: true,
 				rounds: 4
@@ -53,7 +53,7 @@ function getAssets() {
 			{
 				name: 'Empowerment',
 				id: '🏳️',
-				description: "Deal 40% more damage for 1 caster's turn.",
+				description: "Deal 40% more damage for 1 turn.",
 				damAdd: 0.4,
 				positive: true,
 				rounds: 2
@@ -76,7 +76,7 @@ function getAssets() {
 			{
 				name: 'Blindness',
 				id: '👁️',
-				description: "Decreases accuracy by 15% for 3 caster's turns.",
+				description: "Decreases accuracy by 15% for 3 turns.",
 				decAcc: 0.15,
 				positive: false,
 				rounds: 4
@@ -84,7 +84,7 @@ function getAssets() {
 			{
 				name: 'Focus',
 				id: '🎯',
-				description: "Increases accuracy by 20% for 3 caster's turns.",
+				description: "Increases accuracy by 20% for 3 turns.",
 				incAcc: 0.2,
 				positive: true,
 				rounds: 4
@@ -100,7 +100,7 @@ function getAssets() {
 			{
 				name: 'Luck',
 				id: '🍀',
-				description: "Increases critical hit chance by 15% for 3 caster's turns.",
+				description: "Increases critical hit chance by 15% for 3 turns.",
 				incCrit: 0.15,
 				positive: true,
 				rounds: 4
@@ -116,7 +116,7 @@ function getAssets() {
 			{
 				name: 'Berserk',
 				id: '💢',
-				description: "Increases attack by 40% but increases damage taken by 30% over 3 caster's turns.",
+				description: "Increases attack by 40% but increases damage taken by 30% over 3 turns.",
 				damAdd: 0.4,
 				incDamTaken: 0.3,
 				positive: true,
@@ -165,7 +165,8 @@ function getAssets() {
 					},
 					{
 						name: "Lucky Blow",
-						pstatus: ["🩸"],
+						pstatus: ["🩸", "🌀"],
+						estatus: ["🍀", "🎯"],
 						chance: 0.15,
 						wait: 3,
 						damage: 2,
@@ -227,7 +228,7 @@ function getAssets() {
 				attack: 50,
 				defense: 75,
 				crit: 0.2,
-				accuracy: 0.7,
+				accuracy: 0.75,
 
 				skills: [
 					{
@@ -240,14 +241,14 @@ function getAssets() {
 						pstatus: ["💫"],
 						chance: 0.15,
 						wait: 2,
-						damage: 0.5,
+						damage: 0.8,
 						attack: true
 					},
 					{
 						name: "Metal Shavings",
 						pstatus: ["🩸"],
-						chance: 0.1,
-						wait: 3,
+						chance: 0.15,
+						wait: 1,
 						damage: 1.5,
 						attack: true
 					},
@@ -307,25 +308,26 @@ function getAssets() {
 				attack: 160,
 				defense: 350,
 				crit: 0.1,
-				accuracy: 0.55,
+				accuracy: 0.7,
 				skills: [
 					{
 						name: "Jab",
-						chance: 0.75,
+						chance: 0.65,
 						attack: true
 					},
 					{
 						name: "Rally",
-						estatus: ["🛡️"],
-						chance: 0.15,
+						estatus: ["🛡️", "💪"],
+						chance: 0.10,
 						wait: 2,
 						attack: false
 					},
 					{
 						name: "Flurry",
-						chance: 0.1,
+						chance: 0.25,
+						wait: 1,
 						times: 3,
-						damage: 1.5,
+						damage: 0.65,
 						attack: true
 					},
 				],
@@ -368,21 +370,23 @@ function getAssets() {
 				skills: [
 					{
 						name: "Stab",
-						chance: 0.6,
+						chance: 0.55,
 						attack: true
 					},
 					{
-						name: "Swipe",
+						name: "Wild Strike",
 						pstatus: ["🩸"],
-						damage: 1.5,
-						chance: 0.25,
-						wait: 3,
+						damage: 1.66,
+						chance: 0.30,
+						wait: 1,
 						attack: true
 					},
 					{
-						name: "Curse",
-						pstatus: ["🖤"],
+						name: "Cursed Breath",
+						pstatus: ["🖤", "🏴", "🌀"],
+						damage: 1.33,
 						chance: 0.15,
+						wait: 2,
 						attack: true
 					},
 				],
@@ -433,11 +437,11 @@ function getAssets() {
 				attack: 200,
 				defense: 300,
 				crit: 0.1,
-				accuracy: 0.5,
+				accuracy: 0.65,
 				skills: [
 					{
 						name: "Smash",
-						chance: 0.65,
+						chance: 0.60,
 						attack: true
 					},
 					{
@@ -445,7 +449,7 @@ function getAssets() {
 						pstatus: ["💫"],
 						chance: 0.15,
 						damage: 1.1,
-						wait: 2,
+						wait: 3,
 						attack: true
 					},
 					{
@@ -511,32 +515,33 @@ function getAssets() {
 				attack: 25,
 				defense: 50,
 				crit: 0.1,
-				accuracy: 0.55,
+				accuracy: 0.65,
 				skills: [
 					{
 						name: "Jump",
-						chance: 0.75,
+						chance: 0.65,
 						attack: true
 					},
 					{
 						name: "Heal",
-						health: 0.25,
-						chance: 0.15,
+						health: 0.10,
+						chance: 0.10,
+						wait: 5,
 						attack: false
 					},
 					{
 						name: "Major Heal",
-						health: 0.5,
-						chance: 0.015,
-						wait: 2,
+						health: 0.35,
+						chance: 0.05,
+						wait: 7,
 						attack: false
 					},
 					{
 						name: "Restoration",
-						estatus: ["💗"],
-						health: 0.1,
-						chance: 0.15,
-						wait: 1,
+						estatus: ["💗", "✨"],
+						health: 0.05,
+						chance: 0.20,
+						wait: 3,
 						attack: false
 					},
 				],
@@ -572,38 +577,45 @@ function getAssets() {
 				name: "Attack Slime",
 				sprite: 'assets/enemies/AttackSlime.gif',
 				weapon: null,
-				health: 80,
+				health: 70,
 				attack: 50,
 				defense: 20,
 				crit: 0.2,
-				accuracy: 0.55,
+				accuracy: 0.70,
 				skills: [
 					{
 						name: "Jump",
-						chance: 0.68,
+						chance: 0.65,
 						attack: true
 					},
 					{
-						name: "Lunge",
+						name: "Slimy Blade",
 						pstatus: ["🩸"],
-						wait: 3,
-						chance: 0.08,
+						wait: 1,
+						chance: 0.1,
+						damage: 1.1,
 						attack: true
 					},
 					{
 						name: "Burning Slide",
 						pstatus: ["🔥"],
-						chance: 0.08,
-						damage: 1.5,
-						wait: 5,
+						chance: 0.1,
+						damage: 1.15,
+						wait: 1,
 						attack: true
 					},
 					{
-						name: "Slime Secretion",
+						name: "Secrete Poison",
 						pstatus: ["💀"],
-						estatus: ["💪"],
-						chance: 0.08,
-						wait: 3,
+						chance: 0.1,
+						wait: 2,
+						attack: false
+					},
+					{
+						name: "Excited Jiggle",
+						estatus: ["💪", "🎯"],
+						chance: 0.05,
+						wait: 2,
 						attack: false
 					},
 				],
@@ -643,32 +655,35 @@ function getAssets() {
 				attack: 35,
 				defense: 100,
 				crit: 0.05,
-				accuracy: 0.55,
+				accuracy: 0.75,
 				skills: [
 					{
-						name: "Jump",
-						chance: 0.7,
+						name: "Hefty Leap",
+						chance: 0.65,
+						damage: 1.1,
 						attack: true
 					},
 					{
-						name: "Rally",
+						name: "Reinforce",
 						estatus: ["🛡️"],
-						chance: 0.1,
-						wait: 3,
+						health: 0.05,
+						chance: 0.15,
+						wait: 2,
 						attack: false
 					},
 					{
-						name: "Leap",
+						name: "Heavy Impact",
 						pstatus: ["💫"],
+						damage: 1.3,
 						chance: 0.1,
 						wait: 2,
 						attack: true
 					},
 					{
 						name: "Slime Secretion",
-						pstatus: ["🌀"],
-						chance: 0.1,
-						wait: 3,
+						pstatus: ["🌀", "✨"],
+						chance: 0.05,
+						wait: 2,
 						attack: false
 					},
 				],
@@ -711,29 +726,35 @@ function getAssets() {
 				accuracy: 0.7,
 				skills: [
 					{
-						name: "Jump",
-						chance: 0.6,
+						name: "Quick Leap",
+						damage: 0.45,
+						times: 2,
+						chance: 0.65,
 						attack: true
 					},
 					{
 						name: "Electric Coat",
 						pstatus: ["💫"],
-						chance: 0.2,
-						attack: false,
-						wait: 1
+						damage: 0.8,
+						chance: 0.1,
+						attack: true,
+						wait: 2
 					},
 					{
 						name: "Slime Barrage",
+						pstatus: ["🌀"],
+						damage: 0.40,
 						times: 3,
-						chance: 0.1,
+						chance: 0.2,
 						attack: true,
+						wait: 1
 					},
 					{
 						name: "Dodgy Dance",
-						estatus: ["☁️"],
-						chance: 0.1,
+						estatus: ["☁️", "🎯"],
+						chance: 0.05,
 						attack: false,
-						wait: 3
+						wait: 2
 					},
 				],
 				drops: [
@@ -2417,7 +2438,7 @@ function getAssets() {
 				attackPerLevel: 2,
 				crit: 0.1,
 				critdmg: 1.3,
-				accuracy: 0.6,
+				accuracy: 0.9,
 
 				description: "A stick.",
 				skills: [
@@ -2458,7 +2479,7 @@ function getAssets() {
 				attackPerLevel: 2,
 				crit: 0.05,
 				critdmg: 1.5,
-				accuracy: 0.7,
+				accuracy: 0.9,
 
 				description: "A heftier stick.",
 				skills: [
@@ -2498,7 +2519,7 @@ function getAssets() {
 				attackPerLevel: 2,
 				crit: 0.2,
 				critdmg: 1.65,
-				accuracy: 0.7,
+				accuracy: 0.85,
 
 				description: "A mysteriously sharpened broken dagger.",
 				skills: [
@@ -2539,7 +2560,7 @@ function getAssets() {
 				attackPerLevel: 2,
 				crit: 0.1,
 				critdmg: 1.6,
-				accuracy: 0.8,
+				accuracy: 0.9,
 
 				description: "A dagger that's lost its edge due to rust, but is still useable.",
 				skills: [
@@ -2581,7 +2602,7 @@ function getAssets() {
 				attackPerLevel: 2,
 				crit: 0.4,
 				critdmg: 1.75,
-				accuracy: 0.6,
+				accuracy: 0.85,
 
 				skills: [
 					{
@@ -2668,7 +2689,7 @@ function getAssets() {
 				attackPerLevel: 4,
 				crit: 0.3,
 				critdmg: 1.4,
-				accuracy: 0.7,
+				accuracy: 0.85,
 
 				skills: [
 					{
@@ -2755,7 +2776,7 @@ function getAssets() {
 				attackPerLevel: 4,
 				crit: 0.1,
 				critdmg: 1.75,
-				accuracy: 0.65,
+				accuracy: 0.75,
 
 				skills: [
 					{
@@ -2799,7 +2820,7 @@ function getAssets() {
 				attackPerLevel: 4,
 				crit: 0.1,
 				critdmg: 1.60,
-				accuracy: 0.7,
+				accuracy: 0.85,
 
 				skills: [
 					{
@@ -2884,7 +2905,7 @@ function getAssets() {
 				attackPerLevel: 6,
 				crit: 0.45,
 				critdmg: 1.25,
-				accuracy: 0.65,
+				accuracy: 0.75,
 
 				skills: [
 					{
@@ -2930,7 +2951,7 @@ function getAssets() {
 				attackPerLevel: 6,
 				crit: 0.05,
 				critdmg: 1.75,
-				accuracy: 0.7,
+				accuracy: 0.85,
 
 				skills: [
 					{
@@ -3017,7 +3038,7 @@ function getAssets() {
 				attackPerLevel: 8,
 				crit: 0.25,
 				critdmg: 1.45,
-				accuracy: 0.75,
+				accuracy: 0.9,
 
 				skills: [
 					{
@@ -3060,7 +3081,7 @@ function getAssets() {
 				attackPerLevel: 8,
 				crit: 0.5,
 				critdmg: 1.1,
-				accuracy: 0.6,
+				accuracy: 0.75,
 
 				skills: [
 					{
@@ -3106,7 +3127,7 @@ function getAssets() {
 				attackPerLevel: 6,
 				crit: 0.2,
 				critdmg: 1.4,
-				accuracy: 0.75,
+				accuracy: 0.9,
 
 				skills: [
 					{
@@ -3150,12 +3171,12 @@ function getAssets() {
 				attackPerLevel: 6,
 				crit: 0.1,
 				critdmg: 2,
-				accuracy: 0.6,
+				accuracy: 0.75,
 
 				skills: [
 					{
 						name: "CRUSH",
-						damage: 1.25,
+						damage: 1.3,
 						attack: true
 					},
 					{
@@ -3192,7 +3213,7 @@ function getAssets() {
 				attackPerLevel: 8,
 				crit: 0.35,
 				critdmg: 1.4,
-				accuracy: 0.6,
+				accuracy: 0.8,
 
 				skills: [
 					{
@@ -3237,7 +3258,7 @@ function getAssets() {
 				attackPerLevel: 8,
 				crit: 0.15,
 				critdmg: 1.23,
-				accuracy: 0.75,
+				accuracy: 0.8,
 
 				skills: [
 					{
@@ -3371,7 +3392,7 @@ function getAssets() {
 				attackPerLevel: 8,
 				crit: 0.1,
 				critdmg: 2,
-				accuracy: 0.75,
+				accuracy: 0.88,
 
 				skills: [
 					{
@@ -3465,12 +3486,12 @@ function getAssets() {
 				attackPerLevel: 10,
 				crit: 0.01,
 				critdmg: 3,
-				accuracy: 0.5,
+				accuracy: 0.7,
 
 				skills: [
 					{
 						name: "SMITE",
-						damage: 1.3,
+						damage: 1.4,
 						attack: true,
 					},
 					{
@@ -3556,7 +3577,7 @@ function getAssets() {
 				attackPerLevel: 10,
 				crit: 0.15,
 				critdmg: 1.77,
-				accuracy: 0.75,
+				accuracy: 0.77,
 
 				skills: [
 					{
@@ -3650,7 +3671,7 @@ function getAssets() {
 				attackPerLevel: 10,
 				crit: 0.25,
 				critdmg: 1.77,
-				accuracy: 0.65,
+				accuracy: 0.77,
 
 				skills: [
 					{
@@ -3699,7 +3720,7 @@ function getAssets() {
 				attackPerLevel: 10,
 				crit: 0.15,
 				critdmg: 1.25,
-				accuracy: 0.7,
+				accuracy: 0.76,
 
 				skills: [
 					{
@@ -3751,7 +3772,7 @@ function getAssets() {
 			},
 			{
 				name: "Tattered Rags",
-				description: "Torn clothing together enough to cover the most important part and keep warm.",
+				description: "Torn clothing together enough to cover the most important parts and keep warm.",
 
 				defense: 10,
 				maxlvl: 10,
@@ -5331,4 +5352,3 @@ function getAssets() {
 		],
 	}
 }
-
