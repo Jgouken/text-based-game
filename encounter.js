@@ -61,7 +61,7 @@ async function setPlayer() {
     player.critdmg = player.weaponry.weapon.critdmg;
     player.accuracy = player.weaponry.weapon.accuracy;
     player.evasion = player.armory.armor.evasion;
-    
+
     updateBars();
 }
 
@@ -93,16 +93,15 @@ async function startBattle(enemy = null) {
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
-
     const location = assets.areas.find(area => area.name == background.location)
     const randomEnemy = randomByChance(location.enemies).name
 
     const level = enemy ? (background.enemyLevel || 1) : (Math.floor(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl))
     if (!enemy) enemy = assets.enemies.find(enemy => enemy.name == randomEnemy)
-
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
 
     died = false;
+    encounter.battle = true;
 
     background.enemy = enemy
     background.enemyLevel = level
@@ -273,7 +272,6 @@ async function executeSkill({
     }
 }
 
-
 async function skill(index) {
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
     battleStation.turn = false;
@@ -338,6 +336,7 @@ async function turnManager(toPlayer) {
     if (encounter.health <= 0 || player.health <= 0) {
         died = true;
         background.enemy.skills.forEach(s => { delete s._cooldown; });
+        encounter.battle = false;
         if (encounter.health <= 0) encounter.log.push(`--- ${background.enemy.name} has died. ---`);
         else {
             encounter.log.push(`--- ${background.name} has died. ---`);
@@ -355,16 +354,19 @@ async function turnManager(toPlayer) {
         let xptext = `<span color="lightblue" data-tooltip='(((${background.enemyLevel}^1.2) * (${encounter.maxHealth} / ${encounter.attack}))^1.2) * 2 = ${xpdrop}'>${xpdrop}</span>`;
         encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
 
-        while (player.experience + xpdrop > Math.floor((Math.floor((player.level / 0.07) ** 2)) * 100)) {
-            xpdrop -= Math.floor((Math.floor((player.level / 0.07) ** 2)) * 100) - player.experience
+        while (player.experience + xpdrop > Math.floor((player.level / 0.07) ** 2)) {
+            xpdrop -= (Math.floor((player.level / 0.07) ** 2)) - player.experience;
             player.level += 1;
             player.experience = 0;
-            encounter.log.push(`'⬆️ ${background.name} leveld up to level ${player.level}! ⬆️'`)
+            encounter.log.push(`⬆️ ${background.name} leveled up to level ${player.level}! ⬆️`)
         }
 
         player.experience += xpdrop;
-        if (player.level > currentLevel) setPlayer();
-        else updateBars();
+        if (player.level > currentLevel) {
+            setPlayer();
+            player.health = player.maxHealth;
+            player.stamina = player.maxStamina;
+        } else updateBars();
         savePlayer();
         return;
     }
@@ -490,5 +492,22 @@ async function enemyMove() {
     turnManager(true);
 }
 
+async function victory() {
+    transition('encounter', 'returning');
+}
 
-
+async function exportLog() {
+    const encounter = Alpine.$data(document.getElementById('encounter'));
+    let logText = encounter.log.map(entry => entry.replaceAll(/<[^>]*>/g, "")).join('\n');
+    console.log(logText);
+    // Download logtext as text file
+    const blob = new Blob([logText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'battle-log.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}

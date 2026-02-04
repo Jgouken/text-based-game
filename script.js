@@ -133,7 +133,6 @@ async function fadeOutEffect() {
     var opacity = 1;
     var element = document.getElementById("overlay-transparency");
     element.style.opacity = 1;
-    await new Promise(resolve => setTimeout(resolve, 250));
     var fadeInterval = setInterval(function () {
         if (opacity > 0) {
             opacity -= 0.1;
@@ -161,8 +160,25 @@ async function fadeInEffect() {
 document.addEventListener('DOMContentLoaded', () => {
     const tooltip = document.getElementById('global-tooltip');
 
-    function showTooltip(text) {
+    function showTooltip(text, x, y) {
         tooltip.textContent = text;
+
+        // Reset first
+        tooltip.style.transition = 'none';
+        tooltip.style.visibility = 'hidden';
+        tooltip.style.display = 'block';
+        tooltip.style.left = '-9999px';
+        tooltip.style.top = '-9999px';
+
+        // Force layout
+        tooltip.getBoundingClientRect();
+
+        // Now position correctly
+        moveTooltip(x, y);
+
+        // Reveal smoothly
+        tooltip.style.visibility = 'visible';
+        tooltip.style.transition = 'opacity 0.2s ease';
         tooltip.style.opacity = 1;
     }
 
@@ -205,14 +221,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function hideTooltip() {
         tooltip.style.opacity = 0;
-        tooltip.textContent = '';
     }
 
     // Desktop hover
     document.body.addEventListener('mouseover', e => {
         const target = e.target.closest('[data-tooltip]');
         if (!target) return;
-        showTooltip(target.dataset.tooltip);
+        showTooltip(target.dataset.tooltip, e.pageX, e.pageY);
     });
 
     document.body.addEventListener('mousemove', e => {
@@ -230,8 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('touchstart', e => {
         const target = e.target.closest('[data-tooltip]');
         if (!target) return;
-        showTooltip(target.dataset.tooltip);
         const touch = e.touches[0];
+        showTooltip(target.dataset.tooltip, touch.pageX, touch.pageY);
         moveTooltip(touch.pageX, touch.pageY);
     }, { passive: true });
 

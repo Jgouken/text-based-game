@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script src="https://kit.fontawesome.com" crossorigin="anonymous"></script>
     <script src="script.js"></script>
     <script src="assets.js"></script>
     <script src="encounter.js"></script>
@@ -47,6 +48,10 @@
                 attack: 32,
                 pstatus: [],
                 inventory: [],
+
+                get experienceTooltip () {return `${Math.floor((this.experience/Math.floor((this.level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`},
+                get healthTooltip () {return `${Math.floor((this.health / this.maxHealth) * 100)}% Health\nUsed to keep you alive.`},
+                get staminaTooltip () {return `${Math.floor((this.stamina / this.maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.\nYou gain ⚡${Math.floor(this.maxStamina * 0.1)} per turn.`},
                 tooltipMessages: [
                     `It's just you.`,
                     `Why hello, ${name}.`,
@@ -88,31 +93,23 @@
             <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px; width: fit-content;"
                 @mouseenter="randomizeTooltip()" :data-tooltip="tooltipText" x-text="name"></p>
 
-            <div class="experience-bar-background"
-                :data-tooltip="`${Math.floor((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
+            <div class="experience-bar-background" :data-tooltip="experienceTooltip">
             </div>
-            <div class="health-bar-background"
-                :data-tooltip="`${Math.floor((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`"></div>
-            <div class="stamina-bar-background"
-                :data-tooltip="`${Math.floor((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
+            <div class="health-bar-background" :data-tooltip="healthTooltip"></div>
+            <div class="stamina-bar-background" :data-tooltip="staminaTooltip">
             </div>
 
-            <div class="experience-bar" id="experience"
-                :data-tooltip="`${Math.floor((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
+            <div class="experience-bar" id="experience" :data-tooltip="experienceTooltip">
             </div>
-            <div class="health-bar" id="health"
-                :data-tooltip="`${Math.floor((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`"></div>
-            <div class="stamina-bar" id="stamina"
-                :data-tooltip="`${Math.floor((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
+            <div class="health-bar" id="health" :data-tooltip="healthTooltip"></div>
+            <div class="stamina-bar" id="stamina" :data-tooltip="staminaTooltip">
             </div>
 
             <div class="experience-bar-stats" x-text="`Level ${level} - ${experience}/${Math.floor((level/0.07)**2)}`"
-                :data-tooltip="`${Math.floor((experience/Math.floor((level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`">
+                :data-tooltip="experienceTooltip">
             </div>
-            <div class="health-bar-stats" x-text="`${health}/${maxHealth}`"
-                :data-tooltip="`${Math.floor((health / maxHealth) * 100)}% Health\nUsed to keep you alive.`">0/0</div>
-            <div class="stamina-bar-stats" x-text="`${stamina}/${maxStamina}`"
-                :data-tooltip="`${Math.floor((stamina / maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.`">
+            <div class="health-bar-stats" x-text="`${health}/${maxHealth}`" :data-tooltip="healthTooltip">0/0</div>
+            <div class="stamina-bar-stats" x-text="`${stamina}/${maxStamina}`" :data-tooltip="staminaTooltip">
                 0/0</div>
 
             <div class="mini-stats">
@@ -201,10 +198,10 @@
 
         <div id="screen" class="screen">
             <!-- New Player (Title Screen)-->
-            <div id="new-player" class="new-player" x-show="screen === 'new-player'" x-transition.opacity>
+            <div id="new-player" class="new-player" x-show="screen === 'new-player'">
                 <button class="regular-button"
                     style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
-                    @click="importButton()" x-transition.opacity>IMPORT</button>
+                    @click="importButton()">IMPORT</button>
                 <p style="text-align: center; font-size: 30px; top: 25px;">Welcome to</p>
                 <h1 style="text-align: center; font-size: 60px; top: 50px; font-weight: bold;">Text - Based - Game</h1>
                 <div class="centered-inputs">
@@ -215,7 +212,7 @@
                         size="100" placeholder="I'm..." x-model="name" autocomplete="off"
                         @keyup.enter="if (name) { startGame(name); updateBars() }" />
                     <button class="regular-button" @click="startGame(name); updateBars()" x-show="name"
-                        style="color: white;" x-transition.opacity>Onwards</button>
+                        style="color: white;">Onwards</button>
                 </div>
                 <div class="credits">
                     <span style="color: grey;">Made by Jgouken &amp; SavorySam</span>
@@ -226,8 +223,7 @@
             </div>
 
             <!-- Returning Player (Landing Screen)-->
-            <div id="returning" class="returning" x-show="screen === 'returning'" x-transition.opacity
-                style="display: none; top: -210px;">
+            <div id="returning" class="returning" x-show="screen === 'returning'" style="display: none; top: -210px;">
                 <p style="text-align: center; font-size: 30px; top: 25px;">Text-Based-Game</p>
                 <p style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif; top: 280px;"
                     x-text="location.toUpperCase()"></p>
@@ -235,45 +231,44 @@
                 <div class="centered-buttons" style="justify-content: right; margin-top: -110px; margin-right: 10px;">
                     <button class="regular-button"
                         style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); justify-content: right; font-size: large;"
-                        @click="transition('returning', 'how-to-play')" x-transition.opacity>How To Play</button>
+                        @click="transition('returning', 'how-to-play')">How To Play</button>
                 </div>
 
                 <div class="centered-buttons"
                     style="justify-content: left; margin-top: -54px; margin-left: 10px; gap: 20px; width: fit-content;">
                     <button class="regular-button"
                         style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0); font-size: large;"
-                        @click="deleteButton()" x-transition.opacity>DELETE</button>
+                        @click="deleteButton()">DELETE</button>
                     <button class="regular-button"
                         style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0); font-size: large;"
-                        @click="exportButton()" x-transition.opacity>EXPORT</button>
+                        @click="exportButton()">EXPORT</button>
                     <button class="regular-button"
                         style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
-                        @click="importButton()" x-transition.opacity>IMPORT</button>
+                        @click="importButton()">IMPORT</button>
                 </div>
 
                 <div class="centered-buttons" style="margin-top: 350px;">
                     <button class="regular-button"
                         style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88);"
-                        @click="transition('returning', 'travel')" x-transition.opacity>Travel</button>
+                        @click="transition('returning', 'travel')">Travel</button>
                     <button class=" regular-button"
                         style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0);"
-                        @click="transition('returning', 'encounter'); startBattle()"
-                        x-transition.opacity>Encounter</button>
+                        @click="transition('returning', 'encounter'); startBattle()">Encounter</button>
                     <button class="regular-button"
                         style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0);"
-                        @click="quitButton()" x-transition.opacity>Quit</button>
+                        @click="quitButton()">Quit</button>
                 </div>
 
                 <div class="centered-buttons" style="margin-top: 20px;">
                     <button class="regular-button"
                         style="background-color: rgb(92, 80, 255); color: black; border: 5px solid rgb(6, 4, 122);"
-                        @click="transition('returning', 'inventory')" x-transition.opacity>Inventory</button>
+                        @click="transition('returning', 'inventory')">Inventory</button>
                     <button class="regular-button"
                         style="background-color: rgb(184, 111, 218); border: 5px solid rgb(153, 9, 219);"
-                        @click="transition('returning', 'journal')" x-transition.opacity>Journal</button>
+                        @click="transition('returning', 'journal')">Journal</button>
                     <button class="regular-button"
                         style="background-color: rgb(184, 255, 150); color: black; border: 5px solid rgb(15, 160, 1);"
-                        @click="transition('returning', 'crafting')" x-transition.opacity>Crafting</button>
+                        @click="transition('returning', 'crafting')">Crafting</button>
                 </div>
 
                 <div class="credits">
@@ -285,27 +280,27 @@
             </div>
 
             <!-- How To Play -->
-            <div id="how-to-play" class="how-to-play" x-show="screen === 'how-to-play'" x-transition.opacity>
+            <div id="how-to-play" class="how-to-play" x-show="screen === 'how-to-play'">
 
             </div>
 
             <!-- Inventory -->
-            <div id="inventory" class="inventory" x-show="screen === 'inventory'" x-transition.opacity>
+            <div id="inventory" class="inventory" x-show="screen === 'inventory'">
 
             </div>
 
             <!-- Journal -->
-            <div id="journal" class="journal" x-show="screen === 'journal'" x-transition.opacity>
+            <div id="journal" class="journal" x-show="screen === 'journal'">
 
             </div>
 
             <!-- Crafting-->
-            <div id="crafting" class="crafting" x-show="screen === 'crafting'" x-transition.opacity>
+            <div id="crafting" class="crafting" x-show="screen === 'crafting'">
 
             </div>
 
             <!-- Travel -->
-            <div id="travel" class="travel" x-show="screen === 'travel'" x-transition.opacity>
+            <div id="travel" class="travel" x-show="screen === 'travel'">
 
             </div>
 
@@ -319,6 +314,7 @@
                 crit: 0,
                 accuracy: 0,
                 estatus: [],
+                battle: true,
 
                 get playerName() {
                     return Alpine.$data(document.getElementById('background-image')).name || 'Player';
@@ -340,7 +336,7 @@
                         )
                         .join('<br>');
                 }
-            }" x-transition.opacity>
+            }">
                 <div class="enemy" id="enemy">
                     <div class="enemy-level" x-text="`Level ${enemyLevel}`">?</div>
                     <div style="margin-top: 40px;">
@@ -405,28 +401,31 @@
                     </div>
                     <img class="enemy-thumbnail" :src="enemy.sprite">
                 </div>
+                <i class="fa-solid fa-download" @click="exportLog()" title="Export Log"
+                        style="position: absolute; top: 8px; right: 8px; z-index: 5; cursor: pointer; font-size: 24px; color: white; width: 50px; height: 50px;"></i>
                 <div class="battle-log" x-html="formattedLog" x-init=" $watch('log', () => {
                     $nextTick(() => {
                         $el.scrollTop = $el.scrollHeight
                     })
-                })">></div>
+                })"></div>
                 <div class="battle-station" id="battle-station"
                     x-data="{ round: 1, turn: true, get weapon() { return Alpine.$data(document.getElementById('player')).weaponry.weapon } }">
-                    <div class="battle-buttons">
+                    <div class="battle-buttons" x-show="battle">
                         <div class="battle-actions" style="display: flex; gap: 20px;">
                             <button class="battle-base-attack"
-                                :style="`background-color: ${turn ? 'rgb(253, 113, 113)' : 'background-color: rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                                x-text="weapon.skills[0].name" :disabled="!turn" @click="skill(0)" x-transition.opacity
+                                :style="`background-color: ${turn ? 'rgb(253, 113, 113)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                                x-text="weapon.skills[0].name" :disabled="!turn" @click="skill(0)"
                                 :data-tooltip="`${weapon.skills[0].description ? `${weapon.skills[0].description}\n` : ''}${weapon.skills[0].cost ? `⚡${weapon.skills[0].cost}\n` : ''}⚔️ x${weapon.skills[0].attack ? (weapon.skills[0].damage || 1) : 0}\n${weapon.skills[0].times ? `🔄️${weapon.skills[0].times}x\n` : ''}${weapon.skills[0].flatHealth ? `❤️ ${weapon.skills[0].flatHealth}\n` : ''}${weapon.skills[0].health ? `💖 ${Math.floor(weapon.skills[0].health * 100)}%\n` : ''}${weapon.skills[0].lifesteal ? `💞 ${Math.floor(weapon.skills[0].lifesteal * 100)}%\n` : ''}${weapon.skills[0].pstatus ? `Gains ${weapon.skills[0].pstatus.join('')}\n` : ''}${weapon.skills[0].estatus ? 'Inflicts ' + weapon.skills[0].estatus.join('') : ''}`">Attack</button>
                             <button class="battle-pass"
-                                :style="`background-color: ${turn ? 'rgb(42, 143, 201)' : 'background-color: rgb(55, 55, 55)'}; border: 5px solid rgb(6, 0, 88); font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                                :disabled="!turn" @click="skill(-1)" x-transition.opacity>Pass</button>
+                                :style="`background-color: ${turn ? 'rgb(42, 143, 201)' : 'rgb(55, 55, 55)'}; border: 5px solid rgb(6, 0, 88); font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                                :data-tooltip="`Skip your turn but gain⚡${Math.floor(Alpine.$data(player).maxStamina * 0.1)}`"
+                                :disabled="!turn" @click="skill(-1)">Pass</button>
                             <button class="battle-item"
-                                :style="`background-color: ${turn ? 'rgb(138, 233, 138)' : 'background-color: rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                                :disabled="!turn" @click="skill(-2)" x-transition.opacity>Item</button>
+                                :style="`background-color: ${turn ? 'rgb(138, 233, 138)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                                :disabled="!turn" @click="skill(-2)">Item</button>
                             <button class="battle-flee"
                                 :style="`background-color: ${turn ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); font-size: 40px; font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                                :disabled="!turn" @click="skill(-3)" x-transition.opacity>Flee</button>
+                                :disabled="!turn" @click="skill(-3)">Flee</button>
                         </div>
 
                         <div class="battle-skills"
@@ -483,7 +482,16 @@
                         </div>
 
                     </div>
-                    <div class="round-info" x-text="`Round ${round}\n\n${turn ? 'Your' : enemy.name + `'s`} Turn`"
+                    <div class="battle-buttons" x-show="!battle">
+                        <button class="battle-item"
+                            style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
+                            @click="victory()">Continue</button>
+                        <button class="regular-button"
+                            style="background-color: rgb(184, 111, 218); border: 5px solid rgb(153, 9, 219);"
+                            @click='exportLog()'>Export Log</button>
+                    </div>
+                    <div class="round-info"
+                        x-text="health > 0 && Alpine.$data(document.getElementById('player')).health > 0 ? `Round ${round}\n\n${turn ? 'Your' : enemyName + `'s`} Turn` : health <= 0 ? `You Won` : `You Died`"
                         style="white-space: pre-line; text-align: center;">Round 1\n\nYour Turn</div>
                 </div>
             </div>
