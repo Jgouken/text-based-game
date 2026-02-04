@@ -11,7 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer">
     <script src="script.js"></script>
     <script src="assets.js"></script>
     <script src="encounter.js"></script>
@@ -75,7 +76,8 @@
                     `:|`,
                     `The ruler of them all.`,
                     `The destroyer.`,
-                    `Are you inflicting 10% of base damage for 3 rounds? Because you are on fire.`,
+                    `Are you inflicting 10% of base damage for 3 rounds? Because you are 🔥.`,
+                    `Are you negating all of my negative feelings? Because you are a blessing ✨.`,
                     `Have any plans later today?`,
                     `Who else but you, right?`,
                     `Welcome to Text-Based-Game.`,
@@ -85,10 +87,68 @@
                     `I remember you.`,
                     `Why not craft some capital letters?`,
                     `The sky falls without you.`,
+                    `How many of these are there?`,
+                    `You just keep coming back, huh?`,
+                    `You're unstoppable!`,
+                    `The chosen one.`,
+                    `The hero we need.`,
+                    `The hero we don't deserve.`,
+                    `The legend.`,
+                    `Villages fall and rise because of you.`,
+                    `Songs are sung about you.`,
+                    `Did you know you're my favorite player?`,
+                    `They grow up so fast.`,
+                    `Fighting all by yourself, handsome?`,
+                    `Ooo.`,
+                    `How do you even pronounce this??`,
+                    `Is that your real name?`,
+                    `I like your style.`,
+                    `You're looking good today.`,
+                    `Motivational statement.`,
+                    `Borederline flirtatious statement.`,
+                    `Sarcastic statement.`,
+                    `Complimenting statement.`,
+                    `Encouraging statement.`,
+                    `Humorous statement.`,
+                    `Inspirational statement.`,
+                    `???`,
+                    `🫵`,
+                    `🫶`,
+                    `👋`,
+                    `Back so soon?`,
+                    `I can't believe you made it through these texts.`,
+                    `Obligatory 'are you actually reading this' line.`,
+                    `This isn't the stanley parable.`,
+                    `Do you expect more to happen?`,
+                    `I'm literally out of things to say!`,
+                    `Stop.`,
+                    `Stop it!`,
+                    `Ha jk I don't really care.`,
+                    `Oh but you're actually still going.`,
+                    `Mk, that's ok. Fine. I can do this all day.`,
+                    `.`,
+                    `..`,
+                    `...`,
+                    `....`,
+                    `.....`,
+                    `......`,
+                    `.......`,
+                    `........`,
+                    `.........`,
+                    `..........`,
+                    `Ok fine, this is taking up too many lines of code.`,
+                    `Don't make me loop you.`,
+                    `I will!`,
+                    `Don't test me!`,
+                    `Last chance.`,
+                    `Last last chance!`,
+                    `Alright, you've left me no choice.`,
+                    `loop();`,
                 ],
                 tooltipText: 'You!',
                 randomizeTooltip() {
-                    this.tooltipText = this.tooltipMessages[Math.floor(Math.random() * this.tooltipMessages.length)];
+                    this.tooltipIndex = ((this.tooltipIndex ?? -1) + 1) % this.tooltipMessages.length;
+                    this.tooltipText = this.tooltipMessages[this.tooltipIndex];
                 }
             }">
             <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px; width: fit-content;"
@@ -407,7 +467,7 @@
                         $el.scrollTop = $el.scrollHeight
                     })
                 })">
-            </div>
+                </div>
                 <div class="battle-station" id="battle-station"
                     x-data="{ round: 1, turn: true, get weapon() { return Alpine.$data(document.getElementById('player')).weaponry.weapon } }">
                     <div class="battle-buttons" x-show="battle">
