@@ -2,24 +2,6 @@
 const assets = getAssets()
 var died = false;
 
-async function resetBars(screen) {
-    document.getElementById(`health-${screen}`).style.width = "0px";
-    document.getElementById(`stamina-${screen}`).style.width = "0px";
-    document.getElementById(`experience-${screen}`).style.width = "0px";
-    document.getElementById(`enemy`).style.width = "0px";
-}
-
-async function updateBars() {
-    await new Promise(resolve => setTimeout(resolve, 100)); // Forces it to wait a tick to allow CSS transition to work
-    const alpinePlayerData = Alpine.$data(document.getElementById(`player`));
-    const alpineEnemyData = Alpine.$data(document.getElementById(`enemy`));
-
-    document.getElementById(`health`).style.width = `${Math.floor(((alpinePlayerData.health < 0.1 ? 0 : alpinePlayerData.health) / alpinePlayerData.maxHealth) * 560)}px`;
-    document.getElementById(`stamina`).style.width = `${Math.floor(((alpinePlayerData.stamina < 0.1 ? 0 : alpinePlayerData.stamina) / alpinePlayerData.maxStamina) * 310)}px`;
-    document.getElementById(`experience`).style.width = `${Math.floor(((alpinePlayerData.experience < 0.1 ? 0 : alpinePlayerData.experience) / Math.floor((alpinePlayerData.level / 0.07) ** 2)) * 450)}px`;
-    document.getElementById(`enemy-health`).style.width = `${Math.floor(((alpineEnemyData.health < 0.1 ? 0 : alpineEnemyData.health) / alpineEnemyData.maxHealth) * 80)}%`;
-}
-
 // Choices - Array of Objects
 function randomByChance(choices) {
     const totalChance = choices.reduce((sum, item) => sum + item.chance, 0); // In case it doesn't equal 100, it just corrects itself
@@ -30,63 +12,6 @@ function randomByChance(choices) {
             return item;
         }
     }
-}
-
-async function startPlayer() {
-    const player = Alpine.$data(document.getElementById('player'));
-    const playerData = JSON.parse(localStorage.getItem('textBasedData'));
-    if (!playerData) return;
-
-    player.level = Number(playerData.level);
-    player.name = playerData.name;
-    player.experience = Number(playerData.experience);
-    player.weaponry = { weapon: assets.items.find(w => w.name == playerData.weaponry.weapon), level: Number(playerData.weaponry.level) };
-    player.armory = { armor: assets.items.find(a => a.name == playerData.armory.armor), level: Number(playerData.armory.level) };
-    player.health = Number(playerData.health);
-    player.stamina = Number(playerData.stamina);
-    player.pstatus = playerData.pstatus;
-    player.inventory = playerData.inventory;
-
-    setPlayer();
-}
-
-async function setPlayer() {
-    const player = Alpine.$data(document.getElementById('player'));
-    player.maxHealth = 500 + ((player.level - 1) * 250)
-    player.maxStamina = 30 + ((player.level - 1) * 5)
-
-    player.attack = Math.floor(32 + ((player.level - 1) * 6) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel))
-    player.defense = Math.floor(60 + ((player.level - 1) * 10) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult))
-    player.crit = player.weaponry.weapon.crit;
-    player.critdmg = player.weaponry.weapon.critdmg;
-    player.accuracy = player.weaponry.weapon.accuracy;
-    player.evasion = player.armory.armor.evasion;
-
-    updateBars();
-}
-
-async function savePlayer() {
-    const player = Alpine.$data(document.getElementById('player'));
-    localStorage.setItem('textBasedData', JSON.stringify({
-        name: player.name,
-        level: player.level,
-        health: player.health,
-        stamina: player.stamina,
-        experience: player.experience,
-        weaponry: { weapon: player.weaponry.weapon.name, level: player.weaponry.level },
-        armory: { armor: player.armory.armor.name, level: player.armory.level },
-        pstatus: player.pstatus,
-        inventory: player.inventory
-    }));
-    console.log("Game Saved");
-}
-
-async function resetPlayer() {
-    // set all player data to maximum values
-    const player = Alpine.$data(document.getElementById('player'));
-    player.health = player.maxHealth;
-    player.stamina = player.maxStamina;
-    updateBars();
 }
 
 async function startBattle(enemy = null) {
@@ -118,14 +43,13 @@ async function startBattle(enemy = null) {
     encounter.accuracy = enemy.accuracy
 
     encounter.log = []
-    encounter.log.push(`⚔️${background.name} (${player.level}) vs. ${enemy.name} (${level})⚔️`)
+    encounter.log.push(`⚔️${background.name} (${player.level}) vs. ${enemy.name} (${level})⚔️<i class="fa-solid fa-file-arrow-down" @click="exportLog()" title="Export Log"
+                        style="position: sticky; top: 0; float: right; right: 8px; z-index: 5; cursor: pointer; font-size: 24px; color: grey;"></i>`)
     battleStation.round = 1;
     battleStation.turn = true;
 
     updateBars()
 }
-
-
 
 async function executeSkill({
     attacker,
@@ -367,6 +291,37 @@ async function turnManager(toPlayer) {
             player.health = player.maxHealth;
             player.stamina = player.maxStamina;
         } else updateBars();
+
+        // Pick a drop from the enemy
+        const drop = randomByChance(background.enemy.drops)
+        const loot = assets.items.find(item => item.name == drop.name);
+        let level = loot.minlvl && loot.maxlvl ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
+
+        if (!loot) alert(`"${background.enemy.drops[1].name}" is not a valid item name! Please fix this in the enemy's drop table.`);
+        else if (loot.name !== null) {
+            if (player.inventory.some(i => i.name == loot.name)) {
+                // The player already has this item
+                let foundItem = player.inventory.find(i => i.name == loot.name);
+                if (foundItem.level == level) player.inventory[player.inventory.indexOf(foundItem)].amount += 1;
+                else player.inventory.push({
+                    name: loot.name,
+                    level,
+                    amount: 1
+                });
+            } else {
+                // The player does not have this item
+                player.inventory.push({
+                    name: loot.name,
+                    level,
+                    amount: 1
+                });
+            }
+
+            let isWeapon = loot.attack ? true : false;
+            let isArmor = loot.defense ? true : false;
+
+            encounter.log.push(`🎁 ${background.enemy.name} dropped a <span style="color: lightblue;" data-tooltip="${level > 1 ? `Level ${level}\n\n` : ''}${loot.description || "Curious..."}${isWeapon ? `\n⚔️${Math.floor(loot.attack + ((level - 1) * loot.attackPerLevel))} 🍀${Math.floor(loot.crit * 100)}% ⚔️${loot.critdmg}x 🎯${Math.floor(loot.accuracy * 100)}%` : isArmor ? `\n🛡️${Math.floor(loot.defense + ((level - 1) * loot.alvlmult))} 💨${Math.floor(loot.evasion * 100)}%` : ""}">${level > 1 ? `Level ${level} ` : ''}${loot.name}</span>! 🎁`);
+        }
         savePlayer();
         return;
     }
