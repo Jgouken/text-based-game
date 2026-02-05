@@ -159,8 +159,12 @@ async function fadeInEffect() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const tooltip = document.getElementById('global-tooltip');
+    let activeTooltipTarget = null;
+    let isTouchInteraction = false;
+    let suppressMouseUntil = 0;
+    let followFrameId = null;
 
-    function showTooltip(text, x, y) {
+    function showTooltip(text, x, y, animate = true) {
         tooltip.textContent = text;
 
         // Reset first
@@ -176,10 +180,22 @@ document.addEventListener('DOMContentLoaded', () => {
         // Now position correctly
         moveTooltip(x, y);
 
-        // Reveal smoothly
+        // Reveal smoothly with animation
         tooltip.style.visibility = 'visible';
-        tooltip.style.transition = 'opacity 0.2s ease';
-        tooltip.style.opacity = 1;
+        
+        if (animate) {
+            // Ensure we start from 0 opacity to trigger animation
+            tooltip.style.opacity = 0;
+            tooltip.style.transition = 'opacity 0.2s ease';
+            
+            // Use requestAnimationFrame to ensure the opacity 0 is registered
+            requestAnimationFrame(() => {
+                tooltip.style.opacity = 1;
+            });
+        } else {
+            tooltip.style.transition = 'none';
+            tooltip.style.opacity = 1;
+        }
     }
 
     function moveTooltip(x, y) {
@@ -219,23 +235,71 @@ document.addEventListener('DOMContentLoaded', () => {
         tooltip.style.top = top + 'px';
     }
 
+    function isElementVisible(element) {
+        if (!element) return false;
+        if (!element.isConnected) return false;
+        const rects = element.getClientRects();
+        if (!rects || rects.length === 0) return false;
+        const style = window.getComputedStyle(element);
+        if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+            return false;
+        }
+        return true;
+    }
+
+    function positionTooltipForElement(element) {
+        if (!isElementVisible(element)) {
+            hideTooltip();
+            return;
+        }
+        const rect = element.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        moveTooltip(x, y);
+    }
+
+    function startFollowingElement() {
+        if (followFrameId) cancelAnimationFrame(followFrameId);
+        const follow = () => {
+            if (!activeTooltipTarget) return;
+            positionTooltipForElement(activeTooltipTarget);
+            followFrameId = requestAnimationFrame(follow);
+        };
+        followFrameId = requestAnimationFrame(follow);
+    }
+
+    function stopFollowingElement() {
+        if (followFrameId) {
+            cancelAnimationFrame(followFrameId);
+            followFrameId = null;
+        }
+    }
+
     function hideTooltip() {
+        tooltip.style.transition = 'opacity 0.2s ease';
         tooltip.style.opacity = 0;
+        activeTooltipTarget = null;
+        stopFollowingElement();
     }
 
     // Desktop hover
     document.body.addEventListener('mouseover', e => {
+        if (isTouchInteraction || Date.now() < suppressMouseUntil) return;
         const target = e.target.closest('[data-tooltip]');
         if (!target) return;
-        showTooltip(target.dataset.tooltip, e.pageX, e.pageY);
+        const isDifferentTarget = activeTooltipTarget && activeTooltipTarget !== target;
+        activeTooltipTarget = target;
+        showTooltip(target.dataset.tooltip, e.pageX, e.pageY, isDifferentTarget || !tooltip.style.opacity || tooltip.style.opacity === '0');
     });
 
     document.body.addEventListener('mousemove', e => {
+        if (isTouchInteraction || Date.now() < suppressMouseUntil) return;
         if (!tooltip.textContent) return;
         moveTooltip(e.pageX, e.pageY);
     });
 
     document.body.addEventListener('mouseout', e => {
+        if (isTouchInteraction || Date.now() < suppressMouseUntil) return;
         const target = e.target.closest('[data-tooltip]');
         if (!target) return;
         hideTooltip();
@@ -243,20 +307,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Mobile touch
     document.body.addEventListener('touchstart', e => {
+        isTouchInteraction = true;
+        suppressMouseUntil = Date.now() + 700;
         const target = e.target.closest('[data-tooltip]');
-        if (!target) return;
-        const touch = e.touches[0];
-        showTooltip(target.dataset.tooltip, touch.pageX, touch.pageY);
-        moveTooltip(touch.pageX, touch.pageY);
+
+        // If tapping the same element that's already showing, ignore (prevent double tap)
+        if (target && target === activeTooltipTarget) {
+            return;
+        }
+
+        // If tapping a different tooltip element, show new tooltip
+        if (target) {
+            activeTooltipTarget = target;
+            const touch = e.touches[0];
+            const isTooltipVisible = tooltip.style.opacity === '1';
+            showTooltip(target.dataset.tooltip, touch.pageX, touch.pageY, !isTooltipVisible);
+            positionTooltipForElement(target);
+            startFollowingElement();
+        } else {
+            // Tapped elsewhere, hide tooltip
+            hideTooltip();
+        }
+    }, { passive: true });
+
+    document.body.addEventListener('touchend', () => {
+        isTouchInteraction = false;
+    }, { passive: true });
+
+    document.body.addEventListener('touchcancel', () => {
+        isTouchInteraction = false;
     }, { passive: true });
 
     document.body.addEventListener('touchmove', e => {
-        if (!tooltip.textContent) return;
-        const touch = e.touches[0];
-        moveTooltip(touch.pageX, touch.pageY);
+        if (!tooltip.textContent || !activeTooltipTarget) return;
+        positionTooltipForElement(activeTooltipTarget);
     }, { passive: true });
 
-    document.body.addEventListener('touchend', hideTooltip);
+    const battleLog = document.querySelector('.battle-log');
+    const enemyHealthBar = document.querySelector('.enemy-health-bar-background');
+    const battleStation = document.getElementById('battle-station');
+
+    function updateBattleLogHeight() {
+        if (!battleLog || !enemyHealthBar || !battleStation) return;
+        const enemyRect = enemyHealthBar.getBoundingClientRect();
+        const stationRect = battleStation.getBoundingClientRect();
+
+        if (enemyRect.height === 0 || stationRect.height === 0) return;
+
+        const top = Math.max(0, enemyRect.bottom + 20);
+        const bottom = Math.max(0, window.innerHeight - stationRect.top + 10);
+
+        battleLog.style.top = `${top}px`;
+        battleLog.style.bottom = `${bottom}px`;
+        battleLog.style.height = 'auto';
+    }
+
+    updateBattleLogHeight();
+    window.addEventListener('resize', updateBattleLogHeight);
+    window.addEventListener('orientationchange', () => {
+        updateBattleLogHeight();
+        requestAnimationFrame(updateBattleLogHeight);
+    });
+
+    if (window.ResizeObserver) {
+        const logObserver = new ResizeObserver(() => {
+            updateBattleLogHeight();
+        });
+        if (enemyHealthBar) logObserver.observe(enemyHealthBar);
+        if (battleStation) logObserver.observe(battleStation);
+        if (battleLog) logObserver.observe(battleLog);
+    }
 });
 
 document.addEventListener('keydown', (e) => {

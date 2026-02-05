@@ -194,52 +194,52 @@
                         x-text="`${evasion * 100}%`"></span>
                 </div>
                 <img :src="
-            health / maxHealth >= 0.8 ? 'assets/playerbar.png'
-            : health / maxHealth >= 0.6 ? 'assets/playerbarcracked1.png'
-            : health / maxHealth >= 0.4 ? 'assets/playerbarcracked2.png'
-            : health / maxHealth >= 0.2 ? 'assets/playerbarcracked3.png'
-            : health / maxHealth > 0 ? 'assets/playerbarcracked4.png'
-            : 'assets/playerbarcrackeddead.png'
-            ">
-                <div class="pstatus-effects">
-                    <span x-show="pstatus.some(status => status.id == '🩸')"
-                        :data-tooltip="`🩸 ${pstatus.find(s => s.id == '🩸').name} - ${pstatus.find(s => s.id == '🩸').rounds} round${pstatus.find(s => s.id == '🩸').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🩸').description}\n\n${pstatus.find(s => s.id == '🩸').damage} * ${pstatus.find(s => s.id == '🩸').baseDam} = ${Math.floor(pstatus.find(s => s.id == '🩸').damage * pstatus.find(s => s.id == '🩸').baseDam)}`">🩸</span>
-                    <span x-show="pstatus.some(status => status.id == '👁️')"
-                        :data-tooltip="`👁️ ${pstatus.find(s => s.id == '👁️').name} - ${pstatus.find(s => s.id == '👁️').rounds} round${pstatus.find(s => s.id == '👁️').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '👁️').description}`">👁️</span>
-                    <span x-show="pstatus.some(status => status.id == '🔥')"
-                        :data-tooltip="`🔥 ${pstatus.find(s => s.id == '🔥').name} - ${pstatus.find(s => s.id == '🔥').rounds} round${pstatus.find(s => s.id == '🔥').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🔥').description}\n\n${pstatus.find(s => s.id == '🔥').damage} * ${pstatus.find(s => s.id == '🔥').baseDam} = ${Math.floor(pstatus.find(s => s.id == '🔥').damage * pstatus.find(s => s.id == '🔥').baseDam)}`">🔥</span>
-                    <span x-show="pstatus.some(status => status.id == '🖤')"
-                        :data-tooltip="`🖤 ${pstatus.find(s => s.id == '🖤').name} - ${pstatus.find(s => s.id == '🖤').rounds} round${pstatus.find(s => s.id == '🖤').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🖤').description}\n\n${pstatus.find(s => s.id == '🖤').damage} * ${pstatus.find(s => s.id == '🖤').baseDam} = ${Math.floor(pstatus.find(s => s.id == '🖤').damage * pstatus.find(s => s.id == '🖤').baseDam)}`">🖤</span>
-                    <span x-show="pstatus.some(status => status.id == '🏳️')"
-                        :data-tooltip="`🏳️ ${pstatus.find(s => s.id == '🏳️').name} - ${pstatus.find(s => s.id == '🏳️').rounds} round${pstatus.find(s => s.id == '🏳️').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🏳️').description}`">🏳️</span>
-                    <span x-show="pstatus.some(status => status.id == '💨')"
-                        :data-tooltip="`💨 ${pstatus.find(s => s.id == '💨').name} - ${pstatus.find(s => s.id == '💨').rounds} round${pstatus.find(s => s.id == '💨').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💨').description}`">💨</span>
-                    <span x-show="pstatus.some(status => status.id == '💀')"
-                        :data-tooltip="`💀 ${pstatus.find(s => s.id == '💀').name} - ${pstatus.find(s => s.id == '💀').rounds} round${pstatus.find(s => s.id == '💀').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💀').description}\n\n${maxHealth} * ${pstatus.find(s => s.id == '💀').maxHP} = ${Math.floor(maxHealth * pstatus.find(s => s.id == '💀').maxHP)}`">💀</span>
-                    <span x-show="pstatus.some(status => status.id == '🎯')"
-                        :data-tooltip="`🎯 ${pstatus.find(s => s.id == '🎯').name} - ${pstatus.find(s => s.id == '🎯').rounds} round${pstatus.find(s => s.id == '🎯').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🎯').description}`">🎯</span>
-                    <span x-show="pstatus.some(status => status.id == '🛡️')"
-                        :data-tooltip="`🛡️ ${pstatus.find(s => s.id == '🛡️').name} - ${pstatus.find(s => s.id == '🛡️').rounds} round${pstatus.find(s => s.id == '🛡️').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🛡️').description}`">🛡️</span>
-                    <span x-show="pstatus.some(status => status.id == '🍀')"
-                        :data-tooltip="`🍀 ${pstatus.find(s => s.id == '🍀').name} - ${pstatus.find(s => s.id == '🍀').rounds} round${pstatus.find(s => s.id == '🍀').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🍀').description}`">🍀</span>
-                    <span x-show="pstatus.some(status => status.id == '💗')"
-                        :data-tooltip="`💗 ${pstatus.find(s => s.id == '💗').name} - ${pstatus.find(s => s.id == '💗').rounds} round${pstatus.find(s => s.id == '💗').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💗').description}\n\n${maxHealth} * ${pstatus.find(s => s.id == '💗').maxHP} = ${Math.floor(pstatus.find(s => s.id == '💗').maxHP * maxHealth)}`">💗</span>
-                    <span x-show="pstatus.some(status => status.id == '💪')"
-                        :data-tooltip="`💪 ${pstatus.find(s => s.id == '💪').name} - ${pstatus.find(s => s.id == '💪').rounds} round${pstatus.find(s => s.id == '💪').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💪').description}`">💪</span>
-                    <span x-show="pstatus.some(status => status.id == '🌀')"
-                        :data-tooltip="`🌀 ${pstatus.find(s => s.id == '🌀').name} - ${pstatus.find(s => s.id == '🌀').rounds} round${pstatus.find(s => s.id == '🌀').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🌀').description}`">🌀</span>
-                    <span x-show="pstatus.some(status => status.id == '🐈‍⬛')"
-                        :data-tooltip="`🐈‍⬛ ${pstatus.find(s => s.id == '🐈‍⬛').name} - ${pstatus.find(s => s.id == '🐈‍⬛').rounds} round${pstatus.find(s => s.id == '🐈‍⬛').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🐈‍⬛').description}`">🐈‍⬛</span>
-                    <span x-show="pstatus.some(status => status.id == '💢')"
-                        :data-tooltip="`💢 ${pstatus.find(s => s.id == '💢').name} - ${pstatus.find(s => s.id == '💢').rounds} round${pstatus.find(s => s.id == '💢').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💢').description}`">💢</span>
-                    <span x-show="pstatus.some(status => status.id == '💫')"
-                        :data-tooltip="`💫 ${pstatus.find(s => s.id == '💫').name} - ${pstatus.find(s => s.id == '💫').rounds} round${pstatus.find(s => s.id == '💫').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💫').description}`">💫</span>
-                    <span x-show="pstatus.some(status => status.id == '✨')"
-                        :data-tooltip="`✨ ${pstatus.find(s => s.id == '✨').name} - ${pstatus.find(s => s.id == '✨').rounds} round${pstatus.find(s => s.id == '✨').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '✨').description}`">✨</span>
-                    <span x-show="pstatus.some(status => status.id == '🏴')"
-                        :data-tooltip="`🏴 ${pstatus.find(s => s.id == '🏴').name} - ${pstatus.find(s => s.id == '🏴').rounds} round${pstatus.find(s => s.id == '🏴').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🏴').description}`">🏴</span>
-                    <span x-show="health <= 0" data-tooltip="You are dead.">☠️</span>
-                </div>
+                    health / maxHealth >= 0.8 ? 'assets/playerbar.png'
+                    : health / maxHealth >= 0.6 ? 'assets/playerbarcracked1.png'
+                    : health / maxHealth >= 0.4 ? 'assets/playerbarcracked2.png'
+                    : health / maxHealth >= 0.2 ? 'assets/playerbarcracked3.png'
+                    : health / maxHealth > 0 ? 'assets/playerbarcracked4.png'
+                    : 'assets/playerbarcrackeddead.png'
+                ">
+            </div>
+            <div class="pstatus-effects">
+                <span x-show="pstatus.some(status => status.id == '🩸')"
+                    :data-tooltip="`🩸 ${pstatus.find(s => s.id == '🩸').name} - ${pstatus.find(s => s.id == '🩸').rounds} round${pstatus.find(s => s.id == '🩸').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🩸').description}\n\n${pstatus.find(s => s.id == '🩸').damage} * ${pstatus.find(s => s.id == '🩸').baseDam} = ${Math.floor(pstatus.find(s => s.id == '🩸').damage * pstatus.find(s => s.id == '🩸').baseDam)}`">🩸</span>
+                <span x-show="pstatus.some(status => status.id == '👁️')"
+                    :data-tooltip="`👁️ ${pstatus.find(s => s.id == '👁️').name} - ${pstatus.find(s => s.id == '👁️').rounds} round${pstatus.find(s => s.id == '👁️').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '👁️').description}`">👁️</span>
+                <span x-show="pstatus.some(status => status.id == '🔥')"
+                    :data-tooltip="`🔥 ${pstatus.find(s => s.id == '🔥').name} - ${pstatus.find(s => s.id == '🔥').rounds} round${pstatus.find(s => s.id == '🔥').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🔥').description}\n\n${pstatus.find(s => s.id == '🔥').damage} * ${pstatus.find(s => s.id == '🔥').baseDam} = ${Math.floor(pstatus.find(s => s.id == '🔥').damage * pstatus.find(s => s.id == '🔥').baseDam)}`">🔥</span>
+                <span x-show="pstatus.some(status => status.id == '🖤')"
+                    :data-tooltip="`🖤 ${pstatus.find(s => s.id == '🖤').name} - ${pstatus.find(s => s.id == '🖤').rounds} round${pstatus.find(s => s.id == '🖤').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🖤').description}\n\n${pstatus.find(s => s.id == '🖤').damage} * ${pstatus.find(s => s.id == '🖤').baseDam} = ${Math.floor(pstatus.find(s => s.id == '🖤').damage * pstatus.find(s => s.id == '🖤').baseDam)}`">🖤</span>
+                <span x-show="pstatus.some(status => status.id == '🏳️')"
+                    :data-tooltip="`🏳️ ${pstatus.find(s => s.id == '🏳️').name} - ${pstatus.find(s => s.id == '🏳️').rounds} round${pstatus.find(s => s.id == '🏳️').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🏳️').description}`">🏳️</span>
+                <span x-show="pstatus.some(status => status.id == '💨')"
+                    :data-tooltip="`💨 ${pstatus.find(s => s.id == '💨').name} - ${pstatus.find(s => s.id == '💨').rounds} round${pstatus.find(s => s.id == '💨').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💨').description}`">💨</span>
+                <span x-show="pstatus.some(status => status.id == '💀')"
+                    :data-tooltip="`💀 ${pstatus.find(s => s.id == '💀').name} - ${pstatus.find(s => s.id == '💀').rounds} round${pstatus.find(s => s.id == '💀').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💀').description}\n\n${maxHealth} * ${pstatus.find(s => s.id == '💀').maxHP} = ${Math.floor(maxHealth * pstatus.find(s => s.id == '💀').maxHP)}`">💀</span>
+                <span x-show="pstatus.some(status => status.id == '🎯')"
+                    :data-tooltip="`🎯 ${pstatus.find(s => s.id == '🎯').name} - ${pstatus.find(s => s.id == '🎯').rounds} round${pstatus.find(s => s.id == '🎯').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🎯').description}`">🎯</span>
+                <span x-show="pstatus.some(status => status.id == '🛡️')"
+                    :data-tooltip="`🛡️ ${pstatus.find(s => s.id == '🛡️').name} - ${pstatus.find(s => s.id == '🛡️').rounds} round${pstatus.find(s => s.id == '🛡️').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🛡️').description}`">🛡️</span>
+                <span x-show="pstatus.some(status => status.id == '🍀')"
+                    :data-tooltip="`🍀 ${pstatus.find(s => s.id == '🍀').name} - ${pstatus.find(s => s.id == '🍀').rounds} round${pstatus.find(s => s.id == '🍀').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🍀').description}`">🍀</span>
+                <span x-show="pstatus.some(status => status.id == '💗')"
+                    :data-tooltip="`💗 ${pstatus.find(s => s.id == '💗').name} - ${pstatus.find(s => s.id == '💗').rounds} round${pstatus.find(s => s.id == '💗').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💗').description}\n\n${maxHealth} * ${pstatus.find(s => s.id == '💗').maxHP} = ${Math.floor(pstatus.find(s => s.id == '💗').maxHP * maxHealth)}`">💗</span>
+                <span x-show="pstatus.some(status => status.id == '💪')"
+                    :data-tooltip="`💪 ${pstatus.find(s => s.id == '💪').name} - ${pstatus.find(s => s.id == '💪').rounds} round${pstatus.find(s => s.id == '💪').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💪').description}`">💪</span>
+                <span x-show="pstatus.some(status => status.id == '🌀')"
+                    :data-tooltip="`🌀 ${pstatus.find(s => s.id == '🌀').name} - ${pstatus.find(s => s.id == '🌀').rounds} round${pstatus.find(s => s.id == '🌀').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🌀').description}`">🌀</span>
+                <span x-show="pstatus.some(status => status.id == '🐈‍⬛')"
+                    :data-tooltip="`🐈‍⬛ ${pstatus.find(s => s.id == '🐈‍⬛').name} - ${pstatus.find(s => s.id == '🐈‍⬛').rounds} round${pstatus.find(s => s.id == '🐈‍⬛').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🐈‍⬛').description}`">🐈‍⬛</span>
+                <span x-show="pstatus.some(status => status.id == '💢')"
+                    :data-tooltip="`💢 ${pstatus.find(s => s.id == '💢').name} - ${pstatus.find(s => s.id == '💢').rounds} round${pstatus.find(s => s.id == '💢').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💢').description}`">💢</span>
+                <span x-show="pstatus.some(status => status.id == '💫')"
+                    :data-tooltip="`💫 ${pstatus.find(s => s.id == '💫').name} - ${pstatus.find(s => s.id == '💫').rounds} round${pstatus.find(s => s.id == '💫').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💫').description}`">💫</span>
+                <span x-show="pstatus.some(status => status.id == '✨')"
+                    :data-tooltip="`✨ ${pstatus.find(s => s.id == '✨').name} - ${pstatus.find(s => s.id == '✨').rounds} round${pstatus.find(s => s.id == '✨').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '✨').description}`">✨</span>
+                <span x-show="pstatus.some(status => status.id == '🏴')"
+                    :data-tooltip="`🏴 ${pstatus.find(s => s.id == '🏴').name} - ${pstatus.find(s => s.id == '🏴').rounds} round${pstatus.find(s => s.id == '🏴').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🏴').description}`">🏴</span>
+                <span x-show="health <= 0" data-tooltip="You are dead.">☠️</span>
             </div>
             <div class="battle-weaponry" id="battle-weaponry" style="display: block; text-align: center;">
                 <span
@@ -288,19 +288,20 @@
             </div>
 
             <!-- Returning Player (Landing Screen)-->
-            <div id="returning" class="returning" x-show="screen === 'returning'" style="display: none; top: -210px;">
+            <div id="returning" class="returning" x-show="screen === 'returning'" style="display: none;">
                 <p style="text-align: center; font-size: 30px; top: 25px;">Text-Based-Game</p>
                 <p style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif; top: 280px;"
                     x-text="location.toUpperCase()"></p>
 
-                <div class="centered-buttons" style="justify-content: right; margin-top: -110px; margin-right: 10px;">
+                <div class="centered-buttons"
+                    style="justify-content: right; margin-top: 0; margin-right: 10px; position: fixed; top: 10px; right: 10px; z-index: 1000;">
                     <button class="regular-button"
                         style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); justify-content: right; font-size: large;"
                         @click="transition('returning', 'how-to-play')">How To Play</button>
                 </div>
 
                 <div class="centered-buttons"
-                    style="justify-content: left; margin-top: -54px; margin-left: 10px; gap: 20px; width: fit-content;">
+                    style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; gap: 20px; width: 100%; justify-content: flex-start; padding: 10px; margin-top: 0px;">
                     <button class="regular-button"
                         style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0); font-size: large;"
                         @click="deleteButton()">DELETE</button>
