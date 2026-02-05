@@ -165,8 +165,8 @@ function getAssets() {
 					},
 					{
 						name: "Lucky Blow",
-						pstatus: ["🩸", "🌀"],
-						estatus: ["🍀", "🎯"],
+						pstatus: ["🩸","🌀"],
+						estatus: ["🍀","🎯"],
 						chance: 0.15,
 						wait: 3,
 						damage: 2,
@@ -317,7 +317,7 @@ function getAssets() {
 					},
 					{
 						name: "Rally",
-						estatus: ["🛡️", "💪"],
+						estatus: ["🛡️","💪"],
 						chance: 0.10,
 						wait: 2,
 						attack: false
@@ -383,7 +383,7 @@ function getAssets() {
 					},
 					{
 						name: "Cursed Breath",
-						pstatus: ["🖤", "🏴", "🌀"],
+						pstatus: ["🖤","🏴","🌀"],
 						damage: 1.33,
 						chance: 0.15,
 						wait: 2,
@@ -538,7 +538,7 @@ function getAssets() {
 					},
 					{
 						name: "Restoration",
-						estatus: ["💗", "✨"],
+						estatus: ["💗","✨"],
 						health: 0.05,
 						chance: 0.20,
 						wait: 3,
@@ -613,7 +613,7 @@ function getAssets() {
 					},
 					{
 						name: "Excited Jiggle",
-						estatus: ["💪", "🎯"],
+						estatus: ["💪","🎯"],
 						chance: 0.05,
 						wait: 2,
 						attack: false
@@ -681,7 +681,7 @@ function getAssets() {
 					},
 					{
 						name: "Slime Secretion",
-						pstatus: ["🌀", "✨"],
+						pstatus: ["🌀","✨"],
 						chance: 0.05,
 						wait: 2,
 						attack: false
@@ -751,7 +751,7 @@ function getAssets() {
 					},
 					{
 						name: "Dodgy Dance",
-						estatus: ["☁️", "🎯"],
+						estatus: ["☁️","🎯"],
 						chance: 0.05,
 						attack: false,
 						wait: 2
@@ -792,33 +792,45 @@ function getAssets() {
 				health: 650,
 				attack: 150,
 				defense: 80,
-				crit: 0.1,
-				accuracy: 0.72,
+				crit: 0.05,
+				accuracy: 0.80,
 				skills: [
 					{
-						name: "Stab",
-						chance: 0.7,
+						name: "Hack",
+						damage: 0.6,
+						times: 2,
+						chance: 0.6,
 						attack: true
 					},
 					{
 						name: "Smoke Bomb",
-						pstatus: ["👁️"],
-						chance: 0.05,
-						attack: false,
-						wait: 3
+						pstatus: ["👁️","🌀"],
+						chance: 0.075,
+						wait: 2,
+						attack: false
+						
 					},
 					{
-						name: "Swift Movement",
-						estatus: ["🎯", "💨"],
-						chance: 0.1,
-						wait: 3,
+						name: "Body Flicker",
+						estatus: ["🎯", "💨","🍀"],
+						chance: 0.075,
+						wait: 2,
 						attack: false
 					},
 					{
-						name: "Double Strike",
-						times: 2,
-						chance: 0.15,
+						name: "Spin Attack",
+						damage: 0.65,
+						times: 3,
+						chance: 0.20,
+						wait: 1,
 						attack: true
+					},
+					{
+						name: "Berserk",
+						estatus: ["💢"],
+						chance: 0.05,
+						wait: 3,
+						attack: false
 					},
 				],
 				drops: [
@@ -889,35 +901,46 @@ function getAssets() {
 				health: 600,
 				attack: 120,
 				defense: 40,
-				crit: 0.15,
-				accuracy: 0.67,
+				crit: 0.1,
+				accuracy: 0.75,
 				skills: [
 					{
 						name: "Stab",
-						chance: 0.7,
+						damage: 0.4,
+						times: 3,
+						chance: 0.6,
 						attack: true
 					},
 					{
 						name: "Smoke Bomb",
-						pstatus: ["👁️"],
-						estatus: ["💨"],
-						chance: 0.05,
+						pstatus: ["👁️","🌀"],
+						chance: 0.075,
 						attack: false,
-						wait: 3
+						wait: 2
 					},
 					{
-						name: "Swift Movement",
-						estatus: ["🎯", "💨"],
-						wait: 3,
-						chance: 0.1,
+						name: "Body Flicker",
+						estatus: ["🎯", "💨","🍀"],
+						chance: 0.075,
+						wait: 2,
 						attack: false
 					},
 					{
-						name: "Quintuple Strike",
-						times: 5,
-						damage: 0.8,
+						name: "Flurry",
+						times: 6,
+						damage: 0.45,
 						chance: 0.15,
-						attack: true,
+						wait: 1,
+						attack: true
+					},
+					{
+						name: "Coated Shuriken",
+						pstatus: ["💀"],
+						times: 6,
+						damage: 0.20,
+						chance: 0.1,
+						wait: 2,
+						attack: true
 					},
 				],
 				drops: [
@@ -989,40 +1012,45 @@ function getAssets() {
 				health: 750,
 				attack: 90,
 				defense: 60,
-				crit: 0.35,
-				accuracy: 0.62,
+				crit: 0.15,
+				accuracy: 0.70,
 				skills: [
 					{
-						name: "Stab",
+						name: "Slash",
 						chance: 0.6,
+						damage: 30,
+						times: 4,
 						attack: true
 					},
 					{
 						name: "Smoke Bomb",
-						pstatus: ["👁️"],
-						estatus: ["💨"],
-						chance: 0.05,
-						attack: false,
-						wait: 3
+						pstatus: ["👁️","🌀"],
+						chance: 0.075,
+						wait: 2,
+						attack: false
+						
 					},
 					{
-						name: "Swift Movement",
-						estatus: ["🎯", "💨"],
-						wait: 3,
-						chance: 0.1,
+						name: "Body Flicker",
+						estatus: ["🎯", "💨","🍀"],
+						chance: 0.075,
+						wait: 2,
 						attack: false
 					},
 					{
 						name: "Onslaught",
-						times: 10,
-						damage: 0.8,
-						chance: 0.05,
+						times: 9,
+						damage: 0.35,
+						chance: 0.1,
+						wait: 2,
 						attack: true
 					},
 					{
-						name: "Fatal Slash",
-						pstatus: ["🩸", "💀"],
-						chance: 0.1,
+						name: "Deft Slash",
+						pstatus: ["🩸"],
+						damage: 1.7,
+						chance: 0.15,
+						wait: 1,
 						attack: true
 					},
 				],
@@ -1098,35 +1126,47 @@ function getAssets() {
 				health: 4500,
 				attack: 225,
 				defense: 400,
-				crit: 0.15,
+				crit: 0.5,
 				accuracy: 0.7,
 				skills: [
 					{
 						name: "Lunge",
-						chance: 0.7,
+						chance: 0.55,
+						attack: true
+					},
+					{
+						name: "Piercing Blood",
+						damage: 0.65,
+						times: 4,
+						chance: 0.2,
+						wait: 1,
 						pstatus: ["🩸"],
 						attack: true
 					},
 					{
 						name: "Drain",
-						pstatus: ["🩸"],
-						estatus: ["💗"],
+						pstatus: ["🌀"],
+						estatus: ["💗","🛡️"],
 						damage: 1.5,
+						lifesteal: 0.2,
 						chance: 0.1,
+						wait: 1,
 						attack: true
 					},
 					{
 						name: "Vampiric Gaze",
-						pstatus: ["🌀", "🏴"],
-						chance: 0.1,
-						attack: true
+						pstatus: ["🐈‍⬛", "🏴","💫"],
+						chance: 0.075,
+						wait: 3,
+						attack: false
 					},
 					{
 						name: "Bat Transformation",
 						pstatus: ["👁️"],
-						estatus: ["🍀"],
-						chance: 0.1,
-						attack: true
+						estatus: ["🍀","✨","💨"],
+						chance: 0.075,
+						wait: 3,
+						attack: false
 					},
 				],
 				drops: [
@@ -1182,39 +1222,42 @@ function getAssets() {
 					{
 						name: "Flaming Fist",
 						pstatus: ["🔥"],
-						damage: 1.5,
+						damage: 1.66,
 						chance: 0.15,
+						wait: 1,
 						attack: true
 					},
 					{
 						name: "Pummel",
 						pstatus: ["💫", "🌀"],
-						damage: 1.5,
+						damage: 0.33,
+						times: 3,
 						chance: 0.15,
+						wait: 2,
 						attack: true
 					},
 					{
-						name: "Hex",
-						pstatus: ["🔥", "👁️"],
-						estatus: ["🏳️"],
-						damage: 1.5,
-						chance: 0.05,
-						attack: true
+						name: "Demonic Hex",
+						pstatus: ["🐈‍⬛", "🖤","🏴"],
+						chance: 0.075,
+						wait: 3,
+						attack: false
 					},
 					{
 						name: "Enrage",
-						estatus: ["💢", "🍀", "💗"],
-						pstatus: ["👁️"],
-						chance: 0.05,
+						estatus: ["💢", "🍀", "💗","🏳️","🎯"],
+						chance: 0.075,
 						attack: false,
-						wait: 3
+						wait: 2
 					},
 					{
-						name: "Eternal Damnation",
+						name: "Damnation",
 						pstatus: ["🖤", "🌀", "🏴"],
+						damage: 0.33,
+						times: 6,
 						chance: 0.05,
 						attack: true,
-						wait: 3
+						wait: 4
 					},
 				],
 				drops: [
@@ -1264,27 +1307,28 @@ function getAssets() {
 				skills: [
 					{
 						name: "Bite",
-						chance: 0.7,
+						chance: 0.55,
 						attack: true
 					},
 					{
 						name: "Slash",
 						pstatus: ["🩸"],
 						damage: 1.5,
-						chance: 0.15,
+						chance: 0.20,
 						attack: true
 					},
 					{
 						name: "Crippling Bite",
 						pstatus: ["🩸", "🌀"],
 						damage: 2,
-						chance: 0.05,
+						chance: 0.1,
+						wait: 1,
 						attack: true
 					},
 					{
 						name: "Howl",
-						estatus: ["🏳️", "🍀", "💗"],
-						chance: 0.1,
+						estatus: ["🏳️", "🍀", "💗","🎯","🛡️","💪"],
+						chance: 0.15,
 						attack: false,
 						wait: 3
 					},
@@ -1336,42 +1380,61 @@ function getAssets() {
 				skills: [
 					{
 						name: "Whack",
-						chance: 0.4,
+						chance: 0.35,
 						attack: true
 					},
 					{
 						name: "Poisonous Potion",
 						pstatus: ["💀"],
-						damage: 2,
-						chance: 0.15,
+						damage: 0.33,
+						chance: 0.075,
+						wait: 2,
 						attack: true
 					},
 					{
 						name: "Sleeping Potion",
 						pstatus: ["💫", "🌀"],
-						chance: 0.15,
-						attack: true,
-						wait: 1
+						damage: 0.33,
+						chance: 0.075,
+						wait: 1,
+						attack: true
+					},
+					{
+						name: "Restoration Potion",
+						estatus: ["💗", "✨"],
+						health: 0.05,
+						chance: 0.075,
+						wait: 2,
+						attack: false
 					},
 					{
 						name: "Voodoo Stab",
 						pstatus: ["🩸"],
-						chance: 0.15,
-						attack: true,
-						wait: 1
+						damage: 1.33,
+						chance: 0.2,
+						attack: true
 					},
 					{
 						name: "Hex",
-						pstatus: ["💀", "👁️", "🖤"],
-						chance: 0.05,
+						pstatus: ["🐈‍⬛", "🖤"],
+						chance: 0.075,
 						attack: false,
 						wait: 3
 					},
 					{
+						name: "Mysterious Coaction",
+						estatus: ["💗", "✨","🍀","🎯","💨"],
+						chance: 0.075,
+						wait: 4,
+						attack: false
+					},
+					{
 						name: "Potion Barrage",
-						pstatus: ["🖤", "💫", "👁️", "💀", "🌀", "🏴"],
-						chance: 0.05,
-						attack: false,
+						pstatus: ["🔥", "💫", "👁️", "💀", "🌀", "🏴"],
+						damage: 0.33,
+						times: 6,
+						chance: 0.075,
+						attack: true,
 						wait: 5
 					},
 				],
@@ -1424,20 +1487,26 @@ function getAssets() {
 				name: "Cow",
 				sprite: 'assets/enemies/Cow.gif',
 				weapon: null,
-				health: 200,
-				attack: 45,
-				defense: 80,
+				health: 110,
+				attack: 40,
+				defense: 50,
 				crit: 0.2,
-				accuracy: 0.5,
+				accuracy: 0.7,
 				skills: [
 					{
 						name: "Moo",
-						chance: 0.9,
+						chance: 0.45,
 						attack: false
 					},
 					{
-						name: "Kick",
-						chance: 0.1,
+						name: "Moo+",
+						estatus: ["💗","💪","💢"],
+						chance: 0.05,
+						attack: false
+					},
+					{
+						name: "Ram",
+						chance: 0.5,
 						attack: true
 					},
 				],
@@ -1456,20 +1525,26 @@ function getAssets() {
 				name: "Sheep",
 				sprite: 'assets/enemies/Sheep.gif',
 				weapon: null,
-				health: 125,
-				attack: 30,
-				defense: 100,
+				health: 70,
+				attack: 25,
+				defense: 95,
 				crit: 0.1,
-				accuracy: 0.4,
+				accuracy: 0.65,
 				skills: [
 					{
 						name: "Baa",
-						chance: 0.9,
+						chance: 0.5,
+						attack: false
+					},
+					{
+						name: "Baa+",
+						estatus: ["💗","🛡️","🎯"],
+						chance: 0.05,
 						attack: false
 					},
 					{
 						name: "Kick",
-						chance: 0.1,
+						chance: 0.5,
 						attack: true
 					},
 				],
@@ -1488,20 +1563,26 @@ function getAssets() {
 				name: "Chicken",
 				sprite: 'assets/enemies/Chicken.gif',
 				weapon: null,
-				health: 45,
+				health: 20,
 				attack: 15,
-				defense: 10,
-				crit: 0.1,
-				accuracy: 0.4,
+				defense: 15,
+				crit: 0.65,
+				accuracy: 0.8,
 				skills: [
 					{
 						name: "Cluck",
-						chance: 0.9,
+						chance: 0.5,
 						attack: false
 					},
 					{
-						name: "Kick",
-						chance: 0.1,
+						name: "Cluck+",
+						estatus: ["💗","🍀","💨"],
+						chance: 0.05,
+						attack: false
+					},
+					{
+						name: "Peck",
+						chance: 0.5,
 						attack: true
 					},
 				],
@@ -1524,41 +1605,50 @@ function getAssets() {
 				attack: 90,
 				defense: 125,
 				crit: 0.3,
-				accuracy: 0.64,
+				accuracy: 0.65,
 				skills: [
 					{
 						name: "Swing",
 						chance: 0.55,
 						attack: true
 					},
+{
+						name: "Stomp",
+						damage: 1.15,
+						pstatus: ["👁️"],
+						chance: 0.15,
+						wait: 1,
+						attack: true
+					},
 					{
 						name: "Slam",
 						damage: 1.5,
 						pstatus: ["💫"],
-						chance: 0.05,
+						chance: 0.075,
+						wait: 2,
 						attack: true
 					},
 					{
 						name: "Rally",
-						estatus: ["🛡️", "🎯"],
-						pstatus: ["👁️"],
-						chance: 0.15,
+						estatus: ["🛡️", "🎯","💪"],
+						chance: 0.1,
 						attack: false,
 						wait: 3
 					},
 					{
 						name: "Roar",
 						estatus: ["💢"],
-						pstatus: ["💫"],
+						damage: 0.7,
 						chance: 0.1,
-						attack: false
+						wait: 3,
+						attack: true
 					},
 					{
 						name: "Flex",
 						estatus: ["🏳️", "🍀"],
-						chance: 0.15,
+						chance: 0.075,
 						attack: false,
-						wait: 3
+						wait: 1
 					},
 				],
 				drops: [
@@ -1589,43 +1679,44 @@ function getAssets() {
 				weapon: null,
 				health: 1250,
 				attack: 200,
-				defense: 120,
-				crit: 0.25,
-				accuracy: 0.73,
+				defense: 175,
+				crit: 0.2,
+				accuracy: 0.70,
 				skills: [
 					{
-						name: "Stab",
-						chance: 0.7,
+						name: "Slash",
+						chance: 0.45,
 						attack: true
 					},
 					{
-						name: "Smoke Bomb",
-						pstatus: ["👁️"],
-						estatus: ["💨"],
+						name: "Poison Smoke Bomb",
+						pstatus: ["👁️","💀"],
 						chance: 0.05,
 						attack: false,
-						wait: 3
+						wait: 4
 					},
 					{
-						name: "Swift Movement",
-						estatus: ["🎯", "💨"],
+						name: "Lock In",
+						estatus: ["🎯", "💨","🍀","💪"],
+						chance: 0.15,
+						attack: false,
+						wait: 5
+					},
+					{
+						name: "Sly Blitz",
+						damage: 0.3,
+						times: 12,
 						chance: 0.1,
-						attack: false,
-						wait: 3
-					},
-					{
-						name: "Onslaught",
-						damage: 0.8,
-						times: 10,
-						chance: 0.05,
+						wait: 2,
 						attack: true
 					},
 					{
 						name: "Fatal Slash",
-						pstatus: ["🩸", "💀"],
+						pstatus: ["🩸", "🌀"],
+						damage: 2,
 						chance: 0.1,
 						attack: true,
-						wait: 3
+						wait: 1
 					},
 				],
 				drops: [
@@ -1662,45 +1753,62 @@ function getAssets() {
 				skills: [
 					{
 						name: "Smash",
-						chance: 0.45,
+						chance: 0.3,
 						attack: true
+					},
+					{
+						name: "King’s Wraith",
+						damage: 0.77,
+						times: 3,
+						chance: 0.1,
+						attack: true,
+						wait: 1
 					},
 					{
 						name: "Grounding Stun",
 						pstatus: ["💫"],
 						damage: 1.1,
-						chance: 0.15,
+						chance: 0.05,
 						attack: true,
 						wait: 2
 					},
 					{
 						name: "Crippling Strike",
 						pstatus: ["🌀"],
-						damage: 1.5,
+						damage: 1.3,
 						chance: 0.15,
+						wait: 1,
 						attack: true
 					},
 					{
-						name: "Transform",
-						estatus: ["💢"],
-						pstatus: ["💫"],
-						chance: 0.05,
-						attack: false
+						name: "Dirty Trick",
+						pstatus: ["🐈‍⬛","👁️"],
+						damage: 1.3,
+						chance: 0.1,
+						wait: 2,
+						attack: true
+					},
+					{
+						name: "Entitled Royal",
+						estatus: ["💢","🏳️","💪"],
+						chance: 0.15,
+						attack: false,
+						wait: 4
 					},
 					{
 						name: "Heal",
 						health: 0.25,
-						chance: 0.05,
+						chance: 0.075,
 						attack: false,
-						wait: 3
+						wait: 10
 					},
 					{
 						name: "Restoration",
-						estatus: ["💗"],
-						health: 0.15,
-						chance: 0.15,
+						estatus: ["💗","✨"],
+						health: 0.05,
+						chance: 0.075,
 						attack: false,
-						wait: 3
+						wait: 7
 					},
 				],
 				drops: [
@@ -1737,57 +1845,57 @@ function getAssets() {
 				skills: [
 					{
 						name: "Slap",
-						chance: 0.55,
+						chance: 0.5,
 						attack: true
 					},
 					{
 						name: "Cursed Hell Flames",
-						pstatus: ["🔥", "🩸", "🖤"],
-						damage: 1.5,
-						chance: 0.15,
+						pstatus: ["🔥","🖤"],
+						damage: 0.66,
+						times: 3,
+						chance: 0.20,
 						attack: true,
-						wait: 3
+						wait: 2
 					},
 					{
-						name: "Pummel",
+						name: "Choke Slam",
 						pstatus: ["💫", "🌀"],
-						damage: 1.5,
-						chance: 0.15,
+						damage: 1.66,
+						chance: 0.1,
 						attack: true,
 						wait: 3
 					},
 					{
 						name: "Queen's Gaze",
-						pstatus: ["🖤", "👁️", "🌀", "🏴"],
+						pstatus: ["🐈‍⬛", "👁️", "🌀", "🏴","💫"],
 						chance: 0.05,
 						attack: false,
-						wait: 3
+						wait: 4
 					},
 					{
 						name: "Demonic Embrace",
-						pstatus: ["👁️"],
-						estatus: ["💢", "🏳️", "🍀", "💗", "✨", "🛡️"],
+						estatus: ["💢", "🍀", "💗", "✨", "🛡️"],
 						chance: 0.05,
 						attack: false,
-						wait: 3
+						wait: 2
 					},
 					{
-						name: "Eternal Onslaught",
+						name: "Eternal Damnation",
 						pstatus: ["🖤", "🩸"],
-						times: 12,
-						damage: 0.2,
+						times: 13,
+						damage: 0.33,
 						chance: 0.025,
 						attack: true,
-						wait: 3
+						wait: 2
 					},
 					{
 						name: "Queenly Disrespect",
 						estatus: ["🏳️"],
 						pstatus: ["🌀", "💫", "🏴"],
 						damage: 0.9,
-						chance: 0.1,
+						chance: 0.05,
 						attack: true,
-						wait: 3
+						wait: 4
 					},
 					{
 						name: "Royal Dropkick",
@@ -3772,7 +3880,7 @@ function getAssets() {
 			},
 			{
 				name: "Tattered Rags",
-				description: "Torn clothing together enough to cover the most important parts and keep warm.",
+				description: "Torn clothing together enough to cover the most important part and keep warm.",
 
 				defense: 10,
 				maxlvl: 10,
@@ -5352,3 +5460,6 @@ function getAssets() {
 		],
 	}
 }
+
+
+
