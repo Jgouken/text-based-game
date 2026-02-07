@@ -759,7 +759,7 @@ function getAssets() {
 					},
 					{
 						name: "Dodgy Dance",
-						estatus: ["☁️", "🎯"],
+						estatus: ["💨", "🎯"],
 						chance: 0.05,
 						attack: false,
 						wait: 2
@@ -3364,7 +3364,7 @@ function getAssets() {
 						name: "Plot Armor",
 						description: "Nothing can get to you with the power of god and anime on your side.",
 						cost: 60,
-						pstatus: ["🎯", "🍀", "☁️"],
+						pstatus: ["🎯", "🍀", "💨"],
 						estatus: ["👁️"]
 					},
 					{
