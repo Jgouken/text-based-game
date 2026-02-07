@@ -1,5 +1,7 @@
 // This file is for *in-battle* game logic for both the player and enemy.
 const assets = getAssets()
+const blessingWords = ['cleansed', 'purified', 'dispelled', 'vanquished', 'dissipated', 'evaporated', 'cured', 'alleviated', 'relieved', 'mitigated', 'quelled'];
+const badOmenWords = ['corroded', 'eviscerated', 'devoured', 'eroded', 'withered', 'decayed', 'consumed', 'ravaged', 'tainted', 'spoiled', 'blighted', 'defiled', 'rotted'];
 var died = false;
 
 // Choices - Array of Objects
@@ -46,10 +48,11 @@ async function startBattle(enemy = null) {
     encounter.log.push(`⚔️${background.name} (${player.level}) vs. ${enemy.name} (${level})⚔️<i class="fa-solid fa-file-arrow-down" @click="exportLog()" title="Export Log"
                         style="position: sticky; top: 0; float: right; right: 8px; z-index: 5; cursor: pointer; font-size: 24px; color: grey;"></i>`)
     battleStation.round = 1;
-    battleStation.turn = true;
+    battleStation.turn = false;
     battleStation._regenThisRound = 0;
 
     updateBars()
+    turnManager(true);
 }
 
 async function executeSkill({
@@ -170,9 +173,6 @@ async function executeSkill({
     }
 
     if (firstHit || !skill.attack) {
-        let blessingWords = ['cleansed', 'purified', 'dispelled', 'vanquished', 'dissipated', 'evaporated', 'cured', 'alleviated', 'relieved', 'mitigated', 'quelled'];
-        let badOmenWords = ['corroded', 'eviscerated', 'devoured', 'eroded', 'withered', 'decayed', 'consumed', 'ravaged', 'tainted', 'spoiled', 'blighted', 'defiled', 'rotted'];
-
         if (skill.pstatus) {
             let negated = [];
             let granted = [];
@@ -205,6 +205,62 @@ async function executeSkill({
                 }
             });
             encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${!isPlayer ? ` and gained ` : ` and inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${encounter.enemyName} ${encounter.estatus.some(s => s.id == '🌑') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
+        }
+    }
+
+    if (player.pstatus.some(s => s.id == '✨') || player.pstatus.some(s => s.id == '🌑')) {
+        if (player.pstatus.some(s => s.id == '✨') && player.pstatus.some(s => s.id == '🌑')) {
+            player.pstatus.length = 0;
+            encounter.log.push(`✨ All ${player.name}'s effects were evaporated. 🌑`);
+        } else if (player.pstatus.some(s => s.id == '🌑')) {
+            let eviscerated = [];
+            player.pstatus.slice().forEach(s => {
+                if (s.positive) {
+                    player.pstatus.splice(player.pstatus.indexOf(s), 1);
+                    eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
+                }
+            });
+            if (eviscerated.length > 0) encounter.log.push(`🌑 All of ${player.name}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
+            else encounter.log.push(`🌑 ${player.name}'s malediction lingers idly.`);
+        } else if (player.pstatus.some(s => s.id == '✨')) {
+            let cleansed = [];
+            player.pstatus.slice().forEach(s => {
+                if (!s.positive) {
+                    player.pstatus.splice(player.pstatus.indexOf(s), 1);
+                    cleansed.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
+                }
+            });
+
+            if (cleansed.length > 0) encounter.log.push(`✨ All of ${player.name}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
+            else encounter.log.push(`✨ ${player.name}'s blessing gleams idly.`);
+        }
+    }
+
+    if (encounter.estatus.some(s => s.id == '✨') || encounter.estatus.some(s => s.id == '🌑')) {
+        if (encounter.estatus.some(s => s.id == '✨') && encounter.estatus.some(s => s.id == '🌑')) {
+            encounter.estatus.length = 0;
+            encounter.log.push(`✨ All ${encounter.enemyName}'s effects were evaporated. 🌑`);
+        } else if (encounter.estatus.some(s => s.id == '🌑')) {
+            let eviscerated = [];
+            encounter.estatus.slice().forEach(s => {
+                if (s.positive) {
+                    encounter.estatus.splice(encounter.estatus.indexOf(s), 1);
+                    eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
+                }
+            });
+            if (eviscerated.length > 0) encounter.log.push(`🌑 All of ${encounter.enemyName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
+            else encounter.log.push(`🌑 ${encounter.enemyName}'s malediction lingers idly.`);
+        } else if (encounter.estatus.some(s => s.id == '✨')) {
+            let cleansed = [];
+            encounter.estatus.slice().forEach(s => {
+                if (!s.positive) {
+                    encounter.estatus.splice(encounter.estatus.indexOf(s), 1);
+                    cleansed.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
+                }
+            });
+
+            if (cleansed.length > 0) encounter.log.push(`✨ All of ${encounter.enemyName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
+            else encounter.log.push(`✨ ${encounter.enemyName}'s blessing gleams idly.`);
         }
     }
 }
@@ -347,8 +403,8 @@ async function turnManager(toPlayer) {
                 eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
             }
         });
-        if (eviscerated.length > 0) encounter.log.push(`🌑 All of ${actorName}'s positive effects were eviscerated [${eviscerated.join('')}].`);
-        else encounter.log.push(`🌑 ${actorName}'s Bad Omen lingers idly.`);
+        if (eviscerated.length > 0) encounter.log.push(`🌑 All of ${actorName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
+        else encounter.log.push(`🌑 ${actorName}'s malediction lingers idly.`);
     } else if (actorStatuses.some(s => s.id == '✨')) {
         let cleansed = [];
         actorStatuses.slice().forEach(s => {
@@ -358,8 +414,8 @@ async function turnManager(toPlayer) {
             }
         });
 
-        if (cleansed.length > 0) encounter.log.push(`✨ All of ${actorName}'s negative effects were cleansed [${cleansed.join('')}].`);
-        else encounter.log.push(`✨ ${actorName}'s Blessing gleams idly.`);
+        if (cleansed.length > 0) encounter.log.push(`✨ All of ${actorName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
+        else encounter.log.push(`✨ ${actorName}'s blessing gleams idly.`);
     }
 
     if (actorStatuses.some(s => s.id === '💫')) stunned = true;
@@ -473,7 +529,9 @@ async function victory() {
 }
 
 async function exportLog() {
+    const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
+    const player = Alpine.$data(document.getElementById('player'));
     let logText = encounter.log.map(entry => entry.replaceAll(/<[^>]*>/g, "")).join('\n');
     console.log(logText);
     // Download logtext as text file
@@ -481,7 +539,7 @@ async function exportLog() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'battle-log.txt';
+    a.download = `${player.name}-${player.level}-${background.enemy.name}-${background.enemyLevel}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
