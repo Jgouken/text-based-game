@@ -100,9 +100,17 @@ async function executeSkill({
 
     if (skill.cost && isPlayer) player.stamina -= skill.cost;
 
-    let firstHit = Math.random() >= 1 - attacker.accuracy - accDif;
+    // Effective chances (clamped)
+    const effAcc = Math.min(1, Math.max(0, attacker.accuracy + accDif));
+    const effCrit = Math.min(1, Math.max(0, attacker.crit + critDif));
+    const maxMisses = Math.round((1 - effAcc) * 10);
+    let missCount = 0;
+
+    let firstHit = Math.random() < effAcc;
+    if (!firstHit) missCount++;
     let hit = firstHit;
-    let crit = Math.random() >= 1 - attacker.crit - critDif;
+    let crit = Math.random() < effCrit;
+
     let totalDealt = 0;
 
     let skillLog = `<span style="color:lightblue;" data-tooltip="${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.floor(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.floor(skill.lifesteal * 100)}%\n` : ''}${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + `${skill.pstatus.join('')}\n` : ''}${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}">${skill.cost ? '⚡' : ''}${skill.name}</span>`;
@@ -127,8 +135,13 @@ async function executeSkill({
 
         for (let i = 1; i < skill.times; i++) {
             await new Promise(r => setTimeout(r, 1000 / skill.times));
-            hit = Math.random() >= 1 - attacker.accuracy - accDif;
-            crit = Math.random() >= 1 - attacker.crit - critDif;
+            if (missCount >= maxMisses) hit = true;
+            else {
+                hit = Math.random() < effAcc;
+                if (!hit) missCount++;
+            }
+
+            crit = Math.random() < effCrit;
 
             const dealt = attack();
             encounter.log[encounter.log.length - 1] +=
@@ -181,9 +194,10 @@ async function executeSkill({
                 if ((player.pstatus.some(s => s.id == '🌑') && stasset.positive) || (player.pstatus.some(s => s.id == '✨') && !stasset.positive)) {
                     negated.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
                 } else {
-                    if (player.pstatus.some(s => s.id == status))
-                        player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt };
-                    else player.pstatus.push({ ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt });
+                    const idx = player.pstatus.indexOf(player.pstatus.find(s => s.id == status));
+                    const newStatus = { ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt };
+                    if (idx >= 0) player.pstatus[idx] = newStatus;
+                    else player.pstatus.push(newStatus);
                     granted.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
                 }
             });
@@ -198,15 +212,18 @@ async function executeSkill({
                 if ((encounter.estatus.some(s => s.id == '🌑') && stasset.positive) || (encounter.estatus.some(s => s.id == '✨') && !stasset.positive)) {
                     negated.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
                 } else {
-                    if (encounter.estatus.some(s => s.id == status))
-                        encounter.estatus[encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status))] = { ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt };
-                    else encounter.estatus.push({ ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt });
+                    const idx = encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status));
+                    const newStatus = { ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt };
+                    if (idx >= 0) encounter.estatus[idx] = newStatus;
+                    else encounter.estatus.push(newStatus);
                     granted.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`);
                 }
             });
             encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${!isPlayer ? ` and gained ` : ` and inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${encounter.enemyName} ${encounter.estatus.some(s => s.id == '🌑') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
         }
     }
+
+    new Promise(r => setTimeout(r, 500))
 
     if (player.pstatus.some(s => s.id == '✨') || player.pstatus.some(s => s.id == '🌑')) {
         if (player.pstatus.some(s => s.id == '✨') && player.pstatus.some(s => s.id == '🌑')) {
@@ -249,7 +266,6 @@ async function executeSkill({
                 }
             });
             if (eviscerated.length > 0) encounter.log.push(`🌑 All of ${encounter.enemyName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
-            else encounter.log.push(`🌑 ${encounter.enemyName}'s malediction lingers idly.`);
         } else if (encounter.estatus.some(s => s.id == '✨')) {
             let cleansed = [];
             encounter.estatus.slice().forEach(s => {
@@ -260,9 +276,23 @@ async function executeSkill({
             });
 
             if (cleansed.length > 0) encounter.log.push(`✨ All of ${encounter.enemyName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
-            else encounter.log.push(`✨ ${encounter.enemyName}'s blessing gleams idly.`);
         }
     }
+
+    new Promise(r => setTimeout(r, 500))
+
+    const activeSiphons = attackerStatuses.filter(s => s.id == '❣️');
+    if (activeSiphons.length > 0 && totalDealt > 2) {
+        let stat = getAssets().statuses.find(s => s.id == '❣️');
+        let heal = Math.floor(totalDealt * stat.lifesteal);
+        if (attacker.health + heal > attacker.maxHealth) heal = attacker.maxHealth - attacker.health;
+        if (heal > 0) {
+            encounter.log[encounter.log.length - 1] += ` and healed <span data-tooltip="❣️ ${stat.name}\n\n${stat.description}\n\n${totalDealt} * ${stat.lifesteal} = ${Math.floor(totalDealt * stat.lifesteal)}${attacker.health + Math.floor(totalDealt * stat.lifesteal) > attacker.maxHealth ? '\nCapped to max health.' : ''}">❣️${heal}</span>`;
+            attacker.health += heal;
+        }
+    }
+
+    new Promise(r => setTimeout(r, 500))
 }
 
 async function skill(index) {

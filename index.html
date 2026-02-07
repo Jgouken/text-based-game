@@ -222,11 +222,13 @@
                 <span x-show="pstatus.some(status => status.id == '🛡️')"
                     :data-tooltip="`🛡️ ${pstatus.find(s => s.id == '🛡️').name} - ${pstatus.find(s => s.id == '🛡️').rounds} round${pstatus.find(s => s.id == '🛡️').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🛡️').description}`">🛡️</span>
                 <span x-show="pstatus.some(status => status.id == '🩼')"
-                    :data-tooltip="`🩼 ${pstatus.find(s => s.id == '🩼').name} - ${pstatus.find(s => s.id == '🩼').rounds} round${pstatus.find(s => s.id == '🩼').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🩼').description}`">🛡️</span>
+                    :data-tooltip="`🩼 ${pstatus.find(s => s.id == '🩼').name} - ${pstatus.find(s => s.id == '🩼').rounds} round${pstatus.find(s => s.id == '🩼').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🩼').description}`">🩼</span>
                 <span x-show="pstatus.some(status => status.id == '🍀')"
                     :data-tooltip="`🍀 ${pstatus.find(s => s.id == '🍀').name} - ${pstatus.find(s => s.id == '🍀').rounds} round${pstatus.find(s => s.id == '🍀').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '🍀').description}`">🍀</span>
                 <span x-show="pstatus.some(status => status.id == '💗')"
                     :data-tooltip="`💗 ${pstatus.find(s => s.id == '💗').name} - ${pstatus.find(s => s.id == '💗').rounds} round${pstatus.find(s => s.id == '💗').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💗').description}\n\n${maxHealth} * ${pstatus.find(s => s.id == '💗').maxHP} = ${Math.floor(pstatus.find(s => s.id == '💗').maxHP * maxHealth)}`">💗</span>
+                <span x-show="pstatus.some(status => status.id == '❣️')"
+                    :data-tooltip="`❣️ ${pstatus.find(s => s.id == '❣️').name} - ${pstatus.find(s => s.id == '❣️').rounds} round${pstatus.find(s => s.id == '❣️').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '❣️').description}\n\n${pstatus.find(s => s.id == '❣️').damage} * ${pstatus.find(s => s.id == '❣️').lifesteal} = ${Math.floor(pstatus.find(s => s.id == '❣️').damage * pstatus.find(s => s.id == '❣️').lifesteal)}`">❣️</span>
                 <span x-show="pstatus.some(status => status.id == '💪')"
                     :data-tooltip="`💪 ${pstatus.find(s => s.id == '💪').name} - ${pstatus.find(s => s.id == '💪').rounds} round${pstatus.find(s => s.id == '💪').rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == '💪').description}`">💪</span>
                 <span x-show="pstatus.some(status => status.id == '🌀')"
@@ -432,6 +434,8 @@
                                 :data-tooltip="`🍀 ${estatus.find(s => s.id == '🍀').name} - ${estatus.find(s => s.id == '🍀').rounds} round${estatus.find(s => s.id == '🍀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🍀').description}`">🍀</span>
                             <span x-show="estatus.some(status => status.id == '💗')"
                                 :data-tooltip="`💗 ${estatus.find(s => s.id == '💗').name} - ${estatus.find(s => s.id == '💗').rounds} round${estatus.find(s => s.id == '💗').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💗').description}\n\n${maxHealth} * ${estatus.find(s => s.id == '💗').maxHP} = ${Math.floor(estatus.find(s => s.id == '💗').maxHP * maxHealth)}`">💗</span>
+                            <span x-show="estatus.some(status => status.id == '❣️')"
+                                :data-tooltip="`❣️ ${estatus.find(s => s.id == '❣️').name} - ${estatus.find(s => s.id == '❣️').rounds} round${estatus.find(s => s.id == '❣️').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '❣️').description}\n\n${estatus.find(s => s.id == '❣️').damage} * ${estatus.find(s => s.id == '❣️').lifesteal} = ${Math.floor(estatus.find(s => s.id == '❣️').damage * estatus.find(s => s.id == '❣️').lifesteal)}`">❣️</span>
                             <span x-show="estatus.some(status => status.id == '💪')"
                                 :data-tooltip="`💪 ${estatus.find(s => s.id == '💪').name} - ${estatus.find(s => s.id == '💪').rounds} round${estatus.find(s => s.id == '💪').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💪').description}`">💪</span>
                             <span x-show="estatus.some(status => status.id == '🌀')"
