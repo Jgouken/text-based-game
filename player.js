@@ -18,18 +18,36 @@ async function updateBars() {
 
 async function startPlayer() {
     const player = Alpine.$data(document.getElementById('player'));
-    const playerData = JSON.parse(localStorage.getItem('textBasedData'));
-    if (!playerData) return;
+    const raw = localStorage.getItem('textBasedData');
+    if (!raw) return;
 
-    player.level = Number(playerData.level);
-    player.name = playerData.name;
-    player.experience = Number(playerData.experience);
-    player.weaponry = { weapon: assets.items.find(w => w.name == playerData.weaponry.weapon), level: Number(playerData.weaponry.level) };
-    player.armory = { armor: assets.items.find(a => a.name == playerData.armory.armor), level: Number(playerData.armory.level) };
-    player.health = Number(playerData.health);
-    player.stamina = Number(playerData.stamina);
-    player.pstatus = playerData.pstatus;
-    player.inventory = playerData.inventory;
+    let playerData;
+    try { playerData = JSON.parse(raw); } catch (e) { console.error('Invalid save data', e); return; }
+
+    const assets = getAssets();
+
+    player.level = Number(playerData.level) || player.level;
+    player.name = playerData.name || player.name;
+    player.experience = Number(playerData.experience) || player.experience;
+
+    const weaponField = playerData.weaponry && playerData.weaponry.weapon;
+    const weaponName = typeof weaponField === 'string' ? weaponField : (weaponField && weaponField.name);
+    let weaponItem = assets.items.find(w => w.name === weaponName);
+    if (!weaponItem) weaponItem = assets.items.find(i => 'attack' in i) || assets.items[0];
+    const weaponLevel = Number(playerData.weaponry && playerData.weaponry.level) || 1;
+    player.weaponry = { weapon: weaponItem, level: weaponLevel };
+
+    const armorField = playerData.armory && playerData.armory.armor;
+    const armorName = typeof armorField === 'string' ? armorField : (armorField && armorField.name);
+    let armorItem = assets.items.find(a => a.name === armorName);
+    if (!armorItem) armorItem = assets.items.find(i => 'defense' in i) || assets.items[0];
+    const armorLevel = Number(playerData.armory && playerData.armory.level) || 1;
+    player.armory = { armor: armorItem, level: armorLevel };
+
+    player.health = Number(playerData.health) || player.maxHealth;
+    player.stamina = Number(playerData.stamina) || player.maxStamina;
+    player.pstatus = Array.isArray(playerData.pstatus) ? playerData.pstatus : [];
+    player.inventory = Array.isArray(playerData.inventory) ? playerData.inventory : [];
 
     setPlayer();
 }
@@ -37,7 +55,7 @@ async function startPlayer() {
 async function setPlayer() {
     const player = Alpine.$data(document.getElementById('player'));
     player.maxHealth = 500 + ((player.level - 1) * 250)
-    player.maxStamina = 30 + ((player.level - 1) * 5)
+    player.maxStamina = 50 + ((player.level - 1) * 5)
 
     player.attack = Math.floor(32 + ((player.level - 1) * 6) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel))
     player.defense = Math.floor(60 + ((player.level - 1) * 10) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult))

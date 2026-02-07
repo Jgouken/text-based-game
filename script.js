@@ -388,8 +388,5 @@ document.addEventListener('keydown', (e) => {
         if (!panel) return;
 
         Alpine.$data(panel).open = !Alpine.$data(panel).open;
-
-        const weaponry = document.getElementById('battle-weaponry');
-        weaponry.style.right = Alpine.$data(panel).open ? '300px' : '10px';
     }
 });

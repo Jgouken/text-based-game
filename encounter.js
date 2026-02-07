@@ -34,10 +34,10 @@ async function startBattle(enemy = null) {
         delete s._cooldown;
     });
 
-    encounter.maxHealth = enemy.health + (Math.floor((level / 2) ** 2.82424))
-    encounter.health = enemy.health + (Math.floor((level / 2) ** 2.82424))
-    encounter.defense = enemy.defense + (Math.floor((level / 2) ** 1.82424))
-    encounter.attack = enemy.attack + (Math.floor((level / 2) ** 1.82424))
+    encounter.maxHealth = Math.floor((enemy.health + (level ** 1.82424)) * (1 + (level / 200)));
+    encounter.health = encounter.maxHealth;
+    encounter.defense = Math.floor((enemy.defense + ((level / 2) ** 1.82424)) * (1 + (level / 200)));
+    encounter.attack = Math.floor((enemy.attack + ((level / 2) ** 1.82424)) * (1 + (level / 200)));
     encounter.estatus = []
     encounter.crit = enemy.crit
     encounter.accuracy = enemy.accuracy
@@ -47,6 +47,7 @@ async function startBattle(enemy = null) {
                         style="position: sticky; top: 0; float: right; right: 8px; z-index: 5; cursor: pointer; font-size: 24px; color: grey;"></i>`)
     battleStation.round = 1;
     battleStation.turn = true;
+    battleStation._regenThisRound = 0;
 
     updateBars()
 }
@@ -77,21 +78,22 @@ async function executeSkill({
 
     const critDif =
         (attackerStatuses.some(s => s.id == '🍀') ? assets.statuses.find(s => s.id == '🍀').incCrit : 0)
-        - (attackerStatuses.some(s => s.id == '🐈‍⬛') ? assets.statuses.find(s => s.id == '🐈‍⬛').decCrit : 0);
+        - (attackerStatuses.some(s => s.id == '🥀') ? assets.statuses.find(s => s.id == '🥀').decCrit : 0);
 
     const damMult =
-        (attackerStatuses.some(s => s.id == '🏳️') ? assets.statuses.find(s => s.id == '🏳️').damAdd : 0)
+        (attackerStatuses.some(s => s.id == '🏅') ? assets.statuses.find(s => s.id == '🏅').damAdd : 0)
         + (attackerStatuses.some(s => s.id == '💪') ? assets.statuses.find(s => s.id == '💪').damAdd : 0)
         + (attackerStatuses.some(s => s.id == '💢') ? assets.statuses.find(s => s.id == '💢').damAdd : 0)
         + (defenderStatuses.some(s => s.id == '💢') ? assets.statuses.find(s => s.id == '💢').incDamTaken : 0)
         - (attackerStatuses.some(s => s.id == '🌀') ? assets.statuses.find(s => s.id == '🌀').damReduc : 0)
         + 1;
 
-    const fort =
+    const rigid =
         (defenderStatuses.some(s => s.id == '🛡️') ? assets.statuses.find(s => s.id == '🛡️').armorAdd : 0)
+        - (defenderStatuses.some(s => s.id == '🩼') ? assets.statuses.find(s => s.id == '🩼').armorSub : 0)
         + 1;
 
-    let damage = Math.floor((attacker.attack * damMult * (skill.damage || 1)) * (attacker.attack / (defender.defense + (defender.defense * fort))));
+    let damage = Math.floor((attacker.attack * damMult * (skill.damage || 1)) * (attacker.attack / (defender.defense + (defender.defense * rigid))));
 
     if (skill.cost && isPlayer) player.stamina -= skill.cost;
 
@@ -104,7 +106,7 @@ async function executeSkill({
     encounter.log.push(`- ${attackerName} used ${skillLog}`);
 
     let damageLog = (final) =>
-        `<span style="color:lightblue;" data-tooltip="⚔️ ${crit ? critMult : 1} * ((${attacker.attack} * ${damMult} * ${skill.damage || 1}) * (${attacker.attack} / (${attacker.attack} + (${defender.defense} * ${fort})))) = ${final}">⚔️${final}</span>`;
+        `<span style="color:lightblue;" data-tooltip="⚔️ ${crit ? critMult : 1} * ((${attacker.attack} * ${damMult} * ${skill.damage || 1}) * (${attacker.attack} / (${attacker.attack} + (${defender.defense} * ${rigid})))) = ${final}">⚔️${final}</span>`;
 
     const attack = () => {
         let final = hit ? Math.floor(damage * (crit ? critMult : 1)) : 0;
@@ -168,30 +170,41 @@ async function executeSkill({
     }
 
     if (firstHit || !skill.attack) {
+        let blessingWords = ['cleansed', 'purified', 'dispelled', 'vanquished', 'dissipated', 'evaporated', 'cured', 'alleviated', 'relieved', 'mitigated', 'quelled'];
+        let badOmenWords = ['corroded', 'eviscerated', 'devoured', 'eroded', 'withered', 'decayed', 'consumed', 'ravaged', 'tainted', 'spoiled', 'blighted', 'defiled', 'rotted'];
+
         if (skill.pstatus) {
-            encounter.log[encounter.log.length - 1] += (isPlayer ? `${skill.estatus ? ',' : ' and'} gained [` : ` and inflicted [`);
+            let negated = [];
+            let granted = [];
             skill.pstatus.forEach(status => {
                 let stasset = assets.statuses.find(s => s.id == status);
-                if (player.pstatus.some(s => s.id == status))
-                    player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...stasset, damage: totalDealt };
-                else player.pstatus.push({ ...stasset, damage: totalDealt });
-
-                encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`;
+                if ((player.pstatus.some(s => s.id == '🌑') && stasset.positive) || (player.pstatus.some(s => s.id == '✨') && !stasset.positive)) {
+                    negated.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
+                } else {
+                    if (player.pstatus.some(s => s.id == status))
+                        player.pstatus[player.pstatus.indexOf(player.pstatus.find(s => s.id == status))] = { ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt };
+                    else player.pstatus.push({ ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt });
+                    granted.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
+                }
             });
-            encounter.log[encounter.log.length - 1] += `]`;
+            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${isPlayer ? `${skill.estatus ? ',' : ' and'} gained ` : `${skill.estatus ? ',' : ' and'} inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${player.name} ${player.pstatus.some(s => s.id == '🌑') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
         }
 
         if (skill.estatus) {
-            encounter.log[encounter.log.length - 1] += (!isPlayer ? ` and gained [` : ` and inflicted [`);
+            let negated = [];
+            let granted = [];
             skill.estatus.forEach(status => {
                 let stasset = assets.statuses.find(s => s.id == status);
-                if (encounter.estatus.some(s => s.id == status))
-                    encounter.estatus[encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status))] = { ...stasset, damage: totalDealt };
-                else encounter.estatus.push({ ...stasset, damage: totalDealt });
-
-                encounter.log[encounter.log.length - 1] += `<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`;
+                if ((encounter.estatus.some(s => s.id == '🌑') && stasset.positive) || (encounter.estatus.some(s => s.id == '✨') && !stasset.positive)) {
+                    negated.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
+                } else {
+                    if (encounter.estatus.some(s => s.id == status))
+                        encounter.estatus[encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status))] = { ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt };
+                    else encounter.estatus.push({ ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt });
+                    granted.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`);
+                }
             });
-            encounter.log[encounter.log.length - 1] += `]`;
+            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${!isPlayer ? ` and gained ` : ` and inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${encounter.enemyName} ${encounter.estatus.some(s => s.id == '🌑') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
         }
     }
 }
@@ -214,12 +227,11 @@ async function skill(index) {
             break;
         case -1:
             // Pass
-            var staminaRegen = Math.floor(player.maxStamina * .1)
+            var staminaRegen = Math.round(player.maxStamina * 0.1);
             if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
-            player.stamina += staminaRegen
-            battleStation.round += 1;
-
-            encounter.log.push(`- ${background.name} passed ${staminaRegen > 0 ? `(+${staminaRegen}⚡)` : ''}`)
+            player.stamina += staminaRegen;
+            battleStation._regenThisRound = (battleStation._regenThisRound || 0) + staminaRegen;
+            encounter.log.push(`- ${background.name} passed ${staminaRegen > 0 ? `(+${staminaRegen}⚡)` : ''}`);
             break;
         case 0:
         case 1:
@@ -245,7 +257,6 @@ async function skill(index) {
 
 async function turnManager(toPlayer) {
     if (died) return;
-    savePlayer()
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
@@ -264,7 +275,6 @@ async function turnManager(toPlayer) {
         if (encounter.health <= 0) encounter.log.push(`--- ${background.enemy.name} has died. ---`);
         else {
             encounter.log.push(`--- ${background.name} has died. ---`);
-            transition('encounter', 'returning')
             await new Promise(resolve => setTimeout(resolve, 500));
             player.health = player.maxHealth;
             player.pstatus = [];
@@ -326,10 +336,10 @@ async function turnManager(toPlayer) {
         return;
     }
 
-    if (actorStatuses.some(s => s.id == '✨') && actorStatuses.some(s => s.id == '🏴')) {
+    if (actorStatuses.some(s => s.id == '✨') && actorStatuses.some(s => s.id == '🌑')) {
         actorStatuses.length = 0;
-        encounter.log.push(`✨ All ${actorName}'s effects were evaporated. 🏴`);
-    } else if (actorStatuses.some(s => s.id == '🏴')) {
+        encounter.log.push(`✨ All ${actorName}'s effects were evaporated. 🌑`);
+    } else if (actorStatuses.some(s => s.id == '🌑')) {
         let eviscerated = [];
         actorStatuses.slice().forEach(s => {
             if (s.positive) {
@@ -337,8 +347,8 @@ async function turnManager(toPlayer) {
                 eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
             }
         });
-        if (eviscerated.length > 0) encounter.log.push(`🏴 All of ${actorName}'s positive effects were eviscerated [${eviscerated.join('')}].`);
-        else encounter.log.push(`🏴 ${actorName}'s Bad Omen lingers idly.`);
+        if (eviscerated.length > 0) encounter.log.push(`🌑 All of ${actorName}'s positive effects were eviscerated [${eviscerated.join('')}].`);
+        else encounter.log.push(`🌑 ${actorName}'s Bad Omen lingers idly.`);
     } else if (actorStatuses.some(s => s.id == '✨')) {
         let cleansed = [];
         actorStatuses.slice().forEach(s => {
@@ -369,8 +379,8 @@ async function turnManager(toPlayer) {
                 break;
             }
             case '🖤': {
-                let damage = Math.floor(s.baseDam * s.damage);
-                encounter.log.push(`${actorName} is cursed - <span style="color: lightblue;" data-tooltip="🖤 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🖤${damage}</span>`);
+                let damage = Math.floor(s.baseDam * actor.attack);
+                encounter.log.push(`${actorName} is cursed - <span style="color: lightblue;" data-tooltip="🖤 ${s.name}\n\n${s.description}\n\n${actor.attack} * ${s.baseDam} = ${damage}">🖤${damage}</span>`);
                 actor.health -= damage;
                 break;
             }
@@ -392,15 +402,17 @@ async function turnManager(toPlayer) {
         }
 
         s.rounds -= 1;
-
         if (s.rounds <= 0) actorStatuses.splice(actorStatuses.indexOf(s), 1);
         await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     if (toPlayer) {
-        let staminaRegen = Math.floor(player.maxStamina * .1);
+        const already = battleStation._regenThisRound || 0;
+        const desiredTotal = already > 0 ? Math.round(player.maxStamina * 0.2) : Math.round(player.maxStamina * 0.1);
+        let staminaRegen = Math.max(0, desiredTotal - already);
         if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
-        player.stamina += staminaRegen;
+        if (staminaRegen > 0) player.stamina += staminaRegen;
+        battleStation._regenThisRound = 0;
         battleStation.round += 1;
     }
 
@@ -424,6 +436,8 @@ async function turnManager(toPlayer) {
         });
         enemyMove();
     }
+
+    savePlayer();
 }
 
 async function enemyMove() {
@@ -431,7 +445,13 @@ async function enemyMove() {
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
 
-    const skill = randomByChance(background.enemy.skills.filter(s => !s._cooldown || s._cooldown <= 0).map(s => ({ ...s, chance: s.chance || 1 })));
+    const available = background.enemy.skills.filter(s => !s._cooldown || s._cooldown <= 0);
+    let skill;
+    if (available.length === 0) skill = background.enemy.skills[0];
+    else {
+        const choice = randomByChance(available.map(s => ({ ref: s, chance: s.chance || 1 })));
+        skill = choice ? choice.ref : available[0];
+    }
 
     await executeSkill({
         attacker: encounter,
@@ -449,6 +469,7 @@ async function enemyMove() {
 
 async function victory() {
     transition('encounter', 'returning');
+    savePlayer();
 }
 
 async function exportLog() {
@@ -465,4 +486,5 @@ async function exportLog() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    savePlayer();
 }

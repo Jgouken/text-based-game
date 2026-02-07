@@ -186,7 +186,7 @@ img {
     gap: 20px;
     padding: 0 10px 10px;
     box-sizing: border-box;
-    overflow: visible;
+    overflow: hidden;
     transition: all 2.5s ease-in-out;
 }
 
@@ -562,7 +562,7 @@ img {
 .debug {
     position: fixed;
     z-index: 100;
-    top: 50%;
+    top: 38%;
     right: 0;
     transform: translate(110%, -50%);
     transition: transform 0.35s ease;

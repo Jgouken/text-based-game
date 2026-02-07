@@ -13,9 +13,9 @@ function getAssets() {
 			{
 				name: 'Regeneration',
 				id: '💗',
-				description: "Gain 5% Max HP for 3 turns.",
+				description: "Gain 3% Max HP for 3 turns.",
 				positive: true,
-				maxHP: 0.05,
+				maxHP: 0.03,
 				rounds: 3,
 			},
 			{
@@ -52,7 +52,7 @@ function getAssets() {
 			},
 			{
 				name: 'Empowerment',
-				id: '🏳️',
+				id: '🏅',
 				description: "Deal 40% more damage for 1 turn.",
 				damAdd: 0.4,
 				positive: true,
@@ -66,11 +66,19 @@ function getAssets() {
 				rounds: 1,
 			},
 			{
-				name: 'Fortification',
+				name: 'Rigidity',
 				id: "🛡️",
 				description: "Increases armor by 20% for 3 turns.",
 				armorAdd: 0.2,
 				positive: true,
+				rounds: 3
+			},
+			{
+				name: 'Fragility',
+				id: "🩼",
+				description: "Decreases armor by 25% for 3 turns.",
+				armorSub: 0.25,
+				positive: false,
 				rounds: 3
 			},
 			{
@@ -82,7 +90,7 @@ function getAssets() {
 				rounds: 4
 			},
 			{
-				name: 'Focus',
+				name: 'Acuity',
 				id: '🎯',
 				description: "Increases accuracy by 20% for 3 turns.",
 				incAcc: 0.2,
@@ -92,7 +100,7 @@ function getAssets() {
 			{
 				name: 'Curse',
 				id: '🖤',
-				description: "Inflicts 25% of initial damage for 4 turns.",
+				description: "Inflicts 25% of character's base damage for 4 turns.",
 				baseDam: 0.25,
 				positive: false,
 				rounds: 4,
@@ -106,8 +114,8 @@ function getAssets() {
 				rounds: 4
 			},
 			{
-				name: 'Bad Luck',
-				id: '🐈‍⬛',
+				name: 'Misfortune',
+				id: '🥀',
 				description: "Decreases critical hit chance by 10% for 3 turns.",
 				decCrit: 0.1,
 				positive: false,
@@ -138,8 +146,8 @@ function getAssets() {
 				rounds: 2,
 			},
 			{
-				name: 'Bad Omen',
-				id: '🏴',
+				name: 'Malediction',
+				id: '🌑',
 				description: "Dispel and negate all positive status effects for 2 turns.",
 				positive: false,
 				rounds: 2,
@@ -165,8 +173,8 @@ function getAssets() {
 					},
 					{
 						name: "Lucky Blow",
-						pstatus: ["🩸","🌀"],
-						estatus: ["🍀","🎯"],
+						pstatus: ["🩸", "🌀"],
+						estatus: ["🍀", "🎯"],
 						chance: 0.15,
 						wait: 3,
 						damage: 2,
@@ -317,7 +325,7 @@ function getAssets() {
 					},
 					{
 						name: "Rally",
-						estatus: ["🛡️","💪"],
+						estatus: ["🛡️", "💪"],
 						chance: 0.10,
 						wait: 2,
 						attack: false
@@ -383,7 +391,7 @@ function getAssets() {
 					},
 					{
 						name: "Cursed Breath",
-						pstatus: ["🖤","🏴","🌀"],
+						pstatus: ["🖤", "🌑", "🌀"],
 						damage: 1.33,
 						chance: 0.15,
 						wait: 2,
@@ -531,14 +539,14 @@ function getAssets() {
 					},
 					{
 						name: "Major Heal",
-						health: 0.35,
+						health: 0.3,
 						chance: 0.05,
 						wait: 7,
 						attack: false
 					},
 					{
-						name: "Restoration",
-						estatus: ["💗","✨"],
+						name: "Restorative Jiggle",
+						estatus: ["💗", "✨"],
 						health: 0.05,
 						chance: 0.20,
 						wait: 3,
@@ -613,7 +621,7 @@ function getAssets() {
 					},
 					{
 						name: "Excited Jiggle",
-						estatus: ["💪","🎯"],
+						estatus: ["💪", "🎯"],
 						chance: 0.05,
 						wait: 2,
 						attack: false
@@ -681,7 +689,7 @@ function getAssets() {
 					},
 					{
 						name: "Slime Secretion",
-						pstatus: ["🌀","✨"],
+						pstatus: ["🌀", "✨"],
 						chance: 0.05,
 						wait: 2,
 						attack: false
@@ -751,7 +759,7 @@ function getAssets() {
 					},
 					{
 						name: "Dodgy Dance",
-						estatus: ["☁️","🎯"],
+						estatus: ["☁️", "🎯"],
 						chance: 0.05,
 						attack: false,
 						wait: 2
@@ -790,8 +798,8 @@ function getAssets() {
 				sprite: 'assets/enemies/OrangeFox.gif',
 				weapon: "Steel Dagger",
 				health: 650,
-				attack: 150,
-				defense: 80,
+				attack: 250,
+				defense: 180,
 				crit: 0.05,
 				accuracy: 0.80,
 				skills: [
@@ -804,15 +812,15 @@ function getAssets() {
 					},
 					{
 						name: "Smoke Bomb",
-						pstatus: ["👁️","🌀"],
+						pstatus: ["👁️", "🌀"],
 						chance: 0.075,
 						wait: 2,
 						attack: false
-						
+
 					},
 					{
 						name: "Body Flicker",
-						estatus: ["🎯", "💨","🍀"],
+						estatus: ["🎯", "💨", "🍀"],
 						chance: 0.075,
 						wait: 2,
 						attack: false
@@ -899,8 +907,8 @@ function getAssets() {
 				sprite: 'assets/enemies/WhiteFox.gif',
 				weapon: "Steel Dagger",
 				health: 600,
-				attack: 120,
-				defense: 40,
+				attack: 220,
+				defense: 140,
 				crit: 0.1,
 				accuracy: 0.75,
 				skills: [
@@ -913,14 +921,14 @@ function getAssets() {
 					},
 					{
 						name: "Smoke Bomb",
-						pstatus: ["👁️","🌀"],
+						pstatus: ["👁️", "🌀"],
 						chance: 0.075,
 						attack: false,
 						wait: 2
 					},
 					{
 						name: "Body Flicker",
-						estatus: ["🎯", "💨","🍀"],
+						estatus: ["🎯", "💨", "🍀"],
 						chance: 0.075,
 						wait: 2,
 						attack: false
@@ -1010,8 +1018,8 @@ function getAssets() {
 				sprite: 'assets/enemies/BlueFox.gif',
 				weapon: "Steel Dagger",
 				health: 750,
-				attack: 90,
-				defense: 60,
+				attack: 190,
+				defense: 160,
 				crit: 0.15,
 				accuracy: 0.70,
 				skills: [
@@ -1024,15 +1032,15 @@ function getAssets() {
 					},
 					{
 						name: "Smoke Bomb",
-						pstatus: ["👁️","🌀"],
+						pstatus: ["👁️", "🌀"],
 						chance: 0.075,
 						wait: 2,
 						attack: false
-						
+
 					},
 					{
 						name: "Body Flicker",
-						estatus: ["🎯", "💨","🍀"],
+						estatus: ["🎯", "💨", "🍀"],
 						chance: 0.075,
 						wait: 2,
 						attack: false
@@ -1124,8 +1132,8 @@ function getAssets() {
 				sprite: 'assets/enemies/Vampire.gif',
 				weapon: "Fangs",
 				health: 4500,
-				attack: 225,
-				defense: 400,
+				attack: 450,
+				defense: 500,
 				crit: 0.5,
 				accuracy: 0.7,
 				skills: [
@@ -1146,16 +1154,16 @@ function getAssets() {
 					{
 						name: "Drain",
 						pstatus: ["🌀"],
-						estatus: ["💗","🛡️"],
+						estatus: ["💗", "🛡️"],
 						damage: 1.5,
-						lifesteal: 0.2,
+						lifesteal: 0.5,
 						chance: 0.1,
 						wait: 1,
 						attack: true
 					},
 					{
 						name: "Vampiric Gaze",
-						pstatus: ["🐈‍⬛", "🏴","💫"],
+						pstatus: ["🥀", "🌑", "💫"],
 						chance: 0.075,
 						wait: 3,
 						attack: false
@@ -1163,7 +1171,7 @@ function getAssets() {
 					{
 						name: "Bat Transformation",
 						pstatus: ["👁️"],
-						estatus: ["🍀","✨","💨"],
+						estatus: ["🍀", "✨", "💨"],
 						chance: 0.075,
 						wait: 3,
 						attack: false
@@ -1237,22 +1245,22 @@ function getAssets() {
 						attack: true
 					},
 					{
-						name: "Demonic Hex",
-						pstatus: ["🐈‍⬛", "🖤","🏴"],
+						name: "Sinister Hex",
+						pstatus: ["🥀", "🖤", "🌑"],
 						chance: 0.075,
 						wait: 3,
 						attack: false
 					},
 					{
 						name: "Enrage",
-						estatus: ["💢", "🍀", "💗","🏳️","🎯"],
+						estatus: ["💢", "🍀", "💗", "🏅", "🎯"],
 						chance: 0.075,
 						attack: false,
 						wait: 2
 					},
 					{
 						name: "Damnation",
-						pstatus: ["🖤", "🌀", "🏴"],
+						pstatus: ["🖤", "🌀", "🌑"],
 						damage: 0.33,
 						times: 6,
 						chance: 0.05,
@@ -1327,10 +1335,10 @@ function getAssets() {
 					},
 					{
 						name: "Howl",
-						estatus: ["🏳️", "🍀", "💗","🎯","🛡️","💪"],
+						estatus: ["🏅", "🍀", "💗", "🎯", "🛡️", "💪"],
 						chance: 0.15,
 						attack: false,
-						wait: 3
+						wait: 6
 					},
 				],
 				drops: [
@@ -1386,9 +1394,9 @@ function getAssets() {
 					{
 						name: "Poisonous Potion",
 						pstatus: ["💀"],
-						damage: 0.33,
+						damage: 0.5,
 						chance: 0.075,
-						wait: 2,
+						wait: 4,
 						attack: true
 					},
 					{
@@ -1401,7 +1409,7 @@ function getAssets() {
 					},
 					{
 						name: "Restoration Potion",
-						estatus: ["💗", "✨"],
+						estatus: ["💗"],
 						health: 0.05,
 						chance: 0.075,
 						wait: 2,
@@ -1409,28 +1417,40 @@ function getAssets() {
 					},
 					{
 						name: "Voodoo Stab",
-						pstatus: ["🩸"],
+						pstatus: ["🩸", "🌀"],
 						damage: 1.33,
 						chance: 0.2,
 						attack: true
 					},
 					{
 						name: "Hex",
-						pstatus: ["🐈‍⬛", "🖤"],
+						pstatus: ["🥀", "🖤"],
 						chance: 0.075,
 						attack: false,
 						wait: 3
 					},
 					{
-						name: "Mysterious Coaction",
-						estatus: ["💗", "✨","🍀","🎯","💨"],
+						name: "Mysterious Concoction",
+						get estatus() {
+							let ret = ["💗", "🛡️", "🎯", "💢", "🍀", "💨", "🏅", "💪"]
+								.filter(() => Math.random() < 0.7)
+								.slice(0, Math.max(1, 6))
+							if (ret.length === 0) ret.push("💗")
+							return ret;
+						},
 						chance: 0.075,
 						wait: 4,
 						attack: false
 					},
 					{
 						name: "Potion Barrage",
-						pstatus: ["🔥", "💫", "👁️", "💀", "🌀", "🏴"],
+						get pstatus() {
+							let ret = ["💫", "💀", "🩸", "🔥", "👁️", "🌀", "🩼", "🥀", "🖤"]
+								.filter(() => Math.random() < 0.7)
+								.slice(0, Math.max(1, 6))
+							if (ret.length === 0) ret.push("💫")
+							return ret;
+						},
 						damage: 0.33,
 						times: 6,
 						chance: 0.075,
@@ -1500,7 +1520,7 @@ function getAssets() {
 					},
 					{
 						name: "Moo+",
-						estatus: ["💗","💪","💢"],
+						estatus: ["💗", "💪", "💢"],
 						chance: 0.05,
 						attack: false
 					},
@@ -1533,12 +1553,12 @@ function getAssets() {
 				skills: [
 					{
 						name: "Baa",
-						chance: 0.5,
+						chance: 0.45,
 						attack: false
 					},
 					{
 						name: "Baa+",
-						estatus: ["💗","🛡️","🎯"],
+						estatus: ["💗", "🛡️", "🎯"],
 						chance: 0.05,
 						attack: false
 					},
@@ -1571,12 +1591,12 @@ function getAssets() {
 				skills: [
 					{
 						name: "Cluck",
-						chance: 0.5,
+						chance: 0.45,
 						attack: false
 					},
 					{
 						name: "Cluck+",
-						estatus: ["💗","🍀","💨"],
+						estatus: ["💗", "🍀", "💨"],
 						chance: 0.05,
 						attack: false
 					},
@@ -1612,7 +1632,7 @@ function getAssets() {
 						chance: 0.55,
 						attack: true
 					},
-{
+					{
 						name: "Stomp",
 						damage: 1.15,
 						pstatus: ["👁️"],
@@ -1630,7 +1650,7 @@ function getAssets() {
 					},
 					{
 						name: "Rally",
-						estatus: ["🛡️", "🎯","💪"],
+						estatus: ["🛡️", "🎯", "💪"],
 						chance: 0.1,
 						attack: false,
 						wait: 3
@@ -1645,7 +1665,7 @@ function getAssets() {
 					},
 					{
 						name: "Flex",
-						estatus: ["🏳️", "🍀"],
+						estatus: ["🏅", "🍀"],
 						chance: 0.075,
 						attack: false,
 						wait: 1
@@ -1677,9 +1697,9 @@ function getAssets() {
 				name: "Fox King",
 				sprite: 'assets/enemies/FoxKing.gif',
 				weapon: null,
-				health: 1250,
-				attack: 200,
-				defense: 175,
+				health: 4750,
+				attack: 375,
+				defense: 325,
 				crit: 0.2,
 				accuracy: 0.70,
 				skills: [
@@ -1690,14 +1710,14 @@ function getAssets() {
 					},
 					{
 						name: "Poison Smoke Bomb",
-						pstatus: ["👁️","💀"],
+						pstatus: ["👁️", "💀"],
 						chance: 0.05,
 						attack: false,
 						wait: 4
 					},
 					{
 						name: "Lock In",
-						estatus: ["🎯", "💨","🍀","💪"],
+						estatus: ["🎯", "💨", "🍀", "💪"],
 						chance: 0.15,
 						attack: false,
 						wait: 5
@@ -1782,7 +1802,7 @@ function getAssets() {
 					},
 					{
 						name: "Dirty Trick",
-						pstatus: ["🐈‍⬛","👁️"],
+						pstatus: ["🥀", "👁️"],
 						damage: 1.3,
 						chance: 0.1,
 						wait: 2,
@@ -1790,25 +1810,25 @@ function getAssets() {
 					},
 					{
 						name: "Entitled Royal",
-						estatus: ["💢","🏳️","💪"],
+						estatus: ["💢", "🏅", "💪"],
 						chance: 0.15,
 						attack: false,
 						wait: 4
 					},
 					{
 						name: "Heal",
-						health: 0.25,
+						health: 0.17,
 						chance: 0.075,
 						attack: false,
-						wait: 10
+						wait: 20
 					},
 					{
 						name: "Restoration",
-						estatus: ["💗","✨"],
-						health: 0.05,
+						estatus: ["💗", "✨"],
+						health: 0.07,
 						chance: 0.075,
 						attack: false,
-						wait: 7
+						wait: 15
 					},
 				],
 				drops: [
@@ -1850,7 +1870,7 @@ function getAssets() {
 					},
 					{
 						name: "Cursed Hell Flames",
-						pstatus: ["🔥","🖤"],
+						pstatus: ["🔥", "🖤"],
 						damage: 0.66,
 						times: 3,
 						chance: 0.20,
@@ -1867,7 +1887,7 @@ function getAssets() {
 					},
 					{
 						name: "Queen's Gaze",
-						pstatus: ["🐈‍⬛", "👁️", "🌀", "🏴","💫"],
+						pstatus: ["🥀", "👁️", "🌀", "🌑", "💫"],
 						chance: 0.05,
 						attack: false,
 						wait: 4
@@ -1875,6 +1895,7 @@ function getAssets() {
 					{
 						name: "Demonic Embrace",
 						estatus: ["💢", "🍀", "💗", "✨", "🛡️"],
+						health: 0.1,
 						chance: 0.05,
 						attack: false,
 						wait: 2
@@ -1889,9 +1910,9 @@ function getAssets() {
 						wait: 2
 					},
 					{
-						name: "Queenly Disrespect",
-						estatus: ["🏳️"],
-						pstatus: ["🌀", "💫", "🏴"],
+						name: "Queenly Humiliation",
+						estatus: ["🏅"],
+						pstatus: ["🌀", "💫", "🌑"],
 						damage: 0.9,
 						chance: 0.05,
 						attack: true,
@@ -2991,7 +3012,7 @@ function getAssets() {
 						name: "Knight's Resolve",
 						description: "Read yourself for combat.",
 						cost: 35,
-						pstatus: ["💪", "💗", "🛡️", "🏳️"],
+						pstatus: ["💪", "💗", "🛡️", "🏅"],
 						attack: false
 					},
 					{
@@ -3078,7 +3099,7 @@ function getAssets() {
 						name: "Rallying Shout",
 						description: "Let out a mighty yell.",
 						cost: 40,
-						pstatus: ["🏳️", "🛡️"],
+						pstatus: ["🏅", "🛡️"],
 						attack: false
 					},
 					{
@@ -3167,7 +3188,7 @@ function getAssets() {
 						cost: 80,
 						damage: 1.2,
 						estatus: ["🌀"],
-						pstatus: ["🏳️"],
+						pstatus: ["🏅"],
 						attack: true
 					},
 					{
@@ -3218,9 +3239,9 @@ function getAssets() {
 					{
 						name: "Murderous Intent",
 						description: "Remain an unstoppable force through the power of uncanny determination.",
-						cost: 75,
+						cost: 80,
 						pstatus: ["✨", "💢"],
-						health: 0.3,
+						health: 0.25,
 						attack: false
 					}
 				]
@@ -3264,7 +3285,7 @@ function getAssets() {
 						name: "Royal Knight's Resolve",
 						description: "Take a stance and gather your focus to heighten your abilities.",
 						cost: 30,
-						pstatus: ["🏳️", "💗", "🛡️"],
+						pstatus: ["🏅", "💗", "🛡️"],
 						attack: false
 					},
 				]
@@ -3299,7 +3320,7 @@ function getAssets() {
 						name: "Sinister Grin",
 						description: "Lower weapon and give the enemy a 2 free swings while smiling.",
 						cost: 55,
-						pstatus: ["💢", "🏳️"],
+						pstatus: ["💢", "🏅"],
 						attack: false
 					},
 					{
@@ -3396,8 +3417,8 @@ function getAssets() {
 					{
 						name: "Snack Break",
 						description: "Pull out a protein bar and enjoy.",
-						cost: 65,
-						health: 0.3,
+						cost: 70,
+						health: 0.25,
 						attack: false
 					}
 				]
@@ -3477,15 +3498,15 @@ function getAssets() {
 						name: "Rally",
 						cost: 60,
 						description: "Declare your utter refusal to give up and convince yourself victory is possible.",
-						pstatus: ["🏳️", "💪", "🛡️"],
+						pstatus: ["🏅", "💪", "🛡️"],
 						attack: false
 					},
 					{
 						name: "Unyielding Will",
 						description: "Remain an unstoppable force through the power of uncanny determination.",
-						cost: 75,
+						cost: 80,
 						pstatus: ["✨"],
-						health: 0.3,
+						health: 0.25,
 						attack: false
 					}
 				]
@@ -3512,7 +3533,7 @@ function getAssets() {
 						name: "Fatal Shot",
 						cost: 99,
 						description: "Unleash a powerful shot that weakens the enemy.",
-						estatus: ["🩸", "🌀", "🐈‍⬛"],
+						estatus: ["🩸", "🌀", "🥀"],
 						damage: 1.66,
 						attack: true
 					},
@@ -3571,7 +3592,7 @@ function getAssets() {
 						pstatus: ["🛡️"],
 						damage: 0.6,
 						times: 2,
-						lifesteal: 0.1,
+						lifesteal: 0.5,
 						attack: true
 					},
 					{
@@ -3615,7 +3636,7 @@ function getAssets() {
 						cost: 50,
 						description: "Stop to quickly pray for strength and forgiveness for your enemy.",
 						estatus: ["✨", "🍀", "🛡️"],
-						pstatus: ["🏳️", "💪", "💗", "🎯"],
+						pstatus: ["🏅", "💪", "💗", "🎯"],
 						attack: false
 					},
 					{
@@ -3653,7 +3674,7 @@ function getAssets() {
 						damage: 0.66,
 						times: 6,
 						pstatus: ["💢"],
-						estatus: ["🏴", "🖤", "🔥"],
+						estatus: ["🌑", "🖤", "🔥"],
 						attack: true
 					},
 					{
@@ -3708,15 +3729,15 @@ function getAssets() {
 						cost: 77,
 						damage: 1.40,
 						estatus: ["🔥", "🌀", "👁️"],
-						pstatus: ["🏳️", "🛡️"],
+						pstatus: ["🏅", "🛡️"],
 						attack: true
 					},
 					{
 						name: "Unyielding Will",
 						description: "Remain an unstoppable force through the power of uncanny determination.",
-						cost: 75,
+						cost: 80,
 						pstatus: ["✨"],
-						health: 0.3,
+						health: 0.25,
 						attack: false
 					}
 				]
@@ -3744,7 +3765,7 @@ function getAssets() {
 						cost: 200,
 						description: "Focus immense power into the Orcus before swinging it to unleash a condensed wave of cursed energy.",
 						damage: 6.66,
-						estatus: ["🏴", "🖤", "🐈‍⬛"],
+						estatus: ["🌑", "🖤", "🥀"],
 						pstatus: ["🎯"],
 						attack: true
 					},
@@ -3756,7 +3777,7 @@ function getAssets() {
 						damage: 0.66,
 						estatus: ["🩸", "🌀"],
 						pstatus: ["💪", "🛡️"],
-						lifesteal: 0.1,
+						lifesteal: 0.5,
 						attack: true
 					},
 					{
@@ -3793,7 +3814,7 @@ function getAssets() {
 						cost: 148,
 						description: "Supercharge Iris & Hermes to fire a bright and powerful beam of holy energy from each barrel.",
 						estatus: ["👁️", "🔥"],
-						pstatus: ["🏳️"],
+						pstatus: ["🏅"],
 						damage: 1.77,
 						times: 2,
 						attack: true
@@ -3842,8 +3863,8 @@ function getAssets() {
 						cost: 111,
 						description: "Point Melanie or Alectrona upwards then unleashes its power which creates a massive blade of light or darkness before slamming it down on to the enemy and strengthening its wielder.\n\nRandomized for each turn:\nInflict Cursed, Bad Omen, Bad Luck, and Weakness\nOR\nInflict Burn, Blindness, and Bleed.\n\nThen, Gain Berserk and Evasion\nOR\nGain Blessing, Fortitude, Empowerment, and Luck",
 						damage: 3,
-						get estatus() { return [["🖤", "🏴", "🐈‍⬛", "🌀"], ["🔥", "👁️"]][Math.floor(Math.random() * 2)] },
-						get pstatus() { return [["💢", "💨"], ["✨", "🍀", "🛡️", "🏳️"]][Math.floor(Math.random() * 2)] },
+						get estatus() { return [["🖤", "🌑", "🥀", "🌀"], ["🔥", "👁️"]][Math.floor(Math.random() * 2)] },
+						get pstatus() { return [["💢", "💨"], ["✨", "🍀", "🛡️", "🏅"]][Math.floor(Math.random() * 2)] },
 						attack: true
 					},
 					{
@@ -4228,13 +4249,13 @@ function getAssets() {
 				]
 			},
 			{
-				name: "Coat of Darkness",
+				name: "Shadow Cloak",
 				description: "A sinister dark clock that you're almost positive makes you look like a cultist.",
 
 				defense: 420,
 				maxlvl: 50,
 				minlvl: 30,
-				alvlmult: 45,
+				alvlmult: 12,
 				evasion: 0.2,
 
 				synergies: [
@@ -4379,7 +4400,7 @@ function getAssets() {
 			},
 			{
 				name: "Medium Health Potion",
-				health: 0.3,
+				health: 0.25,
 				battle: true,
 				craft: ["Green Goo", "Water Flask"]
 			},
@@ -5452,7 +5473,7 @@ function getAssets() {
 						chance: 0.01
 					},
 					{
-						name: "Adamentite Key",
+						name: "Adamantine Key",
 						chance: 0.04
 					},
 				]
