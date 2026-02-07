@@ -45,7 +45,7 @@ async function startBattle(enemy = null) {
     encounter.accuracy = enemy.accuracy
 
     encounter.log = []
-    encounter.log.push(`⚔️${background.name} (${player.level}) vs. ${enemy.name} (${level})⚔️<i class="fa-solid fa-file-arrow-down" @click="exportLog()" title="Export Log"
+    encounter.log.push(`⚔️${background.name} (${player.level}) vs. ${enemy.name} (${level})⚔️<i class="fa-solid fa-file-arrow-down" @click="exportLog()" data-tooltip="📄 Save Battle Log As..."
                         style="position: sticky; top: 0; float: right; right: 8px; z-index: 5; cursor: pointer; font-size: 24px; color: grey;"></i>`)
     battleStation.round = 1;
     battleStation.turn = false;
@@ -100,17 +100,12 @@ async function executeSkill({
 
     if (skill.cost && isPlayer) player.stamina -= skill.cost;
 
-    // Effective chances (clamped)
-    const effAcc = Math.min(1, Math.max(0, attacker.accuracy + accDif));
-    const effCrit = Math.min(1, Math.max(0, attacker.crit + critDif));
-    const maxMisses = Math.round((1 - effAcc) * 10);
-    let missCount = 0;
-
-    let firstHit = Math.random() < effAcc;
+    const maxMisses = Math.round((1 - attacker.accuracy - accDif) * 10);
+    let firstHit = Math.random() >= 1 - attacker.accuracy - accDif;
+    let missCount = -2;
     if (!firstHit) missCount++;
     let hit = firstHit;
-    let crit = Math.random() < effCrit;
-
+    let crit = Math.random() >= 1 - attacker.crit - critDif;
     let totalDealt = 0;
 
     let skillLog = `<span style="color:lightblue;" data-tooltip="${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.floor(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.floor(skill.lifesteal * 100)}%\n` : ''}${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + `${skill.pstatus.join('')}\n` : ''}${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}">${skill.cost ? '⚡' : ''}${skill.name}</span>`;
@@ -137,11 +132,10 @@ async function executeSkill({
             await new Promise(r => setTimeout(r, 1000 / skill.times));
             if (missCount >= maxMisses) hit = true;
             else {
-                hit = Math.random() < effAcc;
+                hit = Math.random() >= 1 - attacker.accuracy - accDif;
                 if (!hit) missCount++;
             }
-
-            crit = Math.random() < effCrit;
+            crit = Math.random() >= 1 - attacker.crit - critDif;
 
             const dealt = attack();
             encounter.log[encounter.log.length - 1] +=
@@ -279,7 +273,7 @@ async function executeSkill({
         }
     }
 
-    await new Promise(r => setTimeout(r, 500))
+    await new Promise(r => setTimeout(r, 400))
 }
 
 async function skill(index) {
@@ -355,16 +349,17 @@ async function turnManager(toPlayer) {
             return;
         }
 
-        await new Promise(resolve => setTimeout(resolve, 500));
         let currentLevel = player.level
         var xpdrop = Math.floor((((background.enemyLevel ** 1.2) * (encounter.maxHealth / encounter.attack)) ** 1.2) * 2);
         let xptext = `<span color="lightblue" data-tooltip='(((${background.enemyLevel}^1.2) * (${encounter.maxHealth} / ${encounter.attack}))^1.2) * 2 = ${xpdrop}'>${xpdrop}</span>`;
+        await new Promise(r => setTimeout(r, 200))
         encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
 
         while (player.experience + xpdrop > Math.floor((player.level / 0.07) ** 2)) {
             xpdrop -= (Math.floor((player.level / 0.07) ** 2)) - player.experience;
             player.level += 1;
             player.experience = 0;
+            await new Promise(r => setTimeout(r, 200))
             encounter.log.push(`⬆️ ${background.name} leveled up to level ${player.level}! ⬆️`)
         }
 
@@ -436,31 +431,35 @@ async function turnManager(toPlayer) {
     }
 
     if (actorStatuses.some(s => s.id === '💫')) stunned = true;
-
+    await new Promise(r => setTimeout(r, 400))
     for (const s of actorStatuses.slice()) {
         switch (s.id) {
             case '🩸': {
                 let damage = Math.floor(s.baseDam * s.damage);
                 encounter.log.push(`${actorName} is bleeding - <span style="color: lightblue;" data-tooltip="🩸 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🩸${damage}</span>`);
                 actor.health -= damage;
+                await new Promise(r => setTimeout(r, 400))
                 break;
             }
             case '🔥': {
                 let damage = Math.floor(s.baseDam * s.damage);
                 encounter.log.push(`${actorName} is on fire - <span style="color: lightblue;" data-tooltip="🔥 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🔥${damage}</span>`);
                 actor.health -= damage;
+                await new Promise(r => setTimeout(r, 400))
                 break;
             }
             case '🖤': {
                 let damage = Math.floor(s.baseDam * actor.attack);
                 encounter.log.push(`${actorName} is cursed - <span style="color: lightblue;" data-tooltip="🖤 ${s.name}\n\n${s.description}\n\n${actor.attack} * ${s.baseDam} = ${damage}">🖤${damage}</span>`);
                 actor.health -= damage;
+                await new Promise(r => setTimeout(r, 400))
                 break;
             }
             case '💀': {
                 let damage = Math.floor(s.maxHP * actor.maxHealth);
                 encounter.log.push(`${actorName} is poisoned - <span style="color: lightblue;" data-tooltip="💀 ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${damage}">💀${damage}</span>`);
                 actor.health -= damage;
+                await new Promise(r => setTimeout(r, 400))
                 break;
             }
             case '💗': {
@@ -470,13 +469,13 @@ async function turnManager(toPlayer) {
 
                 encounter.log.push(`${actorName} is regenerating - <span style="color: lightblue;" data-tooltip="💗 ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${Math.floor(s.maxHP * actor.maxHealth)}${actor.health + Math.floor(s.maxHP * actor.maxHealth) > actor.maxHealth ? '\nCapped to max health.' : ''}">💗${heal}</span>`);
                 actor.health += heal;
+                await new Promise(r => setTimeout(r, 400))
                 break;
             }
         }
 
         s.rounds -= 1;
         if (s.rounds <= 0) actorStatuses.splice(actorStatuses.indexOf(s), 1);
-        await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     if (toPlayer) {
@@ -493,7 +492,7 @@ async function turnManager(toPlayer) {
 
     if (stunned) {
         encounter.log.push(`💫 ${actorName} is stunned.`);
-        await new Promise(r => setTimeout(r, 600));
+        await new Promise(r => setTimeout(r, 500));
         actorStatuses.forEach(s => {
             if (s.id == '💫') s.rounds = Math.max(0, s.rounds - 1);
         });
@@ -503,7 +502,7 @@ async function turnManager(toPlayer) {
 
     if (toPlayer) battleStation.turn = true;
     else {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 750));
         background.enemy.skills.forEach(s => {
             if (s._cooldown > 0) s._cooldown--;
         });
@@ -549,9 +548,10 @@ async function exportLog() {
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
-    let logText = encounter.log.map(entry => entry.replaceAll(/<[^>]*>/g, "")).join('\n');
-    console.log(logText);
-    // Download logtext as text file
+    let logText = `${new Date().toLocaleString()}\n${background.name} (${player.level}) / ${encounter.enemyName} (${background.enemyLevel})\n⚔️ ${player.weaponry.weapon.name} (${player.weaponry.level}) - 🛡️${player.armory.armor.name} (${player.armory.level})\n${encounter.enemyName} - ❤️${encounter.maxHealth}/${encounter.maxHealth}\n--- Encounter Log ---\n\n`;
+    logText += encounter.log.map(entry => entry.replaceAll(/<[^>]*>/g, "")).join('\n\n');
+    logText += `\n\n--- End of Log ---\nBattle Log from Text-Based-Game (c) Jgouken & SavorySam\nPlay online at https://jgouken.github.io/text-based-game/`;
+
     const blob = new Blob([logText], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
