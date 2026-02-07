@@ -279,20 +279,7 @@ async function executeSkill({
         }
     }
 
-    new Promise(r => setTimeout(r, 500))
-
-    const activeSiphons = attackerStatuses.filter(s => s.id == '❣️');
-    if (activeSiphons.length > 0 && totalDealt > 2) {
-        let stat = getAssets().statuses.find(s => s.id == '❣️');
-        let heal = Math.floor(totalDealt * stat.lifesteal);
-        if (attacker.health + heal > attacker.maxHealth) heal = attacker.maxHealth - attacker.health;
-        if (heal > 0) {
-            encounter.log[encounter.log.length - 1] += ` and healed <span data-tooltip="❣️ ${stat.name}\n\n${stat.description}\n\n${totalDealt} * ${stat.lifesteal} = ${Math.floor(totalDealt * stat.lifesteal)}${attacker.health + Math.floor(totalDealt * stat.lifesteal) > attacker.maxHealth ? '\nCapped to max health.' : ''}">❣️${heal}</span>`;
-            attacker.health += heal;
-        }
-    }
-
-    new Promise(r => setTimeout(r, 500))
+    await new Promise(r => setTimeout(r, 500))
 }
 
 async function skill(index) {

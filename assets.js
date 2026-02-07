@@ -19,14 +19,6 @@ function getAssets() {
 				rounds: 3,
 			},
 			{
-				name: 'Siphon',
-				id: '❣️',
-				description: "Heal 30% of total damage dealt for 3 turns.",
-				positive: true,
-				lifesteal: 0.3,
-				rounds: 4,
-			},
-			{
 				name: 'Bleed',
 				id: '🩸',
 				description: "Inflicts 15% of initial damage for 2 turns.",
