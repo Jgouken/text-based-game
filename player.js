@@ -19,11 +19,10 @@ async function updateBars() {
 async function startPlayer() {
     const player = Alpine.$data(document.getElementById('player'));
     const raw = localStorage.getItem('textBasedData');
-    if (!raw) return;
+    if (!raw) return setPlayer();
 
     let playerData;
     try { playerData = JSON.parse(raw); } catch (e) { console.error('Invalid save data', e); return; }
-
     const assets = getAssets();
 
     player.level = Number(playerData.level) || player.level;
@@ -65,6 +64,7 @@ async function setPlayer() {
     player.evasion = player.armory.armor.evasion;
 
     updateBars();
+    savePlayer();
 }
 
 async function savePlayer() {
