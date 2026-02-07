@@ -173,7 +173,7 @@ function getAssets() {
 					},
 					{
 						name: "Lucky Blow",
-						pstatus: ["🩸", "🌀"],
+						pstatus: ["🩸", "🌀","🩼"],
 						estatus: ["🍀", "🎯"],
 						chance: 0.15,
 						wait: 3,
@@ -391,7 +391,7 @@ function getAssets() {
 					},
 					{
 						name: "Cursed Breath",
-						pstatus: ["🖤", "🌑", "🌀"],
+						pstatus: ["🖤", "🌑", "🌀","🩼"],
 						damage: 1.33,
 						chance: 0.15,
 						wait: 2,
@@ -462,7 +462,7 @@ function getAssets() {
 					},
 					{
 						name: "Crippling Strike",
-						pstatus: ["🌀"],
+						pstatus: ["🌀","🩼"],
 						chance: 0.15,
 						damage: 1.5,
 						wait: 1,
@@ -606,7 +606,7 @@ function getAssets() {
 					},
 					{
 						name: "Burning Slide",
-						pstatus: ["🔥"],
+						pstatus: ["🔥","🩼"],
 						chance: 0.1,
 						damage: 1.15,
 						wait: 1,
@@ -727,10 +727,10 @@ function getAssets() {
 				name: "Stamina Slime",
 				sprite: 'assets/enemies/StaminaSlime.gif',
 				weapon: null,
-				health: 45,
-				attack: 20,
+				health: 80,
+				attack: 30,
 				defense: 50,
-				crit: 0.2,
+				crit: 0.5,
 				accuracy: 0.7,
 				skills: [
 					{
@@ -908,7 +908,7 @@ function getAssets() {
 				weapon: "Steel Dagger",
 				health: 600,
 				attack: 220,
-				defense: 140,
+				defense: 170,
 				crit: 0.1,
 				accuracy: 0.75,
 				skills: [
@@ -1026,7 +1026,7 @@ function getAssets() {
 					{
 						name: "Slash",
 						chance: 0.6,
-						damage: 0.3,
+						damage: 30,
 						times: 4,
 						attack: true
 					},
@@ -1055,7 +1055,7 @@ function getAssets() {
 					},
 					{
 						name: "Deft Slash",
-						pstatus: ["🩸"],
+						pstatus: ["🩸","🩼"],
 						damage: 1.7,
 						chance: 0.15,
 						wait: 1,
@@ -1134,7 +1134,7 @@ function getAssets() {
 				health: 4500,
 				attack: 450,
 				defense: 500,
-				crit: 0.5,
+				crit: 0.15,
 				accuracy: 0.7,
 				skills: [
 					{
@@ -1246,7 +1246,7 @@ function getAssets() {
 					},
 					{
 						name: "Sinister Hex",
-						pstatus: ["🥀", "🖤", "🌑"],
+						pstatus: ["🥀", "🖤", "🌑","🩼"],
 						chance: 0.075,
 						wait: 3,
 						attack: false
@@ -1327,7 +1327,7 @@ function getAssets() {
 					},
 					{
 						name: "Crippling Bite",
-						pstatus: ["🩸", "🌀"],
+						pstatus: ["🩸", "🌀","🩼"],
 						damage: 2,
 						chance: 0.1,
 						wait: 1,
@@ -1417,7 +1417,7 @@ function getAssets() {
 					},
 					{
 						name: "Voodoo Stab",
-						pstatus: ["🩸", "🌀"],
+						pstatus: ["🩸", "🌀","🩼"],
 						damage: 1.33,
 						chance: 0.2,
 						attack: true
@@ -1643,7 +1643,7 @@ function getAssets() {
 					{
 						name: "Slam",
 						damage: 1.5,
-						pstatus: ["💫"],
+						pstatus: ["💫","🩼"],
 						chance: 0.075,
 						wait: 2,
 						attack: true
@@ -1732,7 +1732,7 @@ function getAssets() {
 					},
 					{
 						name: "Fatal Slash",
-						pstatus: ["🩸", "🌀"],
+						pstatus: ["🩸", "🌀","🩼"],
 						damage: 2,
 						chance: 0.1,
 						attack: true,
@@ -1794,7 +1794,7 @@ function getAssets() {
 					},
 					{
 						name: "Crippling Strike",
-						pstatus: ["🌀"],
+						pstatus: ["🌀","🩼"],
 						damage: 1.3,
 						chance: 0.15,
 						wait: 1,
@@ -1920,7 +1920,7 @@ function getAssets() {
 					},
 					{
 						name: "Royal Dropkick",
-						pstatus: ["🌀", "💫"],
+						pstatus: ["🌀", "💫","🩼"],
 						damage: 2,
 						chance: 0.025,
 						attack: true,
@@ -2707,7 +2707,7 @@ function getAssets() {
 					{
 						name: "Kick",
 						description: "Give 'em a roundhouse kick in the face!",
-						estatus: ["🌀"],
+						estatus: ["🌀","🩼"],
 						damage: 0.65,
 						cost: 25,
 						attack: true
@@ -2837,7 +2837,7 @@ function getAssets() {
 					{
 						name: "Kick",
 						description: "Foot!",
-						estatus: ["🌀"],
+						estatus: ["🌀","🩼"],
 						cost: 25,
 						damage: 0.65,
 						attack: true
@@ -3049,7 +3049,7 @@ function getAssets() {
 						cost: 77,
 						damage: 2,
 						pstatus: ["🍀"],
-						estatus: ["🌀", "🩸"],
+						estatus: ["🌀", "🩸","🩼"],
 						attack: true
 					},
 					{
@@ -3091,6 +3091,7 @@ function getAssets() {
 					{
 						name: "Almighty Swing",
 						description: "Swing your axe with full force.",
+						estatus:["🩼"],
 						cost: 90,
 						damage: 2.25,
 						attack: true,
@@ -3311,7 +3312,7 @@ function getAssets() {
 					{
 						name: "Immense Impact",
 						description: "Slam your hammer down on a foe with all your might.",
-						estatus: ["💫"],
+						estatus: ["💫","🩼"],
 						cost: 115,
 						damage: 1.8,
 						attack: true
@@ -3447,7 +3448,7 @@ function getAssets() {
 						cost: 70,
 						description: "A swift and precise slash through the enemy.",
 						damage: 1.6,
-						estatus: ["🩸"],
+						estatus: ["🩸","🩼"],
 						attack: true
 					},
 					{
@@ -3490,6 +3491,7 @@ function getAssets() {
 					{
 						name: "Righteous Indignation",
 						description: "Confidently charge forth and pierce through your foe.",
+						estatus: ["🩼"],
 						cost: 77,
 						damage: 1.5,
 						attack: true
@@ -3580,7 +3582,7 @@ function getAssets() {
 						cost: 85,
 						description: "A powerful slash that rips through the foe.",
 						damage: 1.8,
-						estatus: ["🩸"],
+						estatus: ["🩸","🩼"],
 						pstatus: ["💢"],
 						attack: true
 					},
@@ -3628,7 +3630,7 @@ function getAssets() {
 						cost: 180,
 						description: "Jump and crush your foe with all your strength aided by gravity.",
 						damage: 3,
-						estatus: ["🌀", "🔥"],
+						estatus: ["🌀", "🔥","🩼"],
 						attack: true
 					},
 					{
@@ -3728,7 +3730,7 @@ function getAssets() {
 						description: "Imbue your leg with holy energy before unleashing a powerful, and blinding, kick to your foe.",
 						cost: 77,
 						damage: 1.40,
-						estatus: ["🔥", "🌀", "👁️"],
+						estatus: ["🔥", "🌀", "👁️","🩼"],
 						pstatus: ["🏅", "🛡️"],
 						attack: true
 					},
@@ -3765,7 +3767,7 @@ function getAssets() {
 						cost: 200,
 						description: "Focus immense power into the Orcus before swinging it to unleash a condensed wave of cursed energy.",
 						damage: 6.66,
-						estatus: ["🌑", "🖤", "🥀"],
+						estatus: ["🌑", "🖤", "🥀","🩼"],
 						pstatus: ["🎯"],
 						attack: true
 					},
@@ -3870,6 +3872,7 @@ function getAssets() {
 					{
 						name: "Exalted Flash",
 						cost: 77,
+						Estatus: ["🩼"],
 						description: "Unleash insanely fast identical strikes that strengthens the wielder.",
 						damage: 0.77,
 						times: 7,
@@ -5481,6 +5484,3 @@ function getAssets() {
 		],
 	}
 }
-
-
-

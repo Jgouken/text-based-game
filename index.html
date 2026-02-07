@@ -24,12 +24,12 @@
     <div alt="Background" id="background-image" class="background-image" x-init="startup()" x-data="{
             name: JSON.parse(localStorage.getItem('textBasedData'))?.name || '',
             location: 'Warhamshire',
-            screen: JSON.parse(localStorage.getItem('textBasedData'))?.name ? 'returning' : 'new-player',
+            screen: JSON.parse(localStorage.getItem('textBasedData'))?.name ? 'travel' : 'new-player',
             showPlayerBar: false,
             enemy: getAssets().enemies.find(enemy => enemy.name == 'Fox King'),
             enemyLevel: 1,
             assets: getAssets()
-        }" x-effect="showPlayerBar = !['new-player','how-to-play','journal','crafting'].includes(screen)">
+        }" x-effect="showPlayerBar = !['new-player','how-to-play','journal', 'crafting', 'travel'].includes(screen)">
 
         <div id="overlay-transparency" class="overlay-transparency"></div>
 
@@ -369,7 +369,102 @@
 
             <!-- Travel -->
             <div id="travel" class="travel" x-show="screen === 'travel'">
+                <div class="travel-panel" id="travel-panel">
+                    <h1>📍 Travel Across The Hexlands<br></h1>
+                    <div class="travel-grid">
+                        <button class="travel-button regular-button" :class="{ 'active': location === 'Warhamshire' }"
+                            @click="location = 'Warhamshire'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
+        url('assets/backgrounds/WarhamshirePlaceholder.jpg') no-repeat center / cover;">
+                            <span class="travel-name">Warhamshire</span>
+                            <span class="travel-subtext"
+                                x-text="location === 'Warhamshire' ? 'you are here' : '[1-5] Where it all begins...'"></span>
+                        </button>
 
+                        <button class="travel-button regular-button" :class="{ 'active': location === 'Warham Castle' }"
+                            @click="location = 'Warham Castle'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
+        url('assets/backgrounds/WarhamCastle.jpg') no-repeat center / cover;">
+                            <span class="travel-name">Warham Castle</span>
+                            <span class="travel-subtext"
+                                x-text="location === 'Warham Castle' ? 'you are here' : '[6-10] A fortified stronghold.'"></span>
+                        </button>
+
+                        <button class="travel-button regular-button" :class="{ 'active': location === 'Hinterland' }"
+                            @click="location = 'Hinterland'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
+        url('assets/backgrounds/Hinterland.jpg') no-repeat center / cover;">
+                            <span class="travel-name">Hinterland</span>
+                            <span class="travel-subtext"
+                                x-text="location === 'Hinterland' ? 'you are here' : '[8-14] Shiver through the cold forest.'"></span>
+                        </button>
+
+                        <button class="travel-button regular-button"
+                            :class="{ 'active': location === 'Uralan Mountains' }"
+                            @click="location = 'Uralan Mountains'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
+        url('assets/backgrounds/UralanMountains.jpg') no-repeat center / cover;">
+                            <span class="travel-name">Uralan Mountains</span>
+                            <span class="travel-subtext"
+                                x-text="location === 'Uralan Mountains' ? 'you are here' : '[12-18] Scale the high peaks and low valleys.'"></span>
+                        </button>
+
+                        <button class="travel-button regular-button" :class="{ 'active': location === 'Vulpeston' }"
+                            @click="location = 'Vulpeston'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
+        url('assets/backgrounds/Vulpeston.jpg') no-repeat center / cover;">
+                            <span class="travel-name">Vulpeston</span>
+                            <span class="travel-subtext"
+                                x-text="location === 'Vulpeston' ? 'you are here' : '[16-22] Infiltrate the sly and cunning theives.'"></span>
+                        </button>
+
+                        <button class="travel-button regular-button" :class="{ 'active': location === 'Vulpes Tower' }"
+                            @click="location = 'Vulpes Tower'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
+        url('assets/backgrounds/VulpesTower.jpg') no-repeat center / cover;">
+                            <span class="travel-name">Vulpes Tower</span>
+                            <span class="travel-subtext"
+                                x-text="location === 'Vulpes Tower' ? 'you are here' : '[21-29] An ancient spire full of luxury goods.'"></span>
+                        </button>
+
+                        <button class="travel-button regular-button" :class="{ 'active': location === 'Vexadel' }"
+                            @click="location = 'Vexadel'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
+        url('assets/backgrounds/Vexadel.jpg') no-repeat center / cover;">
+                            <span class="travel-name">Vexadel</span>
+                            <span class="travel-subtext"
+                                x-text="location === 'Vexadel' ? 'you are here' : '[30-35] It smells terrible.'"></span>
+                        </button>
+
+                        <button class="travel-button regular-button"
+                            :class="{ 'active': location === 'Vexadel Gaillard' }"
+                            @click="location = 'Vexadel Gaillard'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
+        url('assets/backgrounds/VexadelGaillard.jpg') no-repeat center / cover;">
+                            <span class="travel-name">Vexadel Gaillard</span>
+                            <span class="travel-subtext"
+                                x-text="location === 'Vexadel Gaillard' ? 'you are here' : '[35-40] Who knew the smell could get worse.'"></span>
+                        </button>
+
+                        <button class="travel-button regular-button" :class="{ 'active': location === 'Sanguisuge' }"
+                            @click="location = 'Sanguisuge'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
+        url('assets/backgrounds/Sanguisuge.jpg') no-repeat center / cover;">
+                            <span class="travel-name">Sanguisuge</span>
+                            <span class="travel-subtext"
+                                x-text="location === 'Sanguisuge' ? 'you are here' : '[41-45] A blood-soaked realm.'"></span>
+                        </button>
+
+                        <button class="travel-button regular-button"
+                            :class="{ 'active': location === 'Sangston Mansion' }"
+                            @click="location = 'Sangston Mansion'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
+        url('assets/backgrounds/SangstonMansion.jpg') no-repeat center / cover;">
+                            <span class="travel-name">Sangston Mansion</span>
+                            <span class="travel-subtext"
+                                x-text="location === 'Sangston Mansion' ? 'you are here' : '[46-50] The vampire estate.'"></span>
+                        </button>
+
+                        <button class="travel-button regular-button"
+                            :class="{ 'active': location === 'Eternal Damnation' }"
+                            @click="location = 'Eternal Damnation'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
+        url('assets/backgrounds/EternalDamnation.jpg') no-repeat center / cover;">
+                            <span class="travel-name">Eternal Damnation</span>
+                            <span class="travel-subtext"
+                                x-text="location === 'Eternal Damnation' ? 'you are here' : '[50+] Fun for the whole family.'"></span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Encounter -->

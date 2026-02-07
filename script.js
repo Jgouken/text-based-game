@@ -125,6 +125,49 @@ async function quitButton() {
 async function fadeInOutEffect(to) {
     await fadeInEffect();
     await new Promise(resolve => setTimeout(resolve, 500));
+
+    try {
+        const bgData = Alpine.$data(document.getElementById('background-image'));
+        const loc = (bgData && bgData.location) ? bgData.location : null;
+
+        // Build candidate base names (requested location first, then fallback Warhamshire)
+        const bases = [];
+        if (loc) bases.push(loc.replace(/\s+/g, ''));
+        bases.push('Warhamshire');
+
+        const exts = ['.jpg', '.png', '.gif'];
+        let fileName = null;
+
+        // Try to find the first existing file by probing with HEAD requests
+        for (const base of bases) {
+            for (const ext of exts) {
+                const url = `assets/backgrounds/${base}${ext}`;
+                try {
+                    const res = await fetch(url, { method: 'HEAD' });
+                    if (res && res.ok) {
+                        fileName = base + ext;
+                        break;
+                    }
+                } catch (e) {
+                    // ignore and try next
+                }
+            }
+            if (fileName) break;
+        }
+
+        if (fileName) {
+            const bgEl = document.getElementById('background-image');
+            bgEl.style.background = `linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)), url('assets/backgrounds/${fileName}')`;
+            bgEl.style.backgroundPosition = 'center';
+            bgEl.style.backgroundRepeat = 'no-repeat';
+            bgEl.style.backgroundSize = 'cover';
+        } else {
+            console.warn('No background image found for', loc, 'or fallback Warhamshire.');
+        }
+    } catch (e) {
+        console.warn('Failed to update background for location', e);
+    }
+
     Alpine.$data(document.getElementById("screen")).screen = to;
     await fadeOutEffect();
 }
@@ -182,12 +225,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Reveal smoothly with animation
         tooltip.style.visibility = 'visible';
-        
+
         if (animate) {
             // Ensure we start from 0 opacity to trigger animation
             tooltip.style.opacity = 0;
             tooltip.style.transition = 'opacity 0.2s ease';
-            
+
             // Use requestAnimationFrame to ensure the opacity 0 is registered
             requestAnimationFrame(() => {
                 tooltip.style.opacity = 1;
