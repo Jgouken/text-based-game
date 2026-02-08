@@ -114,7 +114,6 @@ async function howToPlay() {
 async function transition(from, to) {
     console.log(to.toUpperCase());
     await fadeInOutEffect(to);
-    Alpine.$data(document.getElementById("background-image")).showPlayerBar = true;
 }
 
 async function quitButton() {
@@ -168,7 +167,7 @@ async function fadeInOutEffect(to) {
         console.warn('Failed to update background for location', e);
     }
 
-    Alpine.$data(document.getElementById("screen")).screen = to;
+    Alpine.$data(document.getElementById("background-image")).screen = to;
     await fadeOutEffect();
 }
 
@@ -178,12 +177,12 @@ async function fadeOutEffect() {
     element.style.opacity = 1;
     var fadeInterval = setInterval(function () {
         if (opacity > 0) {
-            opacity -= 0.1;
+            opacity -= 0.05;
             element.style.opacity = opacity;
         } else {
             clearInterval(fadeInterval);
         }
-    }, 50);
+    }, 25);
 }
 
 async function fadeInEffect() {
@@ -192,12 +191,12 @@ async function fadeInEffect() {
     element.style.opacity = 0;
     var fadeInterval = setInterval(function () {
         if (opacity < 1) {
-            opacity += 0.1;
+            opacity += 0.05;
             element.style.opacity = opacity;
         } else {
             clearInterval(fadeInterval);
         }
-    }, 50);
+    }, 25);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

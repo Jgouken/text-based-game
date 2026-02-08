@@ -1,0 +1,38 @@
+Text-Based-Game (c) 2026 Jgouken, SavorySam
+This is a passion-project not intended for any form of monetization. This website will never charge for access, items, exclusives, bonuses, or achievements in any way, nor possess any form of unrelated advertisement.
+
+No AI assets were intentionally used on any part of this website.
+No AI tools, except for Visual Studio Code's "Copilot Inline Suggestions" (next edit), were used.
+
+All enemy assets are made by MoBroPro.
+Most other assets are made by Jgouken.
+
+Names of items, locations, or otherwise similar to other material are purely coincidental and are not meant to reference any game in particular.
+
+Background assets were found or made on Freepik or Vecteezy, filtered from AI use.
+Images have been amateurly inspected for use of AI, but we make mistakes. If a piece of content is found to be AI generated, it will be removed.
+
+Attributions:
+---
+Warhamshire - https://www.freepik.com/free-vector/pixel-art-vacation-background_29019073.htm#fromView=search&page=1&position=13&uuid=d40e7061-4143-4fbe-a1b0-e8cea67c0b2d
+
+Warham Castle - https://www.freepik.com/free-vector/abandoned-castle-corridor-night-vector-cartoon-illustration-spooky-hall-medieval-royal-palace-with-broken-tiles-floor-dusty-cobweb-empty-torches-stone-walls-scary-dark-hallway_67808396.htm#fromView=keyword&page=1&position=1&uuid=a5012f8d-9182-453a-9f51-c86edad81d0d
+
+Hinterland - https://www.vecteezy.com/vector-art/35537577-vector-seamless-night-forest-background-illustration-with-the-starry-sky-horizontally-repeatable
+
+Uralan Mountains - https://www.freepik.com/free-vector/suspended-mountain-bridge-night-cliff-rock-peaks-full-moon-scenery_15677488.htm#fromView=search&page=3&position=6&uuid=c4a6f9d5-f674-42f7-ab27-b47678069f66
+
+Vulpeston - https://www.freepik.com/free-vector/forest-scene-night-with-fireflies_4918115.htm
+
+Vulpes Tower - https://www.freepik.com/free-vector/night-ballroom-interior-design_40511526.htm#fromView=keyword&page=44&position=1&uuid=13bde06d-f5fb-423c-a727-1ce315587a84
+
+Vexadel - https://www.freepik.com/premium-vector/set-different-scene-medieval-with-silhouette_25969411.htm
+
+Vexadel Gaillard - https://www.vecteezy.com/vector-art/23878092-ancient-palace-or-castle-corridor-interior
+
+Sanguisuge - https://www.vecteezy.com/vector-art/14489064-jungle-vector-landscape-cave-landscape-with-an-underground-red-river-and-forest-vector-illustration-in-flat-cartoon-style
+
+Sangston Mansion - https://www.freepik.com/free-vector/medieval-castle-wall-night_417790379
+
+Eternal Damnation - https://www.vecteezy.com/vector-art/23864879-hell-cave-with-lava-and-volcano-stone-crack-vector
+---

@@ -371,10 +371,11 @@
             <div id="travel" class="travel" x-show="screen === 'travel'">
                 <div class="travel-panel" id="travel-panel">
                     <h1>📍 Travel Across The Hexlands<br></h1>
+                    <br>
                     <div class="travel-grid">
                         <button class="travel-button regular-button" :class="{ 'active': location === 'Warhamshire' }"
                             @click="location = 'Warhamshire'; transition('travel','returning')" style="background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
-        url('assets/backgrounds/WarhamshirePlaceholder.jpg') no-repeat center / cover;">
+        url('assets/backgrounds/Warhamshire.jpg') no-repeat center / cover;">
                             <span class="travel-name">Warhamshire</span>
                             <span class="travel-subtext"
                                 x-text="location === 'Warhamshire' ? 'you are here' : '[1-5] Where it all begins...'"></span>

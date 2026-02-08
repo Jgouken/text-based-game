@@ -100,10 +100,7 @@ async function executeSkill({
 
     if (skill.cost && isPlayer) player.stamina -= skill.cost;
 
-    const maxMisses = Math.round((1 - attacker.accuracy - accDif) * 10);
     let firstHit = Math.random() >= 1 - attacker.accuracy - accDif;
-    let missCount = -2;
-    if (!firstHit) missCount++;
     let hit = firstHit;
     let crit = Math.random() >= 1 - attacker.crit - critDif;
     let totalDealt = 0;
@@ -130,11 +127,7 @@ async function executeSkill({
 
         for (let i = 1; i < skill.times; i++) {
             await new Promise(r => setTimeout(r, 1000 / skill.times));
-            if (missCount >= maxMisses) hit = true;
-            else {
-                hit = Math.random() >= 1 - attacker.accuracy - accDif;
-                if (!hit) missCount++;
-            }
+            hit = Math.random() >= 1 - attacker.accuracy - accDif;
             crit = Math.random() >= 1 - attacker.crit - critDif;
 
             const dealt = attack();
