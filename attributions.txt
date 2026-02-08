@@ -1,16 +1,22 @@
 Text-Based-Game (c) 2026 Jgouken, SavorySam
+
 This is a passion-project not intended for any form of monetization. This website will never charge for access, items, exclusives, bonuses, or achievements in any way, nor possess any form of unrelated advertisement.
 
 No AI assets were intentionally used on any part of this website.
-No AI tools, except for Visual Studio Code's "Copilot Inline Suggestions" (next edit), were used.
+No AI tools, except for GitHub's "GitHub Copilot Chat" Visual Studio Code extension (Inline Suggestions only), were used.
 
 All enemy assets are made by MoBroPro.
 Most other assets are made by Jgouken.
 
-Names of items, locations, or otherwise similar to other material are purely coincidental and are not meant to reference any game in particular.
-
-Background assets were found or made on Freepik or Vecteezy, filtered from AI use.
+Background assets were found or made on Freepik or Vecteezy, filtered from AI use, and are attributed at the bottom of this file.
 Images have been amateurly inspected for use of AI, but we make mistakes. If a piece of content is found to be AI generated, it will be removed.
+
+Names of items, locations, or otherwise similar to other material are purely coincidental and are not meant to reference any piece of content in particular.
+
+By playing this game, you agree to enjoy it, regardless of the amount of fun you may be experiencing. Diverging from this may result in legal consequences.
+
+Thank you so much for playing
+~ Jgouken, SavorySam
 
 Attributions:
 ---
