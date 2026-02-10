@@ -489,7 +489,7 @@ async function handleDrop(e) {
 
     const isWeapon = itemData.attack !== undefined && itemData.skills;
     const isArmor = itemData.defense !== undefined && !itemData.skills && itemData.alvlmult !== undefined;
-    const isConsumable = itemData.health || itemData.stamina || itemData.buff || itemData.pstatus;
+    const isConsumable = itemData.health || itemData.stamina || itemData.buff || itemData.pstatus || itemData.xp;
 
     if (isWeapon) {
         equipWeapon(itemData, draggedItem.level);
