@@ -4437,34 +4437,34 @@ function getAssets() {
 			// Defense
 			{
 				name: "Light Defense Potion",
-				defense: 0.15,
+				def: 0.15,
 				rounds: 3,
 				battle: true
 			},
 			{
 				name: "Medium Defense Potion",
-				defense: 0.3,
+				def: 0.3,
 				rounds: 3,
 				battle: true,
 				craft: ["Blue Goo", "Water Flask"]
 			},
 			{
 				name: "Heavy Defense Potion",
-				defense: 0.5,
+				def: 0.5,
 				rounds: 3,
 				battle: true,
 				craft: ["Blue Goo", "Egg", "Empty Flask"]
 			},
 			{
 				name: "Great Defense Potion",
-				defense: 0.7,
+				def: 0.7,
 				rounds: 3,
 				battle: true,
 				craft: ["Gret Goo", "Demon Horn", "Egg", "Empty Flash"]
 			},
 			{
 				name: "Grand Defense Potion",
-				defense: 0.9,
+				def: 0.9,
 				rounds: 3,
 				battle: true
 			},
@@ -4584,7 +4584,7 @@ function getAssets() {
 			// Craftables
 			{
 				name: "Molotov",
-				craft: ["Cloth", "Booze Flask"],
+				craft: ["Cloth", "Booze"],
 				damage: 350,
 				estatus: ["🔥"],
 				battle: true
@@ -4622,7 +4622,7 @@ function getAssets() {
 			{
 				name: "Poison Bomb",
 				estatus: ["💀"],
-				craft: ["Venom", "Booze Flask"],
+				craft: ["Venom", "Booze"],
 				damage: 260,
 				battle: true
 			},
@@ -4702,7 +4702,7 @@ function getAssets() {
 				name: "Water Flask",
 			},
 			{
-				name: "Booze Flask",
+				name: "Booze",
 			},
 			{
 				name: "Empty Flask",
@@ -4811,7 +4811,7 @@ function getAssets() {
 						chance: 0.025
 					},
 					{
-						name: "Booze Flask",
+						name: "Booze",
 						chance: 0.025
 					},
 					{
@@ -4963,7 +4963,7 @@ function getAssets() {
 						chance: 0.02
 					},
 					{
-						name: "Booze Flask",
+						name: "Booze",
 						chance: 0.02
 					},
 					{

@@ -365,6 +365,12 @@ async function turnManager(toPlayer) {
             // Pick a drop from the enemy
             const drop = randomByChance(background.enemy.drops)
             const loot = assets.items.find(item => item.name == drop.name);
+
+            if (loot === undefined && loot !== null) {
+                alert(`Item not found: ${drop.name}`);
+                return true;
+            }
+
             let level = 1
             if (loot.minlvl) level = loot.minlvl && loot.maxlvl ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
 
@@ -375,7 +381,7 @@ async function turnManager(toPlayer) {
                     parts.push('Level ' + (level ?? 1));
                     if (it.attack !== undefined) {
                         parts.push(`⚔️${Math.floor(it.attack + ((level ?? 1 - 1) * it.attackPerLevel))} 🍀${Math.floor(it.crit * 100)}% ⚔️${it.critdmg}x 🎯${Math.floor(it.accuracy * 100)}%`);
-                    } else if (it.defense !== undefined) {
+                    } else if (it.defense !== undefined && it.maxlvl) {
                         parts.push(`🛡️${Math.floor(it.defense + ((level ?? 1 - 1) * it.alvlmult))} 💨${Math.floor(it.evasion * 100)}%`);
                     }
                 }
@@ -392,11 +398,14 @@ async function turnManager(toPlayer) {
                 else return 'Crafting Reagent';
             }
 
-            let descText = desc();
+            let descText = desc().replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 
             const lootResult = addToInventory(loot, level);
-            if (lootResult) encounter.log.push(`🎁 ${background.enemy.name} dropped a${loot.name.startsWith('[aeiou]') ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip="${descText}">${loot.name}</span>! 🎁`);
-            else alert(`Couldn't acquire ${drop.name}.`)
+            if (lootResult) {
+                encounter.log.push(`🎁 ${background.enemy.name} dropped a${/^[aeiou]/i.test(loot.name) ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip="${descText}">${loot.name}</span>! 🎁`);
+            } else {
+                alert(`Couldn't acquire ${drop.name}.`);
+            }
             return true;
         } else return false;
     }
