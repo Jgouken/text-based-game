@@ -898,6 +898,41 @@ img {
     pointer-events: none;
 }
 
+.inventory-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 0 16px;
+    margin-bottom: -2px;
+    position: relative;
+    z-index: 1;
+}
+
+.inventory-tab {
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: rgba(40, 40, 40, 0.95);
+    border: 2px solid #222;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    bottom: -2px;
+}
+
+.inventory-tab:hover {
+    color: #aaa;
+}
+
+.inventory-tab--active {
+    background-color: rgba(20, 20, 20, 0.95);
+    border-color: #222;
+    color: white;
+    z-index: 2;
+}
+
 .equipment-display {
     position: fixed !important;
     top: 76vh;

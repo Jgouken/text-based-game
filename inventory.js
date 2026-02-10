@@ -91,10 +91,10 @@ function updateEquipmentDisplay(type = null, itemData = null) {
                     <div style="font-size: 12px; color: #fff; margin-top: 3px;">`;
 
             const bonuses = [];
-            if (synergy.defense) bonuses.push(`+${synergy.defense} 🛡️`);
-            if (synergy.evasion) bonuses.push(`+${Math.floor(synergy.evasion * 100)}% 💨`);
-            if (synergy.crit) bonuses.push(`+${Math.floor(synergy.crit * 100)}% 🍀`);
-            if (synergy.attack) bonuses.push(`+${synergy.attack} ⚔️`);
+            if (synergy.defense) bonuses.push(`🛡️ +${synergy.defense} `);
+            if (synergy.evasion) bonuses.push(`💨 +${Math.floor(synergy.evasion * 100)}%`);
+            if (synergy.crit) bonuses.push(`🍀 +${Math.floor(synergy.crit * 100)}%`);
+            if (synergy.attack) bonuses.push(`⚔️ +${synergy.attack}`);
 
             html += bonuses.join('<br>');
             html += `</div></div>`;
@@ -122,14 +122,14 @@ function updateEquipmentDisplay(type = null, itemData = null) {
             const synergy = itemData.synergies.find(syn => syn.weapon === player.weaponry.weapon.name);
             html += `
                 <div style="margin-top: 8px; border: 2px solid gold; padding: 6px; border-radius: 4px; background-color: rgba(255, 215, 0, 0.2);">
-                    <div style="font-weight: bold; color: gold; font-size: 13px; text-align: center;">${synergy.name}</div>
+                    <div style="font-weight: bold; color: gold; font-size: 13px; text-align: center;">${synergy.name} - ${itemData.name}</div>
                     <div style="font-size: 12px; color: #fff; margin-top: 3px;">`;
 
             const bonuses = [];
-            if (synergy.defense) bonuses.push(`+${synergy.defense} 🛡️`);
-            if (synergy.evasion) bonuses.push(`+${Math.floor(synergy.evasion * 100)}% 💨`);
-            if (synergy.crit) bonuses.push(`+${Math.floor(synergy.crit * 100)}% 🍀`);
-            if (synergy.attack) bonuses.push(`+${synergy.attack} ⚔️`);
+            if (synergy.defense) bonuses.push(`🛡️ +${synergy.defense} `);
+            if (synergy.evasion) bonuses.push(`💨 +${Math.floor(synergy.evasion * 100)}%`);
+            if (synergy.crit) bonuses.push(`🍀 +${Math.floor(synergy.crit * 100)}%`);
+            if (synergy.attack) bonuses.push(`⚔️ +${synergy.attack}`);
 
             html += bonuses.join('<br>');
             html += `</div></div>`;
@@ -182,17 +182,19 @@ function handleItemHover(e) {
     if (isWeapon) {
         updateEquipmentDisplay('weapon', itemData);
 
-        // Check synergy and highlight battle-weaponry weapon
+        // Highlight armor that synergizes with this weapon
         const currentArmor = player.armory.armor;
         if (currentArmor.synergies && currentArmor.synergies.some(syn => syn.weapon === itemData.name)) {
-            highlightBattleWeaponry('weapon', true);
+            // Highlight armor since it synergizes with this weapon
+            highlightBattleWeaponry('armor', true);
         }
     } else if (isArmor) {
         updateEquipmentDisplay('armor', itemData);
 
-        // Check synergy and highlight battle-weaponry armor
+        // Highlight weapon that synergizes with this armor
         if (itemData.synergies && itemData.synergies.some(syn => syn.weapon === player.weaponry.weapon.name)) {
-            highlightBattleWeaponry('armor', true);
+            // Highlight weapon since it synergizes with this armor
+            highlightBattleWeaponry('weapon', true);
         }
     }
 }
@@ -250,14 +252,13 @@ function updateItemTooltip(itemElement) {
         if (currentArmor.synergies && currentArmor.synergies.some(syn => syn.weapon === itemData.name)) {
             hasSynergy = true;
             const synergy = currentArmor.synergies.find(syn => syn.weapon === itemData.name);
-            tooltipText += `\n\n✨ SYNERGY with ${currentArmor.name}!`;
 
             const bonuses = [];
-            if (synergy.defense) bonuses.push(`+${synergy.defense} 🛡️`);
-            if (synergy.evasion) bonuses.push(`+${Math.floor(synergy.evasion * 100)}% 💨`);
-            if (synergy.crit) bonuses.push(`+${Math.floor(synergy.crit * 100)}% 🍀`);
-            if (synergy.attack) bonuses.push(`+${synergy.attack} ⚔️`);
-            tooltipText += `\n${bonuses.join(', ')}`;
+            if (synergy.defense) bonuses.push(`🛡️ +${synergy.defense}`);
+            if (synergy.evasion) bonuses.push(`💨 +${Math.floor(synergy.evasion * 100)}%`);
+            if (synergy.crit) bonuses.push(`🍀 +${Math.floor(synergy.crit * 100)}%`);
+            if (synergy.attack) bonuses.push(`⚔️ +${synergy.attack}`);
+            tooltipText += `\n\nSynergy\n${bonuses.join(', ')}`;
         }
 
         // Show if currently equipped
@@ -275,11 +276,11 @@ function updateItemTooltip(itemElement) {
         if (synergy) {
             hasSynergy = true;
             const bonuses = [];
-            if (synergy.defense) bonuses.push(`+${synergy.defense} 🛡️`);
-            if (synergy.evasion) bonuses.push(`+${Math.floor(synergy.evasion * 100)}% 💨`);
-            if (synergy.crit) bonuses.push(`+${Math.floor(synergy.crit * 100)}% 🍀`);
-            if (synergy.attack) bonuses.push(`+${synergy.attack} ⚔️`);
-            tooltipText += `\n${bonuses.join(', ')}`;
+            if (synergy.defense) bonuses.push(`🛡️ +${synergy.defense}`);
+            if (synergy.evasion) bonuses.push(`💨 +${Math.floor(synergy.evasion * 100)}%`);
+            if (synergy.crit) bonuses.push(`🍀 +${Math.floor(synergy.crit * 100)}%`);
+            if (synergy.attack) bonuses.push(`⚔️ +${synergy.attack}`);
+            tooltipText += `\n\nSynergy\n${bonuses.join(', ')}`;
         }
 
         // Show if currently equipped

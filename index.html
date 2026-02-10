@@ -354,42 +354,83 @@
             </div>
 
             <!-- Inventory -->
-            <div id="inventory" class="inventory" x-show="screen === 'inventory'">
-                <div class="centered-buttons" style="position: fixed; top: -35%; left: 95%; transform: translate(-50%, -50%); z-index: 9999; height: fit-content;">
-                    <button class="regular-button"
-                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88);"
-                        @click="transition('inventory', 'returning')">Back</button>
-                </div>
+            <div id="inventory" class="inventory" x-show="screen === 'inventory'" x-data="{ activeTab: 'all' }">
                 <div class="inventory-panel" id="inventory-panel">
+                    <!-- Folder-style tabs -->
+                    <div class="inventory-tabs">
+                        <button class="regular-button"
+                            style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
+                            @click="transition('inventory', 'returning')">Back</button>
+                        <button @click="activeTab = 'all'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'all' }">
+                            All
+                        </button>
+                        <button @click="activeTab = 'equipment'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'equipment' }">
+                            Equipment
+                        </button>
+                        <button @click="activeTab = 'consumables'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'consumables' }">
+                            Consumables
+                        </button>
+                        <button @click="activeTab = 'battleReady'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'battleReady' }">
+                            Bombs
+                        </button>
+                        <button @click="activeTab = 'miscellaneous'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'miscellaneous' }">
+                            Misc
+                        </button>
+                    </div>
+
                     <div class="inventory-grid">
                         <template x-for="(item, idx) in Alpine.$data(document.getElementById('player')).inventory"
                             x-show="false" :key="idx">
                             <div class="inventory-item" :class="{'inventory-item--no-icon': !(item.sprite)}"
-                                :data-tooltip="desc" draggable="true" x-data="{
-                                    get desc() {
-                                    let it = assets.items.find(i => i.name === item.name);
-                                    const parts = [];
-                                    if (it.attack !== undefined || it.defense !== undefined || it.maxlvl) {
-                                        parts.push('Level ' + (item.level ?? 1));
-                                        if (it.attack !== undefined) {
-                                            parts.push(`⚔️${Math.floor(it.attack + ((item.level ?? 1 - 1) * it.attackPerLevel))} 🍀${Math.floor(it.crit * 100)}% ⚔️${it.critdmg}x 🎯${Math.floor(it.accuracy * 100)}%`);
-                                        } else if (it.defense !== undefined) {
-                                            parts.push(`🛡️${Math.floor(it.defense + ((item.level ?? 1 - 1) * it.alvlmult))} 💨${Math.floor(it.evasion * 100)}%`);
-                                        }
-                                    }
-                                    if (it.health) parts.push(`💖 ${Math.round(it.health * 100)}%`);
-                                    if (it.stamina) parts.push(`⚡ ${Math.round(it.stamina * 100)}%`);
-                                    if (it.buff) parts.push('⚔️ +' + Math.round(it.buff * 100) + '% ' + (it.rounds ? (' for ' + it.rounds + ' turns') : ''));
-                                    if (it.xp) parts.push(`🌟 ${it.xp} XP`);
-                                    if (it.chest) parts.push(`Opens ${assets.chests[it.chest].name}`);
-                                    if (it.damage) parts.push(`💥 ${it.damage}`);
-                                    if (it.pstatus) parts.push(`Gain ${it.pstatus.join(', ')}`);
-                                    if (it.estatus) parts.push(`Inflicts ${it.estatus.join(', ')}`);
-                                    if (parts.length) return parts.join('\n');
-                                    else return 'Crafting Reagent';
+                                :data-tooltip="desc" draggable="true" x-show="
+                        (() => {
+                            let it = assets.items.find(i => i.name === item.name);
+                            if (!it) return false;
+                            
+                            if (activeTab === 'all') return true;
+                            
+                            const isEquipment = (it.attack !== undefined && it.skills) || (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
+                            const isConsumable = it.health || it.stamina || it.xp || it.pstatus;
+                            const isBattleReady = it.damage || it.estatus || (it.buff && it.rounds);
+                            const isMiscellaneous = !isEquipment && !isConsumable && !isBattleReady;
+                            
+                            if (activeTab === 'equipment') return isEquipment;
+                            if (activeTab === 'consumables') return isConsumable;
+                            if (activeTab === 'battleReady') return isBattleReady;
+                            if (activeTab === 'miscellaneous') return isMiscellaneous;
+                            
+                            return false;
+                        })()
+                    " x-data="{
+                        get desc() {
+                            let it = assets.items.find(i => i.name === item.name);
+                            const parts = [];
+                            if (it.attack !== undefined || it.defense !== undefined || it.maxlvl) {
+                                parts.push('Level ' + (item.level ?? 1));
+                                if (it.attack !== undefined) {
+                                    parts.push(`⚔️${Math.floor(it.attack + ((item.level ?? 1 - 1) * it.attackPerLevel))} 🍀${Math.floor(it.crit * 100)}% ⚔️${it.critdmg}x 🎯${Math.floor(it.accuracy * 100)}%`);
+                                } else if (it.defense !== undefined) {
+                                    parts.push(`🛡️${Math.floor(it.defense + ((item.level ?? 1 - 1) * it.alvlmult))} 💨${Math.floor(it.evasion * 100)}%`);
                                 }
-                                    }">
-                                <div class=" inventory-item-amount inventory-item-amount--inline"
+                            }
+                            if (it.health) parts.push(`💖 ${Math.round(it.health * 100)}%`);
+                            if (it.stamina) parts.push(`⚡ ${Math.round(it.stamina * 100)}%`);
+                            if (it.buff) parts.push('⚔️ +' + Math.round(it.buff * 100) + '% ' + (it.rounds ? (' for ' + it.rounds + ' turns') : ''));
+                            if (it.xp) parts.push(`🌟 ${it.xp} XP`);
+                            if (it.chest) parts.push(`Opens ${assets.chests[it.chest].name}`);
+                            if (it.damage) parts.push(`💥 ${it.damage}`);
+                            if (it.pstatus) parts.push(`Gain ${it.pstatus.join(', ')}`);
+                            if (it.estatus) parts.push(`Inflicts ${it.estatus.join(', ')}`);
+                            if (parts.length) return parts.join('\n');
+                            else return 'Crafting Reagent';
+                        }
+                    }">
+                                <div class="inventory-item-amount inventory-item-amount--inline"
                                     x-show="item.amount > 1 && !(item.sprite)">x<span x-text="item.amount"></span>
                                 </div>
                                 <div class="inventory-item-icon-wrap">
@@ -404,12 +445,36 @@
                                     <div class="inventory-item-meta" x-text="desc"></div>
                                 </div>
                             </div>
-                    </div>
-                    </template>
+                        </template>
 
-                    <div class="inventory-empty"
-                        x-show="Alpine.$data(document.getElementById('player')).inventory.length === 0">No items
-                        in inventory</div>
+                        <div class="inventory-empty" x-show="(() => {
+                    const inventory = Alpine.$data(document.getElementById('player')).inventory;
+                    if (inventory.length === 0) return true;
+                    
+                    const filteredItems = inventory.filter(item => {
+                        let it = assets.items.find(i => i.name === item.name);
+                        if (!it) return false;
+                        
+                        if (activeTab === 'all') return true;
+                        
+                        const isEquipment = (it.attack !== undefined && it.skills) || (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
+                        const isConsumable = it.health || it.stamina || it.xp || it.pstatus;
+                        const isBattleReady = it.damage || it.estatus || (it.buff && it.rounds);
+                        const isMiscellaneous = !isEquipment && !isConsumable && !isBattleReady;
+                        
+                        if (activeTab === 'equipment') return isEquipment;
+                        if (activeTab === 'consumables') return isConsumable;
+                        if (activeTab === 'battleReady') return isBattleReady;
+                        if (activeTab === 'miscellaneous') return isMiscellaneous;
+                        
+                        return false;
+                    });
+                    
+                    return filteredItems.length === 0;
+                })()">
+                            No items in this category
+                        </div>
+                    </div>
                 </div>
             </div>
 
