@@ -377,6 +377,10 @@
                             :class="{ 'inventory-tab--active': activeTab === 'battleReady' }">
                             Bombs
                         </button>
+                        <button @click="activeTab = 'keys'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'keys' }">
+                            Keys
+                        </button>
                         <button @click="activeTab = 'miscellaneous'" class="inventory-tab"
                             :class="{ 'inventory-tab--active': activeTab === 'miscellaneous' }">
                             Misc
@@ -397,11 +401,13 @@
                             const isEquipment = (it.attack !== undefined && it.skills) || (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
                             const isConsumable = it.health || it.stamina || it.xp || it.pstatus;
                             const isBattleReady = it.damage || it.estatus || (it.buff && it.rounds);
+                            const isKey = it.chest;
                             const isMiscellaneous = !isEquipment && !isConsumable && !isBattleReady;
                             
                             if (activeTab === 'equipment') return isEquipment;
                             if (activeTab === 'consumables') return isConsumable;
                             if (activeTab === 'battleReady') return isBattleReady;
+                            if (activeTab === 'keys') return isKey;
                             if (activeTab === 'miscellaneous') return isMiscellaneous;
                             
                             return false;
@@ -465,6 +471,7 @@
                         if (activeTab === 'equipment') return isEquipment;
                         if (activeTab === 'consumables') return isConsumable;
                         if (activeTab === 'battleReady') return isBattleReady;
+                        if (activeTab === 'keys') return isKey;
                         if (activeTab === 'miscellaneous') return isMiscellaneous;
                         
                         return false;

@@ -1,8 +1,6 @@
-// inventory.js - Drag and Drop Inventory System
-
 let draggedItem = null;
 let draggedItemIndex = null;
-let draggedEquipment = null; // 'weapon' or 'armor'
+let draggedEquipment = null;
 
 function initInventoryDragDrop() {
     setTimeout(() => {
@@ -29,7 +27,6 @@ function setupEquipmentListeners() {
     battleWeaponry.addEventListener('dragstart', handleEquipmentDragStart);
     battleWeaponry.addEventListener('dragend', handleDragEnd);
 
-    // Make inventory panel a drop zone for equipment
     const inventoryPanel = document.getElementById('inventory-panel');
     if (inventoryPanel) {
         inventoryPanel.addEventListener('dragover', handleInventoryDragOver);
@@ -148,7 +145,6 @@ function enhanceInventoryTooltips() {
         items.forEach(item => {
             updateItemTooltip(item);
 
-            // Add hover listeners
             item.addEventListener('mouseenter', handleItemHover);
             item.addEventListener('mouseleave', handleItemLeave);
         });
@@ -178,22 +174,16 @@ function handleItemHover(e) {
     const isWeapon = itemData.attack !== undefined && itemData.skills;
     const isArmor = itemData.defense !== undefined && !itemData.skills && itemData.alvlmult !== undefined;
 
-    // Show equipment display
     if (isWeapon) {
         updateEquipmentDisplay('weapon', itemData);
 
-        // Highlight armor that synergizes with this weapon
         const currentArmor = player.armory.armor;
         if (currentArmor.synergies && currentArmor.synergies.some(syn => syn.weapon === itemData.name)) {
-            // Highlight armor since it synergizes with this weapon
             highlightBattleWeaponry('armor', true);
         }
     } else if (isArmor) {
         updateEquipmentDisplay('armor', itemData);
-
-        // Highlight weapon that synergizes with this armor
         if (itemData.synergies && itemData.synergies.some(syn => syn.weapon === player.weaponry.weapon.name)) {
-            // Highlight weapon since it synergizes with this armor
             highlightBattleWeaponry('weapon', true);
         }
     }
@@ -238,16 +228,12 @@ function updateItemTooltip(itemElement) {
     const itemData = assets.items.find(i => i.name === inventoryItem.name);
 
     if (!itemData) return;
-
-    // Get base tooltip from the meta element
     const metaElement = itemElement.querySelector('.inventory-item-meta');
     let tooltipText = metaElement ? metaElement.getAttribute('data-tooltip') || metaElement.textContent : '';
 
     let hasSynergy = false;
 
-    // Check if it's a weapon - show what armor synergizes with it
     if (itemData.attack !== undefined && itemData.skills) {
-        // Check if player's current armor synergizes with this weapon
         const currentArmor = player.armory.armor;
         if (currentArmor.synergies && currentArmor.synergies.some(syn => syn.weapon === itemData.name)) {
             hasSynergy = true;
@@ -261,17 +247,14 @@ function updateItemTooltip(itemElement) {
             tooltipText += `\n\nSynergy\n${bonuses.join(', ')}`;
         }
 
-        // Show if currently equipped
         if (player.weaponry.weapon.name === itemData.name) {
             tooltipText += `\n\n⚔️ Currently Equipped`;
         }
     }
 
-    // Check if it's armor - show synergy with current weapon
     if (itemData.defense !== undefined && !itemData.skills && itemData.synergies) {
         const currentWeapon = player.weaponry.weapon;
 
-        // Check if this armor synergizes with player's current weapon
         const synergy = itemData.synergies.find(syn => syn.weapon === currentWeapon.name);
         if (synergy) {
             hasSynergy = true;
@@ -283,16 +266,13 @@ function updateItemTooltip(itemElement) {
             tooltipText += `\n\nSynergy\n${bonuses.join(', ')}`;
         }
 
-        // Show if currently equipped
         if (player.armory.armor.name === itemData.name) {
             tooltipText += `\n\n🛡️ Currently Equipped`;
         }
     }
 
-    // Update tooltip
     itemElement.setAttribute('data-tooltip', tooltipText);
 
-    // Highlight yellow if has synergy
     if (hasSynergy) {
         itemElement.style.border = '2px solid gold';
         itemElement.style.backgroundColor = 'rgba(255, 215, 0, 0.1)';
@@ -322,7 +302,6 @@ function handleDragStart(e) {
     e.dataTransfer.setData('text/html', inventoryItem.innerHTML);
     inventoryItem.style.opacity = '0.4';
 
-    // Hide tooltip during drag
     const tooltip = document.getElementById('global-tooltip');
     if (tooltip) {
         tooltip.style.opacity = '0';
@@ -337,16 +316,13 @@ function handleEquipmentDragStart(e) {
     const player = Alpine.$data(document.getElementById('player'));
     const text = target.textContent.trim();
 
-    // Check if it's a weapon (contains weapon name)
     if (text.includes(player.weaponry.weapon.name)) {
         if (player.weaponry.weapon.name === "Hands") return; // Can't unequip Hands
         draggedEquipment = 'weapon';
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/html', target.innerHTML);
         target.style.opacity = '0.4';
-    }
-    // Check if it's armor (contains armor name)
-    else if (text.includes(player.armory.armor.name)) {
+    } else if (text.includes(player.armory.armor.name)) {
         if (player.armory.armor.name === "None") return; // Can't unequip None
         draggedEquipment = 'armor';
         e.dataTransfer.effectAllowed = 'move';
@@ -354,7 +330,6 @@ function handleEquipmentDragStart(e) {
         target.style.opacity = '0.4';
     }
 
-    // Hide tooltip during drag
     const tooltip = document.getElementById('global-tooltip');
     if (tooltip) {
         tooltip.style.opacity = '0';
@@ -366,18 +341,17 @@ function handleDragEnd(e) {
     const inventoryItem = e.target.closest('.inventory-item');
     if (inventoryItem) inventoryItem.style.opacity = '1';
 
-    // Reset equipment opacity
     if (e.target && e.target.hasAttribute('data-tooltip')) {
         e.target.style.opacity = '1';
     }
 
-    // Re-enable tooltip after drag
     const tooltip = document.getElementById('global-tooltip');
     if (tooltip) {
         tooltip.style.pointerEvents = '';
     }
 
-    // Reset dragged equipment
+    draggedItem = null;
+    draggedItemIndex = null;
     draggedEquipment = null;
 }
 
@@ -435,10 +409,7 @@ function handleInventoryDrop(e) {
     const assets = getAssets();
 
     if (draggedEquipment === 'weapon') {
-        // Add current weapon to inventory
         addToInventory(player.weaponry.weapon, player.weaponry.level);
-
-        // Unequip to Hands
         player.weaponry = {
             weapon: assets.items.find(w => w.name === 'Hands'),
             level: 1
@@ -446,10 +417,7 @@ function handleInventoryDrop(e) {
 
         showMessage(`Unequipped weapon!`, 'success');
     } else if (draggedEquipment === 'armor') {
-        // Add current armor to inventory
         addToInventory(player.armory.armor, player.armory.level);
-
-        // Unequip to None
         player.armory = {
             armor: assets.items.find(a => a.name === 'None'),
             level: 1
@@ -460,8 +428,6 @@ function handleInventoryDrop(e) {
 
     setPlayer();
     draggedEquipment = null;
-
-    // Refresh tooltips and equipment display
     setTimeout(() => {
         enhanceInventoryTooltips();
         updateEquipmentDisplay();
@@ -504,8 +470,6 @@ async function handleDrop(e) {
 
     draggedItem = null;
     draggedItemIndex = null;
-
-    // Refresh tooltips and equipment display
     setTimeout(() => {
         enhanceInventoryTooltips();
         updateEquipmentDisplay();
@@ -627,8 +591,5 @@ function showMessage(message, type = 'info') {
     }, 2000);
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initInventoryDragDrop);
-} else {
-    initInventoryDragDrop();
-}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initInventoryDragDrop);
+else initInventoryDragDrop();
