@@ -335,9 +335,6 @@ async function turnManager(toPlayer) {
         if (encounter.health <= 0) encounter.log.push(`--- ${background.enemy.name} has died. ---`);
         else {
             encounter.log.push(`--- ${background.name} has died. ---`);
-            await new Promise(resolve => setTimeout(resolve, 500));
-            player.health = player.maxHealth;
-            player.pstatus = [];
             await savePlayer();
             return;
         }
@@ -509,8 +506,36 @@ async function enemyMove() {
 }
 
 async function victory() {
-    transition('encounter', 'returning');
-    savePlayer();
+    const background = Alpine.$data(document.getElementById('background-image'));
+    const encounter = Alpine.$data(document.getElementById('encounter'));
+    const player = Alpine.$data(document.getElementById('player'));
+    if (player.health <= 0) {
+        let deathMessages = [
+            `${background.name} has fallen in battle...`,
+            `${background.name} met their demise...`,
+            `Are you making sacrifices at this point?`,
+            `Stand up and fight again.`,
+            `Come on, your vague heroism isn't over yet.`,
+            `This is not the end for ${background.name}.`,
+            `Even in death, ${background.name} inspires others to fight on. Including their child that has the exact same name.`,
+            `${background.name} has been defeated, but their legend will live on. Well, now.`,
+            `The enemy has bested ${background.name} this time.`,
+            `Defeat is just a stepping stone for ${background.name}. Rise again!`,
+            `Really? You died to a ${background.enemy.name}? A ${background.enemy.name.toUpperCase()}?!`,
+            `Do you think you're where you're supposed to be?`,
+            `📸🤨`,
+            `Hey, you. Don't you hear the bell?`,
+            `You're finally awake.`,
+            `So, about your healing ability...`
+        ]
+        alert(deathMessages[Math.floor(Math.random() * deathMessages.length)]);
+        transition('encounter', 'returning');
+        await new Promise(resolve => setTimeout(resolve, 500));
+        player.health = player.maxHealth;
+        player.pstatus = [];
+        updateBars();
+        savePlayer();
+    };
 }
 
 async function exportLog() {
