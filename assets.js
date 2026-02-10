@@ -2374,7 +2374,7 @@ function getAssets() {
 						chance: 0.12
 					},
 					{
-						name: "Blacksmith Globlin",
+						name: "Blacksmith Goblin",
 						chance: 0.12
 					},
 					{
@@ -2514,12 +2514,8 @@ function getAssets() {
 			{
 				name: "Eternal Damnation",
 				minlvl: 50,
-				maxlevel: "Death",
-				enemies: [
-					{
-						name: "All. All of them."
-					}
-				]
+				maxlvl: 50,
+				enemies: [] // Um...all of them.
 			}
 		],
 
