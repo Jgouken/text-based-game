@@ -71,7 +71,7 @@ function updateEquipmentDisplay(type = null, itemData = null) {
             <div style="text-align: center; font-family: 'Pixelify Sans', sans-serif; font-size: 16px; margin-bottom: 8px;">
                 <strong>⚔️ Current Weapon</strong>
             </div>
-            <div style="${hasSynergy ? 'border: 2px solid gold; padding: 8px; border-radius: 4px; background-color: rgba(255, 215, 0, 0.1);' : ''}">
+            <div>
                 <div style="font-weight: bold; color: #fff;">${weapon.name} - Level ${weaponLevel}</div>
                 <div style="font-size: 13px; color: #cfcfcf;">⚔️ ${Math.floor(weapon.attack + ((weaponLevel - 1) * weapon.attackPerLevel))}</div>
                 <div style="font-size: 13px; color: #cfcfcf;">🍀 ${Math.floor(weapon.crit * 100)}%</div>
@@ -108,7 +108,7 @@ function updateEquipmentDisplay(type = null, itemData = null) {
             <div style="text-align: center; font-family: 'Pixelify Sans', sans-serif; font-size: 16px; margin-bottom: 8px;">
                 <strong>🛡️ Current Armor</strong>
             </div>
-            <div style="${hasSynergy ? 'border: 2px solid gold; padding: 8px; border-radius: 4px; background-color: rgba(255, 215, 0, 0.1);' : ''}">
+            <div>
                 <div style="font-weight: bold; color: #fff;">${armor.name} - Level ${armorLevel}</div>
                 <div style="font-size: 13px; color: #cfcfcf;">🛡️ ${Math.floor(armor.defense + ((armorLevel - 1) * armor.alvlmult))}</div>
                 <div style="font-size: 13px; color: #cfcfcf;">💨 ${Math.floor(armor.evasion * 100)}%</div>
@@ -143,17 +143,25 @@ function enhanceInventoryTooltips() {
     const updateTooltips = () => {
         const items = inventoryGrid.querySelectorAll('.inventory-item');
         items.forEach(item => {
-            updateItemTooltip(item);
-
-            item.addEventListener('mouseenter', handleItemHover);
-            item.addEventListener('mouseleave', handleItemLeave);
+            if (!item.dataset.tooltipsEnhanced) {
+                updateItemTooltip(item);
+                item.addEventListener('mouseenter', handleItemHover);
+                item.addEventListener('mouseleave', handleItemLeave);
+                item.dataset.tooltipsEnhanced = 'true';
+            } else {
+                updateItemTooltip(item);
+            }
         });
     };
 
     updateTooltips();
 
-    const observer = new MutationObserver(updateTooltips);
-    observer.observe(inventoryGrid, { childList: true, subtree: true });
+    const observer = new MutationObserver(() => {
+        // Debounce the observer to prevent rapid re-calls
+        clearTimeout(observer.debounceTimer);
+        observer.debounceTimer = setTimeout(updateTooltips, 100);
+    });
+    observer.observe(inventoryGrid, { childList: true, subtree: false });
 }
 
 function handleItemHover(e) {
@@ -161,13 +169,13 @@ function handleItemHover(e) {
     const player = Alpine.$data(document.getElementById('player'));
     const assets = getAssets();
 
-    const itemIndex = Array.from(itemElement.parentElement.children)
-        .filter(el => el.classList.contains('inventory-item'))
-        .indexOf(itemElement);
+    // Get the item name from the DOM element
+    const itemName = itemElement.querySelector('.inventory-item-name')?.textContent || '';
+    
+    // Find the actual item in the inventory array by name
+    const inventoryItem = player.inventory.find(item => item.name === itemName);
+    if (!inventoryItem) return;
 
-    if (itemIndex === -1 || !player.inventory[itemIndex]) return;
-
-    const inventoryItem = player.inventory[itemIndex];
     const itemData = assets.items.find(i => i.name === inventoryItem.name);
     if (!itemData) return;
 
@@ -218,16 +226,16 @@ function updateItemTooltip(itemElement) {
     const player = Alpine.$data(document.getElementById('player'));
     const assets = getAssets();
 
-    const itemIndex = Array.from(itemElement.parentElement.children)
-        .filter(el => el.classList.contains('inventory-item'))
-        .indexOf(itemElement);
+    // Get item name from DOM element instead of using index
+    const itemName = itemElement.querySelector('.inventory-item-name')?.textContent || '';
+    
+    // Find the actual item in the inventory array by name
+    const inventoryItem = player.inventory.find(item => item.name === itemName);
+    if (!inventoryItem) return;
 
-    if (itemIndex === -1 || !player.inventory[itemIndex]) return;
-
-    const inventoryItem = player.inventory[itemIndex];
     const itemData = assets.items.find(i => i.name === inventoryItem.name);
-
     if (!itemData) return;
+
     const metaElement = itemElement.querySelector('.inventory-item-meta');
     let tooltipText = metaElement ? metaElement.getAttribute('data-tooltip') || metaElement.textContent : '';
 
@@ -289,14 +297,16 @@ function handleDragStart(e) {
     if (!inventoryItem) return;
 
     const player = Alpine.$data(document.getElementById('player'));
-    const itemIndex = Array.from(inventoryItem.parentElement.children)
-        .filter(el => el.classList.contains('inventory-item'))
-        .indexOf(inventoryItem);
+    const itemName = inventoryItem.querySelector('.inventory-item-name')?.textContent || '';
+    const itemLevel = inventoryItem.querySelector('[x-text*="Level"]')?.textContent.match(/\d+/)?.[0] || 1;
 
-    if (itemIndex === -1 || !player.inventory[itemIndex]) return;
+    // Find the actual item in the inventory array by name
+    const actualIndex = player.inventory.findIndex(item => item.name === itemName);
 
-    draggedItem = player.inventory[itemIndex];
-    draggedItemIndex = itemIndex;
+    if (actualIndex === -1 || !player.inventory[actualIndex]) return;
+
+    draggedItem = player.inventory[actualIndex];
+    draggedItemIndex = actualIndex;
 
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/html', inventoryItem.innerHTML);
@@ -350,6 +360,16 @@ function handleDragEnd(e) {
         tooltip.style.pointerEvents = '';
     }
 
+    const playerBar = document.getElementById('player');
+    if (playerBar) {
+        playerBar.style.backgroundColor = '';
+    }
+
+    const inventoryPanel = document.getElementById('inventory-panel');
+    if (inventoryPanel) {
+        inventoryPanel.style.backgroundColor = '';
+    }
+
     draggedItem = null;
     draggedItemIndex = null;
     draggedEquipment = null;
@@ -371,6 +391,29 @@ function handleDragOver(e) {
     const playerBar = document.getElementById('player');
     playerBar.style.backgroundColor = 'rgba(0, 255, 100, 0.2)';
     playerBar.style.transition = 'all 0.2s ease';
+}
+
+function handleDragEnd(e) {
+    const inventoryItem = e.target.closest('.inventory-item');
+    if (inventoryItem) inventoryItem.style.opacity = '1';
+
+    if (e.target && e.target.hasAttribute('data-tooltip')) {
+        e.target.style.opacity = '1';
+    }
+
+    const tooltip = document.getElementById('global-tooltip');
+    if (tooltip) {
+        tooltip.style.pointerEvents = '';
+    }
+
+    const playerBar = document.getElementById('player');
+    if (playerBar) {
+        playerBar.style.backgroundColor = '';
+    }
+
+    draggedItem = null;
+    draggedItemIndex = null;
+    draggedEquipment = null;
 }
 
 function handleDragLeave(e) {
@@ -415,7 +458,7 @@ function handleInventoryDrop(e) {
             level: 1
         };
 
-        showMessage(`Unequipped weapon!`, 'success');
+        showMessage(`Unequipped Weapon`, 'warning');
     } else if (draggedEquipment === 'armor') {
         addToInventory(player.armory.armor, player.armory.level);
         player.armory = {
@@ -423,7 +466,7 @@ function handleInventoryDrop(e) {
             level: 1
         };
 
-        showMessage(`Unequipped armor!`, 'success');
+        showMessage(`Unequipped Armor`, 'warning');
     }
 
     setPlayer();
@@ -586,7 +629,8 @@ function showMessage(message, type = 'info') {
     document.body.appendChild(messageEl);
 
     setTimeout(() => {
-        messageEl.style.animation = 'slideUp 0.3s ease-out';
+        messageEl.style.animation = 'slideUp 0.3s ease-out forwards';
+        messageEl.style.opacity = '0';
         setTimeout(() => messageEl.remove(), 300);
     }, 2000);
 }
