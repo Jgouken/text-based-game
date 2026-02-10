@@ -87,7 +87,7 @@ function updateEquipmentDisplay(type = null, itemData = null) {
             const synergy = player.armory.armor.synergies.find(syn => syn.weapon === itemData.name);
             html += `
                 <div style="margin-top: 8px; border: 2px solid gold; padding: 6px; border-radius: 4px; background-color: rgba(255, 215, 0, 0.2);">
-                    <div style="font-weight: bold; color: gold; font-size: 13px; text-align: center;">✨ Synergy</div>
+                    <div style="font-weight: bold; color: gold; font-size: 13px; text-align: center;">${synergy.name}</div>
                     <div style="font-size: 12px; color: #fff; margin-top: 3px;">`;
 
             const bonuses = [];
@@ -122,7 +122,7 @@ function updateEquipmentDisplay(type = null, itemData = null) {
             const synergy = itemData.synergies.find(syn => syn.weapon === player.weaponry.weapon.name);
             html += `
                 <div style="margin-top: 8px; border: 2px solid gold; padding: 6px; border-radius: 4px; background-color: rgba(255, 215, 0, 0.2);">
-                    <div style="font-weight: bold; color: gold; font-size: 13px; text-align: center;">✨ Synergy</div>
+                    <div style="font-weight: bold; color: gold; font-size: 13px; text-align: center;">${synergy.name}</div>
                     <div style="font-size: 12px; color: #fff; margin-top: 3px;">`;
 
             const bonuses = [];

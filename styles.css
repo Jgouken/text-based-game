@@ -84,6 +84,11 @@ img {
     transition: text-decoration-color 2s ease;
 }
 
+.battle-log [data-tooltip]:hover {
+    text-decoration: underline;
+    text-decoration-color: white;
+}
+
 .background-image {
     position: fixed;
     background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)),
@@ -738,9 +743,9 @@ img {
     max-height: 95vh;
     overflow: hidden;
     text-align: left;
-    background-color: rgba(20,20,20,0.95);
+    background-color: rgba(20, 20, 20, 0.95);
     border: 2px solid #222;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
     border-radius: 8px;
     font-size: 16px;
 }
@@ -918,6 +923,7 @@ img {
         transform: translateX(-50%) translateY(-100px);
         opacity: 0;
     }
+
     to {
         transform: translateX(-50%) translateY(0);
         opacity: 1;
@@ -929,6 +935,7 @@ img {
         transform: translateX(-50%) translateY(0);
         opacity: 1;
     }
+
     to {
         transform: translateX(-50%) translateY(-100px);
         opacity: 0;
