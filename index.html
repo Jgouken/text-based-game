@@ -402,6 +402,11 @@
                             style="padding: 5px 10px; font-size: 12px;">
                             Type
                         </button>
+                        <button @click="sortBy = 'level'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': sortBy === 'level' }"
+                            style="padding: 5px 10px; font-size: 12px;">
+                            Level
+                        </button>
                         <button @click="sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'" class="inventory-tab"
                             style="padding: 5px 10px; font-size: 12px;"
                             :data-tooltip="sortOrder === 'asc' ? 'Click to reverse' : 'Click to reverse'">
@@ -435,7 +440,6 @@
                     return false;
                 });
                 
-                // Sort items
                 filtered.sort((a, b) => {
                     let aItem = assets.items.find(i => i.name === a.name);
                     let bItem = assets.items.find(i => i.name === b.name);
@@ -445,24 +449,31 @@
                     if (sortBy === 'name') {
                         compareVal = a.name.localeCompare(b.name);
                     } else if (sortBy === 'type') {
-                    // Weapons, Armor, Bombs, Consumables, Misc, Keys
-                    const getTypeOrder = (item) => {
-                        if (item.attack !== undefined && item.skills) return 0; // weapon
-                        if (item.defense !== undefined && !item.skills && item.alvlmult !== undefined) return 1; // armor
-                        if (item.damage || item.estatus || (item.buff && item.rounds)) return 2; // battle/bombs
-                        if (item.health || item.stamina || item.xp || item.pstatus) return 3; // consumable
-                        if (item.chest !== undefined) return 5; // keys
-                        return 4; // misc
-                    };
-                    
-                    const aType = getTypeOrder(aItem);
-                    const bType = getTypeOrder(bItem);
-                    
-                    compareVal = aType - bType;
-                    if (compareVal === 0) {
-                        compareVal = a.name.localeCompare(b.name);
+                        // Weapons, Armor, Bombs, Consumables, Misc, Keys
+                        const getTypeOrder = (item) => {
+                            if (item.attack !== undefined && item.skills) return 0; // weapon
+                            if (item.defense !== undefined && !item.skills && item.alvlmult !== undefined) return 1; // armor
+                            if (item.damage || item.estatus || (item.buff && item.rounds)) return 2; // battle/bombs
+                            if (item.health || item.stamina || item.xp || item.pstatus) return 3; // consumable
+                            if (item.chest !== undefined) return 5; // keys
+                            return 4; // misc
+                        };
+                        
+                        const aType = getTypeOrder(aItem);
+                        const bType = getTypeOrder(bItem);
+                        
+                        compareVal = aType - bType;
+                        if (compareVal === 0) {
+                            compareVal = a.name.localeCompare(b.name);
+                        }
+                    } else if (sortBy === 'level') {
+                        const aLevel = a.level ?? 1;
+                        const bLevel = b.level ?? 1;
+                        compareVal = aLevel - bLevel;
+                        if (compareVal === 0) {
+                            compareVal = a.name.localeCompare(b.name);
+                        }
                     }
-                }
                     
                     return sortOrder === 'asc' ? compareVal : -compareVal;
                 });
