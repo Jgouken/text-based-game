@@ -171,7 +171,7 @@ function handleItemHover(e) {
 
     // Get the item name from the DOM element
     const itemName = itemElement.querySelector('.inventory-item-name')?.textContent || '';
-    
+
     // Find the actual item in the inventory array by name
     const inventoryItem = player.inventory.find(item => item.name === itemName);
     if (!inventoryItem) return;
@@ -222,19 +222,36 @@ function highlightBattleWeaponry(type, highlight) {
     }
 }
 
+function refreshSynergies() {
+    const inventoryGrid = document.querySelector('.inventory-grid');
+    if (!inventoryGrid) return;
+
+    const items = inventoryGrid.querySelectorAll('.inventory-item');
+    items.forEach(item => {
+        updateItemTooltip(item);
+    });
+}
+
 function updateItemTooltip(itemElement) {
     const player = Alpine.$data(document.getElementById('player'));
     const assets = getAssets();
 
-    // Get item name from DOM element instead of using index
     const itemName = itemElement.querySelector('.inventory-item-name')?.textContent || '';
-    
-    // Find the actual item in the inventory array by name
     const inventoryItem = player.inventory.find(item => item.name === itemName);
-    if (!inventoryItem) return;
+    if (!inventoryItem) {
+        itemElement.style.border = '2px solid #444';
+        itemElement.style.backgroundColor = '';
+        itemElement.style.boxShadow = '';
+        return;
+    }
 
     const itemData = assets.items.find(i => i.name === inventoryItem.name);
-    if (!itemData) return;
+    if (!itemData) {
+        itemElement.style.border = '2px solid #444';
+        itemElement.style.backgroundColor = '';
+        itemElement.style.boxShadow = '';
+        return;
+    }
 
     const metaElement = itemElement.querySelector('.inventory-item-meta');
     let tooltipText = metaElement ? metaElement.getAttribute('data-tooltip') || metaElement.textContent : '';
@@ -243,7 +260,7 @@ function updateItemTooltip(itemElement) {
 
     if (itemData.attack !== undefined && itemData.skills) {
         const currentArmor = player.armory.armor;
-        if (currentArmor.synergies && currentArmor.synergies.some(syn => syn.weapon === itemData.name)) {
+        if (currentArmor && currentArmor.synergies && currentArmor.synergies.some(syn => syn.weapon === itemData.name)) {
             hasSynergy = true;
             const synergy = currentArmor.synergies.find(syn => syn.weapon === itemData.name);
 
@@ -300,7 +317,6 @@ function handleDragStart(e) {
     const itemName = inventoryItem.querySelector('.inventory-item-name')?.textContent || '';
     const itemLevel = inventoryItem.querySelector('[x-text*="Level"]')?.textContent.match(/\d+/)?.[0] || 1;
 
-    // Find the actual item in the inventory array by name
     const actualIndex = player.inventory.findIndex(item => item.name === itemName);
 
     if (actualIndex === -1 || !player.inventory[actualIndex]) return;

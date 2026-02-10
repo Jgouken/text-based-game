@@ -355,7 +355,8 @@
 
             <!-- Inventory -->
             <div id="inventory" class="inventory" x-show="screen === 'inventory'"
-                x-data="{ activeTab: 'all', sortBy: 'name', sortOrder: 'asc' }">
+                x-data="{ activeTab: 'all', sortBy: 'name', sortOrder: 'asc' }"
+                x-effect="$watch('sortBy', () => refreshSynergies()); $watch('sortOrder', () => refreshSynergies())">
                 <div class="inventory-panel" id="inventory-panel">
                     <!-- Folder-style tabs -->
                     <div class="inventory-tabs">
@@ -392,23 +393,23 @@
                     <div
                         style="padding: 10px; display: flex; gap: 10px; align-items: center; background-color: rgba(0,0,0,0.3); margin-bottom: 10px;">
                         <span style="color: white; font-size: 14px;">Sort by:</span>
-                        <button @click="sortBy = 'name'" class="inventory-tab"
+                        <button @click="sortBy = 'name'; refreshSynergies()" class="inventory-tab"
                             :class="{ 'inventory-tab--active': sortBy === 'name' }"
                             style="padding: 5px 10px; font-size: 12px;">
                             Name
                         </button>
-                        <button @click="sortBy = 'type'" class="inventory-tab"
+                        <button @click="sortBy = 'type'; refreshSynergies()" class="inventory-tab"
                             :class="{ 'inventory-tab--active': sortBy === 'type' }"
                             style="padding: 5px 10px; font-size: 12px;">
                             Type
                         </button>
-                        <button @click="sortBy = 'level'" class="inventory-tab"
+                        <button @click="sortBy = 'level'; refreshSynergies()" class="inventory-tab"
                             :class="{ 'inventory-tab--active': sortBy === 'level' }"
                             style="padding: 5px 10px; font-size: 12px;">
                             Level
                         </button>
-                        <button @click="sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'" class="inventory-tab"
-                            style="padding: 5px 10px; font-size: 12px;"
+                        <button @click="sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; refreshSynergies()"
+                            class="inventory-tab" style="padding: 5px 10px; font-size: 12px;"
                             :data-tooltip="sortOrder === 'asc' ? 'Click to reverse' : 'Click to reverse'">
                             <span x-text="sortOrder === 'asc' ? '↑ Ascending' : '↓ Descending'"></span>
                         </button>
