@@ -25,7 +25,7 @@
     <div alt="Background" id="background-image" class="background-image" x-init="startup()" x-data="{
             name: JSON.parse(localStorage.getItem('textBasedData'))?.name || '',
             location: 'Warhamshire',
-            screen: JSON.parse(localStorage.getItem('textBasedData'))?.name ? 'inventory' : 'new-player',
+            screen: JSON.parse(localStorage.getItem('textBasedData'))?.name ? 'returning' : 'new-player',
             showPlayerBar: false,
             enemy: getAssets().enemies.find(enemy => enemy.name == 'Fox King'),
             enemyLevel: 1,
@@ -252,13 +252,13 @@
                     :data-tooltip="`Base Defense\n\n60 + ((${level || 1} - 1) * 10) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult}) = ${Math.floor(60 + (((level || 1) - 1) * 10) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult))}`"
                     x-text="`🛡️${defense}`"></span>
                 <br><br>
-                <span
-                    :style="armory.armor ?.synergies.some(syn => syn.weapon == weaponry.weapon.name) ?? false ? `text-decoration: underline;` : ''"
+                <span draggable="true"
+                    :style="armory.armor ?.synergies.some(syn => syn.weapon == weaponry.weapon.name) ?? false ? `text-decoration: underline; cursor: grab;` : `cursor: grab;`"
                     :data-tooltip="`${weaponry.weapon.description}\n⚔️${Math.floor(weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel))} 🍀${Math.floor(weaponry.weapon.crit * 100)}% ⚔️${weaponry.weapon.critdmg}x 🎯${Math.floor(weaponry.weapon.accuracy * 100)}%`"
                     x-text="`${weaponry.weapon.name} - ${weaponry.level}`"></span>
                 <br><br>
-                <span
-                    :style="armory.armor ?.synergies.some(syn => syn.weapon == weaponry.weapon.name) ?? false ? `text-decoration: underline;` : ''"
+                <span draggable="true"
+                    :style="armory.armor ?.synergies.some(syn => syn.weapon == weaponry.weapon.name) ?? false ? `text-decoration: underline; cursor: grab;` : `cursor: grab;`"
                     :data-tooltip="`${armory.armor.description}\n🛡️${Math.floor(armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult))} 💨${Math.floor(armory.armor.evasion * 100)}%`"
                     x-text="`${armory.armor.name} - ${armory.level}`"></span>
             </div>
@@ -355,7 +355,7 @@
 
             <!-- Inventory -->
             <div id="inventory" class="inventory" x-show="screen === 'inventory'">
-                <div class="centered-buttons" style="position: fixed; top: 10px; left: 10px; z-index: 9000;">
+                <div class="centered-buttons" style="position: fixed; top: -35%; left: 95%; transform: translate(-50%, -50%); z-index: 9999; height: fit-content;">
                     <button class="regular-button"
                         style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88);"
                         @click="transition('inventory', 'returning')">Back</button>
@@ -365,7 +365,7 @@
                         <template x-for="(item, idx) in Alpine.$data(document.getElementById('player')).inventory"
                             x-show="false" :key="idx">
                             <div class="inventory-item" :class="{'inventory-item--no-icon': !(item.sprite)}"
-                                :data-tooltip="desc" x-data="{
+                                :data-tooltip="desc" draggable="true" x-data="{
                                     get desc() {
                                     let it = assets.items.find(i => i.name === item.name);
                                     const parts = [];
