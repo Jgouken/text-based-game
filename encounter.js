@@ -356,18 +356,46 @@ async function turnManager(toPlayer) {
 
             player.experience += xpdrop;
             if (player.level > currentLevel) {
-                await setPlayer();
                 player.health = player.maxHealth;
                 player.stamina = player.maxStamina;
-            } else updateBars();
+            }
+            await setPlayer();
+            updateBars();
 
             // Pick a drop from the enemy
             const drop = randomByChance(background.enemy.drops)
             const loot = assets.items.find(item => item.name == drop.name);
             let level = 1
             if (loot.minlvl) level = loot.minlvl && loot.maxlvl ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
+
+            let desc = () => {
+                let it = loot;
+                const parts = [];
+                if (it.attack !== undefined || it.defense !== undefined || it.maxlvl) {
+                    parts.push('Level ' + (level ?? 1));
+                    if (it.attack !== undefined) {
+                        parts.push(`⚔️${Math.floor(it.attack + ((level ?? 1 - 1) * it.attackPerLevel))} 🍀${Math.floor(it.crit * 100)}% ⚔️${it.critdmg}x 🎯${Math.floor(it.accuracy * 100)}%`);
+                    } else if (it.defense !== undefined) {
+                        parts.push(`🛡️${Math.floor(it.defense + ((level ?? 1 - 1) * it.alvlmult))} 💨${Math.floor(it.evasion * 100)}%`);
+                    }
+                }
+
+                if (it.health) parts.push(`💖 ${Math.round(it.health * 100)}%`);
+                if (it.stamina) parts.push(`⚡ ${Math.round(it.stamina * 100)}%`);
+                if (it.buff) parts.push('⚔️ +' + Math.round(it.buff * 100) + '% ' + (it.rounds ? (' for ' + it.rounds + ' turns') : ''));
+                if (it.xp) parts.push(`🌟 ${it.xp} XP`);
+                if (it.chest !== undefined) parts.push(`Opens ${assets.chests[it.chest].name}`);
+                if (it.damage) parts.push(`💥 ${it.damage}`);
+                if (it.pstatus) parts.push(`Gain ${it.pstatus.join(', ')}`);
+                if (it.estatus) parts.push(`Inflicts ${it.estatus.join(', ')}`);
+                if (parts.length) return parts.join('\n');
+                else return 'Crafting Reagent';
+            }
+
+            let descText = desc();
+
             const lootResult = addToInventory(loot, level);
-            if (lootResult) encounter.log.push(`🎁 ${background.enemy.name} dropped a <span style="color: lightblue;" data-tooltip="${level > 1 ? `Level ${level}\n\n` : ''}${loot.description || "Curious..."}${isWeapon ? `\n⚔️${Math.floor(loot.attack + ((level - 1) * loot.attackPerLevel))} 🍀${Math.floor(loot.crit * 100)}% ⚔️${loot.critdmg}x 🎯${Math.floor(loot.accuracy * 100)}%` : isArmor ? `\n🛡️${Math.floor(loot.defense + ((level - 1) * loot.alvlmult))} 💨${Math.floor(loot.evasion * 100)}%` : ""}">${level > 1 ? `Level ${level} ` : ''}${loot.name}</span>! 🎁`);
+            if (lootResult) encounter.log.push(`🎁 ${background.enemy.name} dropped a${loot.name.startsWith('[aeiou]') ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip="${descText}">${loot.name}</span>! 🎁`);
             else alert(`Couldn't acquire ${drop.name}.`)
             return true;
         } else return false;
