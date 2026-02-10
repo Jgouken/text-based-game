@@ -3915,13 +3915,13 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Twig",
-						name: "Light",
-						evasion: 0.025,
+						name: "Sneaky",
+						evasion: 0.03,
 					},
 					{
 						weapon: "Branch",
-						name: "Thick",
-						defense: 5,
+						name: "Heavy",
+						defense: 50,
 					},
 				]
 			},
@@ -3938,13 +3938,13 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Broken Dagger",
-						name: "Jagged Edge",
-						crit: 0.025,
+						name: "Lucky",
+						crit: 0.03,
 					},
 					{
 						weapon: "Rusty Dagger",
-						name: "Thick",
-						defense: 5,
+						name: "Heavy",
+						defense: 50,
 					},
 				]
 			},
@@ -3961,8 +3961,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Trusty Dagger",
-						name: "Light",
-						evasion: 0.025,
+						name: "Sneaky",
+						evasion: 0.03,
 					},
 				]
 			},
@@ -3979,8 +3979,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Perfect Stick",
-						name: "Light",
-						evasion: 0.025,
+						name: "Sneaky",
+						evasion: 0.03,
 					},
 				]
 			},
@@ -3997,8 +3997,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Iron Short Sword",
-						name: "Hide",
-						defense: 10,
+						name: "Heavy",
+						defense: 50,
 					},
 				]
 			},
@@ -4015,8 +4015,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Golden Stick",
-						name: "Powerful",
-						attack: 35
+						name: "Destructive",
+						attack: 200,
 					},
 				]
 			},
@@ -4033,13 +4033,13 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Dual Daggers",
-						name: "Light",
-						evasion: 0.05,
+						name: "Swift",
+						evasion: 0.06,
 					},
 					{
 						weapon: "Dual Hatchets",
-						name: "Brute",
-						attack: 15
+						name: "Sharp",
+						attack: 100,
 					},
 				]
 			},
@@ -4056,8 +4056,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Iron Sword",
-						name: "Tough",
-						defense: 15,
+						name: "Stable",
+						defense: 100,
 					},
 				]
 			},
@@ -4074,13 +4074,13 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Wooden Bow",
-						name: "Targeted",
-						crit: 0.05,
+						name: "Smooth",
+						crit: 0.09,
 					},
 				]
 			},
 			{
-				name: "Assassins Cloak",
+				name: "Assassin Cloak",
 				description: "A black cloak made from a very light material with a set of padded clothing underneath.",
 
 				defense: 179,
@@ -4092,8 +4092,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Silver Dagger",
-						name: "Swift",
-						evasion: 0.05,
+						name: "Sly",
+						evasion: 0.09,
 					},
 				]
 			},
@@ -4111,7 +4111,7 @@ function getAssets() {
 					{
 						weapon: "Lumberjack Axe",
 						name: "Strong",
-						defense: 20,
+						defense: 150,
 					},
 				]
 			},
@@ -4128,8 +4128,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Martial Arts",
-						name: "Targeted",
-						crit: 0.05,
+						name: "Determined",
+						crit: 0.12,
 					},
 				]
 			},
@@ -4146,8 +4146,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Chainsaw",
-						name: "Relentless",
-						crit: 0.1,
+						name: "Determined",
+						crit: 0.12,
 					},
 				]
 			},
@@ -4164,13 +4164,13 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Great Sword",
-						name: "Heavy",
-						defense: 25,
+						name: "Sturdy",
+						defense: 150,
 					},
 					{
 						weapon: "Skull Crusher",
 						name: "Strong",
-						attack: 20
+						attack: 150,
 					},
 				]
 			},
@@ -4187,8 +4187,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Twin Swords",
-						name: "Sharp",
-						crit: 0.075,
+						name: "Determined",
+						crit: 0.12,
 					},
 				]
 			},
@@ -4205,8 +4205,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Spiked Gauntlets",
-						name: "Strength",
-						attack: 20
+						name: "Destructive",
+						attack: 200,
 					},
 				]
 			},
@@ -4223,8 +4223,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Ninja Arts",
-						name: "Illusive",
-						evasion: 0.015,
+						name: "Deceptive",
+						evasion: 0.012,
 					},
 				]
 			},
@@ -4241,13 +4241,13 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Holy Spear",
-						name: "Unbreakable",
-						defense: 50,
+						name: "Durable",
+						defense: 200,
 					},
 					{
 						weapon: "Evil Pulverizer",
-						name: "Powerful",
-						attack: 35
+						name: "Destructive",
+						attack: 200,
 					},
 				]
 			},
@@ -4264,13 +4264,13 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Cursed Bone Bow",
-						name: "Relentless",
-						crit: 0.1,
+						name: "Determined",
+						crit: 0.12,
 					},
 					{
 						weapon: "Cursed Fangs",
-						name: "Relentless",
-						crit: 0.1,
+						name: "Deceptive",
+						evasion: 0.12,
 					},
 				]
 			},
@@ -4287,8 +4287,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Holy Arts",
-						name: "Reinforced",
-						defense: 35,
+						name: "Unbreakable",
+						defense: 250,
 					},
 				]
 			},
@@ -4305,8 +4305,8 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Demonic Nunchucks",
-						name: "Relentless",
-						crit: 0.1,
+						name: "Unmatched",
+						crit: 0.15,
 					},
 				]
 			},
@@ -4323,7 +4323,7 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Iris & Hermes",
-						name: "Dead Eye",
+						name: "Unmatched",
 						crit: 0.15,
 					},
 				]
@@ -4341,7 +4341,7 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Orcus",
-						name: "Illusive",
+						name: "Undetectable",
 						evasion: 0.015,
 					},
 				]
@@ -4359,9 +4359,19 @@ function getAssets() {
 				synergies: [
 					{
 						weapon: "Alectrona & Melanie",
-						name: "Unstoppable",
-						evasion: 0.015,
-						attack: 50
+						name: "Unity",
+						crit: 0.077,
+						evasion: 0.066,
+					},
+					{
+						weapon: "Orcus",
+						name: "Undetectable",
+						evasion: 0.15,
+					},
+					{
+						weapon: "Iris & Hermes",
+						name: "Unmatched",
+						crit: 0.15,
 					},
 				]
 			},
