@@ -328,47 +328,52 @@ async function turnManager(toPlayer) {
     updateBars();
     await new Promise(resolve => setTimeout(resolve, 250));
 
-    if (encounter.health <= 0 || player.health <= 0) {
-        died = true;
-        background.enemy.skills.forEach(s => { delete s._cooldown; });
-        encounter.battle = false;
-        if (encounter.health <= 0) encounter.log.push(`--- ${background.enemy.name} has died. ---`);
-        else {
-            encounter.log.push(`--- ${background.name} has died. ---`);
-            await savePlayer();
-            return;
-        }
+    const death = async () => {
+        if (encounter.health <= 0 || player.health <= 0) {
+            died = true;
+            background.enemy.skills.forEach(s => { delete s._cooldown; });
+            encounter.battle = false;
+            if (encounter.health <= 0) encounter.log.push(`--- ${background.enemy.name} has died. ---`);
+            else {
+                encounter.log.push(`--- ${background.name} has died. ---`);
+                await savePlayer();
+                return true;
+            }
 
-        let currentLevel = player.level
-        var xpdrop = Math.floor((((background.enemyLevel ** 1.2) * (encounter.maxHealth / encounter.attack)) ** 1.2) * 2);
-        let xptext = `<span color="lightblue" data-tooltip='(((${background.enemyLevel}^1.2) * (${encounter.maxHealth} / ${encounter.attack}))^1.2) * 2 = ${xpdrop}'>${xpdrop}</span>`;
-        await new Promise(r => setTimeout(r, 200))
-        encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
-
-        while (player.experience + xpdrop > Math.floor((player.level / 0.07) ** 2)) {
-            xpdrop -= (Math.floor((player.level / 0.07) ** 2)) - player.experience;
-            player.level += 1;
-            player.experience = 0;
+            let currentLevel = player.level
+            var xpdrop = Math.floor((((background.enemyLevel ** 1.2) * (encounter.maxHealth / encounter.attack)) ** 1.2) * 2);
+            let xptext = `<span color="lightblue" data-tooltip='(((${background.enemyLevel}^1.2) * (${encounter.maxHealth} / ${encounter.attack}))^1.2) * 2 = ${xpdrop}'>${xpdrop}</span>`;
             await new Promise(r => setTimeout(r, 200))
-            encounter.log.push(`⬆️ ${background.name} leveled up to level ${player.level}! ⬆️`)
-        }
+            encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
 
-        player.experience += xpdrop;
-        if (player.level > currentLevel) {
-            await setPlayer();
-            player.health = player.maxHealth;
-            player.stamina = player.maxStamina;
-        } else updateBars();
+            while (player.experience + xpdrop > Math.floor((player.level / 0.07) ** 2)) {
+                xpdrop -= (Math.floor((player.level / 0.07) ** 2)) - player.experience;
+                player.level += 1;
+                player.experience = 0;
+                await new Promise(r => setTimeout(r, 200))
+                encounter.log.push(`⬆️ ${background.name} leveled up to level ${player.level}! ⬆️`)
+            }
 
-        // Pick a drop from the enemy
-        const drop = randomByChance(background.enemy.drops)
-        const loot = assets.items.find(item => item.name == drop.name);
-        const level = loot.minlvl && loot.maxlvl ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
-        const lootResult = addToInventory(loot, level);
-        if (lootResult) encounter.log.push(`🎁 ${background.enemy.name} dropped a <span style="color: lightblue;" data-tooltip="${level > 1 ? `Level ${level}\n\n` : ''}${loot.description || "Curious..."}${isWeapon ? `\n⚔️${Math.floor(loot.attack + ((level - 1) * loot.attackPerLevel))} 🍀${Math.floor(loot.crit * 100)}% ⚔️${loot.critdmg}x 🎯${Math.floor(loot.accuracy * 100)}%` : isArmor ? `\n🛡️${Math.floor(loot.defense + ((level - 1) * loot.alvlmult))} 💨${Math.floor(loot.evasion * 100)}%` : ""}">${level > 1 ? `Level ${level} ` : ''}${loot.name}</span>! 🎁`);
-        else alert(`Couldn't acquire ${drop.name}.`)
-        return;
+            player.experience += xpdrop;
+            if (player.level > currentLevel) {
+                await setPlayer();
+                player.health = player.maxHealth;
+                player.stamina = player.maxStamina;
+            } else updateBars();
+
+            // Pick a drop from the enemy
+            const drop = randomByChance(background.enemy.drops)
+            const loot = assets.items.find(item => item.name == drop.name);
+            let level = 1
+            if (loot.minlvl) level = loot.minlvl && loot.maxlvl ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
+            const lootResult = addToInventory(loot, level);
+            if (lootResult) encounter.log.push(`🎁 ${background.enemy.name} dropped a <span style="color: lightblue;" data-tooltip="${level > 1 ? `Level ${level}\n\n` : ''}${loot.description || "Curious..."}${isWeapon ? `\n⚔️${Math.floor(loot.attack + ((level - 1) * loot.attackPerLevel))} 🍀${Math.floor(loot.crit * 100)}% ⚔️${loot.critdmg}x 🎯${Math.floor(loot.accuracy * 100)}%` : isArmor ? `\n🛡️${Math.floor(loot.defense + ((level - 1) * loot.alvlmult))} 💨${Math.floor(loot.evasion * 100)}%` : ""}">${level > 1 ? `Level ${level} ` : ''}${loot.name}</span>! 🎁`);
+            else alert(`Couldn't acquire ${drop.name}.`)
+            return true;
+        } else return false;
     }
+
+    if (await death()) return;
 
     if (actorStatuses.some(s => s.id == '✨') && actorStatuses.some(s => s.id == '🌑')) {
         actorStatuses.length = 0;
@@ -444,6 +449,8 @@ async function turnManager(toPlayer) {
         if (s.rounds <= 0) actorStatuses.splice(actorStatuses.indexOf(s), 1);
     }
 
+    if (await death()) return;
+
     if (toPlayer) {
         const already = battleStation._regenThisRound || 0;
         const desiredTotal = already > 0 ? Math.round(player.maxStamina * 0.2) : Math.round(player.maxStamina * 0.1);
@@ -507,7 +514,6 @@ async function enemyMove() {
 
 async function victory() {
     const background = Alpine.$data(document.getElementById('background-image'));
-    const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
     if (player.health <= 0) {
         let deathMessages = [
@@ -529,13 +535,13 @@ async function victory() {
             `So, about your healing ability...`
         ]
         alert(deathMessages[Math.floor(Math.random() * deathMessages.length)]);
-        transition('encounter', 'returning');
         await new Promise(resolve => setTimeout(resolve, 500));
         player.health = player.maxHealth;
         player.pstatus = [];
-        updateBars();
-        savePlayer();
     };
+    transition('encounter', 'returning');
+    updateBars();
+    savePlayer();
 }
 
 async function exportLog() {

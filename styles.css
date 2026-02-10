@@ -82,6 +82,7 @@ img {
     cursor: default;
     text-decoration: none;
     transition: text-decoration-color 2s ease;
+    pointer-events: auto;
 }
 
 .battle-log [data-tooltip]:hover {
@@ -188,6 +189,7 @@ img {
     padding: 0 10px 10px;
     box-sizing: border-box;
     overflow: hidden;
+    z-index: 9999;
     transition: all 2.5s ease-in-out;
 }
 
@@ -401,6 +403,7 @@ img {
     object-fit: cover;
     transition: all 2.5s ease-in-out;
     overflow: hidden;
+    pointer-events: none;
 }
 
 .enemy-heart {
@@ -741,12 +744,13 @@ img {
     color: white;
     font-family: 'Pixelify Sans', sans-serif;
     max-height: 95vh;
-    overflow: hidden;
+    overflow-y: auto;
     text-align: left;
     background-color: rgba(20, 20, 20, 0.95);
     border: 2px solid #222;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
     font-size: 16px;
+    pointer-events: auto;
 }
 
 .inventory-grid {
