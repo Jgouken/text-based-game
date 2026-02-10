@@ -1685,7 +1685,7 @@ function getAssets() {
 						chance: 0.25
 					},
 					{
-						name: "Gold Key",
+						name: "Golden Key",
 						chance: 0.1
 					},
 
@@ -1749,7 +1749,7 @@ function getAssets() {
 						chance: 0.35
 					},
 					{
-						name: "Gold Key",
+						name: "Golden Key",
 						chance: 0.25
 					},
 
@@ -1837,7 +1837,7 @@ function getAssets() {
 						chance: 0.2
 					},
 					{
-						name: "Gold Key",
+						name: "Golden Key",
 						chance: 0.4
 					},
 					{
@@ -1933,7 +1933,7 @@ function getAssets() {
 						chance: 0.15
 					},
 					{
-						name: "Gold Key",
+						name: "Golden Key",
 						chance: 0.35
 					},
 					{
@@ -4080,7 +4080,7 @@ function getAssets() {
 				]
 			},
 			{
-				name: "Assassin's Cloak",
+				name: "Assassins Cloak",
 				description: "A black cloak made from a very light material with a set of padded clothing underneath.",
 
 				defense: 179,
@@ -4428,58 +4428,68 @@ function getAssets() {
 			{
 				name: "Light Defense Potion",
 				defense: 0.15,
+				rounds: 3,
 				battle: true
 			},
 			{
 				name: "Medium Defense Potion",
 				defense: 0.3,
+				rounds: 3,
 				battle: true,
 				craft: ["Blue Goo", "Water Flask"]
 			},
 			{
 				name: "Heavy Defense Potion",
 				defense: 0.5,
+				rounds: 3,
 				battle: true,
 				craft: ["Blue Goo", "Egg", "Empty Flask"]
 			},
 			{
 				name: "Great Defense Potion",
 				defense: 0.7,
+				rounds: 3,
 				battle: true,
 				craft: ["Gret Goo", "Demon Horn", "Egg", "Empty Flash"]
 			},
 			{
 				name: "Grand Defense Potion",
 				defense: 0.9,
+				rounds: 3,
 				battle: true
 			},
 			// Attack
 			{
 				name: "Light Attack Potion",
 				buff: 0.15,
+				rounds: 3,
 				battle: true
 			},
 			{
 				name: "Medium Attack Potion",
 				buff: 0.3,
+				rounds: 3,
 				battle: true,
 				craft: ["Red Goo", "Water Flask"]
 			},
 			{
 				name: "Heavy Attack Potion",
 				buff: 0.5,
+				rounds: 3,
 				battle: true,
 				craft: ["Red Goo", "Milk", "Empty Flask"]
 			},
 			{
 				name: "Great Attack Potion",
 				buff: 0.7,
+				rounds: 3,
 				battle: true,
 				craft: ["Red Goo", "Werewolf Claw", "Milk", "Empty Flash"]
 			},
 			{
 				name: "Grand Attack Potion",
 				buff: 0.9,
+				rounds: 3,
 				battle: true
 			},
 			// Energy
@@ -4537,32 +4547,27 @@ function getAssets() {
 			// Chest Keys
 			{
 				name: "Wooden Key",
-				sprite: "https://media.discordapp.net/attachments/1116445708279615641/1130288425271046226/Wooden_Key.gif",
-				emoji: '<a:wooden_key:1130297739087986738>',
+				sprite: "assets/keys/WoodenKey.gif",
 				chest: 0
 			},
 			{
 				name: "Iron Key",
-				sprite: "https://media.discordapp.net/attachments/1116445708279615641/1130290916410798081/Iron_Key.gif",
-				emoji: '<a:iron_key:1130297737250881606>',
+				sprite: "assets/keys/IronKey.gif",
 				chest: 1
 			},
 			{
 				name: "Golden Key",
-				sprite: "https://media.discordapp.net/attachments/1116445708279615641/1130297628266082395/Golden_Key.gif",
-				emoji: '<a:golden_key:1130297740367249440>',
+				sprite: "assets/keys/GoldenKey.gif",
 				chest: 2
 			},
 			{
 				name: "Platinum Key",
-				sprite: "https://media.discordapp.net/attachments/1116445708279615641/1130306154476617768/Platinum_Key.gif",
-				emoji: '<a:platinum_key:1130306302355185695>',
+				sprite: "assets/keys/PlatinumKey.gif",
 				chest: 3
 			},
 			{
 				name: "Adamantine Key",
-				sprite: "https://media.discordapp.net/attachments/1116445708279615641/1130319559363154030/Adamantine_Key.gif",
-				emoji: '<a:adamantine_key:1130319612790198373>',
+				sprite: "assets/keys/AdamantineKey.gif",
 				chest: 4
 			},
 
@@ -4605,7 +4610,7 @@ function getAssets() {
 				battle: true
 			},
 			{
-				name: "Poison Flask",
+				name: "Poison Bomb",
 				estatus: ["💀"],
 				craft: ["Venom", "Booze Flask"],
 				damage: 260,
@@ -4627,7 +4632,6 @@ function getAssets() {
 			{
 				name: "Mana Infused Crystal",
 				craft: ["Witch Crystal", "Werewolf Claw", "Demon Horn", "Vampire Fang"],
-				uses: ["Enchanting Crystal"]
 			},
 			{
 				name: "Enchanting Crystal",
@@ -4644,87 +4648,66 @@ function getAssets() {
 			// Drops
 			{
 				name: "Yellow Goo",
-				uses: ["Stamina Potion", "Sticky Solution"]
 			},
 			{
 				name: "Green Goo",
-				uses: ["Health Potion", "Sticky Solution"]
 			},
 			{
 				name: "Blue Goo",
-				uses: ["Defense Potion", "Sticky Solution"]
 			},
 			{
 				name: "Red Goo",
-				uses: ["Attack Potion", "Sticky Solution"]
 			},
 			{
 				name: "Pepper",
-				uses: ["Pepper Bomb"]
 			},
 			{
 				name: "Wool",
-				uses: ["Cloth"]
 			},
 			{
 				name: "Milk",
-				uses: ["Heavy Stamina Potion", "Heavy Attack Potion", "Great Stamina Potion", "Great Attack Potion"]
 			},
 			{
 				name: "Egg",
-				uses: ["Heavy Health Potion", "Heavy Defense Potion", "Great Health Potion", "Great Defense Potion"]
 			},
 			{
 				name: "Vampire Fang",
-				uses: ["Great Health Potion", "Mana Infused Crystal"]
 			},
 			{
 				name: "Demon Horn",
-				uses: ["Great Defense Potion", "Mana Infused Crystal"]
 			},
 			{
 				name: "Werewolf Claw",
-				uses: ["Great Attack Potion", "Mana Infused Crystal"]
 			},
 			{
 				name: "Witch Crystal",
-				uses: ["Great Stamina Potion", "Mana Infused Crystal"]
 			},
 			{
 				name: "Red Gem",
-				uses: ["Purple Gem"]
 			},
 			{
 				name: "Blue Gem",
-				uses: ["Purple Gem"]
 			},
 			{
 				name: "Water Flask",
-				uses: ["Purifying Water", "Sticky Solution", "Whetstone & Polish", "Medium Stamina Potion", "Medium Health Potion", "Medium Defense Potion", "Medium Attack Potion"]
 			},
 			{
 				name: "Booze Flask",
-				uses: ["Molotov", "Poison Potion"]
 			},
 			{
 				name: "Empty Flask",
-				uses: ["Heavy Stamina Potion", "Heavy Health Potion", "Heavy Defense Potion", "Heavy Attack Potion", "Great Stamina Potion", "Great Health Potion", "Great Defense Potion", "Great Attack Potion", "Poison Potion", "Purifying Bomb"]
 			},
 			{
 				name: "Venom",
-				uses: ["Poison Flask"]
 			},
 			{
 				name: "Purified Salt",
-				uses: ["Purifying Water", "Purifying Flask"]
 			},
 			{
 				name: "Gunpowder",
-				uses: ["Ordinary Bomb", "Pepper Bomb", "Shrapnel Bomb"]
 			},
 			{
 				name: "Whetstone",
-				uses: ["Whetstone & Polish"]
 			}
 		],
 
@@ -4736,72 +4719,114 @@ function getAssets() {
 				key: "Wooden Key",
 				drops: [
 					{
-						name: "Trusty Dagger",
-						chance: 0.05
+						name: "Rusty Dagger",
+						chance: 0.12
 					},
 					{
+						name: "Trusty Dagger",
+						chance: 0.08
+					},
+
+					{
 						name: "Perfect Stick",
-						chance: 0.05
+						chance: 0.04
+					},
+					{
+						name: "Damaged Cloak",
+						chance: 0.12
 					},
 					{
 						name: "Rogues Cloak",
-						chance: 0.05
+						chance: 0.08
 					},
 					{
 						name: "Perfect Leaf",
-						chance: 0.05
+						chance: 0.04
 					},
 					{
 						name: "Light Stamina Potion",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Light Health Potion",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Light Attack Potion",
-						chance: 0.03
+						chance: 0.02
+					},
+					{
+						name: "Light Defense Potion",
+						chance: 0.02
 					},
 					{
 						name: "Light Energy Potion",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Light XP Potion",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Medium Stamina Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Medium Health Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Medium Attack Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
+						name: "Medium Defense Potion",
+						chance: 0.01
+					},
+
+					{
 						name: "Medium Energy Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Medium XP Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Empty Flask",
-						chance: 0.1
+						chance: 0.025
 					},
 					{
 						name: "Water Flask",
-						chance: 0.1
+						chance: 0.025
+					},
+					{
+						name: "Booze Flask",
+						chance: 0.025
+					},
+					{
+						name: "Pepper",
+						chance: 0.025
+					},
+					{
+						name: "Venom",
+						chance: 0.025
+					},
+					{
+						name: "Gunpowder",
+						chance: 0.025
 					},
 					{
 						name: "Ordinary Bomb",
-						chance: 0.1
+						chance: 0.07
+					},
+					{
+						name: "Pepper Bomb",
+						chance: 0.04
+					},
+					{
+						name: "Molotov",
+						chance: 0.04
 					},
 					{
 						name: "Wooden Key",
@@ -4809,11 +4834,11 @@ function getAssets() {
 					},
 					{
 						name: "Silver Key",
-						chance: 0.04
+						chance: 0.02
 					},
 					{
-						name: "Molotov",
-						chance: 0.05
+						name: "Golden Key",
+						chance: 0.01
 					},
 				]
 			},
@@ -4825,70 +4850,98 @@ function getAssets() {
 				drops: [
 					{
 						name: "Iron Short Sword",
-						chance: 0.07
+						chance: 0.1
+					},
+					{
+						name: "Dual Daggers",
+						chance: 0.05
+					},
+					{
+						name: "Dual Hatchets",
+						chance: 0.05
 					},
 					{
 						name: "Padded Clothing",
-						chance: 0.07
+						chance: 0.1
+					},
+					{
+						name: "Leather Armor",
+						chance: 0.1
 					},
 					{
 						name: "Light Stamina Potion",
-						chance: 0.03
+						chance: 0.015
 					},
 					{
 						name: "Light Health Potion",
-						chance: 0.03
+						chance: 0.015
 					},
 					{
 						name: "Light Attack Potion",
-						chance: 0.03
+						chance: 0.015
+					},
+					{
+						name: "Light Defense Potion",
+						chance: 0.015
 					},
 					{
 						name: "Light Energy Potion",
-						chance: 0.03
+						chance: 0.015
 					},
 					{
 						name: "Light XP Potion",
-						chance: 0.03
+						chance: 0.015
 					},
 					{
 						name: "Medium Stamina Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Medium Health Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Medium Attack Potion",
-						chance: 0.02
+						chance: 0.01
+					},
+					{
+						name: "MedIum Defense Potion",
+						chance: 0.01
 					},
 					{
 						name: "Medium Energy Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Medium XP Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Heavy Stamina Potion",
-						chance: 0.01
+						chance: 0.005
 					},
 					{
 						name: "Heavy Health Potion",
-						chance: 0.01
+						chance: 0.005
 					},
 					{
 						name: "Heavy Attack Potion",
-						chance: 0.01
+						chance: 0.005
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.005
 					},
 					{
 						name: "Heavy Energy Potion",
-						chance: 0.01
+						chance: 0.005
 					},
 					{
 						name: "Heavy XP Potion",
+						chance: 0.005
+					},
+					{
+						name: "Sticky Solution",
 						chance: 0.01
 					},
 					{
@@ -4900,7 +4953,15 @@ function getAssets() {
 						chance: 0.02
 					},
 					{
-						name: "Booze",
+						name: "Booze Flask",
+						chance: 0.02
+					},
+					{
+						name: "Pepper",
+						chance: 0.02
+					},
+					{
+						name: "Venom",
 						chance: 0.02
 					},
 					{
@@ -4908,12 +4969,16 @@ function getAssets() {
 						chance: 0.02
 					},
 					{
+						name: "Purified Salt",
+						chance: 0.01
+					},
+					{
 						name: "Red Gem",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Blue Gem",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Purple Gem",
@@ -4924,24 +4989,24 @@ function getAssets() {
 						chance: 0.01
 					},
 					{
-						name: "Whetstone & Polish",
-						chance: 0.04
+						name: "Ordinary Bomb",
+						chance: 0.02
 					},
 					{
-						name: "Ordinary Bomb",
-						chance: 0.05
+						name: "Pepper Bomb",
+						chance: 0.02
 					},
 					{
 						name: "Poison Bomb",
-						chance: 0.05
+						chance: 0.02
 					},
 					{
 						name: "Shrapnel Bomb",
-						chance: 0.05
+						chance: 0.02
 					},
 					{
 						name: "Molotov",
-						chance: 0.05
+						chance: 0.02
 					},
 					{
 						name: "Wooden Key",
@@ -4949,7 +5014,7 @@ function getAssets() {
 					},
 					{
 						name: "Iron Key",
-						chance: 0.02
+						chance: 0.05
 					},
 					{
 						name: "Golden Key",
@@ -4957,7 +5022,7 @@ function getAssets() {
 					},
 					{
 						name: "Platinum Key",
-						chance: 0.03
+						chance: 0.02
 					},
 				]
 			},
@@ -4973,83 +5038,139 @@ function getAssets() {
 					},
 					{
 						name: "Wooden Bow",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Lumberjack Axe",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Silver Knife",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Golden Stick",
-						chance: 0.03
+						chance: 0.01
 					},
 					{
 						name: "Light Armor",
-						chance: 0.08
+						chance: 0.05
+					},
+					{
+						name: "Hunter Armor",
+						chance: 0.02
+					},
+					{
+						name: "LumberJack Attire",
+						chance: 0.02
+					},
+					{
+						name: "Assassins Cloak",
+						chance: 0.02
+					},
+					{
+						name: "Confidence",
+						chance: 0.01
 					},
 					{
 						name: "Medium Stamina Potion",
-						chance: 0.02
+						chance: 0.015
 					},
 					{
 						name: "Medium Health Potion",
-						chance: 0.02
+						chance: 0.015
 					},
 					{
 						name: "Medium Attack Potion",
-						chance: 0.02
+						chance: 0.015
+					},
+					{
+						name: "Medium Defense Potion",
+						chance: 0.015
 					},
 					{
 						name: "Medium Energy Potion",
-						chance: 0.02
+						chance: 0.015
 					},
 					{
 						name: "Medium XP Potion",
-						chance: 0.02
+						chance: 0.015
 					},
 					{
 						name: "Heavy Stamina Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Heavy Health Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Heavy Attack Potion",
-						chance: 0.02
+						chance: 0.01
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.01
 					},
 					{
 						name: "Heavy Energy Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Heavy XP Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Great Stamina Potion",
-						chance: 0.01
+						chance: 0.005
 					},
 					{
 						name: "Great Health Potion",
-						chance: 0.01
+						chance: 0.05
 					},
 					{
 						name: "Great Attack Potion",
-						chance: 0.01
+						chance: 0.005
+					},
+					{
+						name: "Great Defense Potion",
+						chance: 0.005
 					},
 					{
 						name: "Great Energy Potion",
-						chance: 0.01
+						chance: 0.005
 					},
 					{
 						name: "Great XP Potion",
-						chance: 0.01
+						chance: 0.005
+					},
+					{
+						name: "Grand Stamina Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Health Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Attack Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Defense Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Energy Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand XP Potion",
+						chance: 0.005
+					},
+					{
+						name: "Sticky Solution",
+						chance: 0.03
 					},
 					{
 						name: "Gunpowder",
@@ -5057,51 +5178,75 @@ function getAssets() {
 					},
 					{
 						name: "Red Gem",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Blue Gem",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Purple Gem",
 						chance: 0.01
 					},
 					{
-						name: "Whetstone",
+						name: "Vampire Fang",
 						chance: 0.01
 					},
 					{
-						name: "Whetstone & Polish",
-						chance: 0.025
+						name: "Demon Horn",
+						chance: 0.01
 					},
 					{
-						name: "Ordinary Bomb",
-						chance: 0.05
+						name: "Werewolf Claw",
+						chance: 0.01
 					},
 					{
-						name: "Poison Bomb",
-						chance: 0.05
+						name: "Witch Crystal",
+						chance: 0.01
 					},
 					{
-						name: "Shrapnel Bomb",
-						chance: 0.05
-					},
-					{
-						name: "Pepper Bomb",
-						chance: 0.05
+						name: "Mana Infused Crystal",
+						chance: 0.01
 					},
 					{
 						name: "Purified Salt",
-						chance: 0.025
+						chance: 0.02
+					},
+					{
+						name: "Purification Gem",
+						chance: 0.03
+					},
+					{
+						name: "Whetstone",
+						chance: 0.02
+					},
+					{
+						name: "Whetstone & Polish",
+						chance: 0.03
+					},
+					{
+						name: "Ordinary Bomb",
+						chance: 0.03
+					},
+					{
+						name: "Poison Bomb",
+						chance: 0.03
+					},
+					{
+						name: "Shrapnel Bomb",
+						chance: 0.03
+					},
+					{
+						name: "Pepper Bomb",
+						chance: 0.03
 					},
 					{
 						name: "Purifying Flask",
-						chance: 0.025
+						chance: 0.03
 					},
 					{
 						name: "Purifying Water",
-						chance: 0.025
+						chance: 0.03
 					},
 					{
 						name: "Iron Key",
@@ -5113,12 +5258,12 @@ function getAssets() {
 					},
 					{
 						name: "Platinum Key",
-						chance: 0.02
+						chance: 0.07
 					},
 					{
 						name: "Adamantine Key",
-						chance: 0.01
-					},
+						chance: 0.03
+					}
 				]
 			},
 			{
@@ -5129,19 +5274,19 @@ function getAssets() {
 				drops: [
 					{
 						name: "Martial Arts",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Chainsaw",
-						chance: 0.03
+						chance: 0.01
 					},
 					{
 						name: "Twin Swords",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Spiked Gauntlets",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Ninja Arts",
@@ -5157,19 +5302,19 @@ function getAssets() {
 					},
 					{
 						name: "Thick Sleeveless Hoodie",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Leather Apron & Mask",
-						chance: 0.03
+						chance: 0.01
 					},
 					{
 						name: "Dragon Cloak",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Spiked Leather Armor",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Shinobi Garments",
@@ -5185,87 +5330,123 @@ function getAssets() {
 					},
 					{
 						name: "Heavy Stamina Potion",
-						chance: 0.02
+						chance: 0.015
 					},
 					{
 						name: "Heavy Health Potion",
-						chance: 0.02
+						chance: 0.015
 					},
 					{
 						name: "Heavy Attack Potion",
-						chance: 0.02
+						chance: 0.015
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.015
 					},
 					{
 						name: "Heavy Energy Potion",
-						chance: 0.02
+						chance: 0.015
 					},
 					{
 						name: "Heavy XP Potion",
-						chance: 0.02
+						chance: 0.015
 					},
 					{
 						name: "Great Stamina Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Great Health Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Great Attack Potion",
-						chance: 0.02
+						chance: 0.01
+					},
+					{
+						name: "Great Defense Potion",
+						chance: 0.01
 					},
 					{
 						name: "Great Energy Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Great XP Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Grand Stamina Potion",
-						chance: 0.01
+						chance: 0.005
 					},
 					{
 						name: "Grand Health Potion",
-						chance: 0.01
+						chance: 0.005
 					},
 					{
 						name: "Grand Attack Potion",
-						chance: 0.01
+						chance: 0.005
+					},
+					{
+						name: "Grand Defense Potion",
+						chance: 0.005
 					},
 					{
 						name: "Grand Energy Potion",
-						chance: 0.01
+						chance: 0.005
 					},
 					{
 						name: "Grand XP Potion",
-						chance: 0.01
+						chance: 0.005
 					},
 					{
-						name: "Gunpowder",
-						chance: 0.01
-					},
-					{
-						name: "Red Gem",
-						chance: 0.02
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.02
+						name: "Sticky Solution",
+						chance: 0.03
 					},
 					{
 						name: "Purple Gem",
-						chance: 0.01
+						chance: 0.04
+					},
+					{
+						name: "Purification Gem",
+						chance: 0.05
+					},
+					{
+						name: "Vampire Fang",
+						chance: 0.03
+					},
+					{
+						name: "Demon Horn",
+						chance: 0.03
+					},
+					{
+						name: "Werewolf Claw",
+						chance: 0.03
+					},
+					{
+						name: "Witch Crystal",
+						chance: 0.03
+					},
+					{
+						name: "Mana Infused Crystal",
+						chance: 0.05
+					},
+					{
+						name: "Enchanting Crystal",
+						chance: 0.05
+					},
+					{
+						name: "Purified Salt",
+						chance: 0.02
 					},
 					{
 						name: "Whetstone",
-						chance: 0.01
+						chance: 0.03
 					},
 					{
 						name: "Whetstone & Polish",
-						chance: 0.01
+						chance: 0.05
 					},
 					{
 						name: "Ordinary Bomb",
@@ -5273,23 +5454,19 @@ function getAssets() {
 					},
 					{
 						name: "Poison Bomb",
-						chance: 0.05
+						chance: 0.02
 					},
 					{
 						name: "Shrapnel Bomb",
-						chance: 0.05
+						chance: 0.02
 					},
 					{
 						name: "Pepper Bomb",
-						chance: 0.05
-					},
-					{
-						name: "Purified Salt",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Purifying Flask",
-						chance: 0.03
+						chance: 0.02
 					},
 					{
 						name: "Purifying Water",
@@ -5325,23 +5502,23 @@ function getAssets() {
 					},
 					{
 						name: "Demonic Nunchucks",
-						chance: 0.03
+						chance: 0.0175
 					},
 					{
 						name: "Holy Arts",
-						chance: 0.03
+						chance: 0.0175
 					},
 					{
 						name: "Iris & Hermes",
-						chance: 0.01
+						chance: 0.0055
 					},
 					{
 						name: "Orcus",
-						chance: 0.01
+						chance: 0.0055
 					},
 					{
 						name: "Alectrona & Melanie",
-						chance: 0.01
+						chance: 0.004
 					},
 					{
 						name: "Holy Knight Armor",
@@ -5353,43 +5530,47 @@ function getAssets() {
 					},
 					{
 						name: "Sinner Jacket",
-						chance: 0.03
+						chance: 0.0175
 					},
 					{
 						name: "Blessed Gi",
-						chance: 0.03
+						chance: 0.0175
 					},
 					{
 						name: "Walking Church",
-						chance: 0.01
+						chance: 0.0055
 					},
 					{
 						name: "Black Mourning",
-						chance: 0.01
+						chance: 0.0055
 					},
 					{
 						name: "Equinox",
-						chance: 0.01
+						chance: 0.004
 					},
 					{
 						name: "Heavy Stamina Potion",
-						chance: 0.01
+						chance: 0.03
 					},
 					{
 						name: "Heavy Health Potion",
-						chance: 0.01
+						chance: 0.03
 					},
 					{
 						name: "Heavy Attack Potion",
-						chance: 0.01
+						chance: 0.03
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.03
 					},
 					{
 						name: "Heavy Energy Potion",
-						chance: 0.01
+						chance: 0.03
 					},
 					{
 						name: "Heavy XP Potion",
-						chance: 0.01
+						chance: 0.03
 					},
 					{
 						name: "Great Stamina Potion",
@@ -5404,6 +5585,10 @@ function getAssets() {
 						chance: 0.02
 					},
 					{
+						name: "Great Defense Potion",
+						chance: 0.02
+					},
+					{
 						name: "Great Energy Potion",
 						chance: 0.02
 					},
@@ -5413,51 +5598,59 @@ function getAssets() {
 					},
 					{
 						name: "Grand Stamina Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Grand Health Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Grand Attack Potion",
-						chance: 0.02
+						chance: 0.01
+					},
+					{
+						name: "Grand Defense Potion",
+						chance: 0.01
 					},
 					{
 						name: "Grand Energy Potion",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Grand XP Potion",
-						chance: 0.02
-					},
-					{
-						name: "Red Gem",
-						chance: 0.02
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.02
+						chance: 0.01
 					},
 					{
 						name: "Purple Gem",
-						chance: 0.01
+						chance: 0.04
+					},
+					{
+						name: "Mana Infused Gem",
+						chance: 0.03
+					},
+					{
+						name: "Enchanting Gem",
+						chance: 0.03
+					},
+					{
+						name: "Purifying Gem",
+						chance: 0.04
 					},
 					{
 						name: "Whetstone & Polish",
-						chance: 0.01
+						chance: 0.03
 					},
 					{
 						name: "Poison Bomb",
-						chance: 0.05
+						chance: 0.04
 					},
 					{
 						name: "Shrapnel Bomb",
-						chance: 0.05
+						chance: 0.04
 					},
 					{
 						name: "Pepper Bomb",
-						chance: 0.05
+						chance: 0.04
 					},
 					{
 						name: "Purified Salt",
@@ -5465,11 +5658,11 @@ function getAssets() {
 					},
 					{
 						name: "Purifying Flask",
-						chance: 0.05
+						chance: 0.04
 					},
 					{
 						name: "Purifying Water",
-						chance: 0.05
+						chance: 0.04
 					},
 					{
 						name: "Platinum Key",
@@ -5477,10 +5670,10 @@ function getAssets() {
 					},
 					{
 						name: "Adamantine Key",
-						chance: 0.04
+						chance: 0.02
 					},
 				]
-			},
-		],
+			}
+		]
 	}
 }

@@ -16,7 +16,8 @@
     <script src="script.js"></script>
     <script src="assets.js"></script>
     <script src="encounter.js"></script>
-    <script src="player.js"></script>
+    <script src="player.js"></script>+
+    <script src="inventory.js"></script>
 </head>
 
 <body>
@@ -24,7 +25,7 @@
     <div alt="Background" id="background-image" class="background-image" x-init="startup()" x-data="{
             name: JSON.parse(localStorage.getItem('textBasedData'))?.name || '',
             location: 'Warhamshire',
-            screen: JSON.parse(localStorage.getItem('textBasedData'))?.name ? 'returning' : 'new-player',
+            screen: JSON.parse(localStorage.getItem('textBasedData'))?.name ? 'inventory' : 'new-player',
             showPlayerBar: false,
             enemy: getAssets().enemies.find(enemy => enemy.name == 'Fox King'),
             enemyLevel: 1,
@@ -354,118 +355,175 @@
 
             <!-- Inventory -->
             <div id="inventory" class="inventory" x-show="screen === 'inventory'">
-
-            </div>
-
-            <!-- Journal -->
-            <div id="journal" class="journal" x-show="screen === 'journal'">
-
-            </div>
-
-            <!-- Crafting-->
-            <div id="crafting" class="crafting" x-show="screen === 'crafting'">
-
-            </div>
-
-            <!-- Travel -->
-            <div id="travel" class="travel" x-show="screen === 'travel'">
-                <div class="travel-panel" id="travel-panel">
-                    <h1>📍 Travel Across The Hexlands<br></h1>
-                    <br>
-                    <div class="travel-grid">
-                        <button class="travel-button regular-button travel-button-bg travel-button--warhamshire"
-                            :class="{ 'active': location === 'Warhamshire' }"
-                            @click="location = 'Warhamshire'; transition('travel','returning'); savePlayer();">
-                            <span class="travel-name">Warhamshire</span>
-                            <span class="travel-subtext"
-                                x-text="location === 'Warhamshire' ? 'you are here' : '[1-5] Where it all begins...'"></span>
-                        </button>
-
-                        <button class="travel-button regular-button travel-button-bg travel-button--warham-castle"
-                            :class="{ 'active': location === 'Warham Castle' }"
-                            @click="location = 'Warham Castle'; transition('travel','returning'); savePlayer();">
-                            <span class="travel-name">Warham Castle</span>
-                            <span class="travel-subtext"
-                                x-text="location === 'Warham Castle' ? 'you are here' : '[6-10] A fortified stronghold.'"></span>
-                        </button>
-
-                        <button class="travel-button regular-button travel-button-bg travel-button--hinterland"
-                            :class="{ 'active': location === 'Hinterland' }"
-                            @click="location = 'Hinterland'; transition('travel','returning'); savePlayer();">
-                            <span class="travel-name">Hinterland</span>
-                            <span class="travel-subtext"
-                                x-text="location === 'Hinterland' ? 'you are here' : '[8-14] Shiver through the cold forest.'"></span>
-                        </button>
-
-                        <button class="travel-button regular-button travel-button-bg travel-button--uralan-mountains"
-                            :class="{ 'active': location === 'Uralan Mountains' }"
-                            @click="location = 'Uralan Mountains'; transition('travel','returning'); savePlayer();">
-                            <span class="travel-name">Uralan Mountains</span>
-                            <span class="travel-subtext"
-                                x-text="location === 'Uralan Mountains' ? 'you are here' : '[12-18] Scale the high peaks and low valleys.'"></span>
-                        </button>
-
-                        <button class="travel-button regular-button travel-button-bg travel-button--vulpeston"
-                            :class="{ 'active': location === 'Vulpeston' }"
-                            @click="location = 'Vulpeston'; transition('travel','returning'); savePlayer();">
-                            <span class="travel-name">Vulpeston</span>
-                            <span class="travel-subtext"
-                                x-text="location === 'Vulpeston' ? 'you are here' : '[16-22] Infiltrate the sly and cunning theives.'"></span>
-                        </button>
-
-                        <button class="travel-button regular-button travel-button-bg travel-button--vulpes-tower"
-                            :class="{ 'active': location === 'Vulpes Tower' }"
-                            @click="location = 'Vulpes Tower'; transition('travel','returning'); savePlayer();">
-                            <span class="travel-name">Vulpes Tower</span>
-                            <span class="travel-subtext"
-                                x-text="location === 'Vulpes Tower' ? 'you are here' : '[21-29] An ancient spire full of luxury goods.'"></span>
-                        </button>
-
-                        <button class="travel-button regular-button travel-button-bg travel-button--vexadel"
-                            :class="{ 'active': location === 'Vexadel' }"
-                            @click="location = 'Vexadel'; transition('travel','returning'); savePlayer();">
-                            <span class="travel-name">Vexadel</span>
-                            <span class="travel-subtext"
-                                x-text="location === 'Vexadel' ? 'you are here' : '[30-35] It smells terrible.'"></span>
-                        </button>
-
-                        <button class="travel-button regular-button travel-button-bg travel-button--vexadel-gaillard"
-                            :class="{ 'active': location === 'Vexadel Gaillard' }"
-                            @click="location = 'Vexadel Gaillard'; transition('travel','returning'); savePlayer();">
-                            <span class="travel-name">Vexadel Gaillard</span>
-                            <span class="travel-subtext"
-                                x-text="location === 'Vexadel Gaillard' ? 'you are here' : '[35-40] Who knew the smell could get worse.'"></span>
-                        </button>
-
-                        <button class="travel-button regular-button travel-button-bg travel-button--sanguisuge"
-                            :class="{ 'active': location === 'Sanguisuge' }"
-                            @click="location = 'Sanguisuge'; transition('travel','returning'); savePlayer();">
-                            <span class="travel-name">Sanguisuge</span>
-                            <span class="travel-subtext"
-                                x-text="location === 'Sanguisuge' ? 'you are here' : '[41-45] A blood-soaked realm.'"></span>
-                        </button>
-
-                        <button class="travel-button regular-button travel-button-bg travel-button--sangston-mansion"
-                            :class="{ 'active': location === 'Sangston Mansion' }"
-                            @click="location = 'Sangston Mansion'; transition('travel','returning'); savePlayer();">
-                            <span class="travel-name">Sangston Mansion</span>
-                            <span class="travel-subtext"
-                                x-text="location === 'Sangston Mansion' ? 'you are here' : '[46-50] The vampire estate.'"></span>
-                        </button>
-
-                        <button class="travel-button regular-button travel-button-bg travel-button--eternal-damnation"
-                            :class="{ 'active': location === 'Eternal Damnation' }"
-                            @click="location = 'Eternal Damnation'; transition('travel','returning'); savePlayer();">
-                            <span class="travel-name">Eternal Damnation</span>
-                            <span class="travel-subtext"
-                                x-text="location === 'Eternal Damnation' ? 'you are here' : '[50+] Fun for the whole family.'"></span>
-                        </button>
+                <div class="centered-buttons" style="position: fixed; top: 10px; left: 10px; z-index: 9000;">
+                    <button class="regular-button"
+                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88);"
+                        @click="transition('inventory', 'returning')">Back</button>
+                </div>
+                <div class="inventory-panel" id="inventory-panel">
+                    <div class="inventory-grid">
+                        <template x-for="(item, idx) in Alpine.$data(document.getElementById('player')).inventory"
+                            x-show="false" :key="idx">
+                            <div class="inventory-item" :class="{'inventory-item--no-icon': !(item.sprite)}"
+                                :data-tooltip="desc" x-data="{
+                                    get desc() {
+                                    let it = assets.items.find(i => i.name === item.name);
+                                    const parts = [];
+                                    if (it.attack !== undefined || it.defense !== undefined || it.maxlvl) {
+                                        parts.push('Level ' + (item.level ?? 1));
+                                        if (it.attack !== undefined) {
+                                            parts.push(`⚔️${Math.floor(it.attack + ((item.level ?? 1 - 1) * it.attackPerLevel))} 🍀${Math.floor(it.crit * 100)}% ⚔️${it.critdmg}x 🎯${Math.floor(it.accuracy * 100)}%`);
+                                        } else if (it.defense !== undefined) {
+                                            parts.push(`🛡️${Math.floor(it.defense + ((item.level ?? 1 - 1) * it.alvlmult))} 💨${Math.floor(it.evasion * 100)}%`);
+                                        }
+                                    }
+                                    if (it.health) parts.push(`💖 ${Math.round(it.health * 100)}%`);
+                                    if (it.stamina) parts.push(`⚡ ${Math.round(it.stamina * 100)}%`);
+                                    if (it.buff) parts.push('⚔️ +' + Math.round(it.buff * 100) + '% ' + (it.rounds ? (' for ' + it.rounds + ' turns') : ''));
+                                    if (it.xp) parts.push(`🌟 ${it.xp} XP`);
+                                    if (it.chest) parts.push(`Opens ${assets.chests[it.chest].name}`);
+                                    if (it.damage) parts.push(`💥 ${it.damage}`);
+                                    if (it.pstatus) parts.push(`Gain ${it.pstatus.join(', ')}`);
+                                    if (it.estatus) parts.push(`Inflicts ${it.estatus.join(', ')}`);
+                                    if (parts.length) return parts.join('\n');
+                                    else return 'Crafting Reagent';
+                                }
+                                    }">
+                                <div class=" inventory-item-amount inventory-item-amount--inline"
+                                    x-show="item.amount > 1 && !(item.sprite)">x<span x-text="item.amount"></span>
+                                </div>
+                                <div class="inventory-item-icon-wrap">
+                                    <img class="inventory-item-icon"
+                                        :src="`assets/keys/${item.name.replace(/ /g, '')}.gif`" alt=""
+                                        @error="$el.parentElement.remove()" />
+                                </div>
+                                <div class="inventory-item-body">
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <div class="inventory-item-name" x-text="item.name">Item</div>
+                                    </div>
+                                    <div class="inventory-item-meta" x-text="desc"></div>
+                                </div>
+                            </div>
                     </div>
+                    </template>
+
+                    <div class="inventory-empty"
+                        x-show="Alpine.$data(document.getElementById('player')).inventory.length === 0">No items
+                        in inventory</div>
                 </div>
             </div>
 
-            <!-- Encounter -->
-            <div id="encounter" class="encounter" x-show="screen === 'encounter'" x-data="{
+        </div>
+
+        <!-- Journal -->
+        <div id="journal" class="journal" x-show="screen === 'journal'">
+
+        </div>
+
+        <!-- Crafting-->
+        <div id="crafting" class="crafting" x-show="screen === 'crafting'">
+
+        </div>
+
+        <!-- Travel -->
+        <div id="travel" class="travel" x-show="screen === 'travel'">
+            <div class="travel-panel" id="travel-panel">
+                <h1>📍 Travel Across The Hexlands 📍<br></h1>
+                <br>
+                <div class="travel-grid">
+                    <button class="travel-button regular-button travel-button-bg travel-button--warhamshire"
+                        :class="{ 'active': location === 'Warhamshire' }"
+                        @click="location = 'Warhamshire'; transition('travel','returning'); savePlayer();">
+                        <span class="travel-name">Warhamshire</span>
+                        <span class="travel-subtext"
+                            x-text="location === 'Warhamshire' ? 'you are here' : '[1-5] Where it all begins...'"></span>
+                    </button>
+
+                    <button class="travel-button regular-button travel-button-bg travel-button--warham-castle"
+                        :class="{ 'active': location === 'Warham Castle' }"
+                        @click="location = 'Warham Castle'; transition('travel','returning'); savePlayer();">
+                        <span class="travel-name">Warham Castle</span>
+                        <span class="travel-subtext"
+                            x-text="location === 'Warham Castle' ? 'you are here' : '[6-10] A fortified stronghold.'"></span>
+                    </button>
+
+                    <button class="travel-button regular-button travel-button-bg travel-button--hinterland"
+                        :class="{ 'active': location === 'Hinterland' }"
+                        @click="location = 'Hinterland'; transition('travel','returning'); savePlayer();">
+                        <span class="travel-name">Hinterland</span>
+                        <span class="travel-subtext"
+                            x-text="location === 'Hinterland' ? 'you are here' : '[8-14] Shiver through the cold forest.'"></span>
+                    </button>
+
+                    <button class="travel-button regular-button travel-button-bg travel-button--uralan-mountains"
+                        :class="{ 'active': location === 'Uralan Mountains' }"
+                        @click="location = 'Uralan Mountains'; transition('travel','returning'); savePlayer();">
+                        <span class="travel-name">Uralan Mountains</span>
+                        <span class="travel-subtext"
+                            x-text="location === 'Uralan Mountains' ? 'you are here' : '[12-18] Scale the high peaks and low valleys.'"></span>
+                    </button>
+
+                    <button class="travel-button regular-button travel-button-bg travel-button--vulpeston"
+                        :class="{ 'active': location === 'Vulpeston' }"
+                        @click="location = 'Vulpeston'; transition('travel','returning'); savePlayer();">
+                        <span class="travel-name">Vulpeston</span>
+                        <span class="travel-subtext"
+                            x-text="location === 'Vulpeston' ? 'you are here' : '[16-22] Infiltrate the sly and cunning theives.'"></span>
+                    </button>
+
+                    <button class="travel-button regular-button travel-button-bg travel-button--vulpes-tower"
+                        :class="{ 'active': location === 'Vulpes Tower' }"
+                        @click="location = 'Vulpes Tower'; transition('travel','returning'); savePlayer();">
+                        <span class="travel-name">Vulpes Tower</span>
+                        <span class="travel-subtext"
+                            x-text="location === 'Vulpes Tower' ? 'you are here' : '[21-29] An ancient spire full of luxury goods.'"></span>
+                    </button>
+
+                    <button class="travel-button regular-button travel-button-bg travel-button--vexadel"
+                        :class="{ 'active': location === 'Vexadel' }"
+                        @click="location = 'Vexadel'; transition('travel','returning'); savePlayer();">
+                        <span class="travel-name">Vexadel</span>
+                        <span class="travel-subtext"
+                            x-text="location === 'Vexadel' ? 'you are here' : '[30-35] It smells terrible.'"></span>
+                    </button>
+
+                    <button class="travel-button regular-button travel-button-bg travel-button--vexadel-gaillard"
+                        :class="{ 'active': location === 'Vexadel Gaillard' }"
+                        @click="location = 'Vexadel Gaillard'; transition('travel','returning'); savePlayer();">
+                        <span class="travel-name">Vexadel Gaillard</span>
+                        <span class="travel-subtext"
+                            x-text="location === 'Vexadel Gaillard' ? 'you are here' : '[35-40] Who knew the smell could get worse.'"></span>
+                    </button>
+
+                    <button class="travel-button regular-button travel-button-bg travel-button--sanguisuge"
+                        :class="{ 'active': location === 'Sanguisuge' }"
+                        @click="location = 'Sanguisuge'; transition('travel','returning'); savePlayer();">
+                        <span class="travel-name">Sanguisuge</span>
+                        <span class="travel-subtext"
+                            x-text="location === 'Sanguisuge' ? 'you are here' : '[41-45] A blood-soaked realm.'"></span>
+                    </button>
+
+                    <button class="travel-button regular-button travel-button-bg travel-button--sangston-mansion"
+                        :class="{ 'active': location === 'Sangston Mansion' }"
+                        @click="location = 'Sangston Mansion'; transition('travel','returning'); savePlayer();">
+                        <span class="travel-name">Sangston Mansion</span>
+                        <span class="travel-subtext"
+                            x-text="location === 'Sangston Mansion' ? 'you are here' : '[46-50] The vampire estate.'"></span>
+                    </button>
+
+                    <button class="travel-button regular-button travel-button-bg travel-button--eternal-damnation"
+                        :class="{ 'active': location === 'Eternal Damnation' }"
+                        @click="location = 'Eternal Damnation'; transition('travel','returning'); savePlayer();">
+                        <span class="travel-name">Eternal Damnation</span>
+                        <span class="travel-subtext"
+                            x-text="location === 'Eternal Damnation' ? 'you are here' : '[50+] Fun for the whole family.'"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Encounter -->
+        <div id="encounter" class="encounter" x-show="screen === 'encounter'" x-data="{
                 log: [],
                 health: 1,
                 maxHealth: 1,
@@ -497,52 +555,52 @@
                         .join('<br>');
                 }
             }">
-                <div class="enemy" id="enemy">
-                    <div class="enemy-level" x-text="`Level ${enemyLevel}`">?</div>
-                    <div style="margin-top: 40px;">
-                        <div class="enemy-name" x-text="enemy.name">???</div>
-                        <div class="estatus-effects">
-                            <span x-show="estatus.some(status => status.id == '🩸')"
-                                :data-tooltip="`🩸 ${estatus.find(s => s.id == '🩸').name} - ${estatus.find(s => s.id == '🩸').rounds} round${estatus.find(s => s.id == '🩸').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🩸').description}\n\n${estatus.find(s => s.id == '🩸').damage} * ${estatus.find(s => s.id == '🩸').baseDam} = ${Math.floor(estatus.find(s => s.id == '🩸').damage * estatus.find(s => s.id == '🩸').baseDam)}`">🩸</span>
-                            <span x-show="estatus.some(status => status.id == '👁️')"
-                                :data-tooltip="`👁️ ${estatus.find(s => s.id == '👁️').name} - ${estatus.find(s => s.id == '👁️').rounds} round${estatus.find(s => s.id == '👁️').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '👁️').description}`">👁️</span>
-                            <span x-show="estatus.some(status => status.id == '🔥')"
-                                :data-tooltip="`🔥 ${estatus.find(s => s.id == '🔥').name} - ${estatus.find(s => s.id == '🔥').rounds} round${estatus.find(s => s.id == '🔥').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🔥').description}\n\n${estatus.find(s => s.id == '🔥').damage} * ${estatus.find(s => s.id == '🔥').baseDam} = ${Math.floor(estatus.find(s => s.id == '🔥').damage * estatus.find(s => s.id == '🔥').baseDam)}`">🔥</span>
-                            <span x-show="estatus.some(status => status.id == '🖤')"
-                                :data-tooltip="`🖤 ${estatus.find(s => s.id == '🖤').name} - ${estatus.find(s => s.id == '🖤').rounds} round${estatus.find(s => s.id == '🖤').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🖤').description}\n\n${estatus.find(s => s.id == '🖤').damage} * ${estatus.find(s => s.id == '🖤').baseDam} = ${Math.floor(estatus.find(s => s.id == '🖤').damage * estatus.find(s => s.id == '🖤').baseDam)}`">🖤</span>
-                            <span x-show="estatus.some(status => status.id == '🏅')"
-                                :data-tooltip="`🏅 ${estatus.find(s => s.id == '🏅').name} - ${estatus.find(s => s.id == '🏅').rounds} round${estatus.find(s => s.id == '🏅').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🏅').description}`">🏅</span>
-                            <span x-show="estatus.some(status => status.id == '💨')"
-                                :data-tooltip="`💨 ${estatus.find(s => s.id == '💨').name} - ${estatus.find(s => s.id == '💨').rounds} round${estatus.find(s => s.id == '💨').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💨').description}`">💨</span>
-                            <span x-show="estatus.some(status => status.id == '💀')"
-                                :data-tooltip="`💀 ${estatus.find(s => s.id == '💀').name} - ${estatus.find(s => s.id == '💀').rounds} round${estatus.find(s => s.id == '💀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💀').description}\n\n${estatus.find(s => s.id == '💀').damage} * ${estatus.find(s => s.id == '💀').baseDam} = ${Math.floor(estatus.find(s => s.id == '💀').damage * estatus.find(s => s.id == '💀').baseDam)}`">💀</span>
-                            <span x-show="estatus.some(status => status.id == '🎯')"
-                                :data-tooltip="`🎯 ${estatus.find(s => s.id == '🎯').name} - ${estatus.find(s => s.id == '🎯').rounds} round${estatus.find(s => s.id == '🎯').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🎯').description}`">🎯</span>
-                            <span x-show="estatus.some(status => status.id == '🛡️')"
-                                :data-tooltip="`🛡️ ${estatus.find(s => s.id == '🛡️').name} - ${estatus.find(s => s.id == '🛡️').rounds} round${estatus.find(s => s.id == '🛡️').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🛡️').description}`">🛡️</span>
-                            <span x-show="estatus.some(status => status.id == '🍀')"
-                                :data-tooltip="`🍀 ${estatus.find(s => s.id == '🍀').name} - ${estatus.find(s => s.id == '🍀').rounds} round${estatus.find(s => s.id == '🍀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🍀').description}`">🍀</span>
-                            <span x-show="estatus.some(status => status.id == '💗')"
-                                :data-tooltip="`💗 ${estatus.find(s => s.id == '💗').name} - ${estatus.find(s => s.id == '💗').rounds} round${estatus.find(s => s.id == '💗').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💗').description}\n\n${maxHealth} * ${estatus.find(s => s.id == '💗').maxHP} = ${Math.floor(estatus.find(s => s.id == '💗').maxHP * maxHealth)}`">💗</span>
-                            <span x-show="estatus.some(status => status.id == '💪')"
-                                :data-tooltip="`💪 ${estatus.find(s => s.id == '💪').name} - ${estatus.find(s => s.id == '💪').rounds} round${estatus.find(s => s.id == '💪').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💪').description}`">💪</span>
-                            <span x-show="estatus.some(status => status.id == '🌀')"
-                                :data-tooltip="`🌀 ${estatus.find(s => s.id == '🌀').name} - ${estatus.find(s => s.id == '🌀').rounds} round${estatus.find(s => s.id == '🌀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🌀').description}`">🌀</span>
-                            <span x-show="estatus.some(status => status.id == '🥀')"
-                                :data-tooltip="`🥀 ${estatus.find(s => s.id == '🥀').name} - ${estatus.find(s => s.id == '🥀').rounds} round${estatus.find(s => s.id == '🥀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🥀').description}`">🥀</span>
-                            <span x-show="estatus.some(status => status.id == '💢')"
-                                :data-tooltip="`💢 ${estatus.find(s => s.id == '💢').name} - ${estatus.find(s => s.id == '💢').rounds} round${estatus.find(s => s.id == '💢').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💢').description}`">💢</span>
-                            <span x-show="estatus.some(status => status.id == '💫')"
-                                :data-tooltip="`💫 ${estatus.find(s => s.id == '💫').name} - ${estatus.find(s => s.id == '💫').rounds} round${estatus.find(s => s.id == '💫').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💫').description}`">💫</span>
-                            <span x-show="estatus.some(status => status.id == '✨')"
-                                :data-tooltip="`✨ ${estatus.find(s => s.id == '✨').name} - ${estatus.find(s => s.id == '✨').rounds} round${estatus.find(s => s.id == '✨').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '✨').description}`">✨</span>
-                            <span x-show="estatus.some(status => status.id == '🌑')"
-                                :data-tooltip="`🌑 ${estatus.find(s => s.id == '🌑').name} - ${estatus.find(s => s.id == '🌑').rounds} round${estatus.find(s => s.id == '🌑').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🌑').description}`">🌑</span>
-                            <span x-show="health <= 0" :data-tooltip="`This ${enemyName} is dead.`">☠️</span>
-                        </div>
+            <div class="enemy" id="enemy">
+                <div class="enemy-level" x-text="`Level ${enemyLevel}`">?</div>
+                <div style="margin-top: 40px;">
+                    <div class="enemy-name" x-text="enemy.name">???</div>
+                    <div class="estatus-effects">
+                        <span x-show="estatus.some(status => status.id == '🩸')"
+                            :data-tooltip="`🩸 ${estatus.find(s => s.id == '🩸').name} - ${estatus.find(s => s.id == '🩸').rounds} round${estatus.find(s => s.id == '🩸').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🩸').description}\n\n${estatus.find(s => s.id == '🩸').damage} * ${estatus.find(s => s.id == '🩸').baseDam} = ${Math.floor(estatus.find(s => s.id == '🩸').damage * estatus.find(s => s.id == '🩸').baseDam)}`">🩸</span>
+                        <span x-show="estatus.some(status => status.id == '👁️')"
+                            :data-tooltip="`👁️ ${estatus.find(s => s.id == '👁️').name} - ${estatus.find(s => s.id == '👁️').rounds} round${estatus.find(s => s.id == '👁️').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '👁️').description}`">👁️</span>
+                        <span x-show="estatus.some(status => status.id == '🔥')"
+                            :data-tooltip="`🔥 ${estatus.find(s => s.id == '🔥').name} - ${estatus.find(s => s.id == '🔥').rounds} round${estatus.find(s => s.id == '🔥').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🔥').description}\n\n${estatus.find(s => s.id == '🔥').damage} * ${estatus.find(s => s.id == '🔥').baseDam} = ${Math.floor(estatus.find(s => s.id == '🔥').damage * estatus.find(s => s.id == '🔥').baseDam)}`">🔥</span>
+                        <span x-show="estatus.some(status => status.id == '🖤')"
+                            :data-tooltip="`🖤 ${estatus.find(s => s.id == '🖤').name} - ${estatus.find(s => s.id == '🖤').rounds} round${estatus.find(s => s.id == '🖤').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🖤').description}\n\n${estatus.find(s => s.id == '🖤').damage} * ${estatus.find(s => s.id == '🖤').baseDam} = ${Math.floor(estatus.find(s => s.id == '🖤').damage * estatus.find(s => s.id == '🖤').baseDam)}`">🖤</span>
+                        <span x-show="estatus.some(status => status.id == '🏅')"
+                            :data-tooltip="`🏅 ${estatus.find(s => s.id == '🏅').name} - ${estatus.find(s => s.id == '🏅').rounds} round${estatus.find(s => s.id == '🏅').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🏅').description}`">🏅</span>
+                        <span x-show="estatus.some(status => status.id == '💨')"
+                            :data-tooltip="`💨 ${estatus.find(s => s.id == '💨').name} - ${estatus.find(s => s.id == '💨').rounds} round${estatus.find(s => s.id == '💨').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💨').description}`">💨</span>
+                        <span x-show="estatus.some(status => status.id == '💀')"
+                            :data-tooltip="`💀 ${estatus.find(s => s.id == '💀').name} - ${estatus.find(s => s.id == '💀').rounds} round${estatus.find(s => s.id == '💀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💀').description}\n\n${estatus.find(s => s.id == '💀').damage} * ${estatus.find(s => s.id == '💀').baseDam} = ${Math.floor(estatus.find(s => s.id == '💀').damage * estatus.find(s => s.id == '💀').baseDam)}`">💀</span>
+                        <span x-show="estatus.some(status => status.id == '🎯')"
+                            :data-tooltip="`🎯 ${estatus.find(s => s.id == '🎯').name} - ${estatus.find(s => s.id == '🎯').rounds} round${estatus.find(s => s.id == '🎯').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🎯').description}`">🎯</span>
+                        <span x-show="estatus.some(status => status.id == '🛡️')"
+                            :data-tooltip="`🛡️ ${estatus.find(s => s.id == '🛡️').name} - ${estatus.find(s => s.id == '🛡️').rounds} round${estatus.find(s => s.id == '🛡️').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🛡️').description}`">🛡️</span>
+                        <span x-show="estatus.some(status => status.id == '🍀')"
+                            :data-tooltip="`🍀 ${estatus.find(s => s.id == '🍀').name} - ${estatus.find(s => s.id == '🍀').rounds} round${estatus.find(s => s.id == '🍀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🍀').description}`">🍀</span>
+                        <span x-show="estatus.some(status => status.id == '💗')"
+                            :data-tooltip="`💗 ${estatus.find(s => s.id == '💗').name} - ${estatus.find(s => s.id == '💗').rounds} round${estatus.find(s => s.id == '💗').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💗').description}\n\n${maxHealth} * ${estatus.find(s => s.id == '💗').maxHP} = ${Math.floor(estatus.find(s => s.id == '💗').maxHP * maxHealth)}`">💗</span>
+                        <span x-show="estatus.some(status => status.id == '💪')"
+                            :data-tooltip="`💪 ${estatus.find(s => s.id == '💪').name} - ${estatus.find(s => s.id == '💪').rounds} round${estatus.find(s => s.id == '💪').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💪').description}`">💪</span>
+                        <span x-show="estatus.some(status => status.id == '🌀')"
+                            :data-tooltip="`🌀 ${estatus.find(s => s.id == '🌀').name} - ${estatus.find(s => s.id == '🌀').rounds} round${estatus.find(s => s.id == '🌀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🌀').description}`">🌀</span>
+                        <span x-show="estatus.some(status => status.id == '🥀')"
+                            :data-tooltip="`🥀 ${estatus.find(s => s.id == '🥀').name} - ${estatus.find(s => s.id == '🥀').rounds} round${estatus.find(s => s.id == '🥀').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🥀').description}`">🥀</span>
+                        <span x-show="estatus.some(status => status.id == '💢')"
+                            :data-tooltip="`💢 ${estatus.find(s => s.id == '💢').name} - ${estatus.find(s => s.id == '💢').rounds} round${estatus.find(s => s.id == '💢').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💢').description}`">💢</span>
+                        <span x-show="estatus.some(status => status.id == '💫')"
+                            :data-tooltip="`💫 ${estatus.find(s => s.id == '💫').name} - ${estatus.find(s => s.id == '💫').rounds} round${estatus.find(s => s.id == '💫').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '💫').description}`">💫</span>
+                        <span x-show="estatus.some(status => status.id == '✨')"
+                            :data-tooltip="`✨ ${estatus.find(s => s.id == '✨').name} - ${estatus.find(s => s.id == '✨').rounds} round${estatus.find(s => s.id == '✨').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '✨').description}`">✨</span>
+                        <span x-show="estatus.some(status => status.id == '🌑')"
+                            :data-tooltip="`🌑 ${estatus.find(s => s.id == '🌑').name} - ${estatus.find(s => s.id == '🌑').rounds} round${estatus.find(s => s.id == '🌑').rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == '🌑').description}`">🌑</span>
+                        <span x-show="health <= 0" :data-tooltip="`This ${enemyName} is dead.`">☠️</span>
                     </div>
-                    <div style="margin-top: 70px;">
-                        <img class="enemy-heart" :src="
+                </div>
+                <div style="margin-top: 70px;">
+                    <img class="enemy-heart" :src="
                         enemy.name == 'Cursed Goblin' ? 'assets/enemy_hearts/Cursed.png'
                         : enemy.name == 'Attack Slime' ? 'assets/enemy_hearts/AttackSlime.png'
                         : enemy.name == 'Defense Slime' ? 'assets/enemy_hearts/DefenseSlime.png'
@@ -555,151 +613,154 @@
                         : enemy.name == 'Demon Queen' ? 'assets/enemy_hearts/DemonQueen.png'
                         : 'assets/enemy_hearts/Basic.png'
                         " style="width: 80px; top: 70%; left: 1%; z-index: 3;">
-                        <div class="enemy-health-bar-stats" x-text="`${health}/${maxHealth}`">0/0</div>
-                        <div class="enemy-health-bar" id="enemy-health"></div>
-                        <div class="enemy-health-bar-background"></div>
-                    </div>
-                    <img class="enemy-thumbnail" :src="enemy.sprite">
+                    <div class="enemy-health-bar-stats" x-text="`${health}/${maxHealth}`">0/0</div>
+                    <div class="enemy-health-bar" id="enemy-health"></div>
+                    <div class="enemy-health-bar-background"></div>
                 </div>
-                <div class="battle-log" x-html="formattedLog" x-init=" $watch('log', () => {
+                <img class="enemy-thumbnail" :src="enemy.sprite">
+            </div>
+            <div class="battle-log" x-html="formattedLog" x-init=" $watch('log', () => {
                     $nextTick(() => {
                         $el.scrollTop = $el.scrollHeight
                     })
                 })">
-                </div>
-                <div class="battle-station" id="battle-station"
-                    x-data="{ round: 1, turn: true, get weapon() { return Alpine.$data(document.getElementById('player')).weaponry.weapon } }">
-                    <div class="battle-buttons" x-show="battle">
-                        <div class="battle-actions" style="display: flex; gap: 20px;">
-                            <button class="battle-base-attack"
-                                :style="`background-color: ${turn ? 'rgb(253, 113, 113)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                                x-text="weapon.skills[0].name" :disabled="!turn" @click="skill(0)"
-                                :data-tooltip="`${weapon.skills[0].description ? `${weapon.skills[0].description}\n` : ''}${weapon.skills[0].cost ? `⚡${weapon.skills[0].cost}\n` : ''}⚔️ x${weapon.skills[0].attack ? (weapon.skills[0].damage || 1) : 0}\n${weapon.skills[0].times ? `🔄️${weapon.skills[0].times}x\n` : ''}${weapon.skills[0].flatHealth ? `❤️ ${weapon.skills[0].flatHealth}\n` : ''}${weapon.skills[0].health ? `💖 ${Math.floor(weapon.skills[0].health * 100)}%\n` : ''}${weapon.skills[0].lifesteal ? `💞 ${Math.floor(weapon.skills[0].lifesteal * 100)}%\n` : ''}${weapon.skills[0].pstatus ? `Gains ${weapon.skills[0].pstatus.join('')}\n` : ''}${weapon.skills[0].estatus ? 'Inflicts ' + weapon.skills[0].estatus.join('') : ''}`">Attack</button>
-                            <button class="battle-pass"
-                                :style="`background-color: ${turn ? 'rgb(42, 143, 201)' : 'rgb(55, 55, 55)'}; border: 5px solid rgb(6, 0, 88); font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                                :data-tooltip="`Skip your turn but gain⚡${Math.round(Alpine.$data(player).maxStamina * 0.1)}`"
-                                :disabled="!turn" @click="skill(-1)">Pass</button>
-                            <button class="battle-item"
-                                :style="`background-color: ${turn ? 'rgb(138, 233, 138)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                                :disabled="!turn" @click="skill(-2)">Item</button>
-                            <button class="battle-flee"
-                                :style="`background-color: ${turn ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); font-size: 40px; font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                                :disabled="!turn" @click="skill(-3)">Flee</button>
-                        </div>
-
-                        <div class="battle-skills"
-                            style="display: flex; flex-direction: row; gap: 20px; justify-content: center; align-items: flex-start;">
-
-                            <!-- Skill 1 Group -->
-                            <div x-show="weapon.skills[1]">
-                                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                    <button class="battle-skill1" id="battle-skill1" x-text="weapon.skills[1].name"
-                                        :disabled="Alpine.$data(player).stamina < weapon.skills[1].cost || !turn"
-                                        :style="`${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'not-allowed' : 'pointer' };`"
-                                        :data-tooltip="`${weapon.skills[1].description ? `${weapon.skills[1].description}\n` : ''}${weapon.skills[1].cost ? `⚡${weapon.skills[1].cost}\n` : ''}⚔️ x${weapon.skills[1].attack ? (weapon.skills[1].damage || 1) : 0}\n${weapon.skills[1].times ? `🔄️${weapon.skills[1].times}x\n` : ''}${weapon.skills[1].flatHealth ? `❤️ ${weapon.skills[1].flatHealth}\n` : ''}${weapon.skills[1].health ? `💖 ${Math.floor(weapon.skills[1].health * 100)}%\n` : ''}${weapon.skills[1].lifesteal ? `💞 ${Math.floor(weapon.skills[1].lifesteal * 100)}%\n` : ''}${weapon.skills[1].pstatus ? `Gains ${weapon.skills[1].pstatus.join('')}\n` : ''}${weapon.skills[1].estatus ? 'Inflicts ' + weapon.skills[1].estatus.join('') : ''}`"
-                                        @click="skill(1)">
-                                        ?
-                                    </button>
-                                    <span class="battle-skill1-cost" id="battle-skill1-cost"
-                                        style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
-                                        x-text="`⚡${weapon.skills[1].cost}`">?</span>
-                                </div>
-                            </div>
-
-                            <!-- Skill 2 Group -->
-                            <div x-show="weapon.skills[2]">
-                                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                    <button class="battle-skill2" id="battle-skill2"
-                                        :style="`${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'not-allowed' : 'pointer' };`"
-                                        :disabled="Alpine.$data(player).stamina < weapon.skills[2].cost || !turn"
-                                        :data-tooltip="`${weapon.skills[2].description ? `${weapon.skills[2].description}\n` : ''}${weapon.skills[2].cost ? `⚡${weapon.skills[2].cost}\n` : ''}⚔️ x${weapon.skills[2].attack ? (weapon.skills[2].damage || 1) : 0}\n${weapon.skills[2].times ? `🔄️${weapon.skills[2].times}x\n` : ''}${weapon.skills[2].flatHealth ? `❤️ ${weapon.skills[2].flatHealth}\n` : ''}${weapon.skills[2].health ? `💖 ${Math.floor(weapon.skills[2].health * 100)}%\n` : ''}${weapon.skills[2].lifesteal ? `💞 ${Math.floor(weapon.skills[2].lifesteal * 100)}%\n` : ''}${weapon.skills[2].pstatus ? `Gains ${weapon.skills[2].pstatus.join('')}\n` : ''}${weapon.skills[2].estatus ? 'Inflicts ' + weapon.skills[2].estatus.join('') : ''}`"
-                                        x-text="weapon.skills[2].name" @click="skill(2)">
-                                        ?
-                                    </button>
-                                    <span class="battle-skill2-cost" id="battle-skill2-cost"
-                                        style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
-                                        x-text="`⚡${weapon.skills[2].cost}`">?</span>
-                                </div>
-                            </div>
-
-
-                            <!-- Skill 3 Group -->
-                            <div x-show="weapon.skills[3]">
-                                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                    <button class="battle-skill3" id="battle-skill3"
-                                        :style="`${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'not-allowed' : 'pointer' };`"
-                                        :disabled="Alpine.$data(player).stamina < weapon.skills[3].cost || !turn"
-                                        :data-tooltip="`${weapon.skills[3].description ? `${weapon.skills[3].description}\n` : ''}${weapon.skills[3].cost ? `⚡${weapon.skills[3].cost}\n` : ''}⚔️ x${weapon.skills[3].attack ? (weapon.skills[3].damage || 1) : 0}\n${weapon.skills[3].times ? `🔄️${weapon.skills[3].times}x\n` : ''}${weapon.skills[3].flatHealth ? `❤️ ${weapon.skills[3].flatHealth}\n` : ''}${weapon.skills[3].health ? `💖 ${Math.floor(weapon.skills[3].health * 100)}%\n` : ''}${weapon.skills[3].lifesteal ? `💞 ${Math.floor(weapon.skills[3].lifesteal * 100)}%\n` : ''}${weapon.skills[3].pstatus ? `Gains ${weapon.skills[3].pstatus.join('')}\n` : ''}${weapon.skills[3].estatus ? 'Inflicts ' + weapon.skills[3].estatus.join('') : ''}`"
-                                        x-text="weapon.skills[3].name" @click="skill(3)">
-                                    </button>
-                                    <span class="battle-skill3-cost" id="battle-skill3-cost"
-                                        style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
-                                        x-text="`⚡${weapon.skills[3].cost}`">?</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <div class="battle-buttons" x-show="!battle">
-                        <button class="battle-item"
-                            style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
-                            @click="victory()">Continue</button>
-                    </div>
-                    <div class="round-info"
-                        x-text="health > 0 && Alpine.$data(document.getElementById('player')).health > 0 ? `Round ${round}\n\n${turn ? 'Your' : enemyName + `'s`} Turn` : health <= 0 ? `You Won` : `You Died`"
-                        style="white-space: pre-line; text-align: center;">Round 1\n\nYour Turn</div>
-                </div>
             </div>
+            <div class="battle-station" id="battle-station"
+                x-data="{ round: 1, turn: true, get weapon() { return Alpine.$data(document.getElementById('player')).weaponry.weapon } }">
+                <div class="battle-buttons" x-show="battle">
+                    <div class="battle-actions" style="display: flex; gap: 20px;">
+                        <button class="battle-base-attack"
+                            :style="`background-color: ${turn ? 'rgb(253, 113, 113)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                            x-text="weapon.skills[0].name" :disabled="!turn" @click="skill(0)"
+                            :data-tooltip="`${weapon.skills[0].description ? `${weapon.skills[0].description}\n` : ''}${weapon.skills[0].cost ? `⚡${weapon.skills[0].cost}\n` : ''}⚔️ x${weapon.skills[0].attack ? (weapon.skills[0].damage || 1) : 0}\n${weapon.skills[0].times ? `🔄️${weapon.skills[0].times}x\n` : ''}${weapon.skills[0].flatHealth ? `❤️ ${weapon.skills[0].flatHealth}\n` : ''}${weapon.skills[0].health ? `💖 ${Math.floor(weapon.skills[0].health * 100)}%\n` : ''}${weapon.skills[0].lifesteal ? `💞 ${Math.floor(weapon.skills[0].lifesteal * 100)}%\n` : ''}${weapon.skills[0].pstatus ? `Gains ${weapon.skills[0].pstatus.join('')}\n` : ''}${weapon.skills[0].estatus ? 'Inflicts ' + weapon.skills[0].estatus.join('') : ''}`">Attack</button>
+                        <button class="battle-pass"
+                            :style="`background-color: ${turn ? 'rgb(42, 143, 201)' : 'rgb(55, 55, 55)'}; border: 5px solid rgb(6, 0, 88); font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                            :data-tooltip="`Skip your turn but gain⚡${Math.round(Alpine.$data(player).maxStamina * 0.1)}`"
+                            :disabled="!turn" @click="skill(-1)">Pass</button>
+                        <button class="battle-item"
+                            :style="`background-color: ${turn ? 'rgb(138, 233, 138)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                            :disabled="!turn" @click="skill(-2)">Item</button>
+                        <button class="battle-flee"
+                            :style="`background-color: ${turn ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); font-size: 40px; font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                            :disabled="!turn" @click="skill(-3)">Flee</button>
+                    </div>
 
-            <!-- Debug -->
-            <div class="debug" x-data="{ open: false }" :class="{ 'open': open }" id="debug-panel">
-                <h1>⚙ Debug Panel</h1>
-                <br>
-                <div class="debug-grid">
-                    <button @click="savePlayer()"
-                        style="font-family: 'Pixel-Font', sans-serif; background-color: transparent; border: 2px solid white; cursor: pointer; color: white;">Save
-                        Game</button>
-                    <input placeholder="Set Level"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''; $refs.blur()" />
+                    <div class="battle-skills"
+                        style="display: flex; flex-direction: row; gap: 20px; justify-content: center; align-items: flex-start;">
 
-                    <input placeholder="Set Health"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).health = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
+                        <!-- Skill 1 Group -->
+                        <div x-show="weapon.skills[1]">
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                                <button class="battle-skill1" id="battle-skill1" x-text="weapon.skills[1].name"
+                                    :disabled="Alpine.$data(player).stamina < weapon.skills[1].cost || !turn"
+                                    :style="`${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'not-allowed' : 'pointer' };`"
+                                    :data-tooltip="`${weapon.skills[1].description ? `${weapon.skills[1].description}\n` : ''}${weapon.skills[1].cost ? `⚡${weapon.skills[1].cost}\n` : ''}⚔️ x${weapon.skills[1].attack ? (weapon.skills[1].damage || 1) : 0}\n${weapon.skills[1].times ? `🔄️${weapon.skills[1].times}x\n` : ''}${weapon.skills[1].flatHealth ? `❤️ ${weapon.skills[1].flatHealth}\n` : ''}${weapon.skills[1].health ? `💖 ${Math.floor(weapon.skills[1].health * 100)}%\n` : ''}${weapon.skills[1].lifesteal ? `💞 ${Math.floor(weapon.skills[1].lifesteal * 100)}%\n` : ''}${weapon.skills[1].pstatus ? `Gains ${weapon.skills[1].pstatus.join('')}\n` : ''}${weapon.skills[1].estatus ? 'Inflicts ' + weapon.skills[1].estatus.join('') : ''}`"
+                                    @click="skill(1)">
+                                    ?
+                                </button>
+                                <span class="battle-skill1-cost" id="battle-skill1-cost"
+                                    style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
+                                    x-text="`⚡${weapon.skills[1].cost}`">?</span>
+                            </div>
+                        </div>
 
-                    <input placeholder="Set Max Health"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
+                        <!-- Skill 2 Group -->
+                        <div x-show="weapon.skills[2]">
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                                <button class="battle-skill2" id="battle-skill2"
+                                    :style="`${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'not-allowed' : 'pointer' };`"
+                                    :disabled="Alpine.$data(player).stamina < weapon.skills[2].cost || !turn"
+                                    :data-tooltip="`${weapon.skills[2].description ? `${weapon.skills[2].description}\n` : ''}${weapon.skills[2].cost ? `⚡${weapon.skills[2].cost}\n` : ''}⚔️ x${weapon.skills[2].attack ? (weapon.skills[2].damage || 1) : 0}\n${weapon.skills[2].times ? `🔄️${weapon.skills[2].times}x\n` : ''}${weapon.skills[2].flatHealth ? `❤️ ${weapon.skills[2].flatHealth}\n` : ''}${weapon.skills[2].health ? `💖 ${Math.floor(weapon.skills[2].health * 100)}%\n` : ''}${weapon.skills[2].lifesteal ? `💞 ${Math.floor(weapon.skills[2].lifesteal * 100)}%\n` : ''}${weapon.skills[2].pstatus ? `Gains ${weapon.skills[2].pstatus.join('')}\n` : ''}${weapon.skills[2].estatus ? 'Inflicts ' + weapon.skills[2].estatus.join('') : ''}`"
+                                    x-text="weapon.skills[2].name" @click="skill(2)">
+                                    ?
+                                </button>
+                                <span class="battle-skill2-cost" id="battle-skill2-cost"
+                                    style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
+                                    x-text="`⚡${weapon.skills[2].cost}`">?</span>
+                            </div>
+                        </div>
 
-                    <input placeholder="Set Stamina"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).stamina = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
 
-                    <input placeholder="Set Max Stamina"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).maxStamina = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
+                        <!-- Skill 3 Group -->
+                        <div x-show="weapon.skills[3]">
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                                <button class="battle-skill3" id="battle-skill3"
+                                    :style="`${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'not-allowed' : 'pointer' };`"
+                                    :disabled="Alpine.$data(player).stamina < weapon.skills[3].cost || !turn"
+                                    :data-tooltip="`${weapon.skills[3].description ? `${weapon.skills[3].description}\n` : ''}${weapon.skills[3].cost ? `⚡${weapon.skills[3].cost}\n` : ''}⚔️ x${weapon.skills[3].attack ? (weapon.skills[3].damage || 1) : 0}\n${weapon.skills[3].times ? `🔄️${weapon.skills[3].times}x\n` : ''}${weapon.skills[3].flatHealth ? `❤️ ${weapon.skills[3].flatHealth}\n` : ''}${weapon.skills[3].health ? `💖 ${Math.floor(weapon.skills[3].health * 100)}%\n` : ''}${weapon.skills[3].lifesteal ? `💞 ${Math.floor(weapon.skills[3].lifesteal * 100)}%\n` : ''}${weapon.skills[3].pstatus ? `Gains ${weapon.skills[3].pstatus.join('')}\n` : ''}${weapon.skills[3].estatus ? 'Inflicts ' + weapon.skills[3].estatus.join('') : ''}`"
+                                    x-text="weapon.skills[3].name" @click="skill(3)">
+                                </button>
+                                <span class="battle-skill3-cost" id="battle-skill3-cost"
+                                    style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
+                                    x-text="`⚡${weapon.skills[3].cost}`">?</span>
+                            </div>
+                        </div>
 
-                    <input placeholder="Set XP"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).experience = $event.target.value; updateBars(); $event.target.value = ''; $refs.blur()" />
+                    </div>
 
-                    <input placeholder="Set Weapon"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry = {weapon: assets.items.find(w => w.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''; $refs.blur()" />
-
-                    <input placeholder="Set Weapon Level"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry.level = $event.target.value; setPlayer(); $event.target.value = ''; $refs.blur()" />
-
-                    <input placeholder="Set Armor"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).armory = {armor: assets.items.find(a => a.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''; $refs.blur()" />
-
-                    <input placeholder="Set Armor Level"
-                        @keyup.enter="Alpine.$data(document.getElementById('player')).armory.level = $event.target.value; setPlayer(); $event.target.value = ''; $refs.blur()" />
-
-                    <input placeholder="Enemy Level"
-                        @keyup.enter="enemyLevel = Number($event.target.value); setPlayer(); $event.target.value = ''; $refs.blur()" />
-
-                    <input placeholder="Encounter Enemy"
-                        @keyup.enter="transition('debug', 'encounter'); startBattle(assets.enemies.find(e => e.name == $event.target.value)); $event.target.value = ''; $refs.blur()" />
                 </div>
-                <br>
-                <h2>Press ` to close</h2>
+                <div class="battle-buttons" x-show="!battle">
+                    <button class="battle-item"
+                        style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
+                        @click="victory()">Continue</button>
+                </div>
+                <div class="round-info"
+                    x-text="health > 0 && Alpine.$data(document.getElementById('player')).health > 0 ? `Round ${round}\n\n${turn ? 'Your' : enemyName + `'s`} Turn` : health <= 0 ? `You Won` : `You Died`"
+                    style="white-space: pre-line; text-align: center;">Round 1\n\nYour Turn</div>
             </div>
         </div>
+
+        <!-- Debug -->
+        <div class="debug" x-data="{ open: false }" :class="{ 'open': open }" id="debug-panel">
+            <h1>⚙ Debug Panel</h1>
+            <br>
+            <div class="debug-grid">
+                <button @click="savePlayer()"
+                    style="font-family: 'Pixel-Font', sans-serif; background-color: transparent; border: 2px solid white; cursor: pointer; color: white;">Save
+                    Game</button>
+                <input placeholder="Set Level"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''; $event.target.blur()" />
+
+                <input placeholder="Set Health"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).health = $event.target.value; updateBars(); $event.target.value = ''; $event.target.blur()" />
+
+                <input placeholder="Set Max Health"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = $event.target.value; updateBars(); $event.target.value = ''; $event.target.blur()" />
+
+                <input placeholder="Set Stamina"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).stamina = $event.target.value; updateBars(); $event.target.value = ''; $event.target.blur()" />
+
+                <input placeholder="Set Max Stamina"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).maxStamina = $event.target.value; updateBars(); $event.target.value = ''; $event.target.blur()" />
+
+                <input placeholder="Set XP"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).experience = $event.target.value; updateBars(); $event.target.value = ''; $event.target.blur()" />
+
+                <input placeholder="Set Weapon"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry = {weapon: assets.items.find(w => w.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''; $event.target.blur()" />
+
+                <input placeholder="Set Weapon Level"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry.level = $event.target.value; setPlayer(); $event.target.value = ''; $event.target.blur()" />
+
+                <input placeholder="Set Armor"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).armory = {armor: assets.items.find(a => a.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''; $event.target.blur()" />
+
+                <input placeholder="Set Armor Level"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).armory.level = $event.target.value; setPlayer(); $event.target.value = ''; $event.target.blur()" />
+
+                <input placeholder="Get Item"
+                    @keyup.enter="addToInventory(assets.items.find(i => i.name == $event.target.value), 5); setPlayer(); $event.target.value = '';" />
+
+                <input placeholder="Enemy Level"
+                    @keyup.enter="enemyLevel = Number($event.target.value); setPlayer(); $event.target.value = ''; $event.target.blur()" />
+
+                <input placeholder="Encounter Enemy"
+                    @keyup.enter="transition('debug', 'encounter'); startBattle(assets.enemies.find(e => e.name == $event.target.value)); $event.target.value = ''; $event.target.blur()" />
+            </div>
+            <br>
+            <h2>Press ` to close</h2>
+        </div>
+    </div>
     </div>
 </body>
 

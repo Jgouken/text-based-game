@@ -94,3 +94,32 @@ async function resetPlayer() {
     player.stamina = player.maxStamina;
     updateBars();
 }
+
+async function addToInventory(loot, level) {
+    const player = Alpine.$data(document.getElementById('player'));
+    if (!loot) return false;
+    else if (loot.name !== null) {
+        if (player.inventory.some(i => i.name == loot.name)) {
+            // The player already has this item
+            let foundItem = player.inventory.find(i => i.name == loot.name);
+            if (foundItem.level == level) player.inventory[player.inventory.indexOf(foundItem)].amount += 1;
+            else player.inventory.push({
+                name: loot.name,
+                level,
+                amount: 1
+            });
+        } else {
+            // The player does not have this item
+            player.inventory.push({
+                name: loot.name,
+                level,
+                amount: 1
+            });
+        }
+
+        let isWeapon = loot.attack ? true : false;
+        let isArmor = loot.defense ? true : false;
+        return true;
+    }
+    await savePlayer();
+}

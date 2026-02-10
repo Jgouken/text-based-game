@@ -210,7 +210,7 @@ async function executeSkill({
         }
     }
 
-    new Promise(r => setTimeout(r, 500))
+    new Promise(r => setTimeout(r, 250))
 
     if (player.pstatus.some(s => s.id == '✨') || player.pstatus.some(s => s.id == '🌑')) {
         if (player.pstatus.some(s => s.id == '✨') && player.pstatus.some(s => s.id == '🌑')) {
@@ -326,7 +326,7 @@ async function turnManager(toPlayer) {
     const actorName = toPlayer ? background.name : background.enemy.name;
     var stunned = false;
     updateBars();
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 250));
 
     if (encounter.health <= 0 || player.health <= 0) {
         died = true;
@@ -338,7 +338,7 @@ async function turnManager(toPlayer) {
             await new Promise(resolve => setTimeout(resolve, 500));
             player.health = player.maxHealth;
             player.pstatus = [];
-            savePlayer()
+            await savePlayer();
             return;
         }
 
@@ -358,7 +358,7 @@ async function turnManager(toPlayer) {
 
         player.experience += xpdrop;
         if (player.level > currentLevel) {
-            setPlayer();
+            await setPlayer();
             player.health = player.maxHealth;
             player.stamina = player.maxStamina;
         } else updateBars();
@@ -366,34 +366,10 @@ async function turnManager(toPlayer) {
         // Pick a drop from the enemy
         const drop = randomByChance(background.enemy.drops)
         const loot = assets.items.find(item => item.name == drop.name);
-        let level = loot.minlvl && loot.maxlvl ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
-
-        if (!loot) alert(`"${background.enemy.drops[1].name}" is not a valid item name! Please fix this in the enemy's drop table.`);
-        else if (loot.name !== null) {
-            if (player.inventory.some(i => i.name == loot.name)) {
-                // The player already has this item
-                let foundItem = player.inventory.find(i => i.name == loot.name);
-                if (foundItem.level == level) player.inventory[player.inventory.indexOf(foundItem)].amount += 1;
-                else player.inventory.push({
-                    name: loot.name,
-                    level,
-                    amount: 1
-                });
-            } else {
-                // The player does not have this item
-                player.inventory.push({
-                    name: loot.name,
-                    level,
-                    amount: 1
-                });
-            }
-
-            let isWeapon = loot.attack ? true : false;
-            let isArmor = loot.defense ? true : false;
-
-            encounter.log.push(`🎁 ${background.enemy.name} dropped a <span style="color: lightblue;" data-tooltip="${level > 1 ? `Level ${level}\n\n` : ''}${loot.description || "Curious..."}${isWeapon ? `\n⚔️${Math.floor(loot.attack + ((level - 1) * loot.attackPerLevel))} 🍀${Math.floor(loot.crit * 100)}% ⚔️${loot.critdmg}x 🎯${Math.floor(loot.accuracy * 100)}%` : isArmor ? `\n🛡️${Math.floor(loot.defense + ((level - 1) * loot.alvlmult))} 💨${Math.floor(loot.evasion * 100)}%` : ""}">${level > 1 ? `Level ${level} ` : ''}${loot.name}</span>! 🎁`);
-        }
-        savePlayer();
+        const level = loot.minlvl && loot.maxlvl ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
+        const lootResult = addToInventory(loot, level);
+        if (lootResult) encounter.log.push(`🎁 ${background.enemy.name} dropped a <span style="color: lightblue;" data-tooltip="${level > 1 ? `Level ${level}\n\n` : ''}${loot.description || "Curious..."}${isWeapon ? `\n⚔️${Math.floor(loot.attack + ((level - 1) * loot.attackPerLevel))} 🍀${Math.floor(loot.crit * 100)}% ⚔️${loot.critdmg}x 🎯${Math.floor(loot.accuracy * 100)}%` : isArmor ? `\n🛡️${Math.floor(loot.defense + ((level - 1) * loot.alvlmult))} 💨${Math.floor(loot.evasion * 100)}%` : ""}">${level > 1 ? `Level ${level} ` : ''}${loot.name}</span>! 🎁`);
+        else alert(`Couldn't acquire ${drop.name}.`)
         return;
     }
 
@@ -424,7 +400,7 @@ async function turnManager(toPlayer) {
     }
 
     if (actorStatuses.some(s => s.id === '💫')) stunned = true;
-    await new Promise(r => setTimeout(r, 400))
+    await new Promise(r => setTimeout(r, 250))
     for (const s of actorStatuses.slice()) {
         switch (s.id) {
             case '🩸': {
@@ -495,7 +471,7 @@ async function turnManager(toPlayer) {
 
     if (toPlayer) battleStation.turn = true;
     else {
-        await new Promise(resolve => setTimeout(resolve, 750));
+        await new Promise(resolve => setTimeout(resolve, 500));
         background.enemy.skills.forEach(s => {
             if (s._cooldown > 0) s._cooldown--;
         });
