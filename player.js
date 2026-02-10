@@ -18,6 +18,7 @@ async function updateBars() {
 
 async function startPlayer() {
     const player = Alpine.$data(document.getElementById('player'));
+    const background = Alpine.$data(document.getElementById('background-image'));
     const raw = localStorage.getItem('textBasedData');
     if (!raw) return setPlayer();
 
@@ -47,6 +48,7 @@ async function startPlayer() {
     player.stamina = Number(playerData.stamina) || player.maxStamina;
     player.pstatus = Array.isArray(playerData.pstatus) ? playerData.pstatus : [];
     player.inventory = Array.isArray(playerData.inventory) ? playerData.inventory : [];
+    background.location = playerData.location || "Warhamshire";
 
     setPlayer();
 }
@@ -69,6 +71,7 @@ async function setPlayer() {
 
 async function savePlayer() {
     const player = Alpine.$data(document.getElementById('player'));
+    const background = Alpine.$data(document.getElementById('background-image'));
     localStorage.setItem('textBasedData', JSON.stringify({
         name: player.name,
         level: player.level,
@@ -78,7 +81,8 @@ async function savePlayer() {
         weaponry: { weapon: player.weaponry.weapon.name, level: player.weaponry.level },
         armory: { armor: player.armory.armor.name, level: player.armory.level },
         pstatus: player.pstatus,
-        inventory: player.inventory
+        inventory: player.inventory,
+        location: background.location
     }));
     console.log("Game Saved");
 }

@@ -3,13 +3,27 @@
 
 let ready = false;
 
+function setBackgroundForLocation(location) {
+    const loc = (location || 'Warhamshire').replace(/\s+/g, '');
+    const bgEl = document.getElementById('background-image');
+    bgEl.style.background = `linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)), url('assets/backgrounds/${loc}.jpg')`;
+    bgEl.style.backgroundPosition = 'center';
+    bgEl.style.backgroundRepeat = 'no-repeat';
+    bgEl.style.backgroundSize = 'cover';
+}
+
 function startup() {
     console.log("Startup function called.");
+    const saved = JSON.parse(localStorage.getItem('textBasedData'));
+    const bgData = Alpine.$data(document.getElementById('background-image'));
+    const loc = saved?.location || bgData?.location || 'Warhamshire';
+    setBackgroundForLocation(loc);
     fadeOutEffect();
 }
 
 async function startGame(name) {
     const player = Alpine.$data(document.getElementById('player'));
+    const background = Alpine.$data(document.getElementById('background-image'));
     Alpine.$data(document.getElementById("background-image")).name = name;
     console.log("Game started with name: " + name);
 
@@ -25,7 +39,8 @@ async function startGame(name) {
         weaponry: { weapon: player.weaponry.weapon.name, level: player.weaponry.level },
         armory: { armor: player.armory.armor.name, level: player.armory.level },
         pstatus: player.pstatus,
-        inventory: player.inventory
+        inventory: player.inventory,
+        location: background.location
     }));
 }
 
@@ -45,7 +60,7 @@ async function importButton() {
 
         const requiredKeys = [
             'name', 'level', 'health', 'stamina', 'experience',
-            'weaponry', 'armory', 'pstatus', 'inventory'
+            'weaponry', 'armory', 'pstatus', 'inventory', 'location'
         ];
 
         const hasRequired = requiredKeys.every(k => Object.prototype.hasOwnProperty.call(parsed, k));
@@ -77,6 +92,7 @@ async function importButton() {
 async function exportButton() {
     console.log("Export");
     const player = Alpine.$data(document.getElementById('player'));
+    const background = Alpine.$data(document.getElementById('background-image'));
     const saveData = JSON.stringify({
         name: player.name,
         level: player.level,
@@ -86,7 +102,8 @@ async function exportButton() {
         weaponry: { weapon: player.weaponry.weapon.name, level: player.weaponry.level },
         armory: { armor: player.armory.armor.name, level: player.armory.level },
         pstatus: player.pstatus,
-        inventory: player.inventory
+        inventory: player.inventory,
+        location: background.location
     });
 
     const encrypted = CryptoJS.TripleDES.encrypt(saveData, CryptoJS.enc.Utf8.parse("TextBasedGameKeyByJgouken"), {
