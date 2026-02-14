@@ -3,6 +3,7 @@ const assets = getAssets()
 const blessingWords = ['cleansed', 'purified', 'dispelled', 'vanquished', 'dissipated', 'evaporated', 'cured', 'alleviated', 'relieved', 'mitigated', 'quelled'];
 const badOmenWords = ['corroded', 'eviscerated', 'devoured', 'eroded', 'withered', 'decayed', 'consumed', 'ravaged', 'tainted', 'spoiled', 'blighted', 'defiled', 'rotted'];
 var died = false;
+var fled = false;
 
 // Choices - Array of Objects
 function randomByChance(choices) {
@@ -28,6 +29,7 @@ async function startBattle(enemy = null) {
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
 
     died = false;
+    fled = false;
     encounter.battle = true;
 
     background.enemy = enemy
@@ -68,6 +70,7 @@ async function executeSkill({
 }) {
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
+    if (fled) return;
     if (player.health <= 0 || encounter.health <= 0) return;
 
     if (!isPlayer && skill.wait) {
@@ -285,8 +288,10 @@ async function skill(index) {
     switch (index) {
         case -3:
             // Flee
+            fled = true;
             battleStation.turn = false;
             battleStation.showConsumables = false;
+            encounter.battle = false;
             encounter.log.push(`🏃💨 ${background.name} Fled!`)
             transition('encounter', 'returning');
             shouldEndTurn = false;
@@ -396,7 +401,7 @@ async function useBattleConsumable(consumableIndex) {
 }
 
 async function turnManager(toPlayer) {
-    if (died) return;
+    if (died || fled) return;
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
@@ -587,10 +592,12 @@ async function turnManager(toPlayer) {
         return turnManager(!toPlayer);
     }
 
+    if (fled) return;
 
     if (toPlayer) battleStation.turn = true;
     else {
         await new Promise(resolve => setTimeout(resolve, 500));
+        if (fled) return;
         background.enemy.skills.forEach(s => {
             if (s._cooldown > 0) s._cooldown--;
         });
@@ -601,6 +608,7 @@ async function turnManager(toPlayer) {
 }
 
 async function enemyMove() {
+    if (fled) return;
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));

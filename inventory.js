@@ -264,7 +264,7 @@ function updateEquipmentDisplay(type = null, itemData = null) {
 }
 
 function enhanceInventoryTooltips() {
-    const grids = Array.from(document.querySelectorAll('.inventory-grid, .crafting-inventory-grid, .crafting-grid'));
+    const grids = Array.from(document.querySelectorAll('.inventory-grid, .crafting-inventory-grid, .crafting-grid, .battle-consumables'));
     if (!grids.length) return;
 
     const updateGridTooltips = (grid) => {

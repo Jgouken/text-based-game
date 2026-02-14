@@ -546,12 +546,37 @@ img {
     gap: 20px;
 }
 
+.battle-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.battle-skills {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+}
+
 .battle-consumables {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-content: flex-start;
     gap: 10px;
+    max-height: 160px;
+    overflow-y: auto;
+    padding: 4px 6px 4px 0;
+}
+
+.battle-consumables .battle-item,
+.battle-consumables .battle-flee {
+    font-size: 20px !important;
+    padding: 6px 12px;
+    line-height: 1.2;
 }
 
 .battle-consumable-button {

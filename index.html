@@ -1144,6 +1144,50 @@
                     turn: true, 
                     showConsumables: false,
                     get weapon() { return Alpine.$data(document.getElementById('player')).weaponry.weapon },
+                    getInventoryTooltipText(itemName) {
+                        const it = assets.items.find(i => i.name === itemName);
+                        if (!it) return '';
+
+                        if (it.description && it.description.trim()) return it.description.trim();
+
+                        const parts = [];
+                        if (it.health) parts.push(`💖 +${Math.round(it.health * 100)}%`);
+                        if (it.stamina) parts.push(`⚡ +${Math.round(it.stamina * 100)}%`);
+                        if (it.xp) parts.push(`🌟 ${it.xp} XP`);
+                        if (it.def) parts.push(`🛡️ +${Math.round(it.def * 100)}% ${it.rounds ? `for ${it.rounds} turns` : 'for 1 turn'}`);
+                        if (it.buff) parts.push(`⚔️ +${Math.round(it.buff * 100)}% ${it.rounds ? `for ${it.rounds} turns` : 'for 1 turn'}`);
+                        if (it.damage) parts.push(`💥 ${it.damage}`);
+                        if (it.pstatus) parts.push(`Gain ${it.pstatus.join(', ')}`);
+                        if (it.estatus) parts.push(`Inflicts ${it.estatus.join(', ')}`);
+
+                        if (parts.length) return parts.join('\n');
+                        return Object.keys(it).length === 1 ? 'Crafting Reagent' : 'No description available';
+                    },
+                    getInventoryStyleDescription(item, level = 1) {
+                        if (!item) return '';
+                        const parts = [];
+
+                        if (item.attack !== undefined || item.defense !== undefined || item.maxlvl) {
+                            parts.push('Level ' + (level ?? 1));
+                            if (item.attack !== undefined) {
+                                parts.push(`⚔️${Math.floor(item.attack + (((level ?? 1) - 1) * item.attackPerLevel))} 🍀${Math.floor(item.crit * 100)}% ⚔️${item.critdmg}x 🎯${Math.floor(item.accuracy * 100)}%`);
+                            } else if (item.defense !== undefined) {
+                                parts.push(`🛡️${Math.floor(item.defense + (((level ?? 1) - 1) * item.alvlmult))} 💨${Math.floor(item.evasion * 100)}%`);
+                            }
+                        }
+
+                        if (item.health) parts.push(`💖 +${Math.round(item.health * 100)}%`);
+                        if (item.def) parts.push(`🛡️ +${Math.round(item.def * 100)}% ${item.rounds ? `for ${item.rounds} turns` : 'for 1 turn'}`);
+                        if (item.stamina) parts.push(`⚡ +${Math.round(item.stamina * 100)}%`);
+                        if (item.buff) parts.push('⚔️ +' + Math.round(item.buff * 100) + '% ' + `for ${item.rounds ? item.rounds + ' turns' : '1 turn'}`);
+                        if (item.xp) parts.push(`🌟 ${item.xp} XP`);
+                        if (item.chest !== undefined) parts.push(`Opens ${assets.chests[item.chest].name}`);
+                        if (item.damage) parts.push(`💥 ${item.damage}`);
+                        if (item.pstatus) parts.push(`Gain ${item.pstatus.join(', ')}`);
+                        if (item.estatus) parts.push(`Inflicts ${item.estatus.join(', ')}`);
+
+                        return parts.length ? parts.join('\n') : 'Crafting Reagent';
+                    },
                     get consumables() {
                         const player = Alpine.$data(document.getElementById('player'));
                         return player.inventory
@@ -1156,7 +1200,7 @@
                     }
                 }">
                 <div class="battle-buttons" x-show="battle">
-                    <div class="battle-actions" style="display: flex; gap: 20px;">
+                    <div class="battle-actions" x-show="!showConsumables" style="display: flex; gap: 20px;">
                         <button class="battle-base-attack"
                             :style="`background-color: ${turn ? 'rgb(253, 113, 113)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
                             x-text="weapon.skills[0].name" :disabled="!turn" @click="skill(0)"
@@ -1174,18 +1218,39 @@
                     </div>
 
                     <div class="battle-consumables" x-show="turn && showConsumables && consumables.length > 0">
-                        <template x-for="(entry, idx) in consumables" :key="`${entry.inventoryItem.name}-${idx}`">
-                            <button class="battle-item" @click="useBattleConsumable(idx)"
-                                :style="`background-color: rgb(138, 233, 138); color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: pointer;`"
-                                :data-tooltip="entry.itemData.description || ''"
-                                x-text="`${entry.inventoryItem.name}${entry.inventoryItem.amount > 1 ? ` x${entry.inventoryItem.amount}` : ''}`"></button>
-                        </template>
                         <button class="battle-flee"
-                            :style="`background-color: ${turn && showConsumables ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); font-size: 40px; font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn && showConsumables ? 'pointer' : 'not-allowed'};`"
+                            :style="`background-color: ${turn && showConsumables ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); font-size: 20px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn && showConsumables ? 'pointer' : 'not-allowed'};`"
+                            data-tooltip="Close item menu"
                             :disabled="!turn || !showConsumables" @click="showConsumables = false">Cancel</button>
+
+                        <template x-for="(entry, idx) in consumables" :key="`${entry.inventoryItem.name}-${idx}`">
+                            <div class="inventory-item battle-consumable-inventory-item"
+                                :class="{'inventory-item--no-icon': !(entry.itemData?.sprite)}"
+                                :data-tooltip="getInventoryTooltipText(entry.inventoryItem.name)"
+                                style="cursor: pointer;"
+                                @click="useBattleConsumable(idx)">
+                                <div class="inventory-item-amount inventory-item-amount--inline"
+                                    x-show="entry.inventoryItem.amount > 1 && !(entry.itemData?.sprite)">x<span
+                                        x-text="entry.inventoryItem.amount"></span>
+                                </div>
+                                <div class="inventory-item-icon-wrap"
+                                    x-show="entry.itemData && entry.itemData.chest !== undefined">
+                                    <img class="inventory-item-icon"
+                                        :src="`assets/keys/${entry.inventoryItem.name.replace(/ /g, '')}.gif`" alt="" />
+                                </div>
+                                <div class="inventory-item-body">
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <div class="inventory-item-name" x-text="entry.inventoryItem.name">Item</div>
+                                    </div>
+                                    <div class="inventory-item-meta"
+                                        x-text="getInventoryStyleDescription(entry.itemData, entry.inventoryItem.level ?? 1)">
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
                     </div>
 
-                    <div class="battle-skills"
+                    <div class="battle-skills" x-show="!showConsumables"
                         style="display: flex; flex-direction: row; gap: 20px; justify-content: center; align-items: flex-start;">
 
                         <!-- Skill 1 Group -->
