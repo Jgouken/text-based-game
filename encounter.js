@@ -592,6 +592,7 @@ async function turnManager(toPlayer) {
         return turnManager(!toPlayer);
     }
 
+    // ya know...
     if (fled) return;
 
     if (toPlayer) battleStation.turn = true;
