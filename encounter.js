@@ -367,7 +367,7 @@ async function turnManager(toPlayer) {
             const loot = assets.items.find(item => item.name == drop.name);
 
             if (loot === undefined && loot !== null) {
-                alert(`Item not found: ${drop.name}`);
+                console.log(`Item not found: ${drop.name}`);
                 return true;
             }
 
