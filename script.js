@@ -361,6 +361,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isTouchInteraction || Date.now() < suppressMouseUntil) return;
         const target = e.target.closest('[data-tooltip]');
         if (!target) return;
+        const related = e.relatedTarget;
+        if (related && target.contains(related)) return;
+        const relatedTooltipTarget = related?.closest?.('[data-tooltip]');
+        if (relatedTooltipTarget && relatedTooltipTarget === target) return;
         hideTooltip();
     });
 

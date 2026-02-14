@@ -11,6 +11,43 @@ function initInventoryDragDrop() {
     }, 500);
 }
 
+function getOrCreateDropHint(target) {
+    if (!target) return null;
+
+    let hint = target.querySelector('.drop-hint-label');
+    if (!hint) {
+        hint = document.createElement('div');
+        hint.className = 'drop-hint-label';
+        target.appendChild(hint);
+    }
+
+    const computedStyle = window.getComputedStyle(target);
+    if (computedStyle.position === 'static') {
+        target.style.position = 'relative';
+    }
+
+    return hint;
+}
+
+function setDropHintText(target, text) {
+    const hint = getOrCreateDropHint(target);
+    if (!hint) return;
+
+    hint.textContent = text;
+    hint.classList.add('drop-hint-label--visible');
+}
+
+function clearDropHintText(target) {
+    if (!target) return;
+    const hint = target.querySelector('.drop-hint-label');
+    if (!hint) return;
+
+    hint.classList.remove('drop-hint-label--visible');
+}
+
+window.setDropHintText = setDropHintText;
+window.clearDropHintText = clearDropHintText;
+
 function setupInventoryListeners() {
     const inventoryPanel = document.getElementById('inventory-panel');
     if (!inventoryPanel) return;
@@ -49,6 +86,39 @@ function createEquipmentDisplay() {
     document.body.appendChild(equipmentDisplay);
 }
 
+function formatEquipmentDiff(diff, suffix = '', isFloat = false) {
+    if (diff === 0) return '<span style="color: gray;"> (=)</span>';
+
+    const color = diff > 0 ? 'lime' : 'red';
+    const sign = diff > 0 ? '+' : '';
+    const value = isFloat ? diff.toFixed(2) : diff;
+
+    return `<span style="color: ${color};"> ${sign}${value}${suffix}</span>`;
+}
+
+function getHoveredItemLevel(player, itemName) {
+    const inventoryItem = player.inventory.find(item => item.name === itemName);
+    return inventoryItem ? inventoryItem.level : 1;
+}
+
+function getSynergyBonusesHtml(synergy) {
+    const bonuses = [];
+    if (synergy.defense) bonuses.push(`🛡️ +${synergy.defense} `);
+    if (synergy.evasion) bonuses.push(`💨 +${Math.floor(synergy.evasion * 100)}%`);
+    if (synergy.crit) bonuses.push(`🍀 +${Math.floor(synergy.crit * 100)}%`);
+    if (synergy.attack) bonuses.push(`⚔️ +${synergy.attack}`);
+    return bonuses.join('<br>');
+}
+
+function getSynergyHtml(title, synergy) {
+    return `
+        <div style="margin-top: 8px; border: 2px solid gold; padding: 6px; border-radius: 4px; background-color: rgba(255, 215, 0, 0.2);">
+            <div style="font-weight: bold; color: gold; font-size: 13px; text-align: center;">${title}</div>
+            <div style="font-size: 12px; color: #fff; margin-top: 3px;">${getSynergyBonusesHtml(synergy)}</div>
+        </div>
+    `;
+}
+
 function updateEquipmentDisplay(type = null, itemData = null) {
     const equipmentDisplay = document.getElementById('equipment-display');
     if (!equipmentDisplay) return;
@@ -64,104 +134,170 @@ function updateEquipmentDisplay(type = null, itemData = null) {
     if (type === 'weapon') {
         const weapon = player.weaponry.weapon;
         const weaponLevel = player.weaponry.level;
-        const hasSynergy = player.armory.armor.synergies &&
-            player.armory.armor.synergies.some(syn => syn.weapon === itemData.name);
+        const synergy = player.armory.armor.synergies
+            ? player.armory.armor.synergies.find(syn => syn.weapon === itemData.name)
+            : null;
+
+        // Calculate current stats
+        const currentAttack = Math.floor(weapon.attack + ((weaponLevel - 1) * weapon.attackPerLevel));
+        const currentCrit = Math.floor(weapon.crit * 100);
+        const currentCritdmg = weapon.critdmg;
+        const currentAccuracy = Math.floor(weapon.accuracy * 100);
+
+        const hoveredLevel = getHoveredItemLevel(player, itemData.name);
+
+        // Calculate hovered stats
+        const hoveredAttack = Math.floor(itemData.attack + ((hoveredLevel - 1) * itemData.attackPerLevel));
+        const hoveredCrit = Math.floor(itemData.crit * 100);
+        const hoveredCritdmg = itemData.critdmg;
+        const hoveredAccuracy = Math.floor(itemData.accuracy * 100);
+
+        // Calculate differences
+        const attackDiff = hoveredAttack - currentAttack;
+        const critDiff = hoveredCrit - currentCrit;
+        const critdmgDiff = hoveredCritdmg - currentCritdmg;
+        const accuracyDiff = hoveredAccuracy - currentAccuracy;
 
         let html = `
             <div style="text-align: center; font-family: 'Pixelify Sans', sans-serif; font-size: 16px; margin-bottom: 8px;">
-                <strong>⚔️ Current Weapon</strong>
+                <strong>⚔️ ${itemData.name} - Level ${hoveredLevel}</strong>
             </div>
             <div>
-                <div style="font-weight: bold; color: #fff;">${weapon.name} - Level ${weaponLevel}</div>
-                <div style="font-size: 13px; color: #cfcfcf;">⚔️ ${Math.floor(weapon.attack + ((weaponLevel - 1) * weapon.attackPerLevel))}</div>
-                <div style="font-size: 13px; color: #cfcfcf;">🍀 ${Math.floor(weapon.crit * 100)}%</div>
-                <div style="font-size: 13px; color: #cfcfcf;">⚔️ ${weapon.critdmg}x</div>
-                <div style="font-size: 13px; color: #cfcfcf;">🎯 ${Math.floor(weapon.accuracy * 100)}%</div>
+                <div style="font-size: 13px; color: #cfcfcf;">⚔️ ${hoveredAttack}${formatEquipmentDiff(attackDiff)}</div>
+                <div style="font-size: 13px; color: #cfcfcf;">🍀 ${hoveredCrit}%${formatEquipmentDiff(critDiff, '%')}</div>
+                <div style="font-size: 13px; color: #cfcfcf;">⚔️ ${hoveredCritdmg}x${formatEquipmentDiff(critdmgDiff, 'x', true)}</div>
+                <div style="font-size: 13px; color: #cfcfcf;">🎯 ${hoveredAccuracy}%${formatEquipmentDiff(accuracyDiff, '%')}</div>
             </div>
         `;
 
-        if (hasSynergy) {
-            const synergy = player.armory.armor.synergies.find(syn => syn.weapon === itemData.name);
-            html += `
-                <div style="margin-top: 8px; border: 2px solid gold; padding: 6px; border-radius: 4px; background-color: rgba(255, 215, 0, 0.2);">
-                    <div style="font-weight: bold; color: gold; font-size: 13px; text-align: center;">${synergy.name}</div>
-                    <div style="font-size: 12px; color: #fff; margin-top: 3px;">`;
-
-            const bonuses = [];
-            if (synergy.defense) bonuses.push(`🛡️ +${synergy.defense} `);
-            if (synergy.evasion) bonuses.push(`💨 +${Math.floor(synergy.evasion * 100)}%`);
-            if (synergy.crit) bonuses.push(`🍀 +${Math.floor(synergy.crit * 100)}%`);
-            if (synergy.attack) bonuses.push(`⚔️ +${synergy.attack}`);
-
-            html += bonuses.join('<br>');
-            html += `</div></div>`;
+        if (synergy) {
+            html += getSynergyHtml(synergy.name, synergy);
         }
 
         equipmentDisplay.innerHTML = html;
     } else if (type === 'armor') {
         const armor = player.armory.armor;
         const armorLevel = player.armory.level;
-        const hasSynergy = itemData.synergies &&
-            itemData.synergies.some(syn => syn.weapon === player.weaponry.weapon.name);
+        const synergy = itemData.synergies
+            ? itemData.synergies.find(syn => syn.weapon === player.weaponry.weapon.name)
+            : null;
+
+        const currentDefense = Math.floor(armor.defense + ((armorLevel - 1) * armor.alvlmult));
+        const currentEvasion = Math.floor(armor.evasion * 100);
+
+        const hoveredLevel = getHoveredItemLevel(player, itemData.name);
+
+        const hoveredDefense = Math.floor(itemData.defense + ((hoveredLevel - 1) * itemData.alvlmult));
+        const hoveredEvasion = Math.floor(itemData.evasion * 100);
+
+        const defenseDiff = hoveredDefense - currentDefense;
+        const evasionDiff = hoveredEvasion - currentEvasion;
 
         let html = `
             <div style="text-align: center; font-family: 'Pixelify Sans', sans-serif; font-size: 16px; margin-bottom: 8px;">
-                <strong>🛡️ Current Armor</strong>
+                <strong>🛡️ ${itemData.name} - Level ${hoveredLevel}</strong>
             </div>
             <div>
-                <div style="font-weight: bold; color: #fff;">${armor.name} - Level ${armorLevel}</div>
-                <div style="font-size: 13px; color: #cfcfcf;">🛡️ ${Math.floor(armor.defense + ((armorLevel - 1) * armor.alvlmult))}</div>
-                <div style="font-size: 13px; color: #cfcfcf;">💨 ${Math.floor(armor.evasion * 100)}%</div>
+                <div style="font-size: 13px; color: #cfcfcf;">🛡️ ${hoveredDefense}${formatEquipmentDiff(defenseDiff)}</div>
+                <div style="font-size: 13px; color: #cfcfcf;">💨 ${hoveredEvasion}%${formatEquipmentDiff(evasionDiff, '%')}</div>
             </div>
         `;
 
-        if (hasSynergy) {
-            const synergy = itemData.synergies.find(syn => syn.weapon === player.weaponry.weapon.name);
-            html += `
-                <div style="margin-top: 8px; border: 2px solid gold; padding: 6px; border-radius: 4px; background-color: rgba(255, 215, 0, 0.2);">
-                    <div style="font-weight: bold; color: gold; font-size: 13px; text-align: center;">${synergy.name} - ${itemData.name}</div>
-                    <div style="font-size: 12px; color: #fff; margin-top: 3px;">`;
-
-            const bonuses = [];
-            if (synergy.defense) bonuses.push(`🛡️ +${synergy.defense} `);
-            if (synergy.evasion) bonuses.push(`💨 +${Math.floor(synergy.evasion * 100)}%`);
-            if (synergy.crit) bonuses.push(`🍀 +${Math.floor(synergy.crit * 100)}%`);
-            if (synergy.attack) bonuses.push(`⚔️ +${synergy.attack}`);
-
-            html += bonuses.join('<br>');
-            html += `</div></div>`;
+        if (synergy) {
+            html += getSynergyHtml(`${synergy.name} - ${itemData.name}`, synergy);
         }
 
+        equipmentDisplay.innerHTML = html;
+    } else if (type === 'consumable') {
+        let html = `
+            <div style="text-align: center; font-family: 'Pixelify Sans', sans-serif; font-size: 16px; margin-bottom: 8px;">
+                <strong>🧪 ${itemData.name}</strong>
+            </div>
+            <div style="font-size: 13px; color: #cfcfcf;">
+        `;
+
+        const effects = [];
+
+        if (itemData.health) {
+            const currentHealth = Math.round(player.health);
+            const gainAmount = Math.round(player.maxHealth * itemData.health);
+            const newHealth = Math.min(currentHealth + gainAmount, player.maxHealth);
+            const actualGain = newHealth - currentHealth;
+            effects.push(`💖 ${currentHealth} → <span style="color: lime;">${newHealth}</span> <span style="color: #888;">(+${actualGain})</span>`);
+        }
+
+        if (itemData.stamina) {
+            const currentStamina = Math.round(player.stamina);
+            const gainAmount = Math.round(player.maxStamina * itemData.stamina);
+            const newStamina = Math.min(currentStamina + gainAmount, player.maxStamina);
+            const actualGain = newStamina - currentStamina;
+            effects.push(`⚡ ${currentStamina} → <span style="color: lime;">${newStamina}</span> <span style="color: #888;">(+${actualGain})</span>`);
+        }
+
+        if (itemData.def) {
+            const currentDefense = Math.round(player.defense);
+            const defenseBoost = Math.round(player.defense * itemData.def);
+            const newDefense = currentDefense + defenseBoost;
+            effects.push(`🛡️ ${currentDefense} → <span style="color: lime;">${newDefense}</span> <span style="color: #888;">(+${defenseBoost})</span>${itemData.rounds ? ` for ${itemData.rounds} turns` : ''}`);
+        }
+
+        if (itemData.buff) {
+            const buffAmount = Math.round(player.attack * itemData.buff);
+            const currentAttack = Math.round(player.attack);
+            const newAttack = currentAttack + buffAmount;
+            effects.push(`⚔️ ${currentAttack} → <span style="color: lime;">${newAttack}</span> <span style="color: #888;">(+${buffAmount})</span>${itemData.rounds ? ` for ${itemData.rounds} turns` : ''}`);
+        }
+
+        if (itemData.xp) {
+            const currentXP = player.experience;
+            const newXP = currentXP + itemData.xp;
+            effects.push(`🌟 ${currentXP} → <span style="color: lime;">${newXP}</span> XP`);
+        }
+
+        if (itemData.pstatus) {
+            effects.push(`✨ Gain: ${itemData.pstatus.join(', ')}`);
+        }
+
+        html += effects.join('<br>') + '</div>';
         equipmentDisplay.innerHTML = html;
     }
 }
 
 function enhanceInventoryTooltips() {
-    const inventoryGrid = document.querySelector('.inventory-grid');
-    if (!inventoryGrid) return;
+    const grids = Array.from(document.querySelectorAll('.inventory-grid, .crafting-inventory-grid, .crafting-grid'));
+    if (!grids.length) return;
 
-    const updateTooltips = () => {
-        const items = inventoryGrid.querySelectorAll('.inventory-item');
+    const updateGridTooltips = (grid) => {
+        const items = grid.querySelectorAll('.inventory-item, .crafting-item');
         items.forEach(item => {
+            const isCraftable = item.classList.contains('crafting-item');
+
             if (!item.dataset.tooltipsEnhanced) {
-                updateItemTooltip(item);
+                if (!isCraftable) {
+                    updateItemTooltip(item);
+                }
                 item.addEventListener('mouseenter', handleItemHover);
                 item.addEventListener('mouseleave', handleItemLeave);
                 item.dataset.tooltipsEnhanced = 'true';
-            } else {
+            } else if (!isCraftable) {
                 updateItemTooltip(item);
             }
         });
     };
 
-    updateTooltips();
+    grids.forEach(grid => {
+        updateGridTooltips(grid);
 
-    const observer = new MutationObserver(() => {
-        // Debounce the observer to prevent rapid re-calls
-        clearTimeout(observer.debounceTimer);
-        observer.debounceTimer = setTimeout(updateTooltips, 100);
+        if (grid.dataset.tooltipObserverBound === 'true') return;
+
+        const observer = new MutationObserver(() => {
+            clearTimeout(observer.debounceTimer);
+            observer.debounceTimer = setTimeout(() => updateGridTooltips(grid), 100);
+        });
+
+        observer.observe(grid, { childList: true, subtree: false });
+        grid.dataset.tooltipObserverBound = 'true';
     });
-    observer.observe(inventoryGrid, { childList: true, subtree: false });
 }
 
 function handleItemHover(e) {
@@ -169,18 +305,15 @@ function handleItemHover(e) {
     const player = Alpine.$data(document.getElementById('player'));
     const assets = getAssets();
 
-    // Get the item name from the DOM element
-    const itemName = itemElement.querySelector('.inventory-item-name')?.textContent || '';
+    const itemName = itemElement.dataset.craftName || itemElement.querySelector('.inventory-item-name')?.textContent?.trim() || '';
+    if (!itemName) return;
 
-    // Find the actual item in the inventory array by name
-    const inventoryItem = player.inventory.find(item => item.name === itemName);
-    if (!inventoryItem) return;
-
-    const itemData = assets.items.find(i => i.name === inventoryItem.name);
+    const itemData = assets.items.find(i => i.name === itemName);
     if (!itemData) return;
 
     const isWeapon = itemData.attack !== undefined && itemData.skills;
     const isArmor = itemData.defense !== undefined && !itemData.skills && itemData.alvlmult !== undefined;
+    const isConsumable = itemData.name.toLowerCase().includes('potion');
 
     if (isWeapon) {
         updateEquipmentDisplay('weapon', itemData);
@@ -194,6 +327,8 @@ function handleItemHover(e) {
         if (itemData.synergies && itemData.synergies.some(syn => syn.weapon === player.weaponry.weapon.name)) {
             highlightBattleWeaponry('weapon', true);
         }
+    } else if (isConsumable) {
+        updateEquipmentDisplay('consumable', itemData);
     }
 }
 
@@ -242,6 +377,7 @@ function updateItemTooltip(itemElement) {
         itemElement.style.border = '2px solid #444';
         itemElement.style.backgroundColor = '';
         itemElement.style.boxShadow = '';
+        itemElement.removeAttribute('data-tooltip');
         return;
     }
 
@@ -250,30 +386,22 @@ function updateItemTooltip(itemElement) {
         itemElement.style.border = '2px solid #444';
         itemElement.style.backgroundColor = '';
         itemElement.style.boxShadow = '';
+        itemElement.removeAttribute('data-tooltip');
         return;
     }
 
-    const metaElement = itemElement.querySelector('.inventory-item-meta');
-    let tooltipText = metaElement ? metaElement.getAttribute('data-tooltip') || metaElement.textContent : '';
+    const keys = Object.keys(itemData);
+    let tooltipText = '';
 
+    if (keys.length === 1) tooltipText = 'Crafting Reagent';
+    else tooltipText = itemData.description;
+    
     let hasSynergy = false;
 
     if (itemData.attack !== undefined && itemData.skills) {
         const currentArmor = player.armory.armor;
         if (currentArmor && currentArmor.synergies && currentArmor.synergies.some(syn => syn.weapon === itemData.name)) {
             hasSynergy = true;
-            const synergy = currentArmor.synergies.find(syn => syn.weapon === itemData.name);
-
-            const bonuses = [];
-            if (synergy.defense) bonuses.push(`🛡️ +${synergy.defense}`);
-            if (synergy.evasion) bonuses.push(`💨 +${Math.floor(synergy.evasion * 100)}%`);
-            if (synergy.crit) bonuses.push(`🍀 +${Math.floor(synergy.crit * 100)}%`);
-            if (synergy.attack) bonuses.push(`⚔️ +${synergy.attack}`);
-            tooltipText += `\n\nSynergy\n${bonuses.join(', ')}`;
-        }
-
-        if (player.weaponry.weapon.name === itemData.name) {
-            tooltipText += `\n\n⚔️ Currently Equipped`;
         }
     }
 
@@ -283,20 +411,14 @@ function updateItemTooltip(itemElement) {
         const synergy = itemData.synergies.find(syn => syn.weapon === currentWeapon.name);
         if (synergy) {
             hasSynergy = true;
-            const bonuses = [];
-            if (synergy.defense) bonuses.push(`🛡️ +${synergy.defense}`);
-            if (synergy.evasion) bonuses.push(`💨 +${Math.floor(synergy.evasion * 100)}%`);
-            if (synergy.crit) bonuses.push(`🍀 +${Math.floor(synergy.crit * 100)}%`);
-            if (synergy.attack) bonuses.push(`⚔️ +${synergy.attack}`);
-            tooltipText += `\n\nSynergy\n${bonuses.join(', ')}`;
-        }
-
-        if (player.armory.armor.name === itemData.name) {
-            tooltipText += `\n\n🛡️ Currently Equipped`;
         }
     }
 
-    itemElement.setAttribute('data-tooltip', tooltipText);
+    if (tooltipText) {
+        itemElement.setAttribute('data-tooltip', tooltipText);
+    } else {
+        itemElement.removeAttribute('data-tooltip');
+    }
 
     if (hasSynergy) {
         itemElement.style.border = '2px solid gold';
@@ -315,7 +437,6 @@ function handleDragStart(e) {
 
     const player = Alpine.$data(document.getElementById('player'));
     const itemName = inventoryItem.querySelector('.inventory-item-name')?.textContent || '';
-    const itemLevel = inventoryItem.querySelector('[x-text*="Level"]')?.textContent.match(/\d+/)?.[0] || 1;
 
     const actualIndex = player.inventory.findIndex(item => item.name === itemName);
 
@@ -400,13 +521,28 @@ function setupDropZone() {
     playerBar.addEventListener('dragleave', handleDragLeave);
 }
 
+function getPlayerDropHintText(itemData) {
+    if (!itemData) return 'Cannot be consumed or equipped';
+
+    const isWeapon = itemData.attack !== undefined && itemData.skills;
+    const isArmor = itemData.defense !== undefined && !itemData.skills && itemData.alvlmult !== undefined;
+    const isConsumable = itemData.name.toLowerCase().includes('potion');
+
+    if (isWeapon || isArmor) return 'Drop here to equip';
+    if (isConsumable) return 'Drop here to use';
+    return 'Cannot be consumed or equipped';
+}
+
 function handleDragOver(e) {
     if (!draggedItem) return;
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
     const playerBar = document.getElementById('player');
+    const itemData = getAssets().items.find(i => i.name === draggedItem.name);
     playerBar.style.backgroundColor = 'rgba(0, 255, 100, 0.2)';
     playerBar.style.transition = 'all 0.2s ease';
+    playerBar.classList.add('drop-hint-target--active');
+    setDropHintText(playerBar, getPlayerDropHintText(itemData));
 }
 
 function handleDragEnd(e) {
@@ -425,6 +561,8 @@ function handleDragEnd(e) {
     const playerBar = document.getElementById('player');
     if (playerBar) {
         playerBar.style.backgroundColor = '';
+        playerBar.classList.remove('drop-hint-target--active');
+        clearDropHintText(playerBar);
     }
 
     draggedItem = null;
@@ -436,6 +574,8 @@ function handleDragLeave(e) {
     const playerBar = document.getElementById('player');
     if (e.target === playerBar) {
         playerBar.style.backgroundColor = '';
+        playerBar.classList.remove('drop-hint-target--active');
+        clearDropHintText(playerBar);
     }
 }
 
@@ -499,6 +639,8 @@ async function handleDrop(e) {
 
     const playerBar = document.getElementById('player');
     playerBar.style.backgroundColor = '';
+    playerBar.classList.remove('drop-hint-target--active');
+    clearDropHintText(playerBar);
 
     if (!draggedItem) return;
 
@@ -515,7 +657,7 @@ async function handleDrop(e) {
 
     const isWeapon = itemData.attack !== undefined && itemData.skills;
     const isArmor = itemData.defense !== undefined && !itemData.skills && itemData.alvlmult !== undefined;
-    const isConsumable = itemData.health || itemData.stamina || itemData.buff || itemData.pstatus || itemData.xp;
+    const isConsumable = itemData.name.toLowerCase().includes('potion');
 
     if (isWeapon) {
         equipWeapon(itemData, draggedItem.level);

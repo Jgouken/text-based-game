@@ -948,6 +948,120 @@ img {
     justify-content: baseline;
 }
 
+/* Crafting Panel */
+.crafting-panel {
+    position: fixed;
+    z-index: 100;
+    top: 39%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 70%;
+    width: 90%;
+    color: white;
+    font-family: 'Pixelify Sans', sans-serif;
+    max-height: 95vh;
+    overflow: hidden;
+    text-align: left;
+    background-color: rgba(20, 20, 20, 0.95);
+    border: 2px solid #222;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    font-size: 16px;
+    pointer-events: auto;
+}
+
+.crafting-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.crafting-column {
+    min-width: 0;
+    border: 2px solid #222;
+    background-color: rgba(10, 10, 10, 0.6);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.crafting-column .inventory-tabs {
+    padding-top: 8px;
+}
+
+.crafting-grid,
+.crafting-inventory-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-start;
+    align-content: flex-start;
+    padding: 16px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.crafting-item {
+    width: 100%;
+    min-height: 86px;
+}
+
+.crafting-column--right.crafting-drop-target {
+    border: 2px dotted #ef4444 !important;
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.45);
+}
+
+.player.crafting-drop-target-player {
+    background-color: rgba(255, 140, 0, 0.16);
+}
+
+.drop-hint-label {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%) translateY(4px);
+    background: rgba(0, 0, 0, 0.68);
+    color: #d9ffd9;
+    border: 1px solid rgba(120, 255, 165, 0.45);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 18px;
+    font-family: 'Pixelify Sans', sans-serif;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 30;
+}
+
+.drop-hint-label--visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.drop-hint-target--active {
+    outline: 2px dotted rgba(120, 255, 165, 0.95);
+    outline-offset: -2px;
+}
+
+.crafting-inventory-grid .inventory-item {
+    width: calc(50% - 6px);
+    min-height: 72px;
+}
+
+@media (max-width: 1200px) {
+    .crafting-columns {
+        grid-template-columns: 1fr;
+    }
+
+    .crafting-inventory-grid .inventory-item {
+        width: 100%;
+    }
+}
+
 @keyframes slideDown {
     from {
         transform: translateX(-50%) translateY(-100px);

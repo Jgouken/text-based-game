@@ -215,11 +215,11 @@ function getAssets() {
 						chance: 0.05
 					},
 					{
-						name: "Empty Flask",
+						name: "Empty Bottle",
 						chance: 0.08
 					},
 					{
-						name: "Water Flask",
+						name: "Water Bottle",
 						chance: 0.05
 					},
 					{
@@ -295,11 +295,11 @@ function getAssets() {
 						chance: 0.05
 					},
 					{
-						name: "Empty Flask",
+						name: "Empty Bottle",
 						chance: 0.05
 					},
 					{
-						name: "Water Flask",
+						name: "Water Bottle",
 						chance: 0.05
 					},
 					{
@@ -871,11 +871,11 @@ function getAssets() {
 						chance: 0.03
 					},
 					{
-						name: "Empty Flask",
+						name: "Empty Bottle",
 						chance: 0.03
 					},
 					{
-						name: "Water Flask",
+						name: "Water Bottle",
 						chance: 0.03
 					},
 					{
@@ -981,11 +981,11 @@ function getAssets() {
 						chance: 0.03
 					},
 					{
-						name: "Empty Flask",
+						name: "Empty Bottle",
 						chance: 0.03
 					},
 					{
-						name: "Water Flask",
+						name: "Water Bottle",
 						chance: 0.03
 					},
 					{
@@ -1096,11 +1096,11 @@ function getAssets() {
 						chance: 0.03
 					},
 					{
-						name: "Empty Flask",
+						name: "Empty Bottle",
 						chance: 0.03
 					},
 					{
-						name: "Water Flask",
+						name: "Water Bottle",
 						chance: 0.03
 					},
 					{
@@ -4382,19 +4382,19 @@ function getAssets() {
 				name: "Medium Stamina Potion",
 				stamina: 0.3,
 				battle: true,
-				craft: ["Yellow Goo", "Water Flask"]
+				craft: ["Yellow Goo", "Water Bottle"]
 			},
 			{
 				name: "Heavy Stamina Potion",
 				stamina: 0.5,
 				battle: true,
-				craft: ["Yellow Goo", "Milk", "Empty Flask"]
+				craft: ["Yellow Goo", "Milk", "Empty Bottle"]
 			},
 			{
 				name: "Great Stamina Potion",
 				stamina: 0.7,
 				battle: true,
-				craft: ["Yellow Goo", "Witch Crystal", "Milk", "Empty Flask"]
+				craft: ["Yellow Goo", "Witch Crystal", "Milk", "Empty Bottle"]
 			},
 			{
 				name: "Grand Stamina Potion",
@@ -4411,19 +4411,19 @@ function getAssets() {
 				name: "Medium Health Potion",
 				health: 0.25,
 				battle: true,
-				craft: ["Green Goo", "Water Flask"]
+				craft: ["Green Goo", "Water Bottle"]
 			},
 			{
 				name: "Heavy Health Potion",
 				health: 0.5,
 				battle: true,
-				craft: ["Green Goo", "Egg", "Empty Flask"]
+				craft: ["Green Goo", "Egg", "Empty Bottle"]
 			},
 			{
 				name: "Great Health Potion",
 				health: 0.7,
 				battle: true,
-				craft: ["Green Goo", "Vampire Fang", "Egg", "Empty Flask"]
+				craft: ["Green Goo", "Vampire Fang", "Egg", "Empty Bottle"]
 			},
 			{
 				name: "Grand Health Potion",
@@ -4442,21 +4442,21 @@ function getAssets() {
 				def: 0.3,
 				rounds: 3,
 				battle: true,
-				craft: ["Blue Goo", "Water Flask"]
+				craft: ["Blue Goo", "Water Bottle"]
 			},
 			{
 				name: "Heavy Defense Potion",
 				def: 0.5,
 				rounds: 3,
 				battle: true,
-				craft: ["Blue Goo", "Egg", "Empty Flask"]
+				craft: ["Blue Goo", "Egg", "Empty Bottle"]
 			},
 			{
 				name: "Great Defense Potion",
 				def: 0.7,
 				rounds: 3,
 				battle: true,
-				craft: ["Gret Goo", "Demon Horn", "Egg", "Empty Flash"]
+				craft: ["Green Goo", "Demon Horn", "Egg", "Empty Bottle"]
 			},
 			{
 				name: "Grand Defense Potion",
@@ -4476,21 +4476,21 @@ function getAssets() {
 				buff: 0.3,
 				rounds: 3,
 				battle: true,
-				craft: ["Red Goo", "Water Flask"]
+				craft: ["Red Goo", "Water Bottle"]
 			},
 			{
 				name: "Heavy Attack Potion",
 				buff: 0.5,
 				rounds: 3,
 				battle: true,
-				craft: ["Red Goo", "Milk", "Empty Flask"]
+				craft: ["Red Goo", "Milk", "Empty Bottle"]
 			},
 			{
 				name: "Great Attack Potion",
 				buff: 0.7,
 				rounds: 3,
 				battle: true,
-				craft: ["Red Goo", "Werewolf Claw", "Milk", "Empty Flash"]
+				craft: ["Red Goo", "Werewolf Claw", "Milk", "Empty Bottle"]
 			},
 			{
 				name: "Grand Attack Potion",
@@ -4587,32 +4587,32 @@ function getAssets() {
 			},
 			{
 				name: "Ordinary Bomb",
-				craft: ["Gunpowder", "Sticky Solution", "Empty Flask"],
+				craft: ["Gunpowder", "Sticky Solution", "Empty Bottle"],
 				damage: 420,
 				battle: true
 			},
 			{
 				name: "Pepper Bomb",
-				craft: ["Gunpowder", "Sticky Solution", "Empty Flask", "Pepper"],
+				craft: ["Gunpowder", "Sticky Solution", "Empty Bottle", "Pepper"],
 				damage: 400,
 				estatus: ["👁️"],
 				battle: true
 			},
 			{
 				name: "Shrapnel Bomb",
-				craft: ["Gunpowder", "Sticky Solution", "Empty Flask", "Whetstone"],
+				craft: ["Gunpowder", "Sticky Solution", "Empty Bottle", "Whetstone"],
 				damage: 450,
 				estatus: ["🩸"],
 				battle: true
 			},
 			{
 				name: "Purifying Flask",
-				craft: ["Purified Salt", "Sticky Solution", "Water Flask"],
+				craft: ["Purified Salt", "Sticky Solution", "Water Bottle"],
 				battle: true
 			},
 			{
 				name: "Purifying Water",
-				craft: ["Purified Salt", "Water Flask"],
+				craft: ["Purified Salt", "Water Bottle"],
 				battle: true
 			},
 			{
@@ -4633,7 +4633,7 @@ function getAssets() {
 			},
 			{
 				name: "Sticky Solution",
-				craft: ["Yellow Goo", "Green Goo", "Blue Goo", "Red Goo", "Empty Flask"]
+				craft: ["Yellow Goo", "Green Goo", "Blue Goo", "Red Goo", "Empty Bottle"]
 			},
 			{
 				name: "Mana Infused Crystal",
@@ -4641,7 +4641,7 @@ function getAssets() {
 			},
 			{
 				name: "Enchanting Crystal",
-				craft: ["Mana Infused Crystal", "Sticky Solution", "Water Flask"]
+				craft: ["Mana Infused Crystal", "Sticky Solution", "Water Bottle"]
 			},
 			{
 				name: "Purification Gem",
@@ -4649,7 +4649,7 @@ function getAssets() {
 			},
 			{
 				name: "Whetstone & Polish",
-				craft: ["Whetstone", "Sticky Solution", "Water Flask", "Cloth"]
+				craft: ["Whetstone", "Sticky Solution", "Water Bottle", "Cloth"]
 			},
 			// Drops
 			{
@@ -4695,13 +4695,13 @@ function getAssets() {
 				name: "Blue Gem",
 			},
 			{
-				name: "Water Flask",
+				name: "Water Bottle",
 			},
 			{
 				name: "Booze",
 			},
 			{
-				name: "Empty Flask",
+				name: "Empty Bottle",
 			},
 			{
 				name: "Venom",
@@ -4799,11 +4799,11 @@ function getAssets() {
 						chance: 0.01
 					},
 					{
-						name: "Empty Flask",
+						name: "Empty Bottle",
 						chance: 0.025
 					},
 					{
-						name: "Water Flask",
+						name: "Water Bottle",
 						chance: 0.025
 					},
 					{
@@ -4951,11 +4951,11 @@ function getAssets() {
 						chance: 0.01
 					},
 					{
-						name: "Empty Flask",
+						name: "Empty Bottle",
 						chance: 0.02
 					},
 					{
-						name: "Water Flask",
+						name: "Water Bottle",
 						chance: 0.02
 					},
 					{
