@@ -346,8 +346,8 @@ async function turnManager(toPlayer) {
             await new Promise(r => setTimeout(r, 200))
             encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
 
-            while (player.experience + xpdrop > Math.floor((player.level / 0.07) ** 2)) {
-                xpdrop -= (Math.floor((player.level / 0.07) ** 2)) - player.experience;
+            while (player.experience + xpdrop > Math.floor(((level/0.07)**2)/2)) {
+                xpdrop -= (Math.floor(((level/0.07)**2)/2)) - player.experience;
                 player.level += 1;
                 player.experience = 0;
                 await new Promise(r => setTimeout(r, 200))

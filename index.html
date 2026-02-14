@@ -53,7 +53,7 @@
                 pstatus: [],
                 inventory: [],
 
-                get experienceTooltip () {return `${Math.floor((this.experience/Math.floor((this.level/0.07)**2)) * 100)}% XP\nGained to grow stronger.`},
+                get experienceTooltip () {return `${Math.floor((this.experience/Math.floor(((this.level/0.07)**2)/2)) * 100)}% XP\nGained to grow stronger.`},
                 get healthTooltip () {return `${Math.floor((this.health / this.maxHealth) * 100)}% Health\nUsed to keep you alive.`},
                 get staminaTooltip () {return `${Math.floor((this.stamina / this.maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.\nYou gain ⚡${Math.round(this.maxStamina * 0.1)} per turn.`},
                 tooltipMessages: [
@@ -170,7 +170,7 @@
                 </div>
 
                 <div class="experience-bar-stats"
-                    x-text="`Level ${level} - ${experience}/${Math.floor((level/0.07)**2)}`"
+                    x-text="`Level ${level} - ${experience}/${Math.floor(((level/0.07)**2)/2)}`"
                     :data-tooltip="experienceTooltip">
                 </div>
                 <div class="health-bar-stats" x-text="`${health}/${maxHealth}`" :data-tooltip="healthTooltip">0/0</div>

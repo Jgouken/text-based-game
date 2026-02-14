@@ -689,7 +689,8 @@ function getAssets() {
 					},
 					{
 						name: "Slime Secretion",
-						pstatus: ["🌀", "✨"],
+						pstatus: ["🌀"],
+						estatus: ["✨"],
 						chance: 0.05,
 						wait: 2,
 						attack: false

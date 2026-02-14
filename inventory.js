@@ -754,7 +754,7 @@ function removeFromInventory(index) {
 
 function checkLevelUp() {
     const player = Alpine.$data(document.getElementById('player'));
-    const requiredXP = Math.floor((player.level / 0.07) ** 2);
+    const requiredXP = Math.floor(((level/0.07)**2)/2);
 
     if (player.experience >= requiredXP) {
         player.level += 1;
