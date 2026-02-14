@@ -367,7 +367,7 @@ async function turnManager(toPlayer) {
             const loot = assets.items.find(item => item.name == drop.name);
 
             if (loot === undefined && loot !== null) {
-                console.log(`Item not found: ${drop.name}`);
+                console.error(`Item not found: ${drop.name}`);
                 return true;
             }
 
@@ -404,7 +404,7 @@ async function turnManager(toPlayer) {
             if (lootResult) {
                 encounter.log.push(`🎁 ${background.enemy.name} dropped a${/^[aeiou]/i.test(loot.name) ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip="${descText}">${loot.name}</span>! 🎁`);
             } else {
-                alert(`Couldn't acquire ${drop.name}.`);
+                console.error(`Couldn't acquire ${drop.name}.`);
             }
             return true;
         } else return false;
