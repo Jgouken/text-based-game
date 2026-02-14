@@ -64,7 +64,7 @@ span {
     pointer-events: none;
     background-color: rgba(0, 0, 0, 0.85);
     color: #fff;
-    font-size: 16px;
+    font-size: 20px;
     padding: 8px 8px;
     border-radius: 4px;
     opacity: 0;
@@ -546,6 +546,31 @@ img {
     gap: 20px;
 }
 
+.battle-consumables {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.battle-consumable-button {
+    background-color: rgba(22, 102, 22, 0.95);
+    color: white;
+    border: 3px solid rgb(0, 97, 21);
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 24px;
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.battle-consumable-button:hover {
+    filter: brightness(1.12);
+}
+
 .round-info {
     flex: 1;
     background-color: rgba(0, 0, 0, 0.5);
@@ -596,7 +621,7 @@ img {
 
 .debug-grid input {
     padding: 10px;
-    font-size: 18px;
+    font-size: 20px;
     background: #111;
     color: white;
     border: 2px solid #555;
@@ -665,7 +690,7 @@ img {
 }
 
 .travel-subtext {
-    font-size: 13px;
+    font-size: 18px;
     font-family: 'Pixel-Font', sans-serif;
     color: #cfcfcf;
     display: block;
@@ -749,7 +774,7 @@ img {
     background-color: rgba(20, 20, 20, 0.95);
     border: 2px solid #222;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
-    font-size: 16px;
+    font-size: 18px;
     pointer-events: auto;
 }
 
@@ -772,7 +797,7 @@ img {
     min-height: 64px;
     background: linear-gradient(180deg, #111 0%, #222 100%);
     border: 2px solid #444;
-    padding: 8px;
+    padding: 10px;
     box-sizing: border-box;
     cursor: grab;
     transition: all 0.12s ease;
@@ -807,10 +832,10 @@ img {
 
 .inventory-item-amount {
     position: absolute;
-    top: -6px;
+    top: -10px;
     background: #b91c1c;
     color: white;
-    font-size: 12px;
+    font-size: 20px;
     border: 2px solid #000;
     line-height: 1;
     pointer-events: none;
@@ -845,7 +870,7 @@ img {
 .inventory-item-amount--inline {
     background: #b91c1c;
     color: white;
-    font-size: 12px;
+    font-size: 18px;
     padding: 2px 6px;
     border: 2px solid #000;
     line-height: 1;
@@ -863,7 +888,7 @@ img {
 }
 
 .inventory-item-meta {
-    font-size: 13px;
+    font-size: 16px;
     color: #cfcfcf;
     align-items: flex-start;
     justify-self: flex-start;
@@ -906,7 +931,7 @@ img {
 
 .inventory-tab {
     font-family: 'Pixelify Sans', sans-serif;
-    font-size: 16px;
+    font-size: 20px;
     padding: 10px 20px;
     background-color: rgba(40, 40, 40, 0.95);
     border: 2px solid #222;
@@ -937,7 +962,7 @@ img {
     background-color: rgba(0, 0, 0, 0.9);
     padding: 12px;
     font-family: 'Pixel-Font', sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     color: white;
     min-width: 220px;
     max-width: 250px;
@@ -965,7 +990,7 @@ img {
     background-color: rgba(20, 20, 20, 0.95);
     border: 2px solid #222;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
-    font-size: 16px;
+    font-size: 20px;
     pointer-events: auto;
 }
 

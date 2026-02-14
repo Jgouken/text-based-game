@@ -225,7 +225,6 @@ async function executeSkill({
                 }
             });
             if (eviscerated.length > 0) encounter.log.push(`🌑 All of ${player.name}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
-            else encounter.log.push(`🌑 ${player.name}'s malediction lingers idly.`);
         } else if (player.pstatus.some(s => s.id == '✨')) {
             let cleansed = [];
             player.pstatus.slice().forEach(s => {
@@ -236,7 +235,6 @@ async function executeSkill({
             });
 
             if (cleansed.length > 0) encounter.log.push(`✨ All of ${player.name}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
-            else encounter.log.push(`✨ ${player.name}'s blessing gleams idly.`);
         }
     }
 
@@ -271,22 +269,45 @@ async function executeSkill({
 
 async function skill(index) {
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
-    battleStation.turn = false;
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
+    let shouldEndTurn = true;
+
+    const consumables = player.inventory
+        .map((inventoryItem, inventoryIndex) => ({
+            inventoryItem,
+            inventoryIndex,
+            itemData: assets.items.find(item => item.name === inventoryItem.name)
+        }))
+        .filter(entry => entry.itemData && entry.itemData.name.toLowerCase().includes('potion'));
 
     switch (index) {
         case -3:
             // Flee
+            battleStation.turn = false;
+            battleStation.showConsumables = false;
             encounter.log.push(`🏃💨 ${background.name} Fled!`)
             transition('encounter', 'returning');
+            shouldEndTurn = false;
             break;
         case -2:
             // Item
+            if (consumables.length === 0) {
+                battleStation.showConsumables = false;
+                battleStation.turn = true;
+                shouldEndTurn = false;
+                break;
+            }
+
+            battleStation.showConsumables = !battleStation.showConsumables;
+            battleStation.turn = true;
+            shouldEndTurn = false;
             break;
         case -1:
             // Pass
+            battleStation.turn = false;
+            battleStation.showConsumables = false;
             var staminaRegen = Math.round(player.maxStamina * 0.1);
             if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
             player.stamina += staminaRegen;
@@ -297,6 +318,8 @@ async function skill(index) {
         case 1:
         case 2:
         case 3: {
+            battleStation.turn = false;
+            battleStation.showConsumables = false;
             await executeSkill({
                 attacker: player,
                 defender: encounter,
@@ -312,6 +335,63 @@ async function skill(index) {
         }
     }
 
+    if (shouldEndTurn) {
+        turnManager(false);
+    }
+}
+
+async function useBattleConsumable(consumableIndex) {
+    const battleStation = Alpine.$data(document.getElementById('battle-station'));
+    const background = Alpine.$data(document.getElementById('background-image'));
+    const encounter = Alpine.$data(document.getElementById('encounter'));
+    const player = Alpine.$data(document.getElementById('player'));
+
+    if (!battleStation.turn) return;
+
+    const consumables = player.inventory
+        .map((inventoryItem, inventoryIndex) => ({
+            inventoryItem,
+            inventoryIndex,
+            itemData: assets.items.find(item => item.name === inventoryItem.name)
+        }))
+        .filter(entry => entry.itemData && entry.itemData.name.toLowerCase().includes('potion'));
+
+    const selected = consumables[consumableIndex];
+    if (!selected || !selected.itemData) return;
+
+    const itemData = selected.itemData;
+
+    if (itemData.health) {
+        const healAmount = Math.floor(player.maxHealth * itemData.health);
+        player.health = Math.min(player.health + healAmount, player.maxHealth);
+    }
+
+    if (itemData.stamina) {
+        const staminaAmount = Math.floor(player.maxStamina * itemData.stamina);
+        player.stamina = Math.min(player.stamina + staminaAmount, player.maxStamina);
+    }
+
+    if (itemData.xp) {
+        player.experience += itemData.xp;
+    }
+
+    if (itemData.pstatus) {
+        itemData.pstatus.forEach(statusId => {
+            const status = assets.statuses.find(s => s.id === statusId);
+            if (status && !player.pstatus.some(s => s.id === statusId)) {
+                player.pstatus.push({ ...status, baseDam: player.attack });
+            }
+        });
+    }
+
+    removeFromInventory(selected.inventoryIndex);
+    encounter.log.push(`- ${background.name} used ${selected.inventoryItem.name}`);
+
+    battleStation.showConsumables = false;
+    battleStation.turn = false;
+
+    updateBars();
+    await savePlayer();
     turnManager(false);
 }
 
@@ -346,8 +426,8 @@ async function turnManager(toPlayer) {
             await new Promise(r => setTimeout(r, 200))
             encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
 
-            while (player.experience + xpdrop > Math.floor(((level/0.07)**2)/2)) {
-                xpdrop -= (Math.floor(((level/0.07)**2)/2)) - player.experience;
+            while (player.experience + xpdrop > Math.floor(((player.level / 0.07) ** 2) / 2)) {
+                xpdrop -= (Math.floor(((player.level / 0.07) ** 2) / 2)) - player.experience;
                 player.level += 1;
                 player.experience = 0;
                 await new Promise(r => setTimeout(r, 200))
@@ -424,7 +504,6 @@ async function turnManager(toPlayer) {
             }
         });
         if (eviscerated.length > 0) encounter.log.push(`🌑 All of ${actorName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
-        else encounter.log.push(`🌑 ${actorName}'s malediction lingers idly.`);
     } else if (actorStatuses.some(s => s.id == '✨')) {
         let cleansed = [];
         actorStatuses.slice().forEach(s => {
@@ -435,7 +514,6 @@ async function turnManager(toPlayer) {
         });
 
         if (cleansed.length > 0) encounter.log.push(`✨ All of ${actorName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
-        else encounter.log.push(`✨ ${actorName}'s blessing gleams idly.`);
     }
 
     if (actorStatuses.some(s => s.id === '💫')) stunned = true;

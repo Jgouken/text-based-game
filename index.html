@@ -1139,8 +1139,22 @@
                     })
                 })">
             </div>
-            <div class="battle-station" id="battle-station"
-                x-data="{ round: 1, turn: true, get weapon() { return Alpine.$data(document.getElementById('player')).weaponry.weapon } }">
+            <div class="battle-station" id="battle-station" x-data="{ 
+                    round: 1, 
+                    turn: true, 
+                    showConsumables: false,
+                    get weapon() { return Alpine.$data(document.getElementById('player')).weaponry.weapon },
+                    get consumables() {
+                        const player = Alpine.$data(document.getElementById('player'));
+                        return player.inventory
+                            .map((inventoryItem, inventoryIndex) => ({
+                                inventoryItem,
+                                inventoryIndex,
+                                itemData: assets.items.find(item => item.name === inventoryItem.name)
+                            }))
+                            .filter(entry => entry.itemData && entry.itemData.name.toLowerCase().includes('potion'));
+                    }
+                }">
                 <div class="battle-buttons" x-show="battle">
                     <div class="battle-actions" style="display: flex; gap: 20px;">
                         <button class="battle-base-attack"
@@ -1152,11 +1166,23 @@
                             :data-tooltip="`Skip your turn but gain⚡${Math.round(Alpine.$data(player).maxStamina * 0.1)}`"
                             :disabled="!turn" @click="skill(-1)">Pass</button>
                         <button class="battle-item"
-                            :style="`background-color: ${turn ? 'rgb(138, 233, 138)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                            :disabled="!turn" @click="skill(-2)">Item</button>
+                            :style="`background-color: ${turn && consumables.length > 0 ? 'rgb(138, 233, 138)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn && consumables.length > 0 ? 'pointer' : 'not-allowed'};`"
+                            :disabled="!turn || consumables.length === 0" @click="skill(-2)">Item</button>
                         <button class="battle-flee"
                             :style="`background-color: ${turn ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); font-size: 40px; font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
                             :disabled="!turn" @click="skill(-3)">Flee</button>
+                    </div>
+
+                    <div class="battle-consumables" x-show="turn && showConsumables && consumables.length > 0">
+                        <template x-for="(entry, idx) in consumables" :key="`${entry.inventoryItem.name}-${idx}`">
+                            <button class="battle-item" @click="useBattleConsumable(idx)"
+                                :style="`background-color: rgb(138, 233, 138); color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: pointer;`"
+                                :data-tooltip="entry.itemData.description || ''"
+                                x-text="`${entry.inventoryItem.name}${entry.inventoryItem.amount > 1 ? ` x${entry.inventoryItem.amount}` : ''}`"></button>
+                        </template>
+                        <button class="battle-flee"
+                            :style="`background-color: ${turn && showConsumables ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); font-size: 40px; font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn && showConsumables ? 'pointer' : 'not-allowed'};`"
+                            :disabled="!turn || !showConsumables" @click="showConsumables = false">Cancel</button>
                     </div>
 
                     <div class="battle-skills"
