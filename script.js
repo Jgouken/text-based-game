@@ -139,6 +139,9 @@ async function quitButton() {
 }
 
 async function fadeInOutEffect(to) {
+    if (ready) return; // Prevent double-click during fade
+    ready = true;
+    
     await fadeInEffect();
     await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -186,6 +189,7 @@ async function fadeInOutEffect(to) {
 
     Alpine.$data(document.getElementById("background-image")).screen = to;
     await fadeOutEffect();
+    ready = false; // Allow interactions again
 }
 
 async function fadeOutEffect() {

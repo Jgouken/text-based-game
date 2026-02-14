@@ -393,7 +393,7 @@ function updateItemTooltip(itemElement) {
     const keys = Object.keys(itemData);
     let tooltipText = '';
 
-    if (keys.length === 1) tooltipText = 'Crafting Reagent';
+    if (keys.length < 2 || keys.every(key => key === 'name' || key === 'craft')) tooltipText = 'Crafting Reagent';
     else tooltipText = itemData.description;
     
     let hasSynergy = false;
