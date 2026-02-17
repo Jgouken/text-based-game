@@ -1,6 +1,277 @@
 let mult = 9
 function getLocalAssets() {
 	return {
+		blocks: [
+			// Defines the different level milestones of enemies, with their respective stat increases per level
+			// all following stats are "per level" and added to base
+			{
+				name: "Animal",
+				fifty: {
+					health: 50,
+					attack: 20,
+					defense: 20,
+				},
+
+				forty: {
+					health: 45,
+					attack: 17,
+					defense: 17,
+				},
+
+				thirty: {
+					health: 40,
+					attack: 14,
+					defense: 14,
+				},
+
+				twenty: {
+					health: 35,
+					attack: 11,
+					defense: 11,
+				},
+
+				ten: {
+					health: 30,
+					attack: 8,
+					defense: 8,
+				},
+
+				zero: {
+					health: 25,
+					attack: 5,
+					defense: 5,
+				},
+			},
+			{
+				name: "Grunt",
+				fifty: {
+					health: 125,
+					attack: 21,
+					defense: 21,
+				},
+
+				forty: {
+					health: 75,
+					attack: 21,
+					defense: 21,
+				},
+
+				thirty: {
+					health: 60,
+					attack: 18,
+					defense: 18,
+				},
+
+				twenty: {
+					health: 45,
+					attack: 15,
+					defense: 15,
+				},
+
+				ten: {
+					health: 35,
+					attack: 12,
+					defense: 12,
+				},
+
+				zero: {
+					health: 25,
+					attack: 9,
+					defense: 9,
+				},
+			},
+			{
+				name: "General",
+				fifty: {
+					health: 200,
+					attack: 30,
+					defense: 30,
+				},
+
+				forty: {
+					health: 150,
+					attack: 27,
+					defense: 27,
+				},
+
+				thirty: {
+					health: 135,
+					attack: 24,
+					defense: 24,
+				},
+
+				twenty: {
+					health: 120,
+					attack: 21,
+					defense: 21,
+				},
+
+				ten: {
+					health: 110,
+					attack: 18,
+					defense: 18,
+				},
+
+				zero: {
+					health: 100,
+					attack: 15,
+					defense: 15,
+				},
+			},
+			{
+				name: "Vice Captain",
+				fifty: {
+					health: 275,
+					attack: 27,
+					defense: 27,
+				},
+
+				forty: {
+					health: 225,
+					attack: 25,
+					defense: 25,
+				},
+
+				thirty: {
+					health: 210,
+					attack: 23,
+					defense: 23,
+				},
+
+				twenty: {
+					health: 195,
+					attack: 21,
+					defense: 21,
+				},
+
+				ten: {
+					health: 185,
+					attack: 19,
+					defense: 19,
+				},
+
+				zero: {
+					health: 175,
+					attack: 17,
+					defense: 17,
+				},
+			},
+			{
+				name: "Captain",
+				fifty: {
+					health: 350,
+					attack: 30,
+					defense: 30,
+				},
+
+				forty: {
+					health: 300,
+					attack: 28,
+					defense: 28,
+				},
+
+				thirty: {
+					health: 285,
+					attack: 26,
+					defense: 26,
+				},
+
+				twenty: {
+					health: 270,
+					attack: 24,
+					defense: 24,
+				},
+
+				ten: {
+					health: 260,
+					attack: 22,
+					defense: 22,
+				},
+
+				zero: {
+					health: 250,
+					attack: 20,
+					defense: 20,
+				},
+			},
+			{
+				name: "Lord",
+				fifty: {
+					health: 450,
+					attack: 40,
+					defense: 40,
+				},
+
+				forty: {
+					health: 400,
+					attack: 37,
+					defense: 37,
+				},
+
+				thirty: {
+					health: 385,
+					attack: 34,
+					defense: 34,
+				},
+
+				twenty: {
+					health: 370,
+					attack: 31,
+					defense: 31,
+				},
+
+				ten: {
+					health: 360,
+					attack: 28,
+					defense: 28,
+				},
+
+				zero: {
+					health: 350,
+					attack: 25,
+					defense: 25,
+				},
+			},
+			{
+				name: "Elite",
+				fifty: {
+					health: 500,
+					attack: 45,
+					defense: 45,
+				},
+
+				forty: {
+					health: 450,
+					attack: 42,
+					defense: 42,
+				},
+
+				thirty: {
+					health: 435,
+					attack: 39,
+					defense: 39,
+				},
+
+				twenty: {
+					health: 420,
+					attack: 36,
+					defense: 36,
+				},
+
+				ten: {
+					health: 410,
+					attack: 33,
+					defense: 33,
+				},
+
+				zero: {
+					health: 400,
+					attack: 30,
+					defense: 30,
+				},
+			}
+		],
+
 		statuses: [
 			{
 				name: 'Poison',
@@ -5687,6 +5958,7 @@ function getLocalAssets() {
 
 const ASSETS_SHEET_ID = "1FbePsEGRNGkCG1p7KIpjTi0cpUsnaIWH"
 const ASSET_SHEETS = [
+	["Blocks", "blocks"],
 	["Statuses", "statuses"],
 	["Enemies", "enemies"],
 	["Areas", "areas"],
@@ -5717,180 +5989,180 @@ const LEGACY_STATUS_ID_BY_NAME = {
 }
 
 var assetsCache = getLocalAssets();
-normalizeStatusReferences(assetsCache)
+// normalizeStatusReferences(assetsCache)
 
-console.log(assetsCache)
+// console.log(assetsCache)
 
-let assetsLoadPromise = null
-function overwriteAssetsCache(nextAssets) {
-	normalizeStatusReferences(nextAssets)
+// let assetsLoadPromise = null
+// function overwriteAssetsCache(nextAssets) {
+// 	normalizeStatusReferences(nextAssets)
 
-	for (const key of Object.keys(assetsCache)) {
-		delete assetsCache[key]
-	}
+// 	for (const key of Object.keys(assetsCache)) {
+// 		delete assetsCache[key]
+// 	}
 
-	for (const [key, value] of Object.entries(nextAssets)) {
-		assetsCache[key] = value
-	}
-}
+// 	for (const [key, value] of Object.entries(nextAssets)) {
+// 		assetsCache[key] = value
+// 	}
+// }
 
-function parseExpressionValue(raw) {
-	if (raw === null || raw === undefined) return raw
-	if (typeof raw !== "string") return raw
+// function parseExpressionValue(raw) {
+// 	if (raw === null || raw === undefined) return raw
+// 	if (typeof raw !== "string") return raw
 
-	const text = raw.trim()
-	if (!text.length) return undefined
+// 	const text = raw.trim()
+// 	if (!text.length) return undefined
 
-	try {
-		return Function(`"use strict"; return (${text});`)()
-	} catch {
-		return raw
-	}
-}
+// 	try {
+// 		return Function(`"use strict"; return (${text});`)()
+// 	} catch {
+// 		return raw
+// 	}
+// }
 
-function fetchSheetTableWithJsonp(sheetName) {
-	if (typeof document === "undefined" || typeof window === "undefined") {
-		throw new Error("JSONP sheet loading requires a browser document context.")
-	}
+// function fetchSheetTableWithJsonp(sheetName) {
+// 	if (typeof document === "undefined" || typeof window === "undefined") {
+// 		throw new Error("JSONP sheet loading requires a browser document context.")
+// 	}
 
-	return new Promise((resolve, reject) => {
-		const callbackName = `__assetsGvizCallback_${Math.random().toString(36).slice(2)}`
-		const timeoutMs = 15000
-		let timeoutId = null
+// 	return new Promise((resolve, reject) => {
+// 		const callbackName = `__assetsGvizCallback_${Math.random().toString(36).slice(2)}`
+// 		const timeoutMs = 15000
+// 		let timeoutId = null
 
-		const cleanup = () => {
-			if (timeoutId) clearTimeout(timeoutId)
-			try { delete window[callbackName] } catch { window[callbackName] = undefined }
-			if (script.parentNode) script.parentNode.removeChild(script)
-		}
+// 		const cleanup = () => {
+// 			if (timeoutId) clearTimeout(timeoutId)
+// 			try { delete window[callbackName] } catch { window[callbackName] = undefined }
+// 			if (script.parentNode) script.parentNode.removeChild(script)
+// 		}
 
-		window[callbackName] = (payload) => {
-			cleanup()
-			if (payload?.status === "error") {
-				reject(new Error(`Google Sheets returned an error for '${sheetName}': ${payload.errors?.[0]?.detailed_message || payload.errors?.[0]?.message || "unknown error"}`))
-				return
-			}
+// 		window[callbackName] = (payload) => {
+// 			cleanup()
+// 			if (payload?.status === "error") {
+// 				reject(new Error(`Google Sheets returned an error for '${sheetName}': ${payload.errors?.[0]?.detailed_message || payload.errors?.[0]?.message || "unknown error"}`))
+// 				return
+// 			}
 
-			if (!payload?.table) {
-				reject(new Error(`Google Sheets returned no table data for '${sheetName}'.`))
-				return
-			}
+// 			if (!payload?.table) {
+// 				reject(new Error(`Google Sheets returned no table data for '${sheetName}'.`))
+// 				return
+// 			}
 
-			resolve(payload.table)
-		}
+// 			resolve(payload.table)
+// 		}
 
-		const params = new URLSearchParams({
-			sheet: sheetName,
-			headers: "0",
-			tqx: `responseHandler:${callbackName};out:json`,
-		})
+// 		const params = new URLSearchParams({
+// 			sheet: sheetName,
+// 			headers: "0",
+// 			tqx: `responseHandler:${callbackName};out:json`,
+// 		})
 
-		const script = document.createElement("script")
-		script.src = `https://docs.google.com/spreadsheets/d/${ASSETS_SHEET_ID}/gviz/tq?${params.toString()}`
-		script.async = true
-		script.onerror = () => {
-			cleanup()
-			reject(new Error(`Failed to load Google Sheets script for '${sheetName}'.`))
-		}
+// 		const script = document.createElement("script")
+// 		script.src = `https://docs.google.com/spreadsheets/d/${ASSETS_SHEET_ID}/gviz/tq?${params.toString()}`
+// 		script.async = true
+// 		script.onerror = () => {
+// 			cleanup()
+// 			reject(new Error(`Failed to load Google Sheets script for '${sheetName}'.`))
+// 		}
 
-		timeoutId = setTimeout(() => {
-			cleanup()
-			reject(new Error(`Timed out loading Google Sheets data for '${sheetName}'.`))
-		}, timeoutMs)
+// 		timeoutId = setTimeout(() => {
+// 			cleanup()
+// 			reject(new Error(`Timed out loading Google Sheets data for '${sheetName}'.`))
+// 		}, timeoutMs)
 
-		document.head.appendChild(script)
-	})
-}
+// 		document.head.appendChild(script)
+// 	})
+// }
 
-function tableToObjects(table) {
-	const rows = table?.rows || []
-	if (!rows.length) return []
+// function tableToObjects(table) {
+// 	const rows = table?.rows || []
+// 	if (!rows.length) return []
 
-	let headerRowIndex = -1
-	for (let index = 0; index < rows.length; index++) {
-		const cells = rows[index]?.c || []
-		const hasAnyHeaderCell = cells.some((cell) => {
-			const value = cell?.v
-			return value !== null && value !== undefined && String(value).trim().length > 0
-		})
-		if (hasAnyHeaderCell) {
-			headerRowIndex = index
-			break
-		}
-	}
+// 	let headerRowIndex = -1
+// 	for (let index = 0; index < rows.length; index++) {
+// 		const cells = rows[index]?.c || []
+// 		const hasAnyHeaderCell = cells.some((cell) => {
+// 			const value = cell?.v
+// 			return value !== null && value !== undefined && String(value).trim().length > 0
+// 		})
+// 		if (hasAnyHeaderCell) {
+// 			headerRowIndex = index
+// 			break
+// 		}
+// 	}
 
-	if (headerRowIndex === -1) return []
+// 	if (headerRowIndex === -1) return []
 
-	const headerCells = rows[headerRowIndex]?.c || []
-	const headers = headerCells.map((cell) => (cell?.v ?? "").toString().trim())
+// 	const headerCells = rows[headerRowIndex]?.c || []
+// 	const headers = headerCells.map((cell) => (cell?.v ?? "").toString().trim())
 
-	const objects = []
-	for (let rowIndex = headerRowIndex + 1; rowIndex < rows.length; rowIndex++) {
-		const row = rows[rowIndex]
-		if (!row || !row.c) continue
+// 	const objects = []
+// 	for (let rowIndex = headerRowIndex + 1; rowIndex < rows.length; rowIndex++) {
+// 		const row = rows[rowIndex]
+// 		if (!row || !row.c) continue
 
-		const out = {}
-		let hasValue = false
+// 		const out = {}
+// 		let hasValue = false
 
-		for (let columnIndex = 0; columnIndex < headers.length; columnIndex++) {
-			const key = headers[columnIndex]
-			if (!key) continue
+// 		for (let columnIndex = 0; columnIndex < headers.length; columnIndex++) {
+// 			const key = headers[columnIndex]
+// 			if (!key) continue
 
-			const rawValue = row.c[columnIndex]?.v
-			const parsedValue = parseExpressionValue(rawValue)
-			if (parsedValue === undefined) continue
+// 			const rawValue = row.c[columnIndex]?.v
+// 			const parsedValue = parseExpressionValue(rawValue)
+// 			if (parsedValue === undefined) continue
 
-			out[key] = parsedValue
-			hasValue = true
-		}
+// 			out[key] = parsedValue
+// 			hasValue = true
+// 		}
 
-		if (hasValue) objects.push(out)
-	}
+// 		if (hasValue) objects.push(out)
+// 	}
 
-	return objects
-}
+// 	return objects
+// }
 
-async function fetchSheetTable(sheetName) {
-	return fetchSheetTableWithJsonp(sheetName)
-}
+// async function fetchSheetTable(sheetName) {
+// 	return fetchSheetTableWithJsonp(sheetName)
+// }
 
-async function loadAssetsFromGoogleSheets() {
-	const results = await Promise.all(
-		ASSET_SHEETS.map(async ([sheetName, key]) => {
-			const table = await fetchSheetTable(sheetName)
-			const rows = tableToObjects(table)
-			return [key, rows]
-		})
-	)
+// async function loadAssetsFromGoogleSheets() {
+// 	const results = await Promise.all(
+// 		ASSET_SHEETS.map(async ([sheetName, key]) => {
+// 			const table = await fetchSheetTable(sheetName)
+// 			const rows = tableToObjects(table)
+// 			return [key, rows]
+// 		})
+// 	)
 
-	const loaded = {}
-	for (const [key, rows] of results) {
-		loaded[key] = rows
-	}
+// 	const loaded = {}
+// 	for (const [key, rows] of results) {
+// 		loaded[key] = rows
+// 	}
 
-	return loaded
-}
+// 	return loaded
+// }
 
-function ensureAssetsLoaded() {
-	if (assetsLoadPromise) return assetsLoadPromise
+// function ensureAssetsLoaded() {
+// 	if (assetsLoadPromise) return assetsLoadPromise
 
-	assetsLoadPromise = loadAssetsFromGoogleSheets()
-		.then((loadedAssets) => {
-			overwriteAssetsCache(loadedAssets)
-			return loadedAssets
-		})
-		.catch((error) => {
-			console.error(
-				"Failed to load Google Sheets assets. Falling back to local assets. Ensure the spreadsheet is shared to 'Anyone with the link (Viewer)' or published to the web.",
-				error
-			)
-			return assetsCache
-		})
+// 	assetsLoadPromise = loadAssetsFromGoogleSheets()
+// 		.then((loadedAssets) => {
+// 			overwriteAssetsCache(loadedAssets)
+// 			return loadedAssets
+// 		})
+// 		.catch((error) => {
+// 			console.error(
+// 				"Failed to load Google Sheets assets. Falling back to local assets. Ensure the spreadsheet is shared to 'Anyone with the link (Viewer)' or published to the web.",
+// 				error
+// 			)
+// 			return assetsCache
+// 		})
 
-	return assetsLoadPromise
-}
+// 	return assetsLoadPromise
+// }
 
-ensureAssetsLoaded()
+// ensureAssetsLoaded()
 
 function getAssets() {
 	return assetsCache
