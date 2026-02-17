@@ -2,6 +2,9 @@
 const assets = getAssets()
 const blessingWords = ['cleansed', 'purified', 'dispelled', 'vanquished', 'dissipated', 'evaporated', 'cured', 'alleviated', 'relieved', 'mitigated', 'quelled'];
 const badOmenWords = ['corroded', 'eviscerated', 'devoured', 'eroded', 'withered', 'decayed', 'consumed', 'ravaged', 'tainted', 'spoiled', 'blighted', 'defiled', 'rotted'];
+const statusId = (name) => getStatusIdByName(name);
+const statusByName = (name) => assets.statuses.find((status) => status.name === name);
+const hasStatus = (statusList, name) => statusList.some((status) => status.id === statusId(name));
 var died = false;
 var fled = false;
 
@@ -78,25 +81,25 @@ async function executeSkill({
     }
 
     const accDif =
-        (attackerStatuses.some(s => s.id == '🎯') ? assets.statuses.find(s => s.id == '🎯').incAcc : 0)
-        - (attackerStatuses.some(s => s.id == '👁️') ? assets.statuses.find(s => s.id == '👁️').decAcc : 0)
-        - (defenderStatuses.some(s => s.id == '💨') ? assets.statuses.find(s => s.id == '💨').decEnAcc : 0);
+        (hasStatus(attackerStatuses, 'Acuity') ? statusByName('Acuity').incAcc : 0)
+        - (hasStatus(attackerStatuses, 'Blindness') ? statusByName('Blindness').decAcc : 0)
+        - (hasStatus(defenderStatuses, 'Evasion') ? statusByName('Evasion').decEnAcc : 0);
 
     const critDif =
-        (attackerStatuses.some(s => s.id == '🍀') ? assets.statuses.find(s => s.id == '🍀').incCrit : 0)
-        - (attackerStatuses.some(s => s.id == '🥀') ? assets.statuses.find(s => s.id == '🥀').decCrit : 0);
+        (hasStatus(attackerStatuses, 'Luck') ? statusByName('Luck').incCrit : 0)
+        - (hasStatus(attackerStatuses, 'Misfortune') ? statusByName('Misfortune').decCrit : 0);
 
     const damMult =
-        (attackerStatuses.some(s => s.id == '🏅') ? assets.statuses.find(s => s.id == '🏅').damAdd : 0)
-        + (attackerStatuses.some(s => s.id == '💪') ? assets.statuses.find(s => s.id == '💪').damAdd : 0)
-        + (attackerStatuses.some(s => s.id == '💢') ? assets.statuses.find(s => s.id == '💢').damAdd : 0)
-        + (defenderStatuses.some(s => s.id == '💢') ? assets.statuses.find(s => s.id == '💢').incDamTaken : 0)
-        - (attackerStatuses.some(s => s.id == '🌀') ? assets.statuses.find(s => s.id == '🌀').damReduc : 0)
+        (hasStatus(attackerStatuses, 'Empowerment') ? statusByName('Empowerment').damAdd : 0)
+        + (hasStatus(attackerStatuses, 'Strength') ? statusByName('Strength').damAdd : 0)
+        + (hasStatus(attackerStatuses, 'Berserk') ? statusByName('Berserk').damAdd : 0)
+        + (hasStatus(defenderStatuses, 'Berserk') ? statusByName('Berserk').incDamTaken : 0)
+        - (hasStatus(attackerStatuses, 'Weakness') ? statusByName('Weakness').damReduc : 0)
         + 1;
 
     const rigid =
-        (defenderStatuses.some(s => s.id == '🛡️') ? assets.statuses.find(s => s.id == '🛡️').armorAdd : 0)
-        - (defenderStatuses.some(s => s.id == '🩼') ? assets.statuses.find(s => s.id == '🩼').armorSub : 0)
+        (hasStatus(defenderStatuses, 'Rigidity') ? statusByName('Rigidity').armorAdd : 0)
+        - (hasStatus(defenderStatuses, 'Fragility') ? statusByName('Fragility').armorSub : 0)
         + 1;
 
     let damage = Math.floor((attacker.attack * damMult * (skill.damage || 1)) * (attacker.attack / (defender.defense + (defender.defense * rigid))));
@@ -181,17 +184,17 @@ async function executeSkill({
             let granted = [];
             skill.pstatus.forEach(status => {
                 let stasset = assets.statuses.find(s => s.id == status);
-                if ((player.pstatus.some(s => s.id == '🌑') && stasset.positive) || (player.pstatus.some(s => s.id == '✨') && !stasset.positive)) {
+                if ((hasStatus(player.pstatus, 'Malediction') && stasset.positive) || (hasStatus(player.pstatus, 'Blessing') && !stasset.positive)) {
                     negated.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
                 } else {
                     const idx = player.pstatus.indexOf(player.pstatus.find(s => s.id == status));
-                    const newStatus = { ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt };
+                    const newStatus = { ...stasset, damage: status == statusId('Curse') ? attacker.attack : totalDealt };
                     if (idx >= 0) player.pstatus[idx] = newStatus;
                     else player.pstatus.push(newStatus);
                     granted.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
                 }
             });
-            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${isPlayer ? `${skill.estatus ? ',' : ' and'} gained ` : `${skill.estatus ? ',' : ' and'} inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${player.name} ${player.pstatus.some(s => s.id == '🌑') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
+            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${isPlayer ? `${skill.estatus ? ',' : ' and'} gained ` : `${skill.estatus ? ',' : ' and'} inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${player.name} ${hasStatus(player.pstatus, 'Malediction') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
         }
 
         if (skill.estatus) {
@@ -199,27 +202,27 @@ async function executeSkill({
             let granted = [];
             skill.estatus.forEach(status => {
                 let stasset = assets.statuses.find(s => s.id == status);
-                if ((encounter.estatus.some(s => s.id == '🌑') && stasset.positive) || (encounter.estatus.some(s => s.id == '✨') && !stasset.positive)) {
+                if ((hasStatus(encounter.estatus, 'Malediction') && stasset.positive) || (hasStatus(encounter.estatus, 'Blessing') && !stasset.positive)) {
                     negated.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
                 } else {
                     const idx = encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status));
-                    const newStatus = { ...stasset, damage: status == '🖤' ? attacker.attack : totalDealt };
+                    const newStatus = { ...stasset, damage: status == statusId('Curse') ? attacker.attack : totalDealt };
                     if (idx >= 0) encounter.estatus[idx] = newStatus;
                     else encounter.estatus.push(newStatus);
                     granted.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`);
                 }
             });
-            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${!isPlayer ? ` and gained ` : ` and inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${encounter.enemyName} ${encounter.estatus.some(s => s.id == '🌑') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
+            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${!isPlayer ? ` and gained ` : ` and inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${encounter.enemyName} ${hasStatus(encounter.estatus, 'Malediction') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
         }
     }
 
     new Promise(r => setTimeout(r, 250))
 
-    if (player.pstatus.some(s => s.id == '✨') || player.pstatus.some(s => s.id == '🌑')) {
-        if (player.pstatus.some(s => s.id == '✨') && player.pstatus.some(s => s.id == '🌑')) {
+    if (hasStatus(player.pstatus, 'Blessing') || hasStatus(player.pstatus, 'Malediction')) {
+        if (hasStatus(player.pstatus, 'Blessing') && hasStatus(player.pstatus, 'Malediction')) {
             player.pstatus.length = 0;
-            encounter.log.push(`✨ All ${player.name}'s effects were evaporated. 🌑`);
-        } else if (player.pstatus.some(s => s.id == '🌑')) {
+            encounter.log.push(`${statusId('Blessing')} All ${player.name}'s effects were evaporated. ${statusId('Malediction')}`);
+        } else if (hasStatus(player.pstatus, 'Malediction')) {
             let eviscerated = [];
             player.pstatus.slice().forEach(s => {
                 if (s.positive) {
@@ -227,8 +230,8 @@ async function executeSkill({
                     eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
                 }
             });
-            if (eviscerated.length > 0) encounter.log.push(`🌑 All of ${player.name}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
-        } else if (player.pstatus.some(s => s.id == '✨')) {
+            if (eviscerated.length > 0) encounter.log.push(`${statusId('Malediction')} All of ${player.name}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
+        } else if (hasStatus(player.pstatus, 'Blessing')) {
             let cleansed = [];
             player.pstatus.slice().forEach(s => {
                 if (!s.positive) {
@@ -237,15 +240,15 @@ async function executeSkill({
                 }
             });
 
-            if (cleansed.length > 0) encounter.log.push(`✨ All of ${player.name}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
+            if (cleansed.length > 0) encounter.log.push(`${statusId('Blessing')} All of ${player.name}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
         }
     }
 
-    if (encounter.estatus.some(s => s.id == '✨') || encounter.estatus.some(s => s.id == '🌑')) {
-        if (encounter.estatus.some(s => s.id == '✨') && encounter.estatus.some(s => s.id == '🌑')) {
+    if (hasStatus(encounter.estatus, 'Blessing') || hasStatus(encounter.estatus, 'Malediction')) {
+        if (hasStatus(encounter.estatus, 'Blessing') && hasStatus(encounter.estatus, 'Malediction')) {
             encounter.estatus.length = 0;
-            encounter.log.push(`✨ All ${encounter.enemyName}'s effects were evaporated. 🌑`);
-        } else if (encounter.estatus.some(s => s.id == '🌑')) {
+            encounter.log.push(`${statusId('Blessing')} All ${encounter.enemyName}'s effects were evaporated. ${statusId('Malediction')}`);
+        } else if (hasStatus(encounter.estatus, 'Malediction')) {
             let eviscerated = [];
             encounter.estatus.slice().forEach(s => {
                 if (s.positive) {
@@ -253,8 +256,8 @@ async function executeSkill({
                     eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
                 }
             });
-            if (eviscerated.length > 0) encounter.log.push(`🌑 All of ${encounter.enemyName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
-        } else if (encounter.estatus.some(s => s.id == '✨')) {
+            if (eviscerated.length > 0) encounter.log.push(`${statusId('Malediction')} All of ${encounter.enemyName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
+        } else if (hasStatus(encounter.estatus, 'Blessing')) {
             let cleansed = [];
             encounter.estatus.slice().forEach(s => {
                 if (!s.positive) {
@@ -263,7 +266,7 @@ async function executeSkill({
                 }
             });
 
-            if (cleansed.length > 0) encounter.log.push(`✨ All of ${encounter.enemyName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
+            if (cleansed.length > 0) encounter.log.push(`${statusId('Blessing')} All of ${encounter.enemyName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
         }
     }
 
@@ -497,10 +500,10 @@ async function turnManager(toPlayer) {
 
     if (await death()) return;
 
-    if (actorStatuses.some(s => s.id == '✨') && actorStatuses.some(s => s.id == '🌑')) {
+    if (hasStatus(actorStatuses, 'Blessing') && hasStatus(actorStatuses, 'Malediction')) {
         actorStatuses.length = 0;
-        encounter.log.push(`✨ All ${actorName}'s effects were evaporated. 🌑`);
-    } else if (actorStatuses.some(s => s.id == '🌑')) {
+        encounter.log.push(`${statusId('Blessing')} All ${actorName}'s effects were evaporated. ${statusId('Malediction')}`);
+    } else if (hasStatus(actorStatuses, 'Malediction')) {
         let eviscerated = [];
         actorStatuses.slice().forEach(s => {
             if (s.positive) {
@@ -508,8 +511,8 @@ async function turnManager(toPlayer) {
                 eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
             }
         });
-        if (eviscerated.length > 0) encounter.log.push(`🌑 All of ${actorName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
-    } else if (actorStatuses.some(s => s.id == '✨')) {
+        if (eviscerated.length > 0) encounter.log.push(`${statusId('Malediction')} All of ${actorName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
+    } else if (hasStatus(actorStatuses, 'Blessing')) {
         let cleansed = [];
         actorStatuses.slice().forEach(s => {
             if (!s.positive) {
@@ -518,47 +521,47 @@ async function turnManager(toPlayer) {
             }
         });
 
-        if (cleansed.length > 0) encounter.log.push(`✨ All of ${actorName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
+        if (cleansed.length > 0) encounter.log.push(`${statusId('Blessing')} All of ${actorName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
     }
 
-    if (actorStatuses.some(s => s.id === '💫')) stunned = true;
+    if (hasStatus(actorStatuses, 'Stun')) stunned = true;
     await new Promise(r => setTimeout(r, 250))
     for (const s of actorStatuses.slice()) {
         switch (s.id) {
-            case '🩸': {
+            case statusId('Bleed'): {
                 let damage = Math.floor(s.baseDam * s.damage);
-                encounter.log.push(`${actorName} is bleeding - <span style="color: lightblue;" data-tooltip="🩸 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🩸${damage}</span>`);
+                encounter.log.push(`${actorName} is bleeding - <span style="color: lightblue;" data-tooltip="${statusId('Bleed')} ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">${statusId('Bleed')}${damage}</span>`);
                 actor.health -= damage;
                 await new Promise(r => setTimeout(r, 400))
                 break;
             }
-            case '🔥': {
+            case statusId('Burn'): {
                 let damage = Math.floor(s.baseDam * s.damage);
-                encounter.log.push(`${actorName} is on fire - <span style="color: lightblue;" data-tooltip="🔥 ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">🔥${damage}</span>`);
+                encounter.log.push(`${actorName} is on fire - <span style="color: lightblue;" data-tooltip="${statusId('Burn')} ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">${statusId('Burn')}${damage}</span>`);
                 actor.health -= damage;
                 await new Promise(r => setTimeout(r, 400))
                 break;
             }
-            case '🖤': {
+            case statusId('Curse'): {
                 let damage = Math.floor(s.baseDam * actor.attack);
-                encounter.log.push(`${actorName} is cursed - <span style="color: lightblue;" data-tooltip="🖤 ${s.name}\n\n${s.description}\n\n${actor.attack} * ${s.baseDam} = ${damage}">🖤${damage}</span>`);
+                encounter.log.push(`${actorName} is cursed - <span style="color: lightblue;" data-tooltip="${statusId('Curse')} ${s.name}\n\n${s.description}\n\n${actor.attack} * ${s.baseDam} = ${damage}">${statusId('Curse')}${damage}</span>`);
                 actor.health -= damage;
                 await new Promise(r => setTimeout(r, 400))
                 break;
             }
-            case '💀': {
+            case statusId('Poison'): {
                 let damage = Math.floor(s.maxHP * actor.maxHealth);
-                encounter.log.push(`${actorName} is poisoned - <span style="color: lightblue;" data-tooltip="💀 ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${damage}">💀${damage}</span>`);
+                encounter.log.push(`${actorName} is poisoned - <span style="color: lightblue;" data-tooltip="${statusId('Poison')} ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${damage}">${statusId('Poison')}${damage}</span>`);
                 actor.health -= damage;
                 await new Promise(r => setTimeout(r, 400))
                 break;
             }
-            case '💗': {
+            case statusId('Regeneration'): {
                 let heal = Math.floor(s.maxHP * actor.maxHealth);
                 if (actor.health + heal > actor.maxHealth)
                     heal = actor.maxHealth - actor.health;
 
-                encounter.log.push(`${actorName} is regenerating - <span style="color: lightblue;" data-tooltip="💗 ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${Math.floor(s.maxHP * actor.maxHealth)}${actor.health + Math.floor(s.maxHP * actor.maxHealth) > actor.maxHealth ? '\nCapped to max health.' : ''}">💗${heal}</span>`);
+                encounter.log.push(`${actorName} is regenerating - <span style="color: lightblue;" data-tooltip="${statusId('Regeneration')} ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${Math.floor(s.maxHP * actor.maxHealth)}${actor.health + Math.floor(s.maxHP * actor.maxHealth) > actor.maxHealth ? '\nCapped to max health.' : ''}">${statusId('Regeneration')}${heal}</span>`);
                 actor.health += heal;
                 await new Promise(r => setTimeout(r, 400))
                 break;
@@ -584,10 +587,10 @@ async function turnManager(toPlayer) {
     updateBars();
 
     if (stunned) {
-        encounter.log.push(`💫 ${actorName} is stunned.`);
+        encounter.log.push(`${statusId('Stun')} ${actorName} is stunned.`);
         await new Promise(r => setTimeout(r, 500));
         actorStatuses.forEach(s => {
-            if (s.id == '💫') s.rounds = Math.max(0, s.rounds - 1);
+            if (s.id == statusId('Stun')) s.rounds = Math.max(0, s.rounds - 1);
         });
         return turnManager(!toPlayer);
     }

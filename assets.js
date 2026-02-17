@@ -1,5 +1,5 @@
 let mult = 9
-function getAssets() {
+function getLocalAssets() {
 	return {
 		statuses: [
 			{
@@ -2990,7 +2990,7 @@ function getAssets() {
 				attackPerLevel: 4,
 				crit: 0.2,
 				critdmg: 1.45,
-				accuracy: 0.6,
+				accuracy: 0.8,
 
 				skills: [
 					{
@@ -5683,4 +5683,255 @@ function getAssets() {
 			}
 		]
 	}
+}
+
+const ASSETS_SHEET_ID = "1FbePsEGRNGkCG1p7KIpjTi0cpUsnaIWH"
+const ASSET_SHEETS = [
+	["Statuses", "statuses"],
+	["Enemies", "enemies"],
+	["Areas", "areas"],
+	["Items", "items"],
+	["Chests", "chests"],
+]
+
+const LEGACY_STATUS_ID_BY_NAME = {
+	Poison: '💀',
+	Regeneration: '💗',
+	Bleed: '🩸',
+	Burn: '🔥',
+	Weakness: '🌀',
+	Strength: '💪',
+	Empowerment: '🏅',
+	Stun: '💫',
+	Rigidity: '🛡️',
+	Fragility: '🩼',
+	Blindness: '👁️',
+	Acuity: '🎯',
+	Curse: '🖤',
+	Luck: '🍀',
+	Misfortune: '🥀',
+	Berserk: '💢',
+	Evasion: '💨',
+	Blessing: '✨',
+	Malediction: '🌑',
+}
+
+var assetsCache = getLocalAssets();
+normalizeStatusReferences(assetsCache)
+
+console.log(assetsCache)
+
+let assetsLoadPromise = null
+function overwriteAssetsCache(nextAssets) {
+	normalizeStatusReferences(nextAssets)
+
+	for (const key of Object.keys(assetsCache)) {
+		delete assetsCache[key]
+	}
+
+	for (const [key, value] of Object.entries(nextAssets)) {
+		assetsCache[key] = value
+	}
+}
+
+function parseExpressionValue(raw) {
+	if (raw === null || raw === undefined) return raw
+	if (typeof raw !== "string") return raw
+
+	const text = raw.trim()
+	if (!text.length) return undefined
+
+	try {
+		return Function(`"use strict"; return (${text});`)()
+	} catch {
+		return raw
+	}
+}
+
+function fetchSheetTableWithJsonp(sheetName) {
+	if (typeof document === "undefined" || typeof window === "undefined") {
+		throw new Error("JSONP sheet loading requires a browser document context.")
+	}
+
+	return new Promise((resolve, reject) => {
+		const callbackName = `__assetsGvizCallback_${Math.random().toString(36).slice(2)}`
+		const timeoutMs = 15000
+		let timeoutId = null
+
+		const cleanup = () => {
+			if (timeoutId) clearTimeout(timeoutId)
+			try { delete window[callbackName] } catch { window[callbackName] = undefined }
+			if (script.parentNode) script.parentNode.removeChild(script)
+		}
+
+		window[callbackName] = (payload) => {
+			cleanup()
+			if (payload?.status === "error") {
+				reject(new Error(`Google Sheets returned an error for '${sheetName}': ${payload.errors?.[0]?.detailed_message || payload.errors?.[0]?.message || "unknown error"}`))
+				return
+			}
+
+			if (!payload?.table) {
+				reject(new Error(`Google Sheets returned no table data for '${sheetName}'.`))
+				return
+			}
+
+			resolve(payload.table)
+		}
+
+		const params = new URLSearchParams({
+			sheet: sheetName,
+			headers: "0",
+			tqx: `responseHandler:${callbackName};out:json`,
+		})
+
+		const script = document.createElement("script")
+		script.src = `https://docs.google.com/spreadsheets/d/${ASSETS_SHEET_ID}/gviz/tq?${params.toString()}`
+		script.async = true
+		script.onerror = () => {
+			cleanup()
+			reject(new Error(`Failed to load Google Sheets script for '${sheetName}'.`))
+		}
+
+		timeoutId = setTimeout(() => {
+			cleanup()
+			reject(new Error(`Timed out loading Google Sheets data for '${sheetName}'.`))
+		}, timeoutMs)
+
+		document.head.appendChild(script)
+	})
+}
+
+function tableToObjects(table) {
+	const rows = table?.rows || []
+	if (!rows.length) return []
+
+	let headerRowIndex = -1
+	for (let index = 0; index < rows.length; index++) {
+		const cells = rows[index]?.c || []
+		const hasAnyHeaderCell = cells.some((cell) => {
+			const value = cell?.v
+			return value !== null && value !== undefined && String(value).trim().length > 0
+		})
+		if (hasAnyHeaderCell) {
+			headerRowIndex = index
+			break
+		}
+	}
+
+	if (headerRowIndex === -1) return []
+
+	const headerCells = rows[headerRowIndex]?.c || []
+	const headers = headerCells.map((cell) => (cell?.v ?? "").toString().trim())
+
+	const objects = []
+	for (let rowIndex = headerRowIndex + 1; rowIndex < rows.length; rowIndex++) {
+		const row = rows[rowIndex]
+		if (!row || !row.c) continue
+
+		const out = {}
+		let hasValue = false
+
+		for (let columnIndex = 0; columnIndex < headers.length; columnIndex++) {
+			const key = headers[columnIndex]
+			if (!key) continue
+
+			const rawValue = row.c[columnIndex]?.v
+			const parsedValue = parseExpressionValue(rawValue)
+			if (parsedValue === undefined) continue
+
+			out[key] = parsedValue
+			hasValue = true
+		}
+
+		if (hasValue) objects.push(out)
+	}
+
+	return objects
+}
+
+async function fetchSheetTable(sheetName) {
+	return fetchSheetTableWithJsonp(sheetName)
+}
+
+async function loadAssetsFromGoogleSheets() {
+	const results = await Promise.all(
+		ASSET_SHEETS.map(async ([sheetName, key]) => {
+			const table = await fetchSheetTable(sheetName)
+			const rows = tableToObjects(table)
+			return [key, rows]
+		})
+	)
+
+	const loaded = {}
+	for (const [key, rows] of results) {
+		loaded[key] = rows
+	}
+
+	return loaded
+}
+
+function ensureAssetsLoaded() {
+	if (assetsLoadPromise) return assetsLoadPromise
+
+	assetsLoadPromise = loadAssetsFromGoogleSheets()
+		.then((loadedAssets) => {
+			overwriteAssetsCache(loadedAssets)
+			return loadedAssets
+		})
+		.catch((error) => {
+			console.error(
+				"Failed to load Google Sheets assets. Falling back to local assets. Ensure the spreadsheet is shared to 'Anyone with the link (Viewer)' or published to the web.",
+				error
+			)
+			return assetsCache
+		})
+
+	return assetsLoadPromise
+}
+
+ensureAssetsLoaded()
+
+function getAssets() {
+	return assetsCache
+}
+
+function getStatusByName(statusName) {
+	return getAssets().statuses.find((status) => status.name === statusName) || null
+}
+
+function getStatusIdByName(statusName) {
+	return getStatusByName(statusName)?.id || ""
+}
+
+function normalizeStatusReferences(assetRoot) {
+	if (!assetRoot || !Array.isArray(assetRoot.statuses)) return
+
+	const currentByLegacyId = {}
+	for (const status of assetRoot.statuses) {
+		const legacyId = LEGACY_STATUS_ID_BY_NAME[status.name]
+		if (legacyId) currentByLegacyId[legacyId] = status.id
+	}
+
+	const visit = (value, keyName = "") => {
+		if (Array.isArray(value)) {
+			if ((keyName === "pstatus" || keyName === "estatus") && value.every((item) => typeof item === "string")) {
+				for (let index = 0; index < value.length; index++) {
+					const remap = currentByLegacyId[value[index]]
+					if (remap) value[index] = remap
+				}
+			}
+
+			value.forEach((item) => visit(item, keyName))
+			return
+		}
+
+		if (value && typeof value === "object") {
+			for (const [childKey, childValue] of Object.entries(value)) {
+				visit(childValue, childKey)
+			}
+		}
+	}
+
+	visit(assetRoot)
 }
