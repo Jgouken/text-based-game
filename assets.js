@@ -2272,9 +2272,9 @@ function getLocalAssets() {
 				]
 			},
 			{
-				name: "Eldrich Orc",
+				name: "Eldritch Orc",
 				block: "Vice Captain",
-				sprite: 'assets/enemies/EldrichOrc.gif',
+				sprite: 'assets/enemies/EldritchOrc.gif',
 				weapon: "Cursed Orc Club",
 				health: 3333,
 				attack: 666,
@@ -3559,9 +3559,9 @@ function getLocalAssets() {
 				]
 			},
 			{
-				name: "Calamity Eldrich Slime",
+				name: "Calamity Eldritch Slime",
 				block: "Captain",
-				sprite: 'assets/enemies/CalamityEldrichSlime.gif',
+				sprite: 'assets/enemies/CalamityEldritchSlime.gif',
 				weapon: null,
 				health: 3333,
 				attack: 333,
@@ -3609,9 +3609,9 @@ function getLocalAssets() {
 				]
 			},
 			{
-				name: "Eldrich Fox",
+				name: "Eldritch Fox",
 				block: "Captain",
-				sprite: 'assets/enemies/EldrichFox.gif',
+				sprite: 'assets/enemies/EldritchFox.gif',
 				weapon: null,
 				health: 2333,
 				attack: 333,
@@ -4156,9 +4156,9 @@ function getLocalAssets() {
 				]
 			},
 			{
-				name: "Eldrich Slime Lord",
+				name: "Eldritch Slime Lord",
 				block: "Elite",
-				sprite: 'assets/enemies/EldrichSlimeLord.gif',
+				sprite: 'assets/enemies/EldritchSlimeLord.gif',
 				weapon: null,
 				health: 3333,
 				attack: 333,
@@ -4319,38 +4319,46 @@ function getLocalAssets() {
 				maxlvl: 5,
 				enemies: [
 					{
-						name: "Cow",
-						chance: 0.05
-					},
-					{
-						name: "Chicken",
-						chance: 0.05
-					},
-					{
 						name: "Lazy Goblin",
 						chance: 0.25
 					},
 					{
-						name: "Health Slime",
-						chance: 0.25
+						name: "Goblin Warrior",
+						chance: 0.15
 					},
 					{
-						name: "Attack Slime",
-						chance: 0.25
+						name: "Health Slime",
+						chance: 0.15
+					},
+					{
+						name: "Defense Slime",
+						chance: 0.15
+					},
+					{
+						name: "Cow",
+						chance: 0.075
+					},
+					{
+						name: "Pig",
+						chance: 0.075
+					},
+					{
+						name: "Sheep",
+						chance: 0.075
+					},
+					{
+						name: "Chicken",
+						chance: 0.075
 					}
 				],
 				chests: [
 					{
 						chest: 0,
-						chance: 0.05,
-						keyChance: 0.02,
-						key: "Wooden Key"
+						chance: 0.09,
 					},
 					{
 						chest: 1,
-						chance: 0.03,
-						keyChance: 0.01,
-						key: "Iron Key"
+						chance: 0.01,
 					},
 				]
 			},
@@ -4360,54 +4368,78 @@ function getLocalAssets() {
 				maxlvl: 10,
 				enemies: [
 					{
-						name: "Cyclops Overlord",
-						chance: 0.02
-					},
-					{
-						name: "Cow",
-						chance: 0.06
-					},
-					{
-						name: "Sheep",
-						chance: 0.06
-					},
-					{
-						name: "Chicken",
-						chance: 0.06
+						name: "Lazy Goblin",
+						chance: 0.08
 					},
 					{
 						name: "Blacksmith Goblin",
-						chance: 0.14
+						chance: 0.11
 					},
 					{
-						name: "Lazy Goblin",
-						chance: 0.14
+						name: "Goblin Warrior",
+						chance: 0.11
+					},
+					{
+						name: "Armored Goblin",
+						chance: 0.08
+					},
+					{
+						name: "Goblin Ranger",
+						chance: 0.08
+					},
+					{
+						name: "Goblin General",
+						chance: 0.08
+					},
+					{
+						name: "Orc",
+						chance: 0.05
+					},
+					{
+						name: "Cyclops",
+						chance: 0.05
 					},
 					{
 						name: "Health Slime",
-						chance: 0.14
+						chance: 0.05
 					},
 					{
 						name: "Attack Slime",
-						chance: 0.14
+						chance: 0.05
 					},
 					{
 						name: "Defense Slime",
-						chance: 0.14
+						chance: 0.05
 					},
+					{
+						name: "Stamina Slime",
+						chance: 0.05
+					},
+					{
+						name: "Cow",
+						chance: 0.04
+					},
+					{
+						name: "Pig",
+						chance: 0.04
+					},
+					{
+						name: "Sheep",
+						chance: 0.04
+					},
+					{
+						name: "Chicken",
+						chance: 0.04
+					}
 				],
 				chests: [
 					{
 						chest: 0,
-						chance: 0.05,
-						keyChance: 0.02,
-						key: "Wooden Key"
+						chance: 0.07,
 					},
 					{
 						chest: 1,
 						chance: 0.03,
-						keyChance: 0.01,
-						key: "Iron Key"
 					},
 				]
 			},
@@ -4417,58 +4449,98 @@ function getLocalAssets() {
 				maxlvl: 14,
 				enemies: [
 					{
-						name: "Orange Fox",
-						chance: 0.01
-					},
-					{
-						name: "Orc",
-						chance: 0.04
-					},
-					{
-						name: "Cow",
-						chance: 0.05
-					},
-					{
-						name: "Sheep",
-						chance: 0.05
-					},
-					{
-						name: "Chicken",
-						chance: 0.05
-					},
-					{
-						name: "Health Slime",
-						chance: 0.14
-					},
-					{
-						name: "Attack Slime",
-						chance: 0.14
-					},
-					{
-						name: "Defense Slime",
-						chance: 0.14
+						name: "Lazy Goblin",
+						chance: 0.07
 					},
 					{
 						name: "Blacksmith Goblin",
-						chance: 0.14
+						chance: 0.08
 					},
 					{
-						name: "Lazy Goblin",
-						chance: 0.14
+						name: "Goblin Warrior",
+						chance: 0.08
 					},
+					{
+						name: "Armored Goblin",
+						chance: 0.07
+					},
+					{
+						name: "Goblin Ranger",
+						chance: 0.07
+					},
+					{
+						name: "Goblin General",
+						chance: 0.07
+					},
+					{
+						name: "Orc",
+						chance: 0.02
+					},
+					{
+						name: "Cyclops",
+						chance: 0.02
+					},
+					{
+						name: "Health Slime",
+						chance: 0.04
+					},
+					{
+						name: "Attack Slime",
+						chance: 0.04
+					},
+					{
+						name: "Defense Slime",
+						chance: 0.04
+					},
+					{
+						name: "Stamina Slime",
+						chance: 0.04
+					},
+					{
+						name: "Greater Health Slime",
+						chance: 0.05
+					},
+					{
+						name: "Greater Attack Slime",
+						chance: 0.05
+					},
+					{
+						name: "Greater Defense Slime",
+						chance: 0.05
+					},
+					{
+						name: "Greater Stamina Slime",
+						chance: 0.05
+					},
+					{
+						name: "Cow",
+						chance: 0.04
+					},
+					{
+						name: "Pig",
+						chance: 0.04
+					},
+					{
+						name: "Sheep",
+						chance: 0.04
+					},
+					{
+						name: "Chicken",
+						chance: 0.04
+					}
 				],
 				chests: [
 					{
+						chest: 0,
+						chance: 0.02,
+					},
+					{
 						chest: 1,
-						chance: 0.06,
-						keyChance: 0.01,
-						key: "Iron Key"
+						chance: 0.07,
 					},
 					{
 						chest: 2,
-						chance: 0.02,
-						keyChance: 0.01,
-						key: "Golden Key"
+						chance: 0.01,
 					},
 				]
 			},
@@ -4478,54 +4550,98 @@ function getLocalAssets() {
 				maxlvl: 18,
 				enemies: [
 					{
+						name: "Cyclops Overlord",
+						chance: 0.06
+					},
+					{
+						name: "Lazy Goblin",
+						chance: 0.08
+					},
+					{
+						name: "Blacksmith Goblin",
+						chance: 0.08
+					},
+					{
+						name: "Goblin Warrior",
+						chance: 0.08
+					},
+					{
+						name: "Armored Goblin",
+						chance: 0.08
+					},
+					{
+						name: "Goblin Ranger",
+						chance: 0.08
+					},
+					{
+						name: "Goblin General",
+						chance: 0.08
+					},
+					{
 						name: "Orc",
 						chance: 0.05
 					},
 					{
-						name: "Cow",
+						name: "Cyclops",
 						chance: 0.05
-					},
-					{
-						name: "Sheep",
-						chance: 0.05
-					},
-					{
-						name: "Chicken",
-						chance: 0.05
-					},
-					{
-						name: "White Fox",
-						chance: 0.14
-					},
-					{
-						name: "Blue Fox",
-						chance: 0.14
-					},
-					{
-						name: "Attack Slime",
-						chance: 0.14
-					},
-					{
-						name: "Stamina Slime",
-						chance: 0.14
 					},
 					{
 						name: "Health Slime",
-						chance: 0.14
+						chance: 0.03
 					},
+					{
+						name: "Attack Slime",
+						chance: 0.03
+					},
+					{
+						name: "Defense Slime",
+						chance: 0.03
+					},
+					{
+						name: "Stamina Slime",
+						chance: 0.03
+					},
+					{
+						name: "Greater Health Slime",
+						chance: 0.03
+					},
+					{
+						name: "Greater Attack Slime",
+						chance: 0.03
+					},
+					{
+						name: "Greater Defense Slime",
+						chance: 0.03
+					},
+					{
+						name: "Greater Stamina Slime",
+						chance: 0.03
+					},
+					{
+						name: "Cow",
+						chance: 0.03
+					},
+					{
+						name: "Pig",
+						chance: 0.03
+					},
+					{
+						name: "Sheep",
+						chance: 0.03
+					},
+					{
+						name: "Chicken",
+						chance: 0.03
+					}
 				],
 				chests: [
 					{
 						chest: 1,
-						chance: 0.045,
-						keyChance: 0.01,
-						key: "Iron Key"
+						chance: 0.08,
 					},
 					{
 						chest: 2,
-						chance: 0.035,
-						keyChance: 0.01,
-						key: "Golden Key"
+						chance: 0.02,
 					},
 				]
 			},
@@ -4535,54 +4651,118 @@ function getLocalAssets() {
 				maxlvl: 22,
 				enemies: [
 					{
-						name: "Cow",
-						chance: 0.05
+						name: "Lazy Goblin",
+						chance: 0.03
 					},
 					{
-						name: "Sheep",
-						chance: 0.05
+						name: "Blacksmith Goblin",
+						chance: 0.03
 					},
 					{
-						name: "Chicken",
-						chance: 0.05
+						name: "Goblin Warrior",
+						chance: 0.03
 					},
 					{
-						name: "Health Slime",
-						chance: 0.15
+						name: "Armored Goblin",
+						chance: 0.03
+					},
+					{
+						name: "Goblin Ranger",
+						chance: 0.03
+					},
+					{
+						name: "Goblin General",
+						chance: 0.04
 					},
 					{
 						name: "Orange Fox",
-						chance: 0.16
+						chance: 0.10
 					},
 					{
 						name: "White Fox",
-						chance: 0.16
+						chance: 0.10
 					},
 					{
 						name: "Blue Fox",
-						chance: 0.16
+						chance: 0.06
+					},
+					{
+						name: "Black Fox",
+						chance: 0.06
+					},
+					{
+						name: "Orc",
+						chance: 0.04
+					},
+					{
+						name: "Cyclops",
+						chance: 0.04
+					},
+					{
+						name: "Health Slime",
+						chance: 0.02
 					},
 					{
 						name: "Attack Slime",
-						chance: 0.16
+						chance: 0.02
+					},
+					{
+						name: "Defense Slime",
+						chance: 0.02
 					},
 					{
 						name: "Stamina Slime",
-						chance: 0.16
+						chance: 0.02
 					},
+					{
+						name: "Greater Health Slime",
+						chance: 0.04
+					},
+					{
+						name: "Greater Attack Slime",
+						chance: 0.04
+					},
+					{
+						name: "Greater Defense Slime",
+						chance: 0.04
+					},
+					{
+						name: "Greater Stamina Slime",
+						chance: 0.04
+					},
+					{
+						name: "Eldritch Slime",
+						chance: 0.045
+					},
+					{
+						name: "Eldritch Goblin",
+						chance: 0.045
+					},
+					{
+						name: "Cow",
+						chance: 0.03
+					},
+					{
+						name: "Pig",
+						chance: 0.03
+					},
+					{
+						name: "Sheep",
+						chance: 0.03
+					},
+					{
+						name: "Chicken",
+						chance: 0.03
+					}
 				],
 				chests: [
 					{
 						chest: 1,
-						chance: 0.03,
-						keyChance: 0.01,
-						key: "Iron Key"
+						chance: 0.07,
 					},
 					{
 						chest: 2,
-						chance: 0.035,
-						keyChance: 0.01,
-						key: "Golden Key"
+						chance: 0.03,
 					},
 				]
 			},
@@ -4596,54 +4776,90 @@ function getLocalAssets() {
 						chance: 0.03
 					},
 					{
-						name: "Cow",
-						chance: 0.05
-					},
-					{
-						name: "Sheep",
-						chance: 0.05
-					},
-					{
-						name: "Chicken",
-						chance: 0.05
+						name: "Goblin General",
+						chance: 0.02
 					},
 					{
 						name: "Orange Fox",
-						chance: 0.12
+						chance: 0.20
 					},
 					{
 						name: "White Fox",
-						chance: 0.12
+						chance: 0.20
 					},
 					{
 						name: "Blue Fox",
-						chance: 0.12
+						chance: 0.16
 					},
 					{
-						name: "Attack Slime",
-						chance: 0.12
+						name: "Black Fox",
+						chance: 0.16
 					},
 					{
-						name: "Stamina Slime",
-						chance: 0.12
+						name: "Orc",
+						chance: 0.05
+					},
+					{
+						name: "Cyclops",
+						chance: 0.05
 					},
 					{
 						name: "Health Slime",
-						chance: 0.12
+						chance: 0.01
 					},
+					{
+						name: "Attack Slime",
+						chance: 0.01
+					},
+					{
+						name: "Defense Slime",
+						chance: 0.01
+					},
+					{
+						name: "Stamina Slime",
+						chance: 0.01
+					},
+					{
+						name: "Greater Health Slime",
+						chance: 0.02
+					},
+					{
+						name: "Greater Attack Slime",
+						chance: 0.02
+					},
+					{
+						name: "Greater Defense Slime",
+						chance: 0.02
+					},
+					{
+						name: "Greater Stamina Slime",
+						chance: 0.02
+					},
+					{
+						name: "Eldritch Slime",
+						chance: 0.0025
+					},
+					{
+						name: "Eldritch Goblin",
+						chance: 0.0025
+					},
+					{
+						name: "Eldritch Fox",
+						chance: 0.005
+					}
 				],
 				chests: [
 					{
 						chest: 1,
-						chance: 0.03,
-						keyChance: 0.01,
-						key: "Iron Key"
+						chance: 0.06,
 					},
 					{
 						chest: 2,
-						chance: 0.05,
-						keyChance: 0.01,
-						key: "Golden Key"
+						chance: 0.03,
+					},
+					{
+						chest: 3,
+						chance: 0.01,
 					},
 				]
 			},
@@ -4653,62 +4869,102 @@ function getLocalAssets() {
 				maxlvl: 35,
 				enemies: [
 					{
-						name: "Cow",
-						chance: 0.06
+						name: "Orange Fox",
+						chance: 0.05
 					},
 					{
-						name: "Sheep",
-						chance: 0.06
+						name: "White Fox",
+						chance: 0.05
 					},
 					{
-						name: "Chicken",
-						chance: 0.06
+						name: "Blue Fox",
+						chance: 0.05
 					},
 					{
-						name: "Lazy Goblin",
-						chance: 0.09
+						name: "Black Fox",
+						chance: 0.05
 					},
 					{
-						name: "Blacksmith Goblin",
-						chance: 0.09
+						name: "Orc",
+						chance: 0.05
 					},
 					{
-						name: "Armored Goblin",
-						chance: 0.09
+						name: "Cyclops",
+						chance: 0.05
 					},
 					{
-						name: "Cursed Goblin",
-						chance: 0.09
+						name: "Greater Health Slime",
+						chance: 0.03
 					},
 					{
-						name: "Health Slime",
-						chance: 0.09
+						name: "Greater Eldritch Slime",
+						chance: 0.07
 					},
 					{
-						name: "Attack Slime",
-						chance: 0.09
+						name: "Greater Attack Slime",
+						chance: 0.03
 					},
 					{
-						name: "Stamina Slime",
-						chance: 0.09
+						name: "Greater Defense Slime",
+						chance: 0.03
 					},
 					{
-						name: "Defense Slime",
-						chance: 0.09
+						name: "Greater Stamina Slime",
+						chance: 0.03
 					},
+					{
+						name: "Calamity Health Slime",
+						chance: 0.05
+					},
+					{
+						name: "Calamity Attack Slime",
+						chance: 0.05
+					},
+					{
+						name: "Calamity Defense Slime",
+						chance: 0.05
+					},
+					{
+						name: "Calamity Stamina Slime",
+						chance: 0.05
+					},
+					{
+						name: "Eldritch Slime",
+						chance: 0.05
+					},
+					{
+						name: "Eldritch Goblin",
+						chance: 0.07
+					},
+					{
+						name: "Eldritch Goblin General",
+						chance: 0.07
+					},
+					{
+						name: "Eldritch Orc",
+						chance: 0.05
+					},
+					{
+						name: "Eldritch Cyclops",
+						chance: 0.05
+					},
+					{
+						name: "Eldritch Fox",
+						chance: 0.05
+					}
 				],
 				chests: [
 					{
+						chest: 1,
+						chance: 0.04,
+					},
+					{
 						chest: 2,
-						chance: 0.025,
-						keyChance: 0.025,
-						key: "Golden Key"
+						chance: 0.04,
 					},
 					{
 						chest: 3,
-						chance: 0.025,
-						keyChance: 0.025,
-						key: "Platinum Key"
+						chance: 0.02,
 					},
 				]
 			},
@@ -4719,53 +4975,133 @@ function getLocalAssets() {
 				enemies: [
 					{
 						name: "Goblin King",
-						chance: 0.02
-					},
-					{
-						name: "Orc",
-						chance: 0.04
+						chance: 0.03
 					},
 					{
 						name: "Armored Goblin",
-						chance: 0.12
+						chance: 0.03
 					},
 					{
-						name: "Cursed Goblin",
-						chance: 0.12
+						name: "Goblin Ranger",
+						chance: 0.03
 					},
 					{
-						name: "Blacksmith Goblin",
-						chance: 0.12
+						name: "Goblin General",
+						chance: 0.06
 					},
 					{
-						name: "Attack Slime",
-						chance: 0.12
+						name: "Greater Health Slime",
+						chance: 0.03
 					},
 					{
-						name: "Stamina Slime",
-						chance: 0.12
+						name: "Greater Eldritch Slime",
+						chance: 0.03
 					},
 					{
-						name: "Defense Slime",
-						chance: 0.12
+						name: "Greater Attack Slime",
+						chance: 0.03
 					},
 					{
-						name: "Health Slime",
-						chance: 0.12
+						name: "Greater Defense Slime",
+						chance: 0.03
 					},
+					{
+						name: "Greater Stamina Slime",
+						chance: 0.03
+					},
+					{
+						name: "Calamity Health Slime",
+						chance: 0.05
+					},
+					{
+						name: "Calamity Eldritch Slime",
+						chance: 0.05
+					},
+					{
+						name: "Calamity Attack Slime",
+						chance: 0.05
+					},
+					{
+						name: "Calamity Defense Slime",
+						chance: 0.05
+					},
+					{
+						name: "Calamity Stamina Slime",
+						chance: 0.05
+					},
+					{
+						name: "Eldritch Goblin",
+						chance: 0.03
+					},
+					{
+						name: "Eldritch Goblin General",
+						chance: 0.03
+					},
+					{
+						name: "Eldritch Orc",
+						chance: 0.03
+					},
+					{
+						name: "Eldritch Cyclops",
+						chance: 0.03
+					},
+					{
+						name: "Eldritch Fox",
+						chance: 0.03
+					},
+					{
+						name: "Vampire",
+						chance: 0.03
+					},
+					{
+						name: "Demon",
+						chance: 0.03
+					},
+					{
+						name: "Werewolf",
+						chance: 0.03
+					},
+					{
+						name: "Witch",
+						chance: 0.03
+					},
+					{
+						name: "Wizard",
+						chance: 0.03
+					},
+					{
+						name: "Pureblood",
+						chance: 0.03
+					},
+					{
+						name: "Archdemon",
+						chance: 0.03
+					},
+					{
+						name: "Dire Werewolf",
+						chance: 0.03
+					},
+					{
+						name: "Eldritch Witch",
+						chance: 0.03
+					},
+					{
+						name: "Grand Wizard",
+						chance: 0.03
+					}
 				],
 				chests: [
 					{
 						chest: 2,
-						chance: 0.03,
-						keyChance: 0.03,
-						key: "Golden Key"
+						chance: 0.07,
 					},
 					{
 						chest: 3,
 						chance: 0.02,
-						keyChance: 0.02,
-						key: "Platinum Key"
+					},
+					{
+						chest: 4,
+						chance: 0.01,
 					},
 				]
 			},
@@ -4775,54 +5111,138 @@ function getLocalAssets() {
 				maxlvl: 45,
 				enemies: [
 					{
-						name: "Cursed Goblin",
-						chance: 0.1
+						name: "Health Slime Lord",
+						chance: 0.01
 					},
 					{
-						name: "Attack Slime",
-						chance: 0.1
+						name: "Attack Slime Lord",
+						chance: 0.01
 					},
 					{
-						name: "Stamina Slime",
-						chance: 0.1
+						name: "Defense Slime Lord",
+						chance: 0.01
 					},
 					{
-						name: "Health Slime",
-						chance: 0.1
+						name: "Stamina Slime Lord",
+						chance: 0.01
 					},
 					{
-						name: "Defense Slime",
-						chance: 0.1
+						name: "Greater Health Slime",
+						chance: 0.025
+					},
+					{
+						name: "Greater Eldritch Slime",
+						chance: 0.025
+					},
+					{
+						name: "Greater Attack Slime",
+						chance: 0.025
+					},
+					{
+						name: "Greater Defense Slime",
+						chance: 0.025
+					},
+					{
+						name: "Greater Stamina Slime",
+						chance: 0.025
+					},
+					{
+						name: "Calamity Health Slime",
+						chance: 0.03
+					},
+					{
+						name: "Calamity Eldritch Slime",
+						chance: 0.03
+					},
+					{
+						name: "Calamity Attack Slime",
+						chance: 0.03
+					},
+					{
+						name: "Calamity Defense Slime",
+						chance: 0.03
+					},
+					{
+						name: "Calamity Stamina Slime",
+						chance: 0.03
+					},
+					{
+						name: "Eldritch Slime",
+						chance: 0.0125
+					},
+					{
+						name: "Eldritch Goblin",
+						chance: 0.0125
+					},
+					{
+						name: "Eldritch Goblin General",
+						chance: 0.04
+					},
+					{
+						name: "Eldritch Orc",
+						chance: 0.04
+					},
+					{
+						name: "Eldritch Cyclops",
+						chance: 0.04
+					},
+					{
+						name: "Eldritch Fox",
+						chance: 0.04
 					},
 					{
 						name: "Vampire",
-						chance: 0.1
+						chance: 0.06
 					},
 					{
 						name: "Demon",
-						chance: 0.1
+						chance: 0.06
 					},
 					{
 						name: "Werewolf",
-						chance: 0.1
+						chance: 0.06
 					},
 					{
 						name: "Witch",
-						chance: 0.1
+						chance: 0.06
 					},
+					{
+						name: "Wizard",
+						chance: 0.06
+					},
+					{
+						name: "Pureblood",
+						chance: 0.04
+					},
+					{
+						name: "Archdemon",
+						chance: 0.04
+					},
+					{
+						name: "Dire Werewolf",
+						chance: 0.04
+					},
+					{
+						name: "Eldritch Witch",
+						chance: 0.04
+					},
+					{
+						name: "Grand Wizard",
+						chance: 0.04
+					}
 				],
 				chests: [
 					{
+						chest: 2,
+						chance: 0.06,
+					},
+					{
 						chest: 3,
-						chance: 0.05,
-						keyChance: 0.03,
-						key: "Platinum Key"
+						chance: 0.03,
 					},
 					{
 						chest: 4,
 						chance: 0.01,
-						keyChance: 0.02,
-						key: "Adamantine Key"
 					},
 				]
 			},
@@ -4833,41 +5253,145 @@ function getLocalAssets() {
 				enemies: [
 					{
 						name: "Demon Queen",
-						chance: 0.1
+						chance: 0.015
 					},
 					{
-						name: "Cursed Goblin",
-						chance: 0.2
+						name: "Health Slime Lord",
+						chance: 0.005
 					},
 					{
-						name: "Witch",
-						chance: 0.2
+						name: "Eldritch Slime Lord",
+						chance: 0.005
+					},
+					{
+						name: "Attack Slime Lord",
+						chance: 0.005
+					},
+					{
+						name: "Defense Slime Lord",
+						chance: 0.005
+					},
+					{
+						name: "Stamina Slime Lord",
+						chance: 0.005
+					},
+					{
+						name: "Greater Health Slime",
+						chance: 0.01
+					},
+					{
+						name: "Greater Eldritch Slime",
+						chance: 0.01
+					},
+					{
+						name: "Greater Attack Slime",
+						chance: 0.01
+					},
+					{
+						name: "Greater Defense Slime",
+						chance: 0.01
+					},
+					{
+						name: "Greater Stamina Slime",
+						chance: 0.01
+					},
+					{
+						name: "Calamity Health Slime",
+						chance: 0.02
+					},
+					{
+						name: "Calamity Eldritch Slime",
+						chance: 0.02
+					},
+					{
+						name: "Calamity Attack Slime",
+						chance: 0.02
+					},
+					{
+						name: "Calamity Defense Slime",
+						chance: 0.02
+					},
+					{
+						name: "Calamity Stamina Slime",
+						chance: 0.02
+					},
+					{
+						name: "Eldritch Slime",
+						chance: 0.005
+					},
+					{
+						name: "Eldritch Goblin",
+						chance: 0.005
+					},
+					{
+						name: "Eldritch Goblin General",
+						chance: 0.01
+					},
+					{
+						name: "Eldritch Orc",
+						chance: 0.0125
+					},
+					{
+						name: "Eldritch Cyclops",
+						chance: 0.0125
+					},
+					{
+						name: "Eldritch Fox",
+						chance: 0.01
 					},
 					{
 						name: "Vampire",
-						chance: 0.2
+						chance: 0.09
 					},
 					{
 						name: "Demon",
-						chance: 0.2
+						chance: 0.09
 					},
 					{
 						name: "Werewolf",
-						chance: 0.2
+						chance: 0.09
 					},
+					{
+						name: "Witch",
+						chance: 0.09
+					},
+					{
+						name: "Wizard",
+						chance: 0.09
+					},
+					{
+						name: "Pureblood",
+						chance: 0.06
+					},
+					{
+						name: "Archdemon",
+						chance: 0.06
+					},
+					{
+						name: "Dire Werewolf",
+						chance: 0.06
+					},
+					{
+						name: "Eldritch Witch",
+						chance: 0.06
+					},
+					{
+						name: "Grand Wizard",
+						chance: 0.06
+					}
 				],
 				chests: [
 					{
+						chest: 2,
+						chance: 0.04,
+					},
+					{
 						chest: 3,
-						chance: 0.03,
-						keyChance: 0.02,
-						key: "Platinum Key"
+						chance: 0.04,
 					},
 					{
 						chest: 4,
-						chance: 0.03,
-						keyChance: 0.01,
-						key: "Adamantine Key"
+						chance: 0.02,
 					},
 				]
 			},

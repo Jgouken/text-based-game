@@ -458,13 +458,13 @@ async function turnManager(toPlayer) {
             }
 
             let currentLevel = player.level
-            var xpdrop = Math.floor((((background.enemyLevel ** 1.2) * (encounter.maxHealth / encounter.attack)) ** 1.2) * 2);
-            let xptext = `<span color="lightblue" data-tooltip='(((${background.enemyLevel}^1.2) * (${encounter.maxHealth} / ${encounter.attack}))^1.2) * 2 = ${xpdrop}'>${xpdrop}</span>`;
+            var xpdrop = Math.floor((((background.enemyLevel ** 1.2) * (encounter.maxHealth / encounter.attack)) ** 1.2) * (4.8));
+            let xptext = `<span color="lightblue" data-tooltip='(((${background.enemyLevel}^1.2) * (${encounter.maxHealth} / ${encounter.attack}))^1.2) * 4.8 = ${xpdrop}'>${xpdrop}</span>`;
             await new Promise(r => setTimeout(r, 200))
             encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
 
-            while (player.experience + xpdrop > Math.floor(((player.level / 0.07) ** 2) / 2)) {
-                xpdrop -= (Math.floor(((player.level / 0.07) ** 2) / 2)) - player.experience;
+            while (player.experience + xpdrop > getRequiredXP(player.level)) {
+                xpdrop -= getRequiredXP(player.level) - player.experience;
                 player.level += 1;
                 player.experience = 0;
                 await new Promise(r => setTimeout(r, 200))
