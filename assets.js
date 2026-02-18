@@ -428,373 +428,171 @@ function getLocalAssets() {
 
 		enemies: [
 			{
-				name: "Lazy Goblin",
-				sprite: 'assets/enemies/LazyGoblin.gif',
-				weapon: "Rusted Dagger",
-				health: 50,
-				attack: 25,
-				accuracy: 0.75,
-				crit: 0.05,
-				defense: 40,
+				name: "Cow",
+				block: "Animal",
+				sprite: 'assets/enemies/Cow.gif',
+				weapon: null,
+				health: 110,
+				attack: 40,
+				defense: 50,
+				crit: 0.2,
+				accuracy: 0.85,
 				skills: [
 					{
-						name: "Stab",
-						chance: 0.85,
-						attack: true
+						name: "Moo",
+						chance: 0.45,
+						attack: false
 					},
 					{
-						name: "Lucky Blow",
-						pstatus: ["🩸", "🌀", "🩼"],
-						estatus: ["🍀", "🎯"],
-						chance: 0.15,
-						wait: 3,
-						damage: 2,
+						name: "Moo+",
+						estatus: ["💗", "💪", "💢"],
+						chance: 0.05,
+						attack: false
+					},
+					{
+						name: "Ram",
+						chance: 0.5,
 						attack: true
 					},
 				],
 				drops: [
 					{
 						name: null,
-						chance: 0.60
+						chance: 0.3
 					},
 					{
-						name: "Wooden Key",
-						chance: 0.06
-					},
-					{
-						name: "Iron Key",
-						chance: 0.03
-					},
-					{
-						name: "Twig",
-						chance: 0.025
-					},
-					{
-						name: "Branch",
-						chance: 0.025
-					},
-					{
-						name: "Broken Dagger",
-						chance: 0.015
-					},
-					{
-						name: "Tattered Rags",
-						chance: 0.015
-					},
-					{
-						name: "Cloth",
-						chance: 0.05
-					},
-					{
-						name: "Empty Bottle",
-						chance: 0.08
-					},
-					{
-						name: "Water Bottle",
-						chance: 0.05
-					},
-					{
-						name: "Booze",
-						chance: 0.05
-					},
+						name: "Milk",
+						chance: 0.7
+					}
 				]
 			},
 			{
-				name: "Blacksmith Goblin",
-				sprite: 'assets/enemies/BlacksmithGoblin.gif',
-				weapon: "Blacksmith's Hammer",
-				health: 125,
-				attack: 50,
+				name: "Pig",
+				block: "Animal",
+				sprite: 'assets/enemies/Pig.gif',
+				weapon: null,
+				health: 80,
+				attack: 35,
 				defense: 75,
 				crit: 0.2,
-				accuracy: 0.75,
-
+				accuracy: 0.9,
 				skills: [
 					{
-						name: "Slam",
-						chance: 0.75,
-						attack: true
-					},
-					{
-						name: "Malet Strike",
-						pstatus: ["💫"],
-						chance: 0.15,
-						wait: 2,
-						damage: 0.8,
-						attack: true
-					},
-					{
-						name: "Metal Shavings",
-						pstatus: ["🩸"],
-						chance: 0.15,
-						wait: 1,
-						damage: 1.5,
-						attack: true
-					},
-				],
-				drops: [
-					{
-						name: null,
-						chance: 0.65
-					},
-					{
-						name: "Wooden Key",
-						chance: 0.04
-					},
-					{
-						name: "Iron Key",
-						chance: 0.02
-					},
-					{
-						name: "Broken Dagger",
-						chance: 0.02
-					},
-					{
-						name: "Rusty Dagger",
-						chance: 0.01
-					},
-					{
-						name: "Damaged Cloak",
-						chance: 0.02
-					},
-					{
-						name: "Whetstone",
-						chance: 0.06
-					},
-					{
-						name: "Gunpowder",
-						chance: 0.05
-					},
-					{
-						name: "Empty Bottle",
-						chance: 0.05
-					},
-					{
-						name: "Water Bottle",
-						chance: 0.05
-					},
-					{
-						name: "Booze",
-						chance: 0.05
-					},
-				]
-			},
-			{
-				name: "Armored Goblin",
-				sprite: 'assets/enemies/ArmoredGoblin.gif',
-				weapon: "Spear & Shield",
-				health: 250,
-				attack: 160,
-				defense: 350,
-				crit: 0.1,
-				accuracy: 0.7,
-				skills: [
-					{
-						name: "Jab",
-						chance: 0.65,
-						attack: true
-					},
-					{
-						name: "Rally",
-						estatus: ["🛡️", "💪"],
-						chance: 0.10,
-						wait: 2,
+						name: "Oink",
+						chance: 0.45,
 						attack: false
 					},
 					{
-						name: "Flurry",
-						chance: 0.25,
-						wait: 1,
-						times: 3,
-						damage: 0.65,
-						attack: true
-					},
-				],
-				drops: [
-					{
-						name: null,
-						chance: 0.85
-					},
-					{
-						name: "Golden Key",
-						chance: 0.06
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.03
-					},
-					{
-						name: "Great Sword",
-						chance: 0.015
-					},
-					{
-						name: "Skull Crusher",
-						chance: 0.015
-					},
-					{
-						name: "Iron Armor",
-						chance: 0.03
-					},
-				]
-			},
-			{
-				name: "Cursed Goblin",
-				sprite: 'assets/enemies/CursedGoblin.gif',
-				weapon: "Cursed Rusted Dagger",
-				health: 333,
-				attack: 333,
-				defense: 333,
-				crit: 0.33,
-				accuracy: 0.66,
-				skills: [
-					{
-						name: "Stab",
-						chance: 0.55,
-						attack: true
-					},
-					{
-						name: "Wild Strike",
-						pstatus: ["🩸"],
-						damage: 1.66,
-						chance: 0.30,
-						wait: 1,
-						attack: true
-					},
-					{
-						name: "Cursed Breath",
-						pstatus: ["🖤", "🌑", "🌀", "🩼"],
-						damage: 1.33,
-						chance: 0.15,
-						wait: 2,
-						attack: true
-					},
-				],
-				drops: [
-					{
-						name: null,
-						chance: 0.6
-					},
-					{
-						name: "Golden Key",
-						chance: 0.045
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.025
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.01
-					},
-					{
-						name: "Red Gem",
-						chance: 0.075
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.075
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.035
-					},
-					{
-						name: "Whetstone",
-						chance: 0.045
-					},
-					{
-						name: "Cloth",
-						chance: 0.09
-					},
-				]
-			},
-			{
-				name: "Orc",
-				sprite: 'assets/enemies/Orc.gif',
-				weapon: "Orc Club",
-				health: 400,
-				attack: 200,
-				defense: 300,
-				crit: 0.1,
-				accuracy: 0.65,
-				skills: [
-					{
-						name: "Smash",
-						chance: 0.60,
-						attack: true
-					},
-					{
-						name: "Grounding Stun",
-						pstatus: ["💫"],
-						chance: 0.15,
-						damage: 1.1,
-						wait: 3,
-						attack: true
-					},
-					{
-						name: "Crippling Strike",
-						pstatus: ["🌀", "🩼"],
-						chance: 0.15,
-						damage: 1.5,
-						wait: 1,
-						attack: true
-					},
-					{
-						name: "Berserk",
-						estatus: ["💢"],
+						name: "Oink+",
+						estatus: ["💗", "🛡️", "💪"],
 						chance: 0.05,
-						wait: 3,
 						attack: false
+					},
+					{
+						name: "Ram",
+						chance: 0.5,
+						attack: true
 					},
 				],
 				drops: [
 					{
 						name: null,
-						chance: 0.55
+						chance: 0.3
 					},
 					{
-						name: "Iron Key",
-						chance: 0.1
+						name: "Pork",
+						chance: 0.7
+					}
+				]
+			},
+			{
+				name: "Sheep",
+				block: "Animal",
+				sprite: 'assets/enemies/Sheep.gif',
+				weapon: null,
+				health: 70,
+				attack: 25,
+				defense: 95,
+				crit: 0.1,
+				accuracy: 0.8,
+				skills: [
+					{
+						name: "Baa",
+						chance: 0.45,
+						attack: false
 					},
 					{
-						name: "Golden Key",
-						chance: 0.04
+						name: "Baa+",
+						estatus: ["💗", "🛡️", "🎯"],
+						chance: 0.05,
+						attack: false
 					},
 					{
-						name: "Platinum Key",
-						chance: 0.01
+						name: "Kick",
+						chance: 0.5,
+						attack: true
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.3
 					},
 					{
-						name: "Cloth",
-						chance: 0.15
+						name: "Wool",
+						chance: 0.7
+					}
+				]
+			},
+			{
+				name: "Chicken",
+				block: "Animal",
+				sprite: 'assets/enemies/Chicken.gif',
+				weapon: null,
+				health: 20,
+				attack: 15,
+				defense: 15,
+				crit: 0.65,
+				accuracy: 0.95,
+				skills: [
+					{
+						name: "Cluck",
+						chance: 0.45,
+						attack: false
 					},
 					{
-						name: "Red Gem",
-						chance: 0.045
+						name: "Cluck+",
+						estatus: ["💗", "🍀", "💨"],
+						chance: 0.05,
+						attack: false
 					},
 					{
-						name: "Blue Gem",
-						chance: 0.045
+						name: "Peck",
+						chance: 0.5,
+						attack: true
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.3
 					},
 					{
-						name: "Purple Gem",
-						chance: 0.01
-					},
-					{
-						name: "Whetstone",
-						chance: 0.05
-					},
+						name: "Egg",
+						chance: 0.7
+					}
 				]
 			},
 			{
 				name: "Health Slime",
+				block: "Grunt",
 				sprite: 'assets/enemies/HealthSlime.gif',
 				weapon: null,
 				health: 100,
 				attack: 25,
 				defense: 50,
 				crit: 0.1,
-				accuracy: 0.65,
+				accuracy: 0.8,
 				skills: [
 					{
 						name: "Jump",
@@ -802,14 +600,14 @@ function getLocalAssets() {
 						attack: true
 					},
 					{
-						name: "Heal",
+						name: "Recover",
 						health: 0.10,
 						chance: 0.10,
 						wait: 5,
 						attack: false
 					},
 					{
-						name: "Major Heal",
+						name: "Major Recover",
 						health: 0.3,
 						chance: 0.05,
 						wait: 7,
@@ -854,13 +652,14 @@ function getLocalAssets() {
 			},
 			{
 				name: "Attack Slime",
+				block: "Grunt",
 				sprite: 'assets/enemies/AttackSlime.gif',
 				weapon: null,
 				health: 70,
 				attack: 50,
 				defense: 20,
 				crit: 0.2,
-				accuracy: 0.70,
+				accuracy: 0.85,
 				skills: [
 					{
 						name: "Jump",
@@ -928,6 +727,7 @@ function getLocalAssets() {
 			},
 			{
 				name: "Defense Slime",
+				block: "Grunt",
 				sprite: 'assets/enemies/DefenseSlime.gif',
 				weapon: null,
 				health: 75,
@@ -945,9 +745,9 @@ function getLocalAssets() {
 					{
 						name: "Reinforce",
 						estatus: ["🛡️"],
-						health: 0.05,
+						health: 0.2,
 						chance: 0.15,
-						wait: 2,
+						wait: 6,
 						attack: false
 					},
 					{
@@ -955,7 +755,7 @@ function getLocalAssets() {
 						pstatus: ["💫"],
 						damage: 1.3,
 						chance: 0.1,
-						wait: 2,
+						wait: 3,
 						attack: true
 					},
 					{
@@ -997,13 +797,14 @@ function getLocalAssets() {
 			},
 			{
 				name: "Stamina Slime",
+				block: "Grunt",
 				sprite: 'assets/enemies/StaminaSlime.gif',
 				weapon: null,
 				health: 80,
 				attack: 30,
 				defense: 50,
 				crit: 0.5,
-				accuracy: 0.7,
+				accuracy: 0.85,
 				skills: [
 					{
 						name: "Quick Leap",
@@ -1066,14 +867,966 @@ function getLocalAssets() {
 				]
 			},
 			{
+				name: "Lazy Goblin",
+				block: "Grunt",
+				sprite: 'assets/enemies/LazyGoblin.gif',
+				weapon: "Rusted Dagger",
+				health: 50,
+				attack: 25,
+				accuracy: 0.8,
+				crit: 0.05,
+				defense: 40,
+				skills: [
+					{
+						name: "Stab",
+						chance: 0.85,
+						attack: true
+					},
+					{
+						name: "Lucky Blow",
+						pstatus: ["🩸", "🌀", "🩼"],
+						estatus: ["🍀", "🎯"],
+						chance: 0.15,
+						wait: 3,
+						damage: 2,
+						attack: true
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.60
+					},
+					{
+						name: "Wooden Key",
+						chance: 0.06
+					},
+					{
+						name: "Iron Key",
+						chance: 0.03
+					},
+					{
+						name: "Twig",
+						chance: 0.025
+					},
+					{
+						name: "Branch",
+						chance: 0.025
+					},
+					{
+						name: "Broken Dagger",
+						chance: 0.015
+					},
+					{
+						name: "Tattered Rags",
+						chance: 0.015
+					},
+					{
+						name: "Cloth",
+						chance: 0.05
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.08
+					},
+					{
+						name: "Water Bottle",
+						chance: 0.05
+					},
+					{
+						name: "Booze",
+						chance: 0.05
+					},
+				]
+			},
+			{
+				name: "Goblin Warrior",
+				block: "Grunt",
+				sprite: 'assets/enemies/GoblinWarrior.gif',
+				weapon: "Rusted Dagger",
+				health: 125,
+				attack: 50,
+				accuracy: 0.8,
+				crit: 0.1,
+				defense: 75,
+				skills: [
+					{
+						name: "Slash",
+						chance: 0.6,
+						attack: true
+					},
+					{
+						name: "War Cry",
+						estatus: ["🏅", "💢"],
+						chance: 0.1,
+						wait: 7,
+						attack: false
+					},
+					{
+						name: "Shield Bash",
+						chance: 0.15,
+						wait: 3,
+						damage: 0.75,
+						pstatus: ["🌀"],
+						attack: true
+					},
+					{
+						name: "Heavy Slash",
+						damage: 1.2,
+						chance: 0.15,
+						wait: 3,
+						attack: true
+					}
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Blacksmith Goblin",
+				block: "Grunt",
+				sprite: 'assets/enemies/BlacksmithGoblin.gif',
+				weapon: "Blacksmith's Hammer",
+				health: 125,
+				attack: 50,
+				defense: 75,
+				crit: 0.1,
+				accuracy: 0.8,
+
+				skills: [
+					{
+						name: "Slam",
+						chance: 0.6,
+						attack: true
+					},
+					{
+						name: "Malet Strike",
+						pstatus: ["💫"],
+						chance: 0.15,
+						wait: 2,
+						damage: 0.8,
+						attack: true
+					},
+					{
+						name: "Metal Shavings",
+						pstatus: ["🩸"],
+						chance: 0.15,
+						wait: 3,
+						damage: 1.5,
+						attack: true
+					},
+					{
+						name: "Molotov",
+						damage: 1.5,
+						pstatus: ["🔥"],
+						chance: 0.1,
+						wait: 7,
+						attack: true
+					}
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.65
+					},
+					{
+						name: "Wooden Key",
+						chance: 0.04
+					},
+					{
+						name: "Iron Key",
+						chance: 0.02
+					},
+					{
+						name: "Broken Dagger",
+						chance: 0.02
+					},
+					{
+						name: "Rusty Dagger",
+						chance: 0.01
+					},
+					{
+						name: "Damaged Cloak",
+						chance: 0.02
+					},
+					{
+						name: "Whetstone",
+						chance: 0.06
+					},
+					{
+						name: "Gunpowder",
+						chance: 0.05
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.05
+					},
+					{
+						name: "Water Bottle",
+						chance: 0.05
+					},
+					{
+						name: "Booze",
+						chance: 0.05
+					},
+				]
+			},
+			{
+				name: "Armored Goblin",
+				block: "General",
+				sprite: 'assets/enemies/ArmoredGoblin.gif',
+				weapon: "Spear & Shield",
+				health: 300,
+				attack: 160,
+				defense: 350,
+				crit: 0.05,
+				accuracy: 0.7,
+				skills: [
+					{
+						name: "Jab",
+						chance: 0.6,
+						attack: true
+					},
+					{
+						name: "Rally",
+						estatus: ["🛡️", "💪"],
+						chance: 0.10,
+						wait: 7,
+						attack: false
+					},
+					{
+						name: "Flurry",
+						chance: 0.15,
+						wait: 3,
+						times: 3,
+						damage: 0.75,
+						attack: true
+					},
+					{
+						name: "Deep Jab",
+						pstatus: ["🩸"],
+						damage: 1.25,
+						chance: 0.15,
+						wait: 3,
+						attack: true
+					}
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.85
+					},
+					{
+						name: "Golden Key",
+						chance: 0.06
+					},
+					{
+						name: "Platinum Key",
+						chance: 0.03
+					},
+					{
+						name: "Great Sword",
+						chance: 0.015
+					},
+					{
+						name: "Skull Crusher",
+						chance: 0.015
+					},
+					{
+						name: "Iron Armor",
+						chance: 0.03
+					},
+				]
+			},
+			{
+				name: "Goblin Ranger",
+				block: "General",
+				sprite: 'assets/enemies/GoblinRanger.gif',
+				weapon: "Bow & Arrow",
+				health: 150,
+				attack: 300,
+				defense: 225,
+				crit: 0.1,
+				accuracy: 0.7,
+				skills: [
+					{
+						name: "Bolt",
+						chance: 0.6,
+						attack: true
+					},
+					{
+						name: "Razor Bolt",
+						pstatus: ["🩸"],
+						damage: 1.4,
+						chance: 0.1,
+						wait: 8,
+						attack: true
+					},
+					{
+						name: "Flame Bolt",
+						pstatus: ["🔥"],
+						damage: 1.25,
+						chance: 0.1,
+						wait: 7,
+						attack: true
+					},
+					{
+						name: "Poison Bolt",
+						pstatus: ["💀"],
+						damage: 1,
+						chance: 0.1,
+						wait: 10,
+						attack: true
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					},
+				]
+			},
+			{
+				name: "Goblin General",
+				block: "General",
+				sprite: 'assets/enemies/GoblinGeneral.gif',
+				health: 250,
+				attack: 250,
+				defense: 275,
+				crit: 0.1,
+				accuracy: 0.8,
+				skills: [
+					{
+						name: "Smash",
+						chance: 0.6,
+						attack: true
+					},
+					{
+						name: "War Cry",
+						estatus: ["🏅", "💢"],
+						chance: 0.075,
+						wait: 7,
+						attack: false
+					},
+					{
+						name: "Rally",
+						estatus: ["🛡️", "💪"],
+						chance: 0.075,
+						wait: 7,
+						attack: false
+					},
+					{
+						name: "Kick",
+						pstatus: ["🌀"],
+						damage: 0.65,
+						chance: 0.1,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Crushing Swing",
+						chance: 0.15,
+						wait: 4,
+						damage: 1.4,
+						attack: true
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					},
+				]
+			},
+			{
+				name: "Orc",
+				block: "General",
+				sprite: 'assets/enemies/Orc.gif',
+				weapon: "Orc Club",
+				health: 500,
+				attack: 300,
+				defense: 150,
+				crit: 0.05,
+				accuracy: 0.8,
+				skills: [
+					{
+						name: "Smash",
+						chance: 0.60,
+						attack: true
+					},
+					{
+						name: "Grounding Stun",
+						pstatus: ["💫"],
+						chance: 0.15,
+						damage: 1.1,
+						wait: 5,
+						attack: true
+					},
+					{
+						name: "Crippling Strike",
+						pstatus: ["🌀", "🩼"],
+						chance: 0.15,
+						damage: 1.5,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Berserk",
+						estatus: ["💢"],
+						chance: 0.05,
+						wait: 7,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.55
+					},
+					{
+						name: "Iron Key",
+						chance: 0.1
+					},
+					{
+						name: "Golden Key",
+						chance: 0.04
+					},
+					{
+						name: "Platinum Key",
+						chance: 0.01
+					},
+					{
+						name: "Cloth",
+						chance: 0.15
+					},
+					{
+						name: "Red Gem",
+						chance: 0.045
+					},
+					{
+						name: "Blue Gem",
+						chance: 0.045
+					},
+					{
+						name: "Purple Gem",
+						chance: 0.01
+					},
+					{
+						name: "Whetstone",
+						chance: 0.05
+					},
+				]
+			},
+			{
+				name: "Cyclops",
+				block: "General",
+				sprite: 'assets/enemies/Cyclops.gif',
+				health: 500,
+				attack: 150,
+				defense: 300,
+				crit: 0.1,
+				accuracy: 0.75,
+				skills: [
+					{
+						name: "Smash",
+						chance: 0.3,
+						attack: true
+					},
+					{
+						name: "Suplex",
+						damage: 1.3,
+						chance: 0.15,
+						wait: 5,
+						attack: true
+					},
+					{
+						name: "Crippling Strike",
+						damage: 1.5,
+						pstatus: ["🌀", "🩼"],
+						chance: 0.15,
+						wait: 2,
+						attack: true
+					},
+					{
+						name: "Thick Skin",
+						estatus: ["🛡️"],
+						chance: 0.1,
+						attack: false,
+						wait: 7
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					},
+				]
+			},
+			{
+				name: "Eldritch Goblin",
+				block: "General",
+				sprite: 'assets/enemies/EldritchGoblin.gif',
+				weapon: "Cursed Rusted Dagger",
+				health: 333,
+				attack: 333,
+				defense: 333,
+				crit: 0.33,
+				accuracy: 0.88,
+				skills: [
+					{
+						name: "Stab",
+						chance: 0.55,
+						attack: true
+					},
+					{
+						name: "Wild Strike",
+						pstatus: ["🩸"],
+						damage: 1.66,
+						chance: 0.30,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Cursed Breath",
+						pstatus: ["🖤", "🌑", "🌀", "🩼"],
+						damage: 1.33,
+						chance: 0.15,
+						wait: 9,
+						attack: true
+					},
+					{
+						name: "Frenzy",
+						health: 0.33,
+						estatus: ["💢", "🍀"],
+						chance: 0.1,
+						wait: 12
+					}
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.6
+					},
+					{
+						name: "Golden Key",
+						chance: 0.045
+					},
+					{
+						name: "Platinum Key",
+						chance: 0.025
+					},
+					{
+						name: "Adamantine Key",
+						chance: 0.01
+					},
+					{
+						name: "Red Gem",
+						chance: 0.075
+					},
+					{
+						name: "Blue Gem",
+						chance: 0.075
+					},
+					{
+						name: "Purple Gem",
+						chance: 0.035
+					},
+					{
+						name: "Whetstone",
+						chance: 0.045
+					},
+					{
+						name: "Cloth",
+						chance: 0.09
+					},
+				]
+			},
+			{
+				name: "Eldritch Slime",
+				block: "General",
+				sprite: 'assets/enemies/EldritchSlime.gif',
+				weapon: "Cursed Rusted Dagger",
+				health: 333,
+				attack: 333,
+				defense: 333,
+				crit: 0.33,
+				accuracy: 0.88,
+				skills: [
+					{
+						name: "Jump",
+						chance: 0.55,
+						attack: true
+					},
+					{
+						name: "Foul Secretion",
+						damage: 0.33,
+						pstatus: ["🌑", "🥀", "🌀"],
+						chance: 0.3,
+						wait: 5,
+						attack: true
+					},
+					{
+						name: "Blight Bullets",
+						damage: 0.66,
+						times: 6,
+						pstatus: ["🖤", "🩼"],
+						chance: 0.15,
+						wait: 9,
+						attack: true
+					},
+					{
+						name: "Unnatural Jiggle",
+						health: 0.33,
+						estatus: ["🎯", "🛡️"],
+						chance: 0.15,
+						wait: 15,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.6
+					},
+					{
+						name: "Golden Key",
+						chance: 0.045
+					},
+					{
+						name: "Platinum Key",
+						chance: 0.025
+					},
+					{
+						name: "Adamantine Key",
+						chance: 0.01
+					},
+					{
+						name: "Red Gem",
+						chance: 0.075
+					},
+					{
+						name: "Blue Gem",
+						chance: 0.075
+					},
+					{
+						name: "Purple Gem",
+						chance: 0.035
+					},
+					{
+						name: "Whetstone",
+						chance: 0.045
+					},
+					{
+						name: "Cloth",
+						chance: 0.09
+					},
+				]
+			},
+			{
+				name: "Greater Health Slime",
+				block: "General",
+				sprite: 'assets/enemies/GreaterHealthSlime.gif',
+				weapon: null,
+				health: 800,
+				attack: 175,
+				defense: 150,
+				crit: 0.05,
+				accuracy: 0.75,
+				skills: [
+					{
+						name: "Jump",
+						chance: 0.65,
+						attack: true
+					},
+					{
+						name: "Slimy Stream",
+						damage: 0.85,
+						pstatus: ["🌀"],
+						chance: 0.1,
+						wait: 4,
+						attack: true
+					},
+					{
+						name: "Recover",
+						health: 0.10,
+						chance: 0.10,
+						wait: 10,
+						attack: false
+					},
+					{
+						name: "Major Recovery",
+						health: 0.3,
+						chance: 0.05,
+						wait: 14,
+						attack: false
+					},
+					{
+						name: "Restorative Jiggle",
+						estatus: ["💗", "✨"],
+						health: 0.05,
+						chance: 0.1,
+						wait: 6,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.45
+					},
+					{
+						name: "Green Goo",
+						chance: 0.45
+					},
+					{
+						name: "Sticky Solution",
+						chance: 0.01
+					},
+					{
+						name: "Light Health Potion",
+						chance: 0.05
+					},
+					{
+						name: "Medium Health Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Health Potion",
+						chance: 0.01
+					},
+
+				]
+			},
+			{
+				name: "Greater Attack Slime",
+				block: "General",
+				sprite: 'assets/enemies/GreaterAttackSlime.gif',
+				weapon: null,
+				health: 325,
+				attack: 300,
+				defense: 150,
+				crit: 0.15,
+				accuracy: 0.9,
+				skills: [
+					{
+						name: "Jump",
+						chance: 0.55,
+						attack: true
+					},
+					{
+						name: "Slimy Blade",
+						pstatus: ["🩸"],
+						wait: 3,
+						chance: 0.15,
+						damage: 1.1,
+						attack: true
+					},
+					{
+						name: "Burning Slide",
+						pstatus: ["🔥", "🩼"],
+						chance: 0.15,
+						damage: 1.15,
+						wait: 6,
+						attack: true
+					},
+					{
+						name: "Poison Spew",
+						pstatus: ["💀"],
+						damage: 0.9,
+						chance: 0.1,
+						wait: 12,
+						attack: true
+					},
+					{
+						name: "Excited Jiggle",
+						estatus: ["💪", "🎯"],
+						chance: 0.05,
+						wait: 9,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.45
+					},
+					{
+						name: "Red Goo",
+						chance: 0.45
+					},
+					{
+						name: "Sticky Solution",
+						chance: 0.01
+					},
+					{
+						name: "Light Attack Potion",
+						chance: 0.05
+					},
+					{
+						name: "Medium Attack Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Attack Potion",
+						chance: 0.01
+					},
+
+				]
+			},
+			{
+				name: "Greater Defense Slime",
+				block: "General",
+				sprite: 'assets/enemies/GreaterDefenseSlime.gif',
+				weapon: null,
+				health: 550,
+				attack: 200,
+				defense: 350,
+				crit: 0.05,
+				accuracy: 0.8,
+				skills: [
+					{
+						name: "Heavy Jump",
+						chance: 0.55,
+						damage: 1.1,
+						attack: true
+					},
+					{
+						name: "Reinforce",
+						estatus: ["🛡️"],
+						health: 0.2,
+						chance: 0.15,
+						wait: 6,
+						attack: false
+					},
+					{
+						name: "Heavy Impact",
+						pstatus: ["💫"],
+						damage: 1.3,
+						chance: 0.15,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Slime Secretion",
+						pstatus: ["🌀"],
+						estatus: ["✨"],
+						chance: 0.05,
+						wait: 2,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.45
+					},
+					{
+						name: "Blue Goo",
+						chance: 0.45
+					},
+					{
+						name: "Sticky Solution",
+						chance: 0.01
+					},
+					{
+						name: "Light Defense Potion",
+						chance: 0.05
+					},
+					{
+						name: "Medium Defense Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.01
+					},
+
+				]
+			},
+			{
+				name: "Greater Stamina Slime",
+				block: "General",
+				sprite: 'assets/enemies/GreaterStaminaSlime.gif',
+				weapon: null,
+				health: 400,
+				attack: 250,
+				defense: 175,
+				crit: 0.2,
+				accuracy: 0.85,
+				skills: [
+					{
+						name: "Quick Jump",
+						damage: 0.45,
+						times: 2,
+						chance: 0.65,
+						attack: true
+					},
+					{
+						name: "Electric Coat",
+						pstatus: ["💫"],
+						damage: 0.8,
+						chance: 0.1,
+						attack: true,
+						wait: 2
+					},
+					{
+						name: "Slime Barrage",
+						pstatus: ["🌀"],
+						damage: 0.45,
+						times: 4,
+						chance: 0.2,
+						attack: true,
+						wait: 2
+					},
+					{
+						name: "Dodgy Dance",
+						estatus: ["💨", "🎯"],
+						chance: 0.05,
+						attack: false,
+						wait: 2
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.45
+					},
+					{
+						name: "Yellow Goo",
+						chance: 0.45
+					},
+					{
+						name: "Sticky Solution",
+						chance: 0.01
+					},
+					{
+						name: "Light Stamina Potion",
+						chance: 0.05
+					},
+					{
+						name: "Medium Stamina Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Stamina Potion",
+						chance: 0.01
+					},
+
+				]
+			},
+			{
 				name: "Orange Fox",
+				block: "General",
 				sprite: 'assets/enemies/OrangeFox.gif',
 				weapon: "Steel Dagger",
-				health: 650,
-				attack: 250,
-				defense: 180,
+				health: 700,
+				attack: 300,
+				defense: 200,
 				crit: 0.05,
-				accuracy: 0.80,
+				accuracy: 0.95,
 				skills: [
 					{
 						name: "Hack",
@@ -1086,7 +1839,7 @@ function getLocalAssets() {
 						name: "Smoke Bomb",
 						pstatus: ["👁️", "🌀"],
 						chance: 0.075,
-						wait: 2,
+						wait: 9,
 						attack: false
 
 					},
@@ -1094,7 +1847,7 @@ function getLocalAssets() {
 						name: "Body Flicker",
 						estatus: ["🎯", "💨", "🍀"],
 						chance: 0.075,
-						wait: 2,
+						wait: 6,
 						attack: false
 					},
 					{
@@ -1102,14 +1855,14 @@ function getLocalAssets() {
 						damage: 0.65,
 						times: 3,
 						chance: 0.20,
-						wait: 1,
+						wait: 2,
 						attack: true
 					},
 					{
 						name: "Berserk",
 						estatus: ["💢"],
 						chance: 0.05,
-						wait: 3,
+						wait: 6,
 						attack: false
 					},
 				],
@@ -1176,13 +1929,14 @@ function getLocalAssets() {
 			},
 			{
 				name: "White Fox",
+				block: "General",
 				sprite: 'assets/enemies/WhiteFox.gif',
 				weapon: "Steel Dagger",
 				health: 600,
-				attack: 220,
-				defense: 170,
+				attack: 260,
+				defense: 180,
 				crit: 0.1,
-				accuracy: 0.75,
+				accuracy: 0.9,
 				skills: [
 					{
 						name: "Stab",
@@ -1196,13 +1950,13 @@ function getLocalAssets() {
 						pstatus: ["👁️", "🌀"],
 						chance: 0.075,
 						attack: false,
-						wait: 2
+						wait: 9
 					},
 					{
 						name: "Body Flicker",
 						estatus: ["🎯", "💨", "🍀"],
 						chance: 0.075,
-						wait: 2,
+						wait: 6,
 						attack: false
 					},
 					{
@@ -1210,7 +1964,7 @@ function getLocalAssets() {
 						times: 6,
 						damage: 0.45,
 						chance: 0.15,
-						wait: 1,
+						wait: 3,
 						attack: true
 					},
 					{
@@ -1219,7 +1973,7 @@ function getLocalAssets() {
 						times: 6,
 						damage: 0.20,
 						chance: 0.1,
-						wait: 2,
+						wait: 12,
 						attack: true
 					},
 				],
@@ -1287,6 +2041,7 @@ function getLocalAssets() {
 			},
 			{
 				name: "Blue Fox",
+				block: "Vice Captain",
 				sprite: 'assets/enemies/BlueFox.gif',
 				weapon: "Steel Dagger",
 				health: 750,
@@ -1298,7 +2053,7 @@ function getLocalAssets() {
 					{
 						name: "Slash",
 						chance: 0.6,
-						damage: 0.3,
+						damage: 0.35,
 						times: 4,
 						attack: true
 					},
@@ -1306,7 +2061,7 @@ function getLocalAssets() {
 						name: "Smoke Bomb",
 						pstatus: ["👁️", "🌀"],
 						chance: 0.075,
-						wait: 2,
+						wait: 9,
 						attack: false
 
 					},
@@ -1314,7 +2069,7 @@ function getLocalAssets() {
 						name: "Body Flicker",
 						estatus: ["🎯", "💨", "🍀"],
 						chance: 0.075,
-						wait: 2,
+						wait: 6,
 						attack: false
 					},
 					{
@@ -1322,7 +2077,7 @@ function getLocalAssets() {
 						times: 9,
 						damage: 0.35,
 						chance: 0.1,
-						wait: 2,
+						wait: 4,
 						attack: true
 					},
 					{
@@ -1330,7 +2085,7 @@ function getLocalAssets() {
 						pstatus: ["🩸", "🩼"],
 						damage: 1.7,
 						chance: 0.15,
-						wait: 1,
+						wait: 4,
 						attack: true
 					},
 				],
@@ -1400,14 +2155,408 @@ function getLocalAssets() {
 				]
 			},
 			{
+				name: "Black Fox",
+				block: "Vice Captain",
+				sprite: 'assets/enemies/BlackFox.gif',
+				weapon: "Steel Bow",
+				health: 500,
+				attack: 200,
+				defense: 180,
+				crit: 0.15,
+				accuracy: 0.8,
+				skills: [
+					{
+						name: "Rapid Fire",
+						chance: 0.55,
+						damage: 0.35,
+						times: 3,
+						attack: true
+					},
+					{
+						name: "Smoke Bomb",
+						pstatus: ["👁️", "🌀"],
+						chance: 0.075,
+						wait: 9,
+						attack: false
+
+					},
+					{
+						name: "Body Flicker",
+						estatus: ["🎯", "💨", "🍀"],
+						chance: 0.075,
+						wait: 6,
+						attack: false
+					},
+					{
+						name: "Razor Arrows",
+						times: 4,
+						damage: 0.7,
+						pstatus: ["🩸"],
+						chance: 0.15,
+						wait: 4,
+						attack: true
+					},
+					{
+						name: "Flame Arrows",
+						times: 4,
+						damage: 0.6,
+						pstatus: ["🔥"],
+						chance: 0.15,
+						wait: 4,
+						attack: true
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.55
+					},
+					{
+						name: "Iron Key",
+						chance: 0.05
+					},
+					{
+						name: "Golden Key",
+						chance: 0.05
+					},
+					{
+						name: "Dual Daggers",
+						chance: 0.015
+					},
+					{
+						name: "Dual Hatchets",
+						chance: 0.015
+					},
+					{
+						name: "Leather Armor",
+						chance: 0.02
+					},
+					{
+						name: "Purified Salt",
+						chance: 0.03
+					},
+					{
+						name: "Gunpowder",
+						chance: 0.03
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.03
+					},
+					{
+						name: "Water Bottle",
+						chance: 0.03
+					},
+					{
+						name: "Booze",
+						chance: 0.03
+					},
+					{
+						name: "Pepper",
+						chance: 0.02
+					},
+					{
+						name: "Pepper Bomb",
+						chance: 0.1
+					},
+					{
+						name: "Venom",
+						chance: 0.02
+					},
+					{
+						name: "Whetstone & Polish",
+						chance: 0.02
+					},
+
+
+				]
+			},
+			{
+				name: "Eldrich Orc",
+				block: "Vice Captain",
+				sprite: 'assets/enemies/EldrichOrc.gif',
+				weapon: "Cursed Orc Club",
+				health: 3333,
+				attack: 666,
+				defense: 333,
+				crit: 0.33,
+				accuracy: 0.86,
+				skills: [
+					{
+						name: "Crush",
+						chance: 0.55,
+						attack: true
+					},
+					{
+						name: "Stunning Stomp",
+						pstatus: ["💫"],
+						chance: 0.15,
+						damage: 1.1,
+						wait: 5,
+						attack: true
+					},
+					{
+						name: "Wild Slam",
+						damage: 1.33,
+						wait: 3,
+						chance: 0.15,
+						attack: true
+					},
+					{
+						name: "Berserk+",
+						estatus: ["💢"],
+						chance: 0.075,
+						wait: 7,
+						attack: false
+					},
+					{
+						name: "Cursed Breath",
+						pstatus: ["🖤", "🌑", "🌀", "🩼"],
+						damage: 1.33,
+						chance: 0.075,
+						wait: 4,
+						attack: true
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.55
+					},
+					{
+						name: "Iron Key",
+						chance: 0.1
+					},
+					{
+						name: "Golden Key",
+						chance: 0.04
+					},
+					{
+						name: "Platinum Key",
+						chance: 0.01
+					},
+					{
+						name: "Cloth",
+						chance: 0.15
+					},
+					{
+						name: "Red Gem",
+						chance: 0.045
+					},
+					{
+						name: "Blue Gem",
+						chance: 0.045
+					},
+					{
+						name: "Purple Gem",
+						chance: 0.01
+					},
+					{
+						name: "Whetstone",
+						chance: 0.05
+					},
+				]
+			},
+			{
+				name: "Eldritch Cyclops",
+				block: "Vice Captain",
+				sprite: 'assets/enemies/EldritchCyclops.gif',
+				health: 3333,
+				attack: 333,
+				defense: 666,
+				crit: 0.33,
+				accuracy: 0.76,
+				skills: [
+					{
+						name: "Smash",
+						chance: 0.3,
+						attack: true
+					},
+					{
+						name: "Chain Suplex",
+						damage: 0.7,
+						times: 3,
+						chance: 0.15,
+						wait: 5,
+						attack: true
+					},
+					{
+						name: "Crush Suplex",
+						damage: 1.5,
+						pstatus: ["🌀", "🩼"],
+						chance: 0.15,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Thick Skin+",
+						estatus: ["🛡️"],
+						health: 0.1,
+						chance: 0.075,
+						attack: false,
+						wait: 7
+					},
+					{
+						name: "Cursed Breath",
+						pstatus: ["🖤", "🌑", "🌀", "🩼"],
+						damage: 1.33,
+						chance: 0.075,
+						wait: 4,
+						attack: true
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					},
+				]
+			},
+			{
+				name: "Eldritch Goblin General",
+				block: "General",
+				sprite: 'assets/enemies/EldritchGoblinGeneral.gif',
+				health: 1333,
+				attack: 333,
+				defense: 333,
+				crit: 0.33,
+				accuracy: 0.86,
+				skills: [
+					{
+						name: "Smash",
+						chance: 0.6,
+						attack: true
+					},
+					{
+						name: "Cursed Breath",
+						pstatus: ["🖤", "🌑", "🌀", "🩼"],
+						damage: 1.33,
+						chance: 0.1,
+						wait: 4,
+						attack: true
+					},
+					{
+						name: "Kick",
+						pstatus: ["🌀", "🩼"],
+						damage: 0.65,
+						chance: 0.1,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Wild Swing",
+						damage: 1.5,
+						chance: 0.15,
+						wait: 4,
+						attack: true
+					},
+					{
+						name: "Crazed Cry",
+						estatus: ["🏅", "💢", "🛡️", "💪"],
+						health: 0.33,
+						chance: 0.05,
+						wait: 25,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					},
+				]
+			},
+			{
+				name: "Greater Eldritch Slime",
+				block: "Vice Captain",
+				sprite: 'assets/enemies/GreaterEldritchSlime.gif',
+				weapon: "Cursed Rusted Dagger",
+				health: 2333,
+				attack: 333,
+				defense: 333,
+				crit: 0.33,
+				accuracy: 0.76,
+				skills: [
+					{
+						name: "Jump",
+						chance: 0.55,
+						attack: true
+					},
+					{
+						name: "Foul Secretion",
+						damage: 0.33,
+						pstatus: ["🌑", "🥀", "🌀"],
+						chance: 0.2,
+						wait: 5,
+						attack: true
+					},
+					{
+						name: "Blight Bullets",
+						damage: 0.66,
+						times: 6,
+						pstatus: ["🖤", "🩼"],
+						chance: 0.15,
+						wait: 9,
+						attack: true
+					},
+					{
+						name: "Disturbing Dance",
+						health: 0.33,
+						estatus: ["🎯", "🛡️", "💪"],
+						chance: 0.1,
+						wait: 20,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 0.6
+					},
+					{
+						name: "Golden Key",
+						chance: 0.045
+					},
+					{
+						name: "Platinum Key",
+						chance: 0.025
+					},
+					{
+						name: "Adamantine Key",
+						chance: 0.01
+					},
+					{
+						name: "Red Gem",
+						chance: 0.075
+					},
+					{
+						name: "Blue Gem",
+						chance: 0.075
+					},
+					{
+						name: "Purple Gem",
+						chance: 0.035
+					},
+					{
+						name: "Whetstone",
+						chance: 0.045
+					},
+					{
+						name: "Cloth",
+						chance: 0.09
+					},
+				]
+			},
+			{
 				name: "Vampire",
+				block: "Vice Captain",
 				sprite: 'assets/enemies/Vampire.gif',
 				weapon: "Fangs",
-				health: 4500,
-				attack: 450,
-				defense: 500,
+				health: 3000,
+				attack: 400,
+				defense: 400,
 				crit: 0.15,
-				accuracy: 0.7,
+				accuracy: 0.85,
 				skills: [
 					{
 						name: "Lunge",
@@ -1418,8 +2567,8 @@ function getLocalAssets() {
 						name: "Piercing Blood",
 						damage: 0.65,
 						times: 4,
-						chance: 0.2,
-						wait: 1,
+						chance: 0.15,
+						wait: 3,
 						pstatus: ["🩸"],
 						attack: true
 					},
@@ -1429,15 +2578,15 @@ function getLocalAssets() {
 						estatus: ["💗", "🛡️"],
 						damage: 1.5,
 						lifesteal: 0.5,
-						chance: 0.1,
-						wait: 1,
+						chance: 0.15,
+						wait: 5,
 						attack: true
 					},
 					{
 						name: "Vampiric Gaze",
 						pstatus: ["🥀", "🌑", "💫"],
 						chance: 0.075,
-						wait: 3,
+						wait: 9,
 						attack: false
 					},
 					{
@@ -1445,7 +2594,7 @@ function getLocalAssets() {
 						pstatus: ["👁️"],
 						estatus: ["🍀", "✨", "💨"],
 						chance: 0.075,
-						wait: 3,
+						wait: 15,
 						attack: false
 					},
 				],
@@ -1486,13 +2635,14 @@ function getLocalAssets() {
 			},
 			{
 				name: "Demon",
+				block: "Vice Captain",
 				sprite: 'assets/enemies/Demon.gif',
 				weapon: null,
-				health: 6666,
-				attack: 666,
+				health: 3333,
+				attack: 333,
 				defense: 666,
 				crit: 0.33,
-				accuracy: 0.66,
+				accuracy: 0.8,
 				skills: [
 					{
 						name: "Punch",
@@ -1503,8 +2653,8 @@ function getLocalAssets() {
 						name: "Flaming Fist",
 						pstatus: ["🔥"],
 						damage: 1.66,
-						chance: 0.15,
-						wait: 1,
+						chance: 0.1,
+						wait: 6,
 						attack: true
 					},
 					{
@@ -1512,15 +2662,15 @@ function getLocalAssets() {
 						pstatus: ["💫", "🌀"],
 						damage: 0.33,
 						times: 3,
-						chance: 0.15,
-						wait: 2,
+						chance: 0.1,
+						wait: 7,
 						attack: true
 					},
 					{
 						name: "Sinister Hex",
 						pstatus: ["🥀", "🖤", "🌑", "🩼"],
 						chance: 0.075,
-						wait: 3,
+						wait: 9,
 						attack: false
 					},
 					{
@@ -1528,16 +2678,16 @@ function getLocalAssets() {
 						estatus: ["💢", "🍀", "💗", "🏅", "🎯"],
 						chance: 0.075,
 						attack: false,
-						wait: 2
+						wait: 12
 					},
 					{
 						name: "Damnation",
 						pstatus: ["🖤", "🌀", "🌑"],
 						damage: 0.33,
-						times: 6,
+						times: 3,
 						chance: 0.05,
 						attack: true,
-						wait: 4
+						wait: 16
 					},
 				],
 				drops: [
@@ -1577,13 +2727,14 @@ function getLocalAssets() {
 			},
 			{
 				name: "Werewolf",
+				block: "Vice Captain",
 				sprite: 'assets/enemies/Werewolf.gif',
 				weapon: null,
-				health: 7500,
-				attack: 500,
-				defense: 750,
-				crit: 0.35,
-				accuracy: 0.65,
+				health: 5000,
+				attack: 400,
+				defense: 500,
+				crit: 0.15,
+				accuracy: 0.75,
 				skills: [
 					{
 						name: "Bite",
@@ -1595,6 +2746,7 @@ function getLocalAssets() {
 						pstatus: ["🩸"],
 						damage: 1.5,
 						chance: 0.20,
+						wait: 4,
 						attack: true
 					},
 					{
@@ -1602,7 +2754,7 @@ function getLocalAssets() {
 						pstatus: ["🩸", "🌀", "🩼"],
 						damage: 2,
 						chance: 0.1,
-						wait: 1,
+						wait: 6,
 						attack: true
 					},
 					{
@@ -1610,7 +2762,7 @@ function getLocalAssets() {
 						estatus: ["🏅", "🍀", "💗", "🎯", "🛡️", "💪"],
 						chance: 0.15,
 						attack: false,
-						wait: 6
+						wait: 12
 					},
 				],
 				drops: [
@@ -1650,13 +2802,14 @@ function getLocalAssets() {
 			},
 			{
 				name: "Witch",
+				block: "Vice Captain",
 				sprite: 'assets/enemies/Witch.gif',
 				weapon: null,
-				health: 3333,
-				attack: 333,
-				defense: 400,
+				health: 1500,
+				attack: 250,
+				defense: 350,
 				crit: 0.1,
-				accuracy: 0.7,
+				accuracy: 0.85,
 				skills: [
 					{
 						name: "Whack",
@@ -1668,7 +2821,7 @@ function getLocalAssets() {
 						pstatus: ["💀"],
 						damage: 0.5,
 						chance: 0.075,
-						wait: 4,
+						wait: 8,
 						attack: true
 					},
 					{
@@ -1676,7 +2829,7 @@ function getLocalAssets() {
 						pstatus: ["💫", "🌀"],
 						damage: 0.33,
 						chance: 0.075,
-						wait: 1,
+						wait: 4,
 						attack: true
 					},
 					{
@@ -1684,7 +2837,7 @@ function getLocalAssets() {
 						estatus: ["💗"],
 						health: 0.05,
 						chance: 0.075,
-						wait: 2,
+						wait: 12,
 						attack: false
 					},
 					{
@@ -1692,6 +2845,7 @@ function getLocalAssets() {
 						pstatus: ["🩸", "🌀", "🩼"],
 						damage: 1.33,
 						chance: 0.2,
+						wait: 3,
 						attack: true
 					},
 					{
@@ -1699,7 +2853,7 @@ function getLocalAssets() {
 						pstatus: ["🥀", "🖤"],
 						chance: 0.075,
 						attack: false,
-						wait: 3
+						wait: 7
 					},
 					{
 						name: "Mysterious Concoction",
@@ -1711,7 +2865,7 @@ function getLocalAssets() {
 							return ret;
 						},
 						chance: 0.075,
-						wait: 4,
+						wait: 12,
 						attack: false
 					},
 					{
@@ -1727,7 +2881,7 @@ function getLocalAssets() {
 						times: 6,
 						chance: 0.075,
 						attack: true,
-						wait: 5
+						wait: 9
 					},
 				],
 				drops: [
@@ -1776,121 +2930,744 @@ function getLocalAssets() {
 				]
 			},
 			{
-				name: "Cow",
-				sprite: 'assets/enemies/Cow.gif',
+				name: "Wizard",
+				block: "Vice Captain",
+				sprite: 'assets/enemies/Wizard.gif',
 				weapon: null,
-				health: 110,
-				attack: 40,
-				defense: 50,
-				crit: 0.2,
-				accuracy: 0.7,
-				skills: [
-					{
-						name: "Moo",
-						chance: 0.45,
-						attack: false
-					},
-					{
-						name: "Moo+",
-						estatus: ["💗", "💪", "💢"],
-						chance: 0.05,
-						attack: false
-					},
-					{
-						name: "Ram",
-						chance: 0.5,
-						attack: true
-					},
-				],
-				drops: [
-					{
-						name: null,
-						chance: 0.3
-					},
-					{
-						name: "Milk",
-						chance: 0.7
-					}
-				]
-			},
-			{
-				name: "Sheep",
-				sprite: 'assets/enemies/Sheep.gif',
-				weapon: null,
-				health: 70,
-				attack: 25,
-				defense: 95,
-				crit: 0.1,
-				accuracy: 0.65,
-				skills: [
-					{
-						name: "Baa",
-						chance: 0.45,
-						attack: false
-					},
-					{
-						name: "Baa+",
-						estatus: ["💗", "🛡️", "🎯"],
-						chance: 0.05,
-						attack: false
-					},
-					{
-						name: "Kick",
-						chance: 0.5,
-						attack: true
-					},
-				],
-				drops: [
-					{
-						name: null,
-						chance: 0.3
-					},
-					{
-						name: "Wool",
-						chance: 0.7
-					}
-				]
-			},
-			{
-				name: "Chicken",
-				sprite: 'assets/enemies/Chicken.gif',
-				weapon: null,
-				health: 20,
-				attack: 15,
-				defense: 15,
-				crit: 0.65,
+				health: 2500,
+				attack: 450,
+				defense: 200,
+				crit: 0.15,
 				accuracy: 0.8,
 				skills: [
 					{
-						name: "Cluck",
-						chance: 0.45,
-						attack: false
-					},
-					{
-						name: "Cluck+",
-						estatus: ["💗", "🍀", "💨"],
-						chance: 0.05,
-						attack: false
-					},
-					{
-						name: "Peck",
+						name: "Magic Missle",
+						damage: 0.3,
+						times: 3,
 						chance: 0.5,
+						attack: true
+					},
+					{
+						name: "Flame Bolt",
+						pstatus: ["🔥"],
+						damage: 1.2,
+						chance: 0.15,
+						wait: 6,
+						attack: true
+					},
+					{
+						name: "Fire Ball",
+						pstatus: ["🔥"],
+						damage: 1.6,
+						chance: 0.075,
+						wait: 12,
+						attack: true
+					},
+					{
+						name: "Acid Splash",
+						pstatus: ["🩼"],
+						damage: 0.8,
+						chance: 0.1,
+						wait: 9,
+						attack: true
+					},
+					{
+						name: "Blindness",
+						pstatus: ["👁️", "🥀"],
+						chance: 0.075,
+						wait: 6,
+						attack: false
+					},
+					{
+						name: "False Life",
+						health: 0.15,
+						chance: 0.1,
+						wait: 9,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Calamity Health Slime",
+				block: "Vice Captain",
+				sprite: 'assets/enemies/CalamityHealthSlime.gif',
+				weapon: null,
+				health: 3500,
+				attack: 200,
+				defense: 250,
+				crit: 0.05,
+				accuracy: 0.8,
+				skills: [
+					{
+						name: "Jump",
+						chance: 0.5,
+						attack: true
+					},
+					{
+						name: "Siphon",
+						damage: 0.9,
+						lifesteal: 0.4,
+						chance: 0.15,
+						wait: 7,
+						attack: true
+					},
+					{
+						name: "Corrosive Stream",
+						damage: 0.8,
+						pstatus: ["🌀", "🩼"],
+						chance: 0.125,
+						wait: 4,
+						attack: true
+					},
+					{
+						name: "Recover+",
+						health: 0.15,
+						chance: 0.075,
+						wait: 20,
+						attack: false
+					},
+					{
+						name: "Major Recover+",
+						health: 0.4,
+						chance: 0.075,
+						wait: 25,
+						attack: false
+					},
+					{
+						name: "Restorative Jiggle+",
+						health: 0.1,
+						estatus: ["💗", "✨"],
+						chance: 0.075,
+						wait: 15,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Calamity Attack Slime",
+				block: "Vice Captain",
+				sprite: 'assets/enemies/CalamityAttackSlime.gif',
+				weapon: null,
+				health: 1400,
+				attack: 350,
+				defense: 300,
+				crit: 0.1,
+				accuracy: 0.95,
+				skills: [
+					{
+						name: "Jump",
+						chance: 0.5,
+						attack: true
+					},
+					{
+						name: "Blazing Blades",
+						damage: 0.7,
+						times: 2,
+						pstatus: ["🩸", "🔥"],
+						chance: 0.15,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Acidic Slide",
+						damage: 1.2,
+						pstatus: ["🔥", "🩼"],
+						chance: 0.15,
+						wait: 6,
+						attack: true
+					},
+					{
+						name: "Sickening Sprew",
+						damage: 0.9,
+						pstatus: ["💀", "🌀"],
+						chance: 0.1,
+						wait: 12,
+						attack: true
+					},
+					{
+						name: "Excited Jiggle+",
+						estatus: ["💪", "🎯", "🍀"],
+						chance: 0.1,
+						wait: 12,
+						attack: false
+					},
+					{
+						name: "Recovery",
+						health: 0.05,
+						estatus: ["💗"],
+						chance: 0.1,
+						wait: 15,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Calamity Defense Slime",
+				block: "Vice Captain",
+				sprite: 'assets/enemies/CalamityDefenseSlime.gif',
+				weapon: null,
+				health: 2000,
+				attack: 250,
+				defense: 550,
+				crit: 0.05,
+				accuracy: 0.85,
+				skills: [
+					{
+						name: "Heavy Jump",
+						damage: 1.1,
+						chance: 0.5,
+						attack: true
+					},
+					{
+						name: "Reconstruct",
+						health: 0.2,
+						estatus: ["🛡️", "✨"],
+						chance: 0.1,
+						wait: 12,
+						attack: false
+					},
+					{
+						name: "Heavy Bullet",
+						damage: 1.4,
+						pstatus: ["🌀"],
+						chance: 0.15,
+						wait: 6,
+						attack: true
+					},
+					{
+						name: "Boulder Bullet",
+						damage: 1.55,
+						pstatus: ["💫"],
+						chance: 0.15,
+						wait: 9,
+						attack: true
+					},
+					{
+						name: "Violent Shedding",
+						damage: 1.7,
+						estatus: ["🩼", "💢", "🌀"],
+						chance: 0.1,
+						wait: 15,
 						attack: true
 					},
 				],
 				drops: [
 					{
 						name: null,
-						chance: 0.3
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Calamity Stamina Slime",
+				block: "Vice Captain",
+				sprite: 'assets/enemies/CalamityStaminaSlime.gif',
+				weapon: null,
+				health: 1600,
+				attack: 300,
+				defense: 400,
+				crit: 0.2,
+				accuracy: 0.8,
+				skills: [
+					{
+						name: "Quick Jump",
+						damage: 0.45,
+						times: 2,
+						chance: 0.5,
+						attack: true
 					},
 					{
-						name: "Egg",
-						chance: 0.7
+						name: "Bullet Barrage",
+						damage: 0.35,
+						times: 7,
+						chance: 0.2,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Stunning Spew",
+						damage: 0.4,
+						times: 5,
+						pstatus: ["💫"],
+						chance: 0.1,
+						wait: 6,
+						attack: true
+					},
+					{
+						name: "Hyper Dance",
+						estatus: ["💨", "🎯", "🍀", "💪"],
+						chance: 0.1,
+						wait: 9,
+						attack: false
+					},
+					{
+						name: "Rapid Recovery",
+						health: 0.03,
+						estatus: ["💗"],
+						chance: 0.1,
+						wait: 6,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Pureblood",
+				block: "Captain",
+				sprite: 'assets/enemies/Pureblood.gif',
+				weapon: "Fangs",
+				health: 5000,
+				attack: 500,
+				defense: 500,
+				crit: 0.15,
+				accuracy: 0.9,
+				skills: [
+					{
+						name: "Lunge",
+						chance: 0.55,
+						attack: true
+					},
+					{
+						name: "Piercing Blood",
+						damage: 0.65,
+						times: 4,
+						pstatus: ["🩸"],
+						chance: 0.15,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Drain",
+						damage: 1.5,
+						lifesteal: 0.75,
+						pstatus: ["🌀"],
+						estatus: ["💗", "🛡️"],
+						chance: 0.15,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Vampiric Gaze",
+						pstatus: ["🥀", "🌑", "💫"],
+						chance: 0.1,
+						wait: 6,
+						attack: false
+					},
+					{
+						name: "Bat Transformation",
+						pstatus: ["👁️"],
+						estatus: ["🎯", "✨", "💨"],
+						chance: 0.1,
+						wait: 8,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Archdemon",
+				block: "Captain",
+				sprite: 'assets/enemies/Archdemon.gif',
+				weapon: null,
+				health: 6666,
+				attack: 666,
+				defense: 666,
+				crit: 0.33,
+				accuracy: 0.8,
+				skills: [
+					{
+						name: "Punch",
+						chance: 0.55,
+						attack: true
+					},
+					{
+						name: "Flaming Fist",
+						pstatus: ["🔥"],
+						damage: 1.66,
+						chance: 0.15,
+						wait: 4,
+						attack: true
+					},
+					{
+						name: "Pummel",
+						pstatus: ["💫", "🌀"],
+						damage: 0.33,
+						times: 3,
+						chance: 0.1,
+						wait: 6,
+						attack: true
+					},
+					{
+						name: "Sinister Hex",
+						pstatus: ["🥀", "🖤", "🌑", "🩼"],
+						chance: 0.075,
+						wait: 5,
+						attack: false
+					},
+					{
+						name: "Enrage",
+						estatus: ["💢", "🍀", "💗", "🏅", "🎯"],
+						chance: 0.075,
+						attack: false,
+						wait: 10
+					},
+					{
+						name: "Damnation",
+						pstatus: ["🥀", "🌀", "🌑"],
+						damage: 0.33,
+						times: 6,
+						chance: 0.05,
+						attack: true,
+						wait: 12
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Dire Werewolf",
+				block: "Captain",
+				sprite: 'assets/enemies/DireWerewolf.gif',
+				weapon: null,
+				health: 7500,
+				attack: 500,
+				defense: 600,
+				crit: 0.2,
+				accuracy: 0.9,
+				skills: [
+					{
+						name: "Bite",
+						chance: 0.55,
+						attack: true
+					},
+					{
+						name: "Slash",
+						pstatus: ["🩸"],
+						damage: 1.5,
+						chance: 0.2,
+						wait: 2,
+						attack: true
+					},
+					{
+						name: "Crippling Bite",
+						pstatus: ["🩸", "🌀", "🩼"],
+						damage: 2,
+						chance: 0.1,
+						wait: 4,
+						attack: true
+					},
+					{
+						name: "Howl",
+						estatus: ["🏅", "🍀", "💗", "🎯", "🛡️", "💪"],
+						chance: 0.15,
+						attack: false,
+						wait: 7
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Eldritch Witch",
+				block: "Captain",
+				sprite: 'assets/enemies/EldritchWitch.gif',
+				weapon: null,
+				health: 1333,
+				attack: 333,
+				defense: 333,
+				crit: 0.33,
+				accuracy: 0.85,
+				skills: [
+					{
+						name: "Whack",
+						chance: 0.35,
+						attack: true
+					},
+					{
+						name: "Poisonous Potion",
+						pstatus: ["💀"],
+						damage: 0.5,
+						chance: 0.075,
+						wait: 6,
+						attack: true
+					},
+					{
+						name: "Sleeping Potion",
+						pstatus: ["💫", "🌀"],
+						damage: 0.33,
+						chance: 0.075,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Restoration Potion",
+						estatus: ["💗"],
+						health: 0.05,
+						chance: 0.075,
+						wait: 6,
+						attack: false
+					},
+					{
+						name: "Hex",
+						pstatus: ["🥀", "🖤"],
+						chance: 0.075,
+						attack: false,
+						wait: 5
+					},
+					{
+						name: "Mysterious Concoction",
+						get estatus() {
+							let ret = ["💗", "🛡️", "🎯", "💢", "🍀", "💨", "🏅", "💪"]
+								.filter(() => Math.random() < 0.7)
+								.slice(0, Math.max(1, 6))
+							if (ret.length === 0) ret.push("💗")
+							return ret;
+						},
+						chance: 0.075,
+						wait: 6,
+						attack: false
+					},
+					{
+						name: "Potion Barrage",
+						get pstatus() {
+							let ret = ["💫", "💀", "🩸", "🔥", "👁️", "🌀", "🩼", "🥀", "🖤"]
+								.filter(() => Math.random() < 0.7)
+								.slice(0, Math.max(1, 6))
+							if (ret.length === 0) ret.push("💫")
+							return ret;
+						},
+						damage: 0.33,
+						times: 6,
+						chance: 0.075,
+						attack: true,
+						wait: 7
+					},
+					{
+						name: "Voodoo Stab",
+						pstatus: ["🩸", "🌀", "🩼"],
+						damage: 1.33,
+						chance: 0.2,
+						wait: 2,
+						attack: true
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Grand Wizard",
+				block: "Captain",
+				sprite: 'assets/enemies/GrandWizard.gif',
+				weapon: null,
+				health: 4500,
+				attack: 800,
+				defense: 275,
+				crit: 0.2,
+				accuracy: 0.95,
+				skills: [
+					{
+						name: "Crown Of Stars",
+						damage: 0.35,
+						times: 3,
+						chance: 0.45,
+						attack: true
+					},
+					{
+						name: "Sunbeam",
+						damage: 0.4,
+						times: 4,
+						pstatus: ["🔥"],
+						chance: 0.15,
+						wait: 9,
+						attack: true
+					},
+					{
+						name: "Sunburst",
+						damage: 1.8,
+						pstatus: ["🔥"],
+						chance: 0.1,
+						wait: 15,
+						attack: true
+					},
+					{
+						name: "Obstupefacio",
+						pstatus: ["🩼", "💫"],
+						chance: 0.1,
+						wait: 8,
+						attack: false
+					},
+					{
+						name: "Angustia",
+						pstatus: ["🌀", "🖤"],
+						chance: 0.1,
+						wait: 8,
+						attack: false
+					},
+					{
+						name: "False Life",
+						health: 0.15,
+						chance: 0.1,
+						wait: 9,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Calamity Eldrich Slime",
+				block: "Captain",
+				sprite: 'assets/enemies/CalamityEldrichSlime.gif',
+				weapon: null,
+				health: 3333,
+				attack: 333,
+				defense: 333,
+				crit: 0.33,
+				accuracy: 0.85,
+				skills: [
+					{
+						name: "Jump",
+						chance: 0.5,
+						attack: true
+					},
+					{
+						name: "Sinister Spew",
+						damage: 0.33,
+						times: 4,
+						pstatus: ["🌑", "🖤", "🌀"],
+						chance: 0.2,
+						wait: 5,
+						attack: true
+					},
+					{
+						name: "Blight Bullets",
+						damage: 0.33,
+						times: 6,
+						pstatus: ["🥀", "🩼"],
+						chance: 0.2,
+						wait: 9,
+						attack: true
+					},
+					{
+						name: "Disturbing Dance",
+						health: 0.33,
+						estatus: ["🎯", "🛡️", "💪"],
+						chance: 0.1,
+						wait: 20,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Eldrich Fox",
+				block: "Captain",
+				sprite: 'assets/enemies/EldrichFox.gif',
+				weapon: null,
+				health: 2333,
+				attack: 333,
+				defense: 333,
+				crit: 0.33,
+				accuracy: 0.9,
+				skills: [
+					{
+						name: "Slash",
+						damage: 0.33,
+						times: 4,
+						chance: 0.55,
+						attack: true
+					},
+					{
+						name: "Foul Breath",
+						damage: 0.33,
+						pstatus: ["🥀", "🌑", "🌀", "🩼", "👁️"],
+						chance: 0.1,
+						wait: 18,
+						attack: true
+					},
+					{
+						name: "Twisted Flicker",
+						estatus: ["🎯", "💨", "🍀", "💢"],
+						chance: 0.1,
+						wait: 15,
+						attack: false
+					},
+					{
+						name: "Relentless",
+						damage: 0.33,
+						times: 13,
+						chance: 0.1,
+						wait: 6,
+						attack: true
+					},
+					{
+						name: "Sinister Slash",
+						damage: 1.33,
+						pstatus: ["🩸", "🩼", "🌀"],
+						chance: 0.15,
+						wait: 6,
+						attack: true
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
 					}
 				]
 			},
 			{
 				name: "Cyclops Overlord",
+				block: "Vice Captain",
 				sprite: 'assets/enemies/CyclopsOverlord.gif',
 				weapon: null,
 				health: 500,
@@ -1901,7 +3678,7 @@ function getLocalAssets() {
 				skills: [
 					{
 						name: "Swing",
-						chance: 0.55,
+						chance: 0.5,
 						attack: true
 					},
 					{
@@ -1967,17 +3744,26 @@ function getLocalAssets() {
 			},
 			{
 				name: "Fox King",
+				block: "Captain",
 				sprite: 'assets/enemies/FoxKing.gif',
 				weapon: null,
 				health: 4750,
 				attack: 375,
 				defense: 325,
 				crit: 0.2,
-				accuracy: 0.70,
+				accuracy: 0.8,
 				skills: [
 					{
 						name: "Slash",
 						chance: 0.45,
+						attack: true
+					},
+					{
+						name: "Sly Chain",
+						damage: 0.35,
+						times: 3,
+						chance: 0.15,
+						wait: 4,
 						attack: true
 					},
 					{
@@ -2035,12 +3821,13 @@ function getLocalAssets() {
 			},
 			{
 				name: "Goblin King",
+				block: "Lord",
 				sprite: 'assets/enemies/GoblinKing.gif',
 				weapon: null,
-				health: 7777,
-				attack: 777,
-				defense: 777,
-				crit: 0.44,
+				health: 2777,
+				attack: 277,
+				defense: 277,
+				crit: 0.27,
 				accuracy: 0.77,
 				skills: [
 					{
@@ -2049,7 +3836,7 @@ function getLocalAssets() {
 						attack: true
 					},
 					{
-						name: "King’s Wraith",
+						name: "King's Wraith",
 						damage: 0.77,
 						times: 3,
 						chance: 0.1,
@@ -2075,7 +3862,7 @@ function getLocalAssets() {
 					{
 						name: "Dirty Trick",
 						pstatus: ["🥀", "👁️"],
-						damage: 1.3,
+						damage: 0.8,
 						chance: 0.1,
 						wait: 2,
 						attack: true
@@ -2126,14 +3913,315 @@ function getLocalAssets() {
 				]
 			},
 			{
+				name: "Health Slime Lord",
+				block: "Lord",
+				sprite: 'assets/enemies/HealthSlimeLord.gif',
+				weapon: null,
+				health: 4000,
+				attack: 250,
+				defense: 400,
+				crit: 0.05,
+				accuracy: 0.8,
+				skills: [
+					{
+						name: "Slime Shot",
+						chance: 0.45,
+						attack: true
+					},
+					{
+						name: "Devour Life",
+						damage: 1.2,
+						lifesteal: 0.6,
+						chance: 0.15,
+						wait: 7,
+						attack: true
+					},
+					{
+						name: "Corrosive Barrage",
+						damage: 0.3,
+						times: 5,
+						pstatus: ["🌀", "🩼"],
+						chance: 0.15,
+						wait: 4,
+						attack: true
+					},
+					{
+						name: "Rapid Recovery",
+						health: 0.05,
+						chance: 0.1,
+						wait: 15,
+						attack: false
+					},
+					{
+						name: "Invigorate",
+						health: 0.3,
+						estatus: ["💢"],
+						chance: 0.075,
+						wait: 25,
+						attack: false
+					},
+					{
+						name: "Restore Self",
+						health: 0.1,
+						estatus: ["💗", "✨"],
+						chance: 0.075,
+						wait: 30,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Attack Slime Lord",
+				block: "Lord",
+				sprite: 'assets/enemies/AttackSlimeLord.gif',
+				weapon: null,
+				health: 1750,
+				attack: 375,
+				defense: 350,
+				crit: 0.15,
+				accuracy: 1,
+				skills: [
+					{
+						name: "Slime Blade",
+						chance: 0.45,
+						attack: true
+					},
+					{
+						name: "Blazing Chain",
+						damage: 0.45,
+						times: 4,
+						pstatus: ["🩸", "🔥"],
+						chance: 0.15,
+						wait: 4,
+						attack: true
+					},
+					{
+						name: "Acidic Shower",
+						damage: 0.2,
+						times: 8,
+						pstatus: ["🔥", "🩼"],
+						chance: 0.15,
+						wait: 7,
+						attack: true
+					},
+					{
+						name: "Plague Cloud",
+						damage: 0.9,
+						pstatus: ["💀", "🌀", "👁️"],
+						chance: 0.075,
+						wait: 15,
+						attack: true
+					},
+					{
+						name: "Bloodlust",
+						estatus: ["💢", "🍀", "🏅", "💪"],
+						chance: 0.075,
+						wait: 20,
+						attack: false
+					},
+					{
+						name: "Recovery",
+						health: 0.05,
+						estatus: ["💗"],
+						chance: 0.1,
+						wait: 25,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Defense Slime Lord",
+				block: "Lord",
+				sprite: 'assets/enemies/DefenseSlimeLord.gif',
+				weapon: null,
+				health: 2250,
+				attack: 275,
+				defense: 700,
+				crit: 0.05,
+				accuracy: 0.85,
+				skills: [
+					{
+						name: "Slime Hammer",
+						damage: 1.1,
+						chance: 0.5,
+						attack: true
+					},
+					{
+						name: "Overhaul",
+						health: 0.35,
+						estatus: ["🛡️", "✨", "🏅", "💪"],
+						chance: 0.1,
+						wait: 35,
+						attack: false
+					},
+					{
+						name: "Boulder Bullet",
+						damage: 1.6,
+						pstatus: ["🌀"],
+						chance: 0.15,
+						wait: 8,
+						attack: true
+					},
+					{
+						name: "Meteor Impact",
+						damage: 1.8,
+						pstatus: ["💫"],
+						chance: 0.15,
+						wait: 15,
+						attack: true
+					},
+					{
+						name: "Explosive Shedding",
+						damage: 2,
+						estatus: ["🩼", "💢"],
+						chance: 0.1,
+						wait: 20,
+						attack: true
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Stamina Slime Lord",
+				block: "Lord",
+				sprite: 'assets/enemies/StaminaSlimeLord.gif',
+				weapon: null,
+				health: 1750,
+				attack: 325,
+				defense: 450,
+				crit: 0.3,
+				accuracy: 0.95,
+				skills: [
+					{
+						name: "Slime Shot",
+						damage: 0.3,
+						times: 3,
+						chance: 0.45,
+						attack: true
+					},
+					{
+						name: "Hyper Barrage",
+						damage: 0.2,
+						times: 9,
+						chance: 0.2,
+						wait: 3,
+						attack: true
+					},
+					{
+						name: "Surging Shot",
+						damage: 0.95,
+						pstatus: ["💫"],
+						chance: 0.15,
+						wait: 5,
+						attack: true
+					},
+					{
+						name: "Hyper Surge",
+						estatus: ["💨", "🎯", "🍀"],
+						chance: 0.1,
+						wait: 15,
+						attack: false
+					},
+					{
+						name: "Relentless Recovery",
+						health: 0.04,
+						estatus: ["💗"],
+						chance: 0.1,
+						wait: 7,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
+				name: "Eldrich Slime Lord",
+				block: "Elite",
+				sprite: 'assets/enemies/EldrichSlimeLord.gif',
+				weapon: null,
+				health: 3333,
+				attack: 333,
+				defense: 666,
+				crit: 0.33,
+				accuracy: 1.1,
+				skills: [
+					{
+						name: "Sickening Slash",
+						chance: 0.45,
+						attack: true
+					},
+					{
+						name: "Sinister Shower",
+						damage: 0.2,
+						times: 13,
+						pstatus: ["🌑", "🖤", "🩼"],
+						chance: 0.2,
+						wait: 5,
+						attack: true
+					},
+					{
+						name: "Blight Barrage",
+						damage: 0.33,
+						times: 9,
+						pstatus: ["🥀", "🌀"],
+						chance: 0.2,
+						wait: 10,
+						attack: true
+					},
+					{
+						name: "Eldritch Curse",
+						pstatus: ["🥀", "🩼", "🌀", "👁️", "🖤", "🌑", "💀"],
+						chance: 0.075,
+						wait: 20,
+						attack: false
+					},
+					{
+						name: "Deranged Dance",
+						health: 0.33,
+						estatus: ["🎯", "🛡️", "💪", "🍀", "💢"],
+						chance: 0.075,
+						wait: 40,
+						attack: false
+					},
+				],
+				drops: [
+					{
+						name: null,
+						chance: 1
+					}
+				]
+			},
+			{
 				name: "Demon Queen",
+				block: "Elite",
 				sprite: 'assets/enemies/DemonQueen.gif',
 				weapon: null,
-				health: 13666,
-				attack: 999,
-				defense: 999,
-				crit: 0.66,
-				accuracy: 0.85,
+				health: 6666,
+				attack: 666,
+				defense: 666,
+				crit: 0.33,
+				accuracy: 1.15,
 				skills: [
 					{
 						name: "Slap",
@@ -2159,7 +4247,7 @@ function getLocalAssets() {
 					},
 					{
 						name: "Queen's Gaze",
-						pstatus: ["🥀", "👁️", "🌀", "🌑", "💫"],
+						pstatus: ["👁️", "🌀", "🌑", "💫"],
 						chance: 0.05,
 						attack: false,
 						wait: 4
@@ -4946,6 +7034,9 @@ function getLocalAssets() {
 				name: "Milk",
 			},
 			{
+				name: "Pork",
+			},
+			{
 				name: "Egg",
 			},
 			{
@@ -4992,7 +7083,7 @@ function getLocalAssets() {
 		chests: [
 			{
 				name: "Wooden Chest",
-				sprite: "https://media.discordapp.net/attachments/1116445708279615641/1129864897514176603/Copper_Chest.gif",
+				sprite: "assets/chests/WoodenChest.gif",
 				tier: 1,
 				key: "Wooden Key",
 				drops: [
@@ -5004,7 +7095,6 @@ function getLocalAssets() {
 						name: "Trusty Dagger",
 						chance: 0.08
 					},
-
 					{
 						name: "Perfect Stick",
 						chance: 0.04
@@ -5061,7 +7151,6 @@ function getLocalAssets() {
 						name: "Medium Defense Potion",
 						chance: 0.01
 					},
-
 					{
 						name: "Medium Energy Potion",
 						chance: 0.01
@@ -5122,7 +7211,7 @@ function getLocalAssets() {
 			},
 			{
 				name: "Iron Chest",
-				sprite: "https://cdn.discordapp.com/attachments/1116445708279615641/1129867273725808670/Silver_Chest.gif",
+				sprite: "assets/chests/IronChest.gif",
 				tier: 2,
 				key: "Iron Key",
 				drops: [
@@ -5306,7 +7395,7 @@ function getLocalAssets() {
 			},
 			{
 				name: "Golden Chest",
-				sprite: "https://cdn.discordapp.com/attachments/1116445708279615641/1129897856048828426/New_Piskel.gif",
+				sprite: "assets/chests/GoldenChest.gif",
 				tier: 3,
 				key: "Golden Key",
 				drops: [
@@ -5546,7 +7635,7 @@ function getLocalAssets() {
 			},
 			{
 				name: "Platinum Chest",
-				sprite: "https://cdn.discordapp.com/attachments/1116445708279615641/1129902606442057739/Platinum_Chest.gif",
+				sprite: "assets/chests/PlatinumChest.gif",
 				tier: 4,
 				key: "Platinum Key",
 				drops: [
@@ -5766,7 +7855,7 @@ function getLocalAssets() {
 			},
 			{
 				name: "Adamantine Chest",
-				sprite: "https://cdn.discordapp.com/attachments/1116445708279615641/1129906645259006092/Adamantite_Chest.gif",
+				sprite: "assets/chests/AdamantineChest.gif",
 				tier: 5,
 				key: "Adamantine Key",
 				drops: [

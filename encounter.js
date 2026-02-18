@@ -20,6 +20,34 @@ function randomByChance(choices) {
     }
 }
 
+function getBlockTierKey(level) {
+    if (level >= 50) return 'fifty';
+    if (level >= 40) return 'forty';
+    if (level >= 30) return 'thirty';
+    if (level >= 20) return 'twenty';
+    if (level >= 10) return 'ten';
+    return 'zero';
+}
+
+function getEncounterStatsByBlock(enemy, level) {
+    const block = assets.blocks.find((entry) => entry.name === enemy.block);
+    if (!block) {
+        return {
+            health: Math.floor((enemy.health + (level ** 1.82424)) * (1 + (level / 200))),
+            defense: Math.floor((enemy.defense + ((level / 2) ** 1.82424)) * (1 + (level / 200))),
+            attack: Math.floor((enemy.attack + ((level / 2) ** 1.82424)) * (1 + (level / 200))),
+        };
+    }
+
+    const tier = block[getBlockTierKey(level)] || block.zero;
+
+    return {
+        health: Math.floor(enemy.health + ((tier?.health || 0) * level)),
+        defense: Math.floor(enemy.defense + ((tier?.defense || 0) * level)),
+        attack: Math.floor(enemy.attack + ((tier?.attack || 0) * level)),
+    };
+}
+
 async function startBattle(enemy = null) {
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
@@ -41,10 +69,11 @@ async function startBattle(enemy = null) {
         delete s._cooldown;
     });
 
-    encounter.maxHealth = Math.floor((enemy.health + (level ** 1.82424)) * (1 + (level / 200)));
+    const scaledStats = getEncounterStatsByBlock(enemy, level);
+    encounter.maxHealth = scaledStats.health;
     encounter.health = encounter.maxHealth;
-    encounter.defense = Math.floor((enemy.defense + ((level / 2) ** 1.82424)) * (1 + (level / 200)));
-    encounter.attack = Math.floor((enemy.attack + ((level / 2) ** 1.82424)) * (1 + (level / 200)));
+    encounter.defense = scaledStats.defense;
+    encounter.attack = scaledStats.attack;
     encounter.estatus = []
     encounter.crit = enemy.crit
     encounter.accuracy = enemy.accuracy
@@ -641,6 +670,7 @@ async function enemyMove() {
 
 async function victory() {
     const background = Alpine.$data(document.getElementById('background-image'));
+    const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
     if (player.health <= 0) {
         let deathMessages = [
@@ -665,8 +695,108 @@ async function victory() {
         await new Promise(resolve => setTimeout(resolve, 500));
         player.health = player.maxHealth;
         player.pstatus = [];
-    };
-    transition('encounter', 'returning');
+    } else {
+        const area = assets.areas.find(a => a.name === background.location);
+        const chestOutcome = rollAreaChestOutcome(area);
+
+        if (chestOutcome.type === 'key') {
+            const keyItem = assets.items.find(item => item.name === chestOutcome.entry.key);
+            if (keyItem) {
+                addToInventory(keyItem, 1);
+                encounter.log.push(`🔑 ${background.name} found ${keyItem.name}!`);
+            }
+        }
+
+        if (chestOutcome.type === 'chest' && chestOutcome.entry && chestOutcome.entry.chest !== undefined) {
+            background.foundChest = {
+                chest: chestOutcome.entry.chest,
+                key: chestOutcome.entry.key
+            };
+            await transition('encounter', 'chest-found');
+            updateBars();
+            savePlayer();
+            return;
+        }
+
+        await transition('encounter', 'returning');
+        updateBars();
+        savePlayer();
+    }
+}
+
+function rollAreaChestOutcome(area) {
+    if (!area || !area.chests || area.chests.length === 0) return { type: 'none' };
+
+    let roll = Math.random();
+    let counter = 0;
+
+    for (const chestEntry of area.chests) {
+        counter += chestEntry.chance || 0;
+        if (roll <= counter) return { type: 'chest', entry: chestEntry };
+
+        counter += chestEntry.keyChance || 0;
+        if (roll <= counter) return { type: 'key', entry: chestEntry };
+    }
+
+    return { type: 'none' };
+}
+
+async function crackChestOpen() {
+    const background = Alpine.$data(document.getElementById('background-image'));
+    const player = Alpine.$data(document.getElementById('player'));
+    const foundChest = background.foundChest;
+
+    if (!foundChest || foundChest.chest === undefined) {
+        await transition('chest-found', 'returning');
+        return;
+    }
+
+    const chestChoice = assets.chests[foundChest.chest];
+    if (!chestChoice) {
+        background.foundChest = null;
+        await transition('chest-found', 'returning');
+        return;
+    }
+
+    const keyName = chestChoice.key || foundChest.key;
+    const keyIndex = player.inventory.findIndex(item => item.name === keyName && item.amount > 0);
+
+    if (keyName && keyIndex < 0) {
+        alert(`You need ${keyName} to open this chest.`);
+        return;
+    }
+
+    if (keyIndex >= 0) removeFromInventory(keyIndex);
+
+    const drop = randomByChance(chestChoice.drops);
+    const loot = assets.items.find(item => item.name === drop?.name);
+
+    if (loot) {
+        let level = 1;
+        if (loot.minlvl) {
+            level = loot.minlvl && loot.maxlvl
+                ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl)
+                : loot.minlvl;
+        }
+
+        const lootAdded = addToInventory(loot, level);
+        if (lootAdded) {
+            alert(`You opened ${chestChoice.name} and found ${level > 1 ? `Level ${level} ` : ''}${loot.name}!`);
+        }
+    } else {
+        alert(`You opened ${chestChoice.name}, but it was empty.`);
+    }
+
+    background.foundChest = null;
+    await transition('chest-found', 'returning');
+    updateBars();
+    savePlayer();
+}
+
+async function declineChestFound() {
+    const background = Alpine.$data(document.getElementById('background-image'));
+    background.foundChest = null;
+    await transition('chest-found', 'returning');
     updateBars();
     savePlayer();
 }

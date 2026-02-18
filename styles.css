@@ -68,7 +68,7 @@ span {
     padding: 8px 8px;
     border-radius: 4px;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s cubic-bezier(0.49, -0.11, 0, 1.13);
     z-index: 9999;
     white-space: pre-line;
     max-width: 20%;
@@ -81,7 +81,7 @@ img {
 [data-tooltip] {
     cursor: default;
     text-decoration: none;
-    transition: text-decoration-color 2s ease;
+    transition: text-decoration-color 2s cubic-bezier(0.49, -0.11, 0, 1.13);
     pointer-events: auto;
 }
 
@@ -193,29 +193,6 @@ img {
     transition: all 2.5s ease-in-out;
 }
 
-@media (max-width: 1200px) {
-    .player {
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: flex-end;
-        gap: 10px;
-    }
-
-    .player-hud {
-        flex: 0 0 auto;
-        max-width: 100%;
-        transform: scale(0.85);
-        transform-origin: left bottom;
-    }
-
-    .battle-weaponry {
-        margin-bottom: 0;
-    }
-
-    .pstatus-effects {
-        margin-bottom: 0;
-    }
-}
 
 .player-hud {
     position: relative;
@@ -234,21 +211,31 @@ img {
 
 .battle-weaponry {
     position: relative;
-    flex: 0 0 auto;
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 12px solid rgb(0, 0, 0);
-    padding: 10px 14px;
+    top: -35px;
+    background-color: rgba(0, 0, 0, 0.25);
+    padding: 0;
     font-family: 'Pixel-Font', sans-serif;
-    font-size: 24px;
+    font-size: 18px;
     color: white;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    gap: 0;
+    align-items: stretch;
+    align-content: center;
+    z-index: 20;
+    transition: all 0.2s cubic-bezier(0.49, -0.11, 0, 1.13);
+    margin: 0;
+    box-sizing: border-box;
+    border: 5px solid rgba(0, 0, 0, 0.5);
+}
+
+.battle-weaponry > span {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-width: 250px;
-    z-index: 20;
-    transition: all 0.2s ease;
-    margin-bottom: 45px;
+    text-align: center;
+    min-width: 0;
 }
 
 .pstatus-effects {
@@ -619,7 +606,7 @@ img {
     top: 38%;
     right: 0;
     transform: translate(110%, -50%);
-    transition: transform 0.35s ease;
+    transition: transform 0.35s cubic-bezier(0.49, -0.11, 0, 1.13);
     padding: 20px;
     color: white;
     font-family: 'Pixelify Sans', sans-serif;
@@ -698,7 +685,7 @@ img {
     gap: 6px;
     box-sizing: border-box;
     background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75));
-    transition: all 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.49, -0.11, 0, 1.13);
 }
 
 .travel-button:hover {
@@ -825,7 +812,7 @@ img {
     padding: 10px;
     box-sizing: border-box;
     cursor: grab;
-    transition: all 0.12s ease;
+    transition: all 0.12s cubic-bezier(0.49, -0.11, 0, 1.13);
 }
 
 .inventory-item:hover {
@@ -963,7 +950,7 @@ img {
     border-bottom: none;
     color: #888;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.49, -0.11, 0, 1.13);
     position: relative;
     bottom: -2px;
 }
@@ -993,7 +980,7 @@ img {
     max-width: 250px;
     z-index: 20;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.49, -0.11, 0, 1.13);
     pointer-events: none;
     justify-content: baseline;
 }
@@ -1083,7 +1070,7 @@ img {
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.15s ease, transform 0.15s ease;
+    transition: opacity 0.15s ease, transform 0.15s cubic-bezier(0.49, -0.11, 0, 1.13);
     z-index: 30;
 }
 
