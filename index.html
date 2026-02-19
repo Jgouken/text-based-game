@@ -368,6 +368,7 @@
                 </div>
             </div>
 
+            <!-- Found a Chest -->
             <div id="chest-found" class="returning" x-show="screen === 'chest-found'" style="display: none;
             margin-top: -100px;">
                 <p style="text-align: center; font-size: 54px; font-family: 'Pixelify Sans', sans-serif; margin-top: 130px;"
@@ -1022,7 +1023,7 @@
                         @click="location = 'Vulpeston'; transition('travel','returning'); savePlayer();">
                         <span class="travel-name">Vulpeston</span>
                         <span class="travel-subtext"
-                            x-text="location === 'Vulpeston' ? 'you are here' : '[16-22] Infiltrate the sly and cunning theives.'"></span>
+                            x-text="location === 'Vulpeston' ? 'you are here' : '[16-22] Infiltrate the sly and cunning thieves.'"></span>
                     </button>
 
                     <button class="travel-button regular-button travel-button-bg travel-button--vulpes-tower"
@@ -1097,11 +1098,15 @@
                 },
 
                 get formattedLog() {
+                    const background = Alpine.$data(document.getElementById('background-image'));
+                    const enemy = background.enemy;
+                    const level = background.enemyLevel;
+                    
                     return this.log
                         .map(line =>
                             line
                                 .replaceAll(this.playerName, `<span style='color:rgb(0, 255, 13);' data-tooltip='You!'>${this.playerName}</span>`)
-                                .replaceAll(this.enemyName, `<span style='color:red;' data-tooltip='Level ${Alpine.$data(document.getElementById('background-image')).enemyLevel}\n⚔️ ${this.attack}\n🛡️ ${this.defense}\n🎯 ${Math.floor(this.accuracy * 100)}%\n🍀 ${Math.floor(this.crit * 100)}%'>${this.enemyName}</span>`)
+                                .replaceAll(this.enemyName, `<span style='color:red;' data-tooltip='Level ${level}\n${enemy.block}\n⚔️ ${this.attack}\n🛡️ ${this.defense}\n🎯 ${Math.floor(this.accuracy * 100)}%\n🍀 ${Math.floor(this.crit * 100)}%'>${this.enemyName}</span>`)
                                 .replaceAll(`CRIT`, `<span style='color:red;'>CRIT</span>`)
                                 .replaceAll(`MISSED`, `<span style='color:grey;'>MISSED</span>`)
                                 .replaceAll(`MISS`, `<span style='color:grey;'>MISS</span>`)
@@ -1110,7 +1115,8 @@
                 }
             }">
             <div class="enemy" id="enemy">
-                <div class="enemy-level" x-text="`Level ${enemyLevel}`">?</div>
+                <div class="enemy-level" x-text="`Level ${enemyLevel} ${enemy.block}`" 
+                    :data-tooltip="`💖 ${enemy.health} + (${Math.floor((maxHealth - enemy.health) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${maxHealth}\n⚔️ ${enemy.attack} + (${Math.floor((attack - enemy.attack) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${attack}\n🛡️ ${enemy.defense} + (${Math.floor(((defense * 10) - enemy.defense) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${defense}\n🎯 ${Math.floor(accuracy * 100)}%\n🍀 ${Math.floor(crit * 100)}%`">?</div>
                 <div style="margin-top: 40px;">
                     <div class="enemy-name" x-text="enemy.name">???</div>
                     <div class="estatus-effects">
