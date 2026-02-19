@@ -5571,7 +5571,7 @@ function getLocalAssets() {
 				critdmg: 1.6,
 				accuracy: 0.9,
 
-				description: "A dagger that's lost its edge due to rust, but is still useable.",
+				description: "A dagger that's lost its edge due to rust, but is still usable.",
 				skills: [
 					{
 						name: "Stab",
@@ -5665,7 +5665,7 @@ function getLocalAssets() {
 					},
 					{
 						name: "Perfect Swing",
-						description: "Swing at the the enemy with perfect trajectory.",
+						description: "Swing at the enemy with perfect trajectory.",
 						cost: 20,
 						damage: 1.25,
 						pstatus: ["🎯"],
@@ -5823,7 +5823,7 @@ function getLocalAssets() {
 				name: "Dual Hatchets",
 				maxlvl: 24,
 				minlvl: 13,
-				description: "A pair of lumberjack hatches good for damage!",
+				description: "A pair of lumberjack hatchets good for damage!",
 
 				attack: 78,
 				attackPerLevel: 4,
@@ -5890,7 +5890,7 @@ function getLocalAssets() {
 					},
 					{
 						name: "Knight's Resolve",
-						description: "Read yourself for combat.",
+						description: "Ready yourself for combat.",
 						cost: 35,
 						pstatus: ["💪", "💗", "🛡️", "🏅"],
 						attack: false
@@ -6829,9 +6829,8 @@ function getLocalAssets() {
 				]
 			},
 			{
-				name: "Rogues Cloak",
-				description: "A brown cloak that's still in good condition that should provide light protection due to it's a strong fabric",
-
+			name: "Rogue's Cloak",
+			description: "A brown cloak that's still in good condition that should provide light protection due to its strong fabric",
 				defense: 29,
 				maxlvl: 12,
 				minlvl: 4,
@@ -7133,7 +7132,7 @@ function getLocalAssets() {
 			},
 			{
 				name: "Shadow Cloak",
-				description: "A sinister dark clock that you're almost positive makes you look like a cultist.",
+				description: "A sinister dark cloak that you're almost positive makes you look like a cultist.",
 
 				defense: 420,
 				maxlvl: 50,
@@ -7628,7 +7627,7 @@ function getLocalAssets() {
 						chance: 0.12
 					},
 					{
-						name: "Rogues Cloak",
+						name: "Rogue's Cloak",
 						chance: 0.08
 					},
 					{
@@ -7724,7 +7723,7 @@ function getLocalAssets() {
 						chance: 0.01
 					},
 					{
-						name: "Silver Key",
+						name: "Iron Key",
 						chance: 0.02
 					},
 					{
@@ -7796,7 +7795,7 @@ function getLocalAssets() {
 						chance: 0.01
 					},
 					{
-						name: "MedIum Defense Potion",
+						name: "Medium Defense Potion",
 						chance: 0.01
 					},
 					{
@@ -7936,7 +7935,7 @@ function getLocalAssets() {
 						chance: 0.02
 					},
 					{
-						name: "Silver Knife",
+						name: "Silver Dagger",
 						chance: 0.02
 					},
 					{
@@ -7952,11 +7951,11 @@ function getLocalAssets() {
 						chance: 0.02
 					},
 					{
-						name: "LumberJack Attire",
+						name: "Lumberjack Attire",
 						chance: 0.02
 					},
 					{
-						name: "Assassins Cloak",
+						name: "Assassin Cloak",
 						chance: 0.02
 					},
 					{
@@ -8516,15 +8515,15 @@ function getLocalAssets() {
 						chance: 0.04
 					},
 					{
-						name: "Mana Infused Gem",
+						name: "Mana Infused Crystal",
 						chance: 0.03
 					},
 					{
-						name: "Enchanting Gem",
+						name: "Enchanting Crystal",
 						chance: 0.03
 					},
 					{
-						name: "Purifying Gem",
+						name: "Purification Gem",
 						chance: 0.04
 					},
 					{

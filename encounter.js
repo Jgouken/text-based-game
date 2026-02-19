@@ -458,8 +458,9 @@ async function turnManager(toPlayer) {
             }
 
             let currentLevel = player.level
-            var xpdrop = Math.floor((((background.enemyLevel ** 1.2) * (encounter.maxHealth / encounter.attack)) ** 1.2) * (4.8));
-            let xptext = `<span color="lightblue" data-tooltip='(((${background.enemyLevel}^1.2) * (${encounter.maxHealth} / ${encounter.attack}))^1.2) * 4.8 = ${xpdrop}'>${xpdrop}</span>`;
+            const xpMultiplier = 4.8 + (Math.max(0, assets.blocks.findIndex((entry) => entry.name === background.enemy.block)) * 0.2) - (({ 'zero': 0, 'ten': 1, 'twenty': 2, 'thirty': 3, 'forty': 4, 'fifty': 5 }[getBlockTierKey(background.enemyLevel)] || 0) * 0.3);
+            var xpdrop = Math.floor((((background.enemyLevel ** 1.2) * (encounter.maxHealth / encounter.attack)) ** 1.2) * xpMultiplier);
+            let xptext = `<span color="lightblue" data-tooltip='(((${background.enemyLevel}^1.2) * (${encounter.maxHealth} / ${encounter.attack}))^1.2) * ${xpMultiplier.toFixed(1)} = ${xpdrop}'>${xpdrop}</span>`;
             await new Promise(r => setTimeout(r, 200))
             encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
 
@@ -699,14 +700,6 @@ async function victory() {
         const area = assets.areas.find(a => a.name === background.location);
         const chestOutcome = rollAreaChestOutcome(area);
 
-        if (chestOutcome.type === 'key') {
-            const keyItem = assets.items.find(item => item.name === chestOutcome.entry.key);
-            if (keyItem) {
-                addToInventory(keyItem, 1);
-                encounter.log.push(`🔑 ${background.name} found ${keyItem.name}!`);
-            }
-        }
-
         if (chestOutcome.type === 'chest' && chestOutcome.entry && chestOutcome.entry.chest !== undefined) {
             background.foundChest = {
                 chest: chestOutcome.entry.chest,
@@ -717,11 +710,10 @@ async function victory() {
             savePlayer();
             return;
         }
-
-        await transition('encounter', 'returning');
-        updateBars();
-        savePlayer();
     }
+    await transition('encounter', 'returning');
+    updateBars();
+    savePlayer();
 }
 
 function rollAreaChestOutcome(area) {
@@ -733,9 +725,6 @@ function rollAreaChestOutcome(area) {
     for (const chestEntry of area.chests) {
         counter += chestEntry.chance || 0;
         if (roll <= counter) return { type: 'chest', entry: chestEntry };
-
-        counter += chestEntry.keyChance || 0;
-        if (roll <= counter) return { type: 'key', entry: chestEntry };
     }
 
     return { type: 'none' };
