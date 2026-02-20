@@ -5424,14 +5424,14 @@ function getLocalAssets() {
 					},
 					{
 						name: "Kick",
-						cost: 5,
+						cost: 10,
 						description: "A complementary can of kick-ass.",
 						damage: 1.2,
 						attack: true
 					},
 					{
 						name: "Relieve",
-						cost: 10,
+						cost: 15,
 						description: "Stop and crack your knuckles.",
 						flatHealth: 100,
 						attack: false
