@@ -1191,14 +1191,98 @@
                     const level = background.enemyLevel;
                     
                     return this.log
-                        .map(line =>
-                            line
+                        .map(line => {
+                            // Calculate modified enemy stats based on status effects
+                            const hasEmpowerment = this.estatus.some(s => s.id == getStatusIdByName('Empowerment'));
+                            const hasStrength = this.estatus.some(s => s.id == getStatusIdByName('Strength'));
+                            const hasWeakness = this.estatus.some(s => s.id == getStatusIdByName('Weakness'));
+                            const hasBerserk = this.estatus.some(s => s.id == getStatusIdByName('Berserk'));
+                            
+                            const hasRigidity = this.estatus.some(s => s.id == getStatusIdByName('Rigidity'));
+                            const hasFragility = this.estatus.some(s => s.id == getStatusIdByName('Fragility'));
+                            
+                            const hasAcuity = this.estatus.some(s => s.id == getStatusIdByName('Acuity'));
+                            const hasBlindness = this.estatus.some(s => s.id == getStatusIdByName('Blindness'));
+                            
+                            const hasLuck = this.estatus.some(s => s.id == getStatusIdByName('Luck'));
+                            const hasMisfortune = this.estatus.some(s => s.id == getStatusIdByName('Misfortune'));
+                            
+                            // Attack modifiers (these affect damage output, not base attack display)
+                            const empowermentBonus = hasEmpowerment ? getAssets().statuses.find(s => s.name === 'Empowerment').damAdd : 0;
+                            const strengthBonus = hasStrength ? getAssets().statuses.find(s => s.name === 'Strength').damAdd : 0;
+                            const berserkBonus = hasBerserk ? getAssets().statuses.find(s => s.name === 'Berserk').damAdd : 0;
+                            const weaknessPenalty = hasWeakness ? getAssets().statuses.find(s => s.name === 'Weakness').damReduc : 0;
+                            const attackMultiplier = 1 + empowermentBonus + strengthBonus + berserkBonus - weaknessPenalty;
+                            const modifiedAttack = Math.floor(this.attack * attackMultiplier);
+                            const attackModified = hasEmpowerment || hasStrength || hasWeakness || hasBerserk;
+                            
+                            // Defense modifiers
+                            const rigidityBonus = hasRigidity ? getAssets().statuses.find(s => s.name === 'Rigidity').armorAdd : 0;
+                            const fragilityPenalty = hasFragility ? getAssets().statuses.find(s => s.name === 'Fragility').armorSub : 0;
+                            const defenseMultiplier = 1 + rigidityBonus - fragilityPenalty;
+                            const modifiedDefense = Math.floor(this.defense * defenseMultiplier);
+                            const defenseModified = hasRigidity || hasFragility;
+                            
+                            // Accuracy modifiers
+                            const acuityBonus = hasAcuity ? getAssets().statuses.find(s => s.name === 'Acuity').incAcc : 0;
+                            const blindnessPenalty = hasBlindness ? getAssets().statuses.find(s => s.name === 'Blindness').decAcc : 0;
+                            const modifiedAccuracy = this.accuracy + acuityBonus - blindnessPenalty;
+                            const accuracyModified = hasAcuity || hasBlindness;
+                            
+                            // Crit modifiers
+                            const luckBonus = hasLuck ? getAssets().statuses.find(s => s.name === 'Luck').incCrit : 0;
+                            const misfortunePenalty = hasMisfortune ? getAssets().statuses.find(s => s.name === 'Misfortune').decCrit : 0;
+                            const modifiedCrit = this.crit + luckBonus - misfortunePenalty;
+                            const critModified = hasLuck || hasMisfortune;
+                            
+                            // Build tooltip
+                            let tooltip = `Level ${level}\n${enemy.block}`;
+                            
+                            // Attack (show if modified by damage multipliers)
+                            tooltip += `\n⚔️ ${attackModified ? modifiedAttack + '*' : this.attack}`;
+                            if (attackModified) {
+                                tooltip += `\n  ${this.attack}`;
+                                if (hasEmpowerment) tooltip += ` * (1 + ${empowermentBonus}) (${getStatusIdByName('Empowerment')})`;
+                                if (hasStrength) tooltip += ` * (1 + ${strengthBonus}) (${getStatusIdByName('Strength')})`;
+                                if (hasBerserk) tooltip += ` * (1 + ${berserkBonus}) (${getStatusIdByName('Berserk')})`;
+                                if (hasWeakness) tooltip += ` * (1 - ${weaknessPenalty}) (${getStatusIdByName('Weakness')})`;
+                                tooltip += ` = ${modifiedAttack}`;
+                            }
+                            
+                            // Defense
+                            tooltip += `\n🛡️ ${defenseModified ? modifiedDefense + '*' : this.defense}`;
+                            if (defenseModified) {
+                                tooltip += `\n  ${this.defense}`;
+                                if (hasRigidity) tooltip += ` * (1 + ${rigidityBonus}) (${getStatusIdByName('Rigidity')})`;
+                                if (hasFragility) tooltip += ` * (1 - ${fragilityPenalty}) (${getStatusIdByName('Fragility')})`;
+                                tooltip += ` = ${modifiedDefense}`;
+                            }
+                            
+                            // Accuracy
+                            tooltip += `\n🎯 ${Math.floor((accuracyModified ? modifiedAccuracy : this.accuracy) * 100)}%${accuracyModified ? '*' : ''}`;
+                            if (accuracyModified) {
+                                tooltip += `\n  ${this.accuracy}`;
+                                if (hasAcuity) tooltip += ` + ${acuityBonus} (${getStatusIdByName('Acuity')})`;
+                                if (hasBlindness) tooltip += ` - ${blindnessPenalty} (${getStatusIdByName('Blindness')})`;
+                                tooltip += ` = ${modifiedAccuracy}`;
+                            }
+                            
+                            // Crit
+                            tooltip += `\n🍀 ${Math.floor((critModified ? modifiedCrit : this.crit) * 100)}%${critModified ? '*' : ''}`;
+                            if (critModified) {
+                                tooltip += `\n  ${this.crit}`;
+                                if (hasLuck) tooltip += ` + ${luckBonus} (${getStatusIdByName('Luck')})`;
+                                if (hasMisfortune) tooltip += ` - ${misfortunePenalty} (${getStatusIdByName('Misfortune')})`;
+                                tooltip += ` = ${modifiedCrit}`;
+                            }
+                            
+                            return line
                                 .replaceAll(this.playerName, `<span style='color:rgb(0, 255, 13);' data-tooltip='You!'>${this.playerName}</span>`)
-                                .replaceAll(this.enemyName, `<span style='color:red;' data-tooltip='Level ${level}\n${enemy.block}\n⚔️ ${this.attack}\n🛡️ ${this.defense}\n🎯 ${Math.floor(this.accuracy * 100)}%\n🍀 ${Math.floor(this.crit * 100)}%'>${this.enemyName}</span>`)
+                                .replaceAll(this.enemyName, `<span style='color:red;' data-tooltip='${tooltip}'>${this.enemyName}</span>`)
                                 .replaceAll(`CRIT`, `<span style='color:red;'>CRIT</span>`)
                                 .replaceAll(`MISSED`, `<span style='color:grey;'>MISSED</span>`)
-                                .replaceAll(`MISS`, `<span style='color:grey;'>MISS</span>`)
-                        )
+                                .replaceAll(`MISS`, `<span style='color:grey;'>MISS</span>`);
+                        })
                         .join('<br>');
                 }
             }">

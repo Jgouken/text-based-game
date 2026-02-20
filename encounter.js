@@ -692,7 +692,7 @@ async function victory() {
             `You're finally awake.`,
             `So, about your healing ability...`
         ]
-        alert(`${deathMessages[Math.floor(Math.random() * deathMessages.length)]}}\n\nYour health will be replinished, but your death has been punished.`);
+        alert(`${deathMessages[Math.floor(Math.random() * deathMessages.length)]}}\nYour health will be replinished, but your death has been punished.`);
         await new Promise(resolve => setTimeout(resolve, 500));
         player.health = player.maxHealth;
         player.pstatus = [];
