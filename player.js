@@ -51,6 +51,7 @@ async function startPlayer() {
     player.health = Number(playerData.health) || player.maxHealth;
     player.stamina = Number(playerData.stamina) || player.maxStamina;
     player.pstatus = Array.isArray(playerData.pstatus) ? playerData.pstatus : [];
+    player.activePotion = (playerData.activePotion && typeof playerData.activePotion === 'object') ? playerData.activePotion : null;
     player.inventory = Array.isArray(playerData.inventory) ? playerData.inventory : [];
     background.location = playerData.location || "Warhamshire";
 
@@ -85,6 +86,7 @@ async function savePlayer() {
         weaponry: { weapon: player.weaponry.weapon.name, level: player.weaponry.level },
         armory: { armor: player.armory.armor.name, level: player.armory.level },
         pstatus: player.pstatus,
+        activePotion: player.activePotion || null,
         inventory: player.inventory,
         location: background.location
     }));

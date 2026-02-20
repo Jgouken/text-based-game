@@ -227,8 +227,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let suppressMouseUntil = 0;
     let followFrameId = null;
 
-    function showTooltip(text, x, y, animate = true) {
-        tooltip.textContent = text;
+    function isTooltipLockedForMessage() {
+        const lockUntil = Number(tooltip?.dataset?.lockUntil || 0);
+        return lockUntil > Date.now();
+    }
+
+    function showTooltip(content, x, y, animate = true, isHtml = false) {
+        if (isHtml) {
+            tooltip.innerHTML = content;
+        } else {
+            tooltip.textContent = content;
+        }
 
         // Reset first
         tooltip.style.transition = 'none';
@@ -259,6 +268,14 @@ document.addEventListener('DOMContentLoaded', () => {
             tooltip.style.transition = 'none';
             tooltip.style.opacity = 1;
         }
+    }
+
+    function getTooltipPayload(target) {
+        if (!target) return { content: '', isHtml: false };
+        if (target.hasAttribute('data-tooltip-html')) {
+            return { content: target.getAttribute('data-tooltip-html') || '', isHtml: true };
+        }
+        return { content: target.getAttribute('data-tooltip') || '', isHtml: false };
     }
 
     function moveTooltip(x, y) {
@@ -347,36 +364,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Desktop hover
     document.body.addEventListener('mouseover', e => {
+        if (isTooltipLockedForMessage()) return;
         if (isTouchInteraction || Date.now() < suppressMouseUntil) return;
-        const target = e.target.closest('[data-tooltip]');
+        const target = e.target.closest('[data-tooltip], [data-tooltip-html]');
         if (!target) return;
         const isDifferentTarget = activeTooltipTarget && activeTooltipTarget !== target;
         activeTooltipTarget = target;
-        showTooltip(target.dataset.tooltip, e.pageX, e.pageY, isDifferentTarget || !tooltip.style.opacity || tooltip.style.opacity === '0');
+        const payload = getTooltipPayload(target);
+        showTooltip(payload.content, e.pageX, e.pageY, isDifferentTarget || !tooltip.style.opacity || tooltip.style.opacity === '0', payload.isHtml);
     });
 
     document.body.addEventListener('mousemove', e => {
+        if (isTooltipLockedForMessage()) return;
         if (isTouchInteraction || Date.now() < suppressMouseUntil) return;
         if (!tooltip.textContent) return;
         moveTooltip(e.pageX, e.pageY);
     });
 
     document.body.addEventListener('mouseout', e => {
+        if (isTooltipLockedForMessage()) return;
         if (isTouchInteraction || Date.now() < suppressMouseUntil) return;
-        const target = e.target.closest('[data-tooltip]');
+        const target = e.target.closest('[data-tooltip], [data-tooltip-html]');
         if (!target) return;
         const related = e.relatedTarget;
         if (related && target.contains(related)) return;
-        const relatedTooltipTarget = related?.closest?.('[data-tooltip]');
+        const relatedTooltipTarget = related?.closest?.('[data-tooltip], [data-tooltip-html]');
         if (relatedTooltipTarget && relatedTooltipTarget === target) return;
         hideTooltip();
     });
 
     // Mobile touch
     document.body.addEventListener('touchstart', e => {
+        if (isTooltipLockedForMessage()) return;
         isTouchInteraction = true;
         suppressMouseUntil = Date.now() + 700;
-        const target = e.target.closest('[data-tooltip]');
+        const target = e.target.closest('[data-tooltip], [data-tooltip-html]');
 
         // If tapping the same element that's already showing, ignore (prevent double tap)
         if (target && target === activeTooltipTarget) {
@@ -388,7 +410,8 @@ document.addEventListener('DOMContentLoaded', () => {
             activeTooltipTarget = target;
             const touch = e.touches[0];
             const isTooltipVisible = tooltip.style.opacity === '1';
-            showTooltip(target.dataset.tooltip, touch.pageX, touch.pageY, !isTooltipVisible);
+            const payload = getTooltipPayload(target);
+            showTooltip(payload.content, touch.pageX, touch.pageY, !isTooltipVisible, payload.isHtml);
             positionTooltipForElement(target);
             startFollowingElement();
         } else {
@@ -406,6 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
 
     document.body.addEventListener('touchmove', e => {
+        if (isTooltipLockedForMessage()) return;
         if (!tooltip.textContent || !activeTooltipTarget) return;
         positionTooltipForElement(activeTooltipTarget);
     }, { passive: true });

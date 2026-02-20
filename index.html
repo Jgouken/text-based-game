@@ -52,6 +52,7 @@
                 level: 1,
                 attack: 32,
                 pstatus: [],
+                activePotion: null,
                 inventory: [],
 
                 get experienceTooltip () {return `${Math.floor((this.experience/getRequiredXP(this.level)) * 100)}% XP\nGained to grow stronger.`},
@@ -170,8 +171,7 @@
                 <div class="stamina-bar" id="stamina" :data-tooltip="staminaTooltip">
                 </div>
 
-                <div class="experience-bar-stats"
-                    x-text="`Level ${level} - ${experience}/${getRequiredXP(level)}`"
+                <div class="experience-bar-stats" x-text="`Level ${level} - ${experience}/${getRequiredXP(level)}`"
                     :data-tooltip="experienceTooltip">
                 </div>
                 <div class="health-bar-stats" x-text="`${health}/${maxHealth}`" :data-tooltip="healthTooltip">0/0</div>
@@ -196,8 +196,7 @@
                             tooltip += ` = ${crit + luckBonus - misfortunePenalty}`;
                         }
                         return tooltip;
-                    })()"
-                        x-text="(() => {
+                    })()" x-text="(() => {
                             const hasLuck = pstatus.some(s => s.id == getStatusIdByName('Luck'));
                             const hasMisfortune = pstatus.some(s => s.id == getStatusIdByName('Misfortune'));
                             const luckBonus = hasLuck ? getAssets().statuses.find(s => s.name === 'Luck').incCrit : 0;
@@ -227,8 +226,7 @@
                             tooltip += ` = ${accuracy + acuityBonus - blindnessPenalty}`;
                         }
                         return tooltip;
-                    })()"
-                        x-text="(() => {
+                    })()" x-text="(() => {
                             const hasAcuity = pstatus.some(s => s.id == getStatusIdByName('Acuity'));
                             const hasBlindness = pstatus.some(s => s.id == getStatusIdByName('Blindness'));
                             const acuityBonus = hasAcuity ? getAssets().statuses.find(s => s.name === 'Acuity').incAcc : 0;
@@ -251,8 +249,7 @@
                             tooltip += ` = ${evasion + evasionBonus}`;
                         }
                         return tooltip;
-                    })()"
-                        x-text="(() => {
+                    })()" x-text="(() => {
                             const hasEvasion = pstatus.some(s => s.id == getStatusIdByName('Evasion'));
                             const evasionBonus = hasEvasion ? getAssets().statuses.find(s => s.name === 'Evasion').decEnAcc : 0;
                             const modifiedEvasion = evasion + evasionBonus;
@@ -289,8 +286,7 @@
                             tooltip += ` = ${Math.floor(defense * multiplier)}`;
                         }
                         return tooltip;
-                    })()"
-                        x-text="(() => {
+                    })()" x-text="(() => {
                             const hasRigidity = pstatus.some(s => s.id == getStatusIdByName('Rigidity'));
                             const hasFragility = pstatus.some(s => s.id == getStatusIdByName('Fragility'));
                             const rigidityBonus = hasRigidity ? getAssets().statuses.find(s => s.name === 'Rigidity').armorAdd : 0;
@@ -368,6 +364,8 @@
                 <span x-show="pstatus.some(status => status.id == getStatusIdByName('Malediction'))"
                     :data-tooltip="`${getStatusIdByName('Malediction')} ${pstatus.find(s => s.id == getStatusIdByName('Malediction')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Malediction')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Malediction')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Malediction')).description}`"
                     x-text="getStatusIdByName('Malediction')"></span>
+                <span x-show="activePotion && activePotion.rounds > 0"
+                    :data-tooltip="`🧪 ${activePotion.name || 'Potion Effect'} - ${activePotion.rounds} round${activePotion.rounds > 1 ? 's' : ''} remaining\n\n${activePotion.type === 'attack' ? `Attack increased by ${Math.floor((activePotion.value || 0) * 100)}%` : `Defense increased by ${Math.floor((activePotion.value || 0) * 100)}%`}`">🧪</span>
                 <span x-show="health <= 0" data-tooltip="You are dead.">☠️</span>
             </div>
         </div>
@@ -488,12 +486,7 @@
                     activeTab: 'all', 
                     sortBy: 'name', 
                     sortOrder: 'asc', 
-                    searchQuery: '',
-                    getTooltipText(itemName) {
-                        const it = assets.items.find(i => i.name === itemName);
-                        if (!it) return '';
-                        return Object.keys(it).length === 1 ? 'Crafting Reagent' : (it.description || '');
-                    }
+                    searchQuery: ''
                 }"
                 x-effect="$watch('sortBy', () => refreshSynergies()); $watch('sortOrder', () => refreshSynergies())">
                 <div class="inventory-panel" id="inventory-panel">
@@ -640,31 +633,7 @@
                 return filtered;
             })()" :key="idx">
                             <div class="inventory-item" :class="{'inventory-item--no-icon': !(item.sprite)}"
-                                :data-tooltip="getTooltipText(item.name)" draggable="true" x-data="{
-                    get desc() {
-                        let it = assets.items.find(i => i.name === item.name);
-                        const parts = [];
-                        if (it.attack !== undefined || it.defense !== undefined || it.maxlvl) {
-                            parts.push('Level ' + (item.level ?? 1));
-                            if (it.attack !== undefined) {
-                                parts.push(`⚔️${Math.floor(it.attack + ((item.level ?? 1 - 1) * it.attackPerLevel))} 🍀${Math.floor(it.crit * 100)}% ⚔️${it.critdmg}x 🎯${Math.floor(it.accuracy * 100)}%`);
-                            } else if (it.defense !== undefined) {
-                                parts.push(`🛡️${Math.floor(it.defense + ((item.level ?? 1 - 1) * it.alvlmult))} 💨${Math.floor(it.evasion * 100)}%`);
-                            }
-                        }
-                        if (it.health) parts.push(`💖 +${Math.round(it.health * 100)}%`);
-                        if (it.def) parts.push(`🛡️ +${Math.round(it.def * 100)}% ${it.rounds ? `for ${it.rounds} turns` : 'for 1 turn'}`);
-                        if (it.stamina) parts.push(`⚡ +${Math.round(it.stamina * 100)}%`);
-                        if (it.buff) parts.push('⚔️ +' + Math.round(it.buff * 100) + '% ' + `for ${it.rounds ? it.rounds + ' turns' : '1 turn'}`);
-                        if (it.xp) parts.push(`🌟 ${it.xp} XP`);
-                        if (it.chest !== undefined) parts.push(`Opens ${assets.chests[it.chest].name}`);
-                        if (it.damage) parts.push(`💥 ${it.damage}`);
-                        if (it.pstatus) parts.push(`Gain ${it.pstatus.join(', ')}`);
-                        if (it.estatus) parts.push(`Inflicts ${it.estatus.join(', ')}`);
-                        if (parts.length) return parts.join('\n');
-                        else return 'Crafting Reagent';
-                    }
-                }">
+                                :data-tooltip="window.getItemTooltipText(item.name, item.level ?? 1)" draggable="true">
                                 <div class="inventory-item-amount inventory-item-amount--inline"
                                     x-show="item.amount > 1 && !(item.sprite)">x<span x-text="item.amount"></span>
                                 </div>
@@ -677,7 +646,8 @@
                                     <div style="display:flex; align-items:center; gap:8px;">
                                         <div class="inventory-item-name" x-text="item.name">Item</div>
                                     </div>
-                                    <div class="inventory-item-meta" x-text="desc"></div>
+                                    <div class="inventory-item-meta"
+                                        x-text="window.getItemMetaText(item.name, item.level ?? 1)"></div>
                                 </div>
                             </div>
                         </template>
@@ -769,42 +739,12 @@
                 getIngredientCount(craftList, itemName) {
                     return craftList.filter(name => name === itemName).length;
                 },
-                getTooltipText(itemName) {
-                    const it = assets.items.find(i => i.name === itemName);
-                    if (!it) return '';
-                    return Object.keys(it).length === 1 ? 'Crafting Reagent' : (it.description || '');
-                },
                 getCraftableTooltipText(item) {
-                    const text = (item?.description || '').trim();
+                    const text = window.getItemTooltipText(item?.name, 1);
                     return text || null;
                 },
-                getInventoryStyleDescription(item, level = 1) {
-                    if (!item) return '';
-                    const parts = [];
-
-                    if (item.attack !== undefined || item.defense !== undefined || item.maxlvl) {
-                        parts.push('Level ' + (level ?? 1));
-                        if (item.attack !== undefined) {
-                            parts.push(`⚔️${Math.floor(item.attack + (((level ?? 1) - 1) * item.attackPerLevel))} 🍀${Math.floor(item.crit * 100)}% ⚔️${item.critdmg}x 🎯${Math.floor(item.accuracy * 100)}%`);
-                        } else if (item.defense !== undefined) {
-                            parts.push(`🛡️${Math.floor(item.defense + (((level ?? 1) - 1) * item.alvlmult))} 💨${Math.floor(item.evasion * 100)}%`);
-                        }
-                    }
-
-                    if (item.health) parts.push(`💖 +${Math.round(item.health * 100)}%`);
-                    if (item.def) parts.push(`🛡️ +${Math.round(item.def * 100)}% ${item.rounds ? `for ${item.rounds} turns` : 'for 1 turn'}`);
-                    if (item.stamina) parts.push(`⚡ +${Math.round(item.stamina * 100)}%`);
-                    if (item.buff) parts.push('⚔️ +' + Math.round(item.buff * 100) + '% ' + `${item.rounds ? item.rounds + ' turns' : '1 turn'}`);
-                    if (item.xp) parts.push(`🌟 ${item.xp} XP`);
-                    if (item.chest !== undefined) parts.push(`Opens ${assets.chests[item.chest].name}`);
-                    if (item.damage) parts.push(`💥 ${item.damage}`);
-                    if (item.pstatus) parts.push(`Gain ${item.pstatus.join(', ')}`);
-                    if (item.estatus) parts.push(`Inflicts ${item.estatus.join(', ')}`);
-
-                    return parts.length ? parts.join('\n') : 'Crafting Reagent';
-                },
                 getCraftableDescription(item) {
-                    const text = this.getInventoryStyleDescription(item);
+                    const text = window.getItemMetaText(item?.name, 1);
                     if (!text || text === 'Crafting Reagent') return null;
                     return text;
                 },
@@ -981,31 +921,8 @@
             })()" :key="idx">
                                 <div class="inventory-item crafting-inventory-item"
                                     :class="{'inventory-item--no-icon': !(item.sprite)}"
-                                    :data-tooltip="getTooltipText(item.name)" draggable="true" x-data="{
-                    get desc() {
-                        let it = assets.items.find(i => i.name === item.name);
-                        const parts = [];
-                        if (it.attack !== undefined || it.defense !== undefined || it.maxlvl) {
-                            parts.push('Level ' + (item.level ?? 1));
-                            if (it.attack !== undefined) {
-                                parts.push(`⚔️${Math.floor(it.attack + ((item.level ?? 1 - 1) * it.attackPerLevel))} 🍀${Math.floor(it.crit * 100)}% ⚔️${it.critdmg}x 🎯${Math.floor(it.accuracy * 100)}%`);
-                            } else if (it.defense !== undefined) {
-                                parts.push(`🛡️${Math.floor(it.defense + ((item.level ?? 1 - 1) * it.alvlmult))} 💨${Math.floor(it.evasion * 100)}%`);
-                            }
-                        }
-                        if (it.health) parts.push(`💖 +${Math.round(it.health * 100)}%`);
-                        if (it.def) parts.push(`🛡️ +${Math.round(it.def * 100)}% ${it.rounds ? `for ${it.rounds} turns` : 'for 1 turn'}`);
-                        if (it.stamina) parts.push(`⚡ +${Math.round(it.stamina * 100)}%`);
-                        if (it.buff) parts.push('⚔️ +' + Math.round(it.buff * 100) + '% ' + `for ${it.rounds ? it.rounds + ' turns' : '1 turn'}`);
-                        if (it.xp) parts.push(`🌟 ${it.xp} XP`);
-                        if (it.chest !== undefined) parts.push(`Opens ${assets.chests[it.chest].name}`);
-                        if (it.damage) parts.push(`💥 ${it.damage}`);
-                        if (it.pstatus) parts.push(`Gain ${it.pstatus.join(', ')}`);
-                        if (it.estatus) parts.push(`Inflicts ${it.estatus.join(', ')}`);
-                        if (parts.length) return parts.join('\n');
-                        else return 'Crafting Reagent';
-                    }
-                }">
+                                    :data-tooltip="window.getItemTooltipText(item.name, item.level ?? 1)"
+                                    draggable="true">
                                     <div class="inventory-item-amount inventory-item-amount--inline"
                                         x-show="item.amount > 1 && !(item.sprite)">x<span x-text="item.amount"></span>
                                     </div>
@@ -1018,7 +935,8 @@
                                         <div style="display:flex; align-items:center; gap:8px;">
                                             <div class="inventory-item-name" x-text="item.name">Item</div>
                                         </div>
-                                        <div class="inventory-item-meta" x-text="desc"></div>
+                                        <div class="inventory-item-meta"
+                                            x-text="window.getItemMetaText(item.name, item.level ?? 1)"></div>
                                     </div>
                                 </div>
                             </template>
@@ -1287,8 +1205,9 @@
                 }
             }">
             <div class="enemy" id="enemy">
-                <div class="enemy-level" x-text="`Level ${enemyLevel} ${enemy.block}`" 
-                    :data-tooltip="`💖 ${enemy.health} + (${Math.floor((maxHealth - enemy.health) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${maxHealth}\n⚔️ ${enemy.attack} + (${Math.floor((attack - enemy.attack) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${attack}\n🛡️ ${enemy.defense} + (${Math.floor((defense - enemy.defense) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${defense}\n🎯 ${Math.floor(accuracy * 100)}%\n🍀 ${Math.floor(crit * 100)}%`">?</div>
+                <div class="enemy-level" x-text="`Level ${enemyLevel} ${enemy.block}`"
+                    :data-tooltip="`💖 ${enemy.health} + (${Math.floor((maxHealth - enemy.health) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${maxHealth}\n⚔️ ${enemy.attack} + (${Math.floor((attack - enemy.attack) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${attack}\n🛡️ ${enemy.defense} + (${Math.floor((defense - enemy.defense) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${defense}\n🎯 ${Math.floor(accuracy * 100)}%\n🍀 ${Math.floor(crit * 100)}%`">
+                    ?</div>
                 <div style="margin-top: 40px;">
                     <div class="enemy-name" x-text="enemy.name">???</div>
                     <div class="estatus-effects">
@@ -1380,50 +1299,6 @@
                     turn: true, 
                     showConsumables: false,
                     get weapon() { return Alpine.$data(document.getElementById('player')).weaponry.weapon },
-                    getInventoryTooltipText(itemName) {
-                        const it = assets.items.find(i => i.name === itemName);
-                        if (!it) return '';
-
-                        if (it.description && it.description.trim()) return it.description.trim();
-
-                        const parts = [];
-                        if (it.health) parts.push(`💖 +${Math.round(it.health * 100)}%`);
-                        if (it.stamina) parts.push(`⚡ +${Math.round(it.stamina * 100)}%`);
-                        if (it.xp) parts.push(`🌟 ${it.xp} XP`);
-                        if (it.def) parts.push(`🛡️ +${Math.round(it.def * 100)}% ${it.rounds ? `for ${it.rounds} turns` : 'for 1 turn'}`);
-                        if (it.buff) parts.push(`⚔️ +${Math.round(it.buff * 100)}% ${it.rounds ? `for ${it.rounds} turns` : 'for 1 turn'}`);
-                        if (it.damage) parts.push(`💥 ${it.damage}`);
-                        if (it.pstatus) parts.push(`Gain ${it.pstatus.join(', ')}`);
-                        if (it.estatus) parts.push(`Inflicts ${it.estatus.join(', ')}`);
-
-                        if (parts.length) return parts.join('\n');
-                        return Object.keys(it).length === 1 ? 'Crafting Reagent' : 'No description available';
-                    },
-                    getInventoryStyleDescription(item, level = 1) {
-                        if (!item) return '';
-                        const parts = [];
-
-                        if (item.attack !== undefined || item.defense !== undefined || item.maxlvl) {
-                            parts.push('Level ' + (level ?? 1));
-                            if (item.attack !== undefined) {
-                                parts.push(`⚔️${Math.floor(item.attack + (((level ?? 1) - 1) * item.attackPerLevel))} 🍀${Math.floor(item.crit * 100)}% ⚔️${item.critdmg}x 🎯${Math.floor(item.accuracy * 100)}%`);
-                            } else if (item.defense !== undefined) {
-                                parts.push(`🛡️${Math.floor(item.defense + (((level ?? 1) - 1) * item.alvlmult))} 💨${Math.floor(item.evasion * 100)}%`);
-                            }
-                        }
-
-                        if (item.health) parts.push(`💖 +${Math.round(item.health * 100)}%`);
-                        if (item.def) parts.push(`🛡️ +${Math.round(item.def * 100)}% ${item.rounds ? `for ${item.rounds} turns` : 'for 1 turn'}`);
-                        if (item.stamina) parts.push(`⚡ +${Math.round(item.stamina * 100)}%`);
-                        if (item.buff) parts.push('⚔️ +' + Math.round(item.buff * 100) + '% ' + `for ${item.rounds ? item.rounds + ' turns' : '1 turn'}`);
-                        if (item.xp) parts.push(`🌟 ${item.xp} XP`);
-                        if (item.chest !== undefined) parts.push(`Opens ${assets.chests[item.chest].name}`);
-                        if (item.damage) parts.push(`💥 ${item.damage}`);
-                        if (item.pstatus) parts.push(`Gain ${item.pstatus.join(', ')}`);
-                        if (item.estatus) parts.push(`Inflicts ${item.estatus.join(', ')}`);
-
-                        return parts.length ? parts.join('\n') : 'Crafting Reagent';
-                    },
                     get consumables() {
                         const player = Alpine.$data(document.getElementById('player'));
                         return player.inventory
@@ -1462,8 +1337,8 @@
                         <template x-for="(entry, idx) in consumables" :key="`${entry.inventoryItem.name}-${idx}`">
                             <div class="inventory-item battle-consumable-inventory-item"
                                 :class="{'inventory-item--no-icon': !(entry.itemData?.sprite)}"
-                                :data-tooltip="getInventoryTooltipText(entry.inventoryItem.name)"
-                                style="cursor: pointer;" @click="useBattleConsumable(idx)">
+                                :data-tooltip="window.getItemTooltipText(entry.inventoryItem.name, entry.inventoryItem.level ?? 1)"
+                                draggable="true" style="cursor: grab;">
                                 <div class="inventory-item-amount inventory-item-amount--inline"
                                     x-show="entry.inventoryItem.amount > 1 && !(entry.itemData?.sprite)">x<span
                                         x-text="entry.inventoryItem.amount"></span>
@@ -1478,7 +1353,7 @@
                                         <div class="inventory-item-name" x-text="entry.inventoryItem.name">Item</div>
                                     </div>
                                     <div class="inventory-item-meta"
-                                        x-text="getInventoryStyleDescription(entry.itemData, entry.inventoryItem.level ?? 1)">
+                                        x-text="window.getItemMetaText(entry.inventoryItem.name, entry.inventoryItem.level ?? 1)">
                                     </div>
                                 </div>
                             </div>

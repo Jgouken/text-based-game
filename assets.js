@@ -7508,7 +7508,6 @@ function getLocalAssets() {
 			{
 				name: "Cloth",
 				craft: ["Wool", "Wool"],
-				uses: ["Molotov", "Whetstone & Polish", "Wool"]
 			},
 			{
 				name: "Purple Gem",

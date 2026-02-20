@@ -118,17 +118,23 @@ async function executeSkill({
         (hasStatus(attackerStatuses, 'Luck') ? statusByName('Luck').incCrit : 0)
         - (hasStatus(attackerStatuses, 'Misfortune') ? statusByName('Misfortune').decCrit : 0);
 
+    const playerPotion = player.activePotion;
+    const potionAttackBonus = (isPlayer && playerPotion?.type === 'attack') ? (playerPotion.value || 0) : 0;
+    const potionDefenseBonus = (!isPlayer && playerPotion?.type === 'defense') ? (playerPotion.value || 0) : 0;
+
     const damMult =
         (hasStatus(attackerStatuses, 'Empowerment') ? statusByName('Empowerment').damAdd : 0)
         + (hasStatus(attackerStatuses, 'Strength') ? statusByName('Strength').damAdd : 0)
         + (hasStatus(attackerStatuses, 'Berserk') ? statusByName('Berserk').damAdd : 0)
         + (hasStatus(defenderStatuses, 'Berserk') ? statusByName('Berserk').incDamTaken : 0)
         - (hasStatus(attackerStatuses, 'Weakness') ? statusByName('Weakness').damReduc : 0)
+        + potionAttackBonus
         + 1;
 
     const rigid =
         (hasStatus(defenderStatuses, 'Rigidity') ? statusByName('Rigidity').armorAdd : 0)
         - (hasStatus(defenderStatuses, 'Fragility') ? statusByName('Fragility').armorSub : 0)
+        + potionDefenseBonus
         + 1;
 
     let damage = Math.floor((attacker.attack * damMult * (skill.damage || 1)) * (attacker.attack / (defender.defense + (defender.defense * rigid))));
@@ -324,7 +330,7 @@ async function skill(index) {
             battleStation.turn = false;
             battleStation.showConsumables = false;
             encounter.battle = false;
-            encounter.log.push(`🏃💨 ${background.name} Fled!`)
+            encounter.log.push(`🏃💨 ${background.name} Fled!`);
             transition('encounter', 'returning');
             shouldEndTurn = false;
             break;
@@ -336,7 +342,6 @@ async function skill(index) {
                 shouldEndTurn = false;
                 break;
             }
-
             battleStation.showConsumables = !battleStation.showConsumables;
             battleStation.turn = true;
             shouldEndTurn = false;
@@ -396,33 +401,88 @@ async function useBattleConsumable(consumableIndex) {
     const selected = consumables[consumableIndex];
     if (!selected || !selected.itemData) return;
 
-    const itemData = selected.itemData;
+    return useBattleConsumableByInventoryIndex(selected.inventoryIndex);
+}
+
+async function useBattleConsumableByInventoryIndex(inventoryIndex) {
+    const battleStation = Alpine.$data(document.getElementById('battle-station'));
+    const background = Alpine.$data(document.getElementById('background-image'));
+    const encounter = Alpine.$data(document.getElementById('encounter'));
+    const player = Alpine.$data(document.getElementById('player'));
+
+    if (!battleStation.turn) return;
+
+    const selectedInventoryItem = player.inventory[inventoryIndex];
+    if (!selectedInventoryItem) return;
+
+    const itemData = assets.items.find(item => item.name === selectedInventoryItem.name);
+    if (!itemData || !itemData.name.toLowerCase().includes('potion')) return;
+
+    const effectText = [];
 
     if (itemData.health) {
         const healAmount = Math.floor(player.maxHealth * itemData.health);
-        player.health = Math.min(player.health + healAmount, player.maxHealth);
+        const actualHeal = Math.min(healAmount, player.maxHealth - player.health);
+        player.health += actualHeal;
+        effectText.push(`gained <span style="color: lightblue;" data-tooltip="💖 ${player.maxHealth} * ${itemData.health} = ${healAmount}${healAmount > actualHeal ? '\nCapped to max health.' : ''}">💖${actualHeal}</span>`);
     }
 
     if (itemData.stamina) {
         const staminaAmount = Math.floor(player.maxStamina * itemData.stamina);
-        player.stamina = Math.min(player.stamina + staminaAmount, player.maxStamina);
+        const actualStamina = Math.min(staminaAmount, player.maxStamina - player.stamina);
+        player.stamina += actualStamina;
+        effectText.push(`gained <span style="color: lightblue;" data-tooltip="⚡ ${player.maxStamina} * ${itemData.stamina} = ${staminaAmount}${staminaAmount > actualStamina ? '\nCapped to max stamina.' : ''}">⚡${actualStamina}</span>`);
     }
 
     if (itemData.xp) {
         player.experience += itemData.xp;
+        effectText.push(`gained <span style="color: lightblue;" data-tooltip="🌟 ${itemData.xp} XP">🌟${itemData.xp}</span>`);
     }
 
     if (itemData.pstatus) {
+        const granted = [];
         itemData.pstatus.forEach(statusId => {
             const status = assets.statuses.find(s => s.id === statusId);
             if (status && !player.pstatus.some(s => s.id === statusId)) {
                 player.pstatus.push({ ...status, baseDam: player.attack });
+                granted.push(`<span style="color: lightblue;" data-tooltip="${status.id} ${status.name}\n\n${status.description}">${status.id}</span>`);
             }
         });
+        if (granted.length > 0) {
+            effectText.push(`gained <span style="color: lightblue;">[${granted.join('')}]</span>`);
+        }
     }
 
-    removeFromInventory(selected.inventoryIndex);
-    encounter.log.push(`- ${background.name} used ${selected.inventoryItem.name}`);
+    if (itemData.buff) {
+        player.activePotion = {
+            id: '🧪',
+            name: selectedInventoryItem.name,
+            type: 'attack',
+            value: itemData.buff,
+            rounds: itemData.rounds || 1
+        };
+        effectText.push(`gained <span style="color: lightblue;" data-tooltip="🧪 Attack increased by ${Math.floor(itemData.buff * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">[⚔️]</span>`);
+    } else if (itemData.def) {
+        player.activePotion = {
+            id: '🧪',
+            name: selectedInventoryItem.name,
+            type: 'defense',
+            value: itemData.def,
+            rounds: itemData.rounds || 1
+        };
+        effectText.push(`gained <span style="color: lightblue;" data-tooltip="🧪 Defense increased by ${Math.floor(itemData.def * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">[🛡️]</span>`);
+    }
+
+    removeFromInventory(inventoryIndex);
+    const useTooltipRaw = (typeof window.getItemTooltipText === 'function')
+        ? window.getItemTooltipText(selectedInventoryItem.name, selectedInventoryItem.level ?? 1, true)
+        : (itemData.description || selectedInventoryItem.name);
+    const useTooltipHtml = useTooltipRaw
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;')
+        .replace(/\n/g, '<br>');
+    encounter.log.push(`- ${background.name} used <span class='battle-log-hover-underline' style='color: lightblue; cursor: default;' data-tooltip-html="${useTooltipHtml}">${selectedInventoryItem.name}</span>${effectText.length > 0 ? ` and ${effectText.join(' and ')}` : ''}`);
 
     battleStation.showConsumables = false;
     battleStation.turn = false;
@@ -431,6 +491,8 @@ async function useBattleConsumable(consumableIndex) {
     await savePlayer();
     turnManager(false);
 }
+
+window.useBattleConsumableByInventoryIndex = useBattleConsumableByInventoryIndex;
 
 async function turnManager(toPlayer) {
     if (died || fled) return;
@@ -442,6 +504,14 @@ async function turnManager(toPlayer) {
     const actorStatuses = toPlayer ? player.pstatus : encounter.estatus;
     const actorName = toPlayer ? background.name : background.enemy.name;
     var stunned = false;
+
+    if (toPlayer && player.activePotion?.rounds > 0) {
+        player.activePotion.rounds -= 1;
+        if (player.activePotion.rounds <= 0) {
+            player.activePotion = null;
+        }
+    }
+
     updateBars();
     await new Promise(resolve => setTimeout(resolve, 250));
 
@@ -492,38 +562,15 @@ async function turnManager(toPlayer) {
             let level = 1
             if (loot.minlvl) level = loot.minlvl && loot.maxlvl ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
 
-            let desc = () => {
-                let it = loot;
-                const parts = [];
-                if (it.attack !== undefined || it.defense !== undefined || it.maxlvl) {
-                    parts.push('Level ' + (level ?? 1));
-                    if (it.attack !== undefined) {
-                        parts.push(`⚔️${Math.floor(it.attack + ((level ?? 1 - 1) * it.attackPerLevel))} 🍀${Math.floor(it.crit * 100)}% ⚔️${it.critdmg}x 🎯${Math.floor(it.accuracy * 100)}%`);
-                    } else if (it.defense !== undefined && it.maxlvl) {
-                        parts.push(`🛡️${Math.floor(it.defense + ((level ?? 1 - 1) * it.alvlmult))} 💨${Math.floor(it.evasion * 100)}%`);
-                    }
-                }
-
-                if (it.health) parts.push(`💖 ${Math.round(it.health * 100)}%`);
-                if (it.stamina) parts.push(`⚡ ${Math.round(it.stamina * 100)}%`);
-                if (it.buff) parts.push('⚔️ +' + Math.round(it.buff * 100) + '% ' + (it.rounds ? (' for ' + it.rounds + ' turns') : ''));
-                if (it.xp) parts.push(`🌟 ${it.xp} XP`);
-                if (it.chest !== undefined) parts.push(`Opens ${assets.chests[it.chest].name}`);
-                if (it.damage) parts.push(`💥 ${it.damage}`);
-                if (it.pstatus) parts.push(`Gain ${it.pstatus.join(', ')}`);
-                if (it.estatus) parts.push(`Inflicts ${it.estatus.join(', ')}`);
-                if (parts.length) return parts.join('\n');
-                else return 'Crafting Reagent';
-            }
-
-            let descText = desc().replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-
+            const descRaw = (typeof window.getItemMetaText === 'function')
+                ? window.getItemMetaText(loot.name, level)
+                : (loot.description || 'Crafting Reagent');
+            let descText = descRaw.replace(/"/g, '&quot;').replace(/'/g, '&apos;');
             const lootResult = addToInventory(loot, level);
-            if (lootResult) {
-                encounter.log.push(`🎁 ${background.enemy.name} dropped a${/^[aeiou]/i.test(loot.name) ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip="${descText}">${loot.name}</span>! 🎁`);
-            } else {
-                console.error(`Couldn't acquire ${drop.name}.`);
-            }
+
+            if (lootResult) encounter.log.push(`🎁 ${background.enemy.name} dropped a${/^[aeiou]/i.test(loot.name) ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip="${descText}">${loot.name}</span>! 🎁`);
+            else console.error(`Couldn't acquire ${drop.name}.`);
+
             return true;
         } else return false;
     }
@@ -696,6 +743,7 @@ async function victory() {
         await new Promise(resolve => setTimeout(resolve, 500));
         player.health = player.maxHealth;
         player.pstatus = [];
+        player.activePotion = null;
         player.experience = 0;
         if (player.level > 1) player.level -= 1;
     } else {
