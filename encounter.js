@@ -223,7 +223,7 @@ async function executeSkill({
                     granted.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
                 }
             });
-            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${isPlayer ? `${skill.estatus ? ',' : ' and'} gained ` : `${skill.estatus ? ',' : ' and'} inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${player.name} ${hasStatus(player.pstatus, 'Malediction') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
+            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${isPlayer ? `${skill.estatus ? ' which' : ' and'} gained ` : `${skill.estatus ? ' which' : ' and'} inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${player.name} ${hasStatus(player.pstatus, 'Malediction') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
         }
 
         if (skill.estatus) {
@@ -692,10 +692,12 @@ async function victory() {
             `You're finally awake.`,
             `So, about your healing ability...`
         ]
-        alert(deathMessages[Math.floor(Math.random() * deathMessages.length)]);
+        alert(`${deathMessages[Math.floor(Math.random() * deathMessages.length)]}}\n\nYour health will be replinished, but your death has been punished.`);
         await new Promise(resolve => setTimeout(resolve, 500));
         player.health = player.maxHealth;
         player.pstatus = [];
+        player.experience = 0;
+        if (player.level > 1) player.level -= 1;
     } else {
         const area = assets.areas.find(a => a.name === background.location);
         const chestOutcome = rollAreaChestOutcome(area);

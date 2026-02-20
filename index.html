@@ -181,20 +181,84 @@
                 <div class="mini-stats">
                     <img src="assets/effects/Luck.png"
                         style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
-                    <span :data-tooltip="`Critical Chance\nThe chance your attack or heal will deal extra.`"
-                        x-text="`${crit * 100}%`"></span>
+                    <span :data-tooltip="(() => {
+                        const hasLuck = pstatus.some(s => s.id == getStatusIdByName('Luck'));
+                        const hasMisfortune = pstatus.some(s => s.id == getStatusIdByName('Misfortune'));
+                        const luckBonus = hasLuck ? getAssets().statuses.find(s => s.name === 'Luck').incCrit : 0;
+                        const misfortunePenalty = hasMisfortune ? getAssets().statuses.find(s => s.name === 'Misfortune').decCrit : 0;
+                        const isModified = hasLuck || hasMisfortune;
+                        
+                        let tooltip = 'Critical Chance\nThe chance your attack or heal will deal extra.';
+                        if (isModified) {
+                            tooltip += `\n${crit}`;
+                            if (hasLuck) tooltip += ` + ${luckBonus} (${getStatusIdByName('Luck')})`;
+                            if (hasMisfortune) tooltip += ` - ${misfortunePenalty} (${getStatusIdByName('Misfortune')})`;
+                            tooltip += ` = ${crit + luckBonus - misfortunePenalty}`;
+                        }
+                        return tooltip;
+                    })()"
+                        x-text="(() => {
+                            const hasLuck = pstatus.some(s => s.id == getStatusIdByName('Luck'));
+                            const hasMisfortune = pstatus.some(s => s.id == getStatusIdByName('Misfortune'));
+                            const luckBonus = hasLuck ? getAssets().statuses.find(s => s.name === 'Luck').incCrit : 0;
+                            const misfortunePenalty = hasMisfortune ? getAssets().statuses.find(s => s.name === 'Misfortune').decCrit : 0;
+                            const modifiedCrit = crit + luckBonus - misfortunePenalty;
+                            const isModified = hasLuck || hasMisfortune;
+                            return `${Math.floor(modifiedCrit * 100)}%${isModified ? '*' : ''}`;
+                        })()"></span>
                     <img src="assets/effects/Strength.png"
                         style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
                     <span :data-tooltip="`Critical Multiplier\nMultiplies your output on a successful crit.`"
                         x-text="`${critdmg}x`"></span>
                     <img src="assets/effects/Focus.png"
                         style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
-                    <span :data-tooltip="`Accuracy\nThe chance to hit with an attack.`"
-                        x-text="`${accuracy * 100}%`"></span>
+                    <span :data-tooltip="(() => {
+                        const hasAcuity = pstatus.some(s => s.id == getStatusIdByName('Acuity'));
+                        const hasBlindness = pstatus.some(s => s.id == getStatusIdByName('Blindness'));
+                        const acuityBonus = hasAcuity ? getAssets().statuses.find(s => s.name === 'Acuity').incAcc : 0;
+                        const blindnessPenalty = hasBlindness ? getAssets().statuses.find(s => s.name === 'Blindness').decAcc : 0;
+                        const isModified = hasAcuity || hasBlindness;
+                        
+                        let tooltip = 'Accuracy\nThe chance to hit with an attack.';
+                        if (isModified) {
+                            tooltip += `\n${accuracy}`;
+                            if (hasAcuity) tooltip += ` + ${acuityBonus} (${getStatusIdByName('Acuity')})`;
+                            if (hasBlindness) tooltip += ` - ${blindnessPenalty} (${getStatusIdByName('Blindness')})`;
+                            tooltip += ` = ${accuracy + acuityBonus - blindnessPenalty}`;
+                        }
+                        return tooltip;
+                    })()"
+                        x-text="(() => {
+                            const hasAcuity = pstatus.some(s => s.id == getStatusIdByName('Acuity'));
+                            const hasBlindness = pstatus.some(s => s.id == getStatusIdByName('Blindness'));
+                            const acuityBonus = hasAcuity ? getAssets().statuses.find(s => s.name === 'Acuity').incAcc : 0;
+                            const blindnessPenalty = hasBlindness ? getAssets().statuses.find(s => s.name === 'Blindness').decAcc : 0;
+                            const modifiedAccuracy = accuracy + acuityBonus - blindnessPenalty;
+                            const isModified = hasAcuity || hasBlindness;
+                            return `${Math.floor(modifiedAccuracy * 100)}%${isModified ? '*' : ''}`;
+                        })()"></span>
                     <img src="assets/effects/Evasion.png"
                         style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
-                    <span :data-tooltip="`Evasion\nDirectly decreases enemy accuracy.`"
-                        x-text="`${evasion * 100}%`"></span>
+                    <span :data-tooltip="(() => {
+                        const hasEvasion = pstatus.some(s => s.id == getStatusIdByName('Evasion'));
+                        const evasionBonus = hasEvasion ? getAssets().statuses.find(s => s.name === 'Evasion').decEnAcc : 0;
+                        const isModified = hasEvasion;
+                        
+                        let tooltip = 'Evasion\nDirectly decreases enemy accuracy.';
+                        if (isModified) {
+                            tooltip += `\n${evasion}`;
+                            if (hasEvasion) tooltip += ` + ${evasionBonus} (${getStatusIdByName('Evasion')})`;
+                            tooltip += ` = ${evasion + evasionBonus}`;
+                        }
+                        return tooltip;
+                    })()"
+                        x-text="(() => {
+                            const hasEvasion = pstatus.some(s => s.id == getStatusIdByName('Evasion'));
+                            const evasionBonus = hasEvasion ? getAssets().statuses.find(s => s.name === 'Evasion').decEnAcc : 0;
+                            const modifiedEvasion = evasion + evasionBonus;
+                            const isModified = hasEvasion;
+                            return `${Math.floor(modifiedEvasion * 100)}%${isModified ? '*' : ''}`;
+                        })()"></span>
                 </div>
                 <img :src="
                     health / maxHealth >= 0.8 ? 'assets/playerbar.png'
@@ -209,9 +273,33 @@
                     <span
                         :data-tooltip="`Base Attack\n\n32 + ((${level || 1} - 1) * 6) + ${weaponry.weapon.attack} + ((${weaponry.level} - 1) * ${weaponry.weapon.attackPerLevel}) = ${Math.floor(32 + (((level || 1) - 1) * 6) + weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel))}`"
                         x-text="`⚔️${attack}`"></span>
-                    <span
-                        :data-tooltip="`Base Defense\n\n60 + ((${level || 1} - 1) * 10) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult}) = ${Math.floor(60 + (((level || 1) - 1) * 10) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult))}`"
-                        x-text="`🛡️${defense}`"></span>
+                    <span :data-tooltip="(() => {
+                        const hasRigidity = pstatus.some(s => s.id == getStatusIdByName('Rigidity'));
+                        const hasFragility = pstatus.some(s => s.id == getStatusIdByName('Fragility'));
+                        const rigidityBonus = hasRigidity ? getAssets().statuses.find(s => s.name === 'Rigidity').armorAdd : 0;
+                        const fragilityPenalty = hasFragility ? getAssets().statuses.find(s => s.name === 'Fragility').armorSub : 0;
+                        const multiplier = 1 + rigidityBonus - fragilityPenalty;
+                        const isModified = hasRigidity || hasFragility;
+                        
+                        let tooltip = `Base Defense\n\n60 + ((${level || 1} - 1) * 10) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult}) = ${Math.floor(60 + (((level || 1) - 1) * 10) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult))}`;
+                        if (isModified) {
+                            tooltip += `\n${defense}`;
+                            if (hasRigidity) tooltip += ` * (1 + ${rigidityBonus}) (${getStatusIdByName('Rigidity')})`;
+                            if (hasFragility) tooltip += ` * (1 - ${fragilityPenalty}) (${getStatusIdByName('Fragility')})`;
+                            tooltip += ` = ${Math.floor(defense * multiplier)}`;
+                        }
+                        return tooltip;
+                    })()"
+                        x-text="(() => {
+                            const hasRigidity = pstatus.some(s => s.id == getStatusIdByName('Rigidity'));
+                            const hasFragility = pstatus.some(s => s.id == getStatusIdByName('Fragility'));
+                            const rigidityBonus = hasRigidity ? getAssets().statuses.find(s => s.name === 'Rigidity').armorAdd : 0;
+                            const fragilityPenalty = hasFragility ? getAssets().statuses.find(s => s.name === 'Fragility').armorSub : 0;
+                            const multiplier = 1 + rigidityBonus - fragilityPenalty;
+                            const modifiedDefense = Math.floor(defense * multiplier);
+                            const isModified = hasRigidity || hasFragility;
+                            return `🛡️${isModified ? modifiedDefense + '*' : defense}`;
+                        })()"></span>
                     <span draggable="true"
                         :style="armory.armor ?.synergies.some(syn => syn.weapon == weaponry.weapon.name) ?? false ? `text-decoration: underline; cursor: grab;` : `cursor: grab;`"
                         :data-tooltip="`${weaponry.weapon.description}\n⚔️${Math.floor(weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel))} 🍀${Math.floor(weaponry.weapon.crit * 100)}% ⚔️${weaponry.weapon.critdmg}x 🎯${Math.floor(weaponry.weapon.accuracy * 100)}%`"
@@ -1116,7 +1204,7 @@
             }">
             <div class="enemy" id="enemy">
                 <div class="enemy-level" x-text="`Level ${enemyLevel} ${enemy.block}`" 
-                    :data-tooltip="`💖 ${enemy.health} + (${Math.floor((maxHealth - enemy.health) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${maxHealth}\n⚔️ ${enemy.attack} + (${Math.floor((attack - enemy.attack) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${attack}\n🛡️ ${enemy.defense} + (${Math.floor(((defense * 10) - enemy.defense) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${defense}\n🎯 ${Math.floor(accuracy * 100)}%\n🍀 ${Math.floor(crit * 100)}%`">?</div>
+                    :data-tooltip="`💖 ${enemy.health} + (${Math.floor((maxHealth - enemy.health) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${maxHealth}\n⚔️ ${enemy.attack} + (${Math.floor((attack - enemy.attack) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${attack}\n🛡️ ${enemy.defense} + (${Math.floor((defense - enemy.defense) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${defense}\n🎯 ${Math.floor(accuracy * 100)}%\n🍀 ${Math.floor(crit * 100)}%`">?</div>
                 <div style="margin-top: 40px;">
                     <div class="enemy-name" x-text="enemy.name">???</div>
                     <div class="estatus-effects">
