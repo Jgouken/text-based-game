@@ -90,7 +90,7 @@ function getItemMetaText(itemName, level = 1) {
 
     if (item.attack !== undefined || item.defense !== undefined || item.maxlvl !== undefined) {
         parts.push('Level ' + itemLevel);
-        
+
     }
 
     if (item.health) parts.push(`💖 +${Math.round(item.health * 100)}%`);
@@ -829,64 +829,30 @@ function checkLevelUp() {
 }
 
 function showMessage(message, type = 'info') {
-    const tooltip = document.getElementById('global-tooltip');
-    if (!tooltip) return;
+    const messageEl = document.createElement('div');
+    messageEl.textContent = message;
+    messageEl.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px 25px;
+        background-color: ${type === 'success' ? 'rgba(0, 255, 100, 0.9)' : type === 'warning' ? 'rgba(255, 165, 0, 0.9)' : 'rgba(100, 150, 255, 0.9)'};
+        color: black;
+        font-family: 'Pixelify Sans', sans-serif;
+        font-size: 20px;
+        border-radius: 8px;
+        border: 3px solid ${type === 'success' ? 'rgb(0, 200, 0)' : type === 'warning' ? 'rgb(200, 100, 0)' : 'rgb(50, 100, 200)'};
+        z-index: 10000;
+        animation: slideDown 0.3s ease-out;
+    `;
 
-    if (showMessage.hideTimeout) {
-        clearTimeout(showMessage.hideTimeout);
-        showMessage.hideTimeout = null;
-    }
-    if (showMessage.cleanupTimeout) {
-        clearTimeout(showMessage.cleanupTimeout);
-        showMessage.cleanupTimeout = null;
-    }
+    document.body.appendChild(messageEl);
 
-    const bgColor = type === 'success'
-        ? 'rgba(0, 255, 100, 0.9)'
-        : type === 'warning'
-            ? 'rgba(255, 165, 0, 0.9)'
-            : 'rgba(100, 150, 255, 0.9)';
-    const borderColor = type === 'success'
-        ? 'rgb(0, 200, 0)'
-        : type === 'warning'
-            ? 'rgb(200, 100, 0)'
-            : 'rgb(50, 100, 200)';
-
-    tooltip.textContent = message;
-    tooltip.style.transition = 'none';
-    tooltip.style.visibility = 'visible';
-    tooltip.style.display = 'block';
-    tooltip.style.left = '50%';
-    tooltip.style.top = '20px';
-    tooltip.style.transform = 'translateX(-50%)';
-    tooltip.style.backgroundColor = bgColor;
-    tooltip.style.color = 'black';
-    tooltip.style.border = `3px solid ${borderColor}`;
-    tooltip.style.fontFamily = "'Pixelify Sans', sans-serif";
-    tooltip.style.fontSize = '20px';
-    tooltip.style.padding = '15px 25px';
-    tooltip.style.borderRadius = '8px';
-    tooltip.style.opacity = '0';
-    tooltip.dataset.lockUntil = String(Date.now() + 2200);
-
-    requestAnimationFrame(() => {
-        tooltip.style.transition = 'opacity 0.2s ease';
-        tooltip.style.opacity = '1';
-    });
-
-    showMessage.hideTimeout = setTimeout(() => {
-        tooltip.style.opacity = '0';
-        showMessage.cleanupTimeout = setTimeout(() => {
-            delete tooltip.dataset.lockUntil;
-            tooltip.style.transform = '';
-            tooltip.style.backgroundColor = '';
-            tooltip.style.color = '';
-            tooltip.style.border = '';
-            tooltip.style.fontFamily = '';
-            tooltip.style.fontSize = '';
-            tooltip.style.padding = '';
-            tooltip.style.borderRadius = '';
-        }, 200);
+    setTimeout(() => {
+        messageEl.style.animation = 'slideUp 0.3s ease-out forwards';
+        messageEl.style.opacity = '0';
+        setTimeout(() => messageEl.remove(), 300);
     }, 2000);
 }
 
