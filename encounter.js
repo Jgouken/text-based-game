@@ -29,23 +29,48 @@ function getBlockTierKey(level) {
     return 'zero';
 }
 
-function getEncounterStatsByBlock(enemy, level) {
-    const block = assets.blocks.find((entry) => entry.name === enemy.block);
-    if (!block) {
-        return {
-            health: Math.floor((enemy.health + (level ** 1.82424)) * (1 + (level / 200))),
-            defense: Math.floor((enemy.defense + ((level / 2) ** 1.82424)) * (1 + (level / 200))),
-            attack: Math.floor((enemy.attack + ((level / 2) ** 1.82424)) * (1 + (level / 200))),
+function syncPlayerActivePotion(player, nextPotion = undefined) {
+    const active = player.activePotion;
+    const attackBonus = Number(active?.attackBonus) || 0;
+    const defenseBonus = Number(active?.defenseBonus) || 0;
+
+    if (attackBonus) player.attack = Math.max(0, player.attack - attackBonus);
+    if (defenseBonus) player.defense = Math.max(0, player.defense - defenseBonus);
+
+    if (nextPotion === null) {
+        player.activePotion = null;
+        return;
+    }
+
+    if (typeof nextPotion === 'object') {
+        player.activePotion = {
+            ...nextPotion,
+            applied: false,
+            attackBonus: 0,
+            defenseBonus: 0
         };
     }
 
-    const tier = block[getBlockTierKey(level)] || block.zero;
+    const potion = player.activePotion;
+    if (!potion || potion.applied) return;
 
-    return {
-        health: Math.floor(enemy.health + ((tier?.health || 0) * level)),
-        defense: Math.floor(enemy.defense + ((tier?.defense || 0) * level)),
-        attack: Math.floor(enemy.attack + ((tier?.attack || 0) * level)),
-    };
+    const value = Number(potion.value) || 0;
+    let appliedAttackBonus = 0;
+    let appliedDefenseBonus = 0;
+
+    if (value > 0) {
+        if (potion.type === 'attack') {
+            appliedAttackBonus = Math.floor(player.attack * value);
+            player.attack += appliedAttackBonus;
+        } else if (potion.type === 'defense') {
+            appliedDefenseBonus = Math.floor(player.defense * value);
+            player.defense += appliedDefenseBonus;
+        }
+    }
+
+    potion.attackBonus = appliedAttackBonus;
+    potion.defenseBonus = appliedDefenseBonus;
+    potion.applied = true;
 }
 
 async function startBattle(enemy = null) {
@@ -69,7 +94,19 @@ async function startBattle(enemy = null) {
         delete s._cooldown;
     });
 
-    const scaledStats = getEncounterStatsByBlock(enemy, level);
+    const block = assets.blocks.find((entry) => entry.name === enemy.block);
+    const tier = block ? (block[getBlockTierKey(level)] || block.zero) : null;
+    const scaledStats = block
+        ? {
+            health: Math.floor(enemy.health + ((tier?.health || 0) * level)),
+            defense: Math.floor(enemy.defense + ((tier?.defense || 0) * level)),
+            attack: Math.floor(enemy.attack + ((tier?.attack || 0) * level)),
+        }
+        : {
+            health: Math.floor((enemy.health + (level ** 1.82424)) * (1 + (level / 200))),
+            defense: Math.floor((enemy.defense + ((level / 2) ** 1.82424)) * (1 + (level / 200))),
+            attack: Math.floor((enemy.attack + ((level / 2) ** 1.82424)) * (1 + (level / 200))),
+        };
     encounter.maxHealth = scaledStats.health;
     encounter.health = encounter.maxHealth;
     encounter.defense = scaledStats.defense;
@@ -118,23 +155,17 @@ async function executeSkill({
         (hasStatus(attackerStatuses, 'Luck') ? statusByName('Luck').incCrit : 0)
         - (hasStatus(attackerStatuses, 'Misfortune') ? statusByName('Misfortune').decCrit : 0);
 
-    const playerPotion = player.activePotion;
-    const potionAttackBonus = (isPlayer && playerPotion?.type === 'attack') ? (playerPotion.value || 0) : 0;
-    const potionDefenseBonus = (!isPlayer && playerPotion?.type === 'defense') ? (playerPotion.value || 0) : 0;
-
     const damMult =
         (hasStatus(attackerStatuses, 'Empowerment') ? statusByName('Empowerment').damAdd : 0)
         + (hasStatus(attackerStatuses, 'Strength') ? statusByName('Strength').damAdd : 0)
         + (hasStatus(attackerStatuses, 'Berserk') ? statusByName('Berserk').damAdd : 0)
         + (hasStatus(defenderStatuses, 'Berserk') ? statusByName('Berserk').incDamTaken : 0)
         - (hasStatus(attackerStatuses, 'Weakness') ? statusByName('Weakness').damReduc : 0)
-        + potionAttackBonus
         + 1;
 
     const rigid =
         (hasStatus(defenderStatuses, 'Rigidity') ? statusByName('Rigidity').armorAdd : 0)
         - (hasStatus(defenderStatuses, 'Fragility') ? statusByName('Fragility').armorSub : 0)
-        + potionDefenseBonus
         + 1;
 
     let damage = Math.floor((attacker.attack * damMult * (skill.damage || 1)) * (attacker.attack / (defender.defense + (defender.defense * rigid))));
@@ -321,7 +352,7 @@ async function skill(index) {
             inventoryIndex,
             itemData: assets.items.find(item => item.name === inventoryItem.name)
         }))
-        .filter(entry => entry.itemData && entry.itemData.name.toLowerCase().includes('potion'));
+        .filter(entry => entry.itemData?.battle === true);
 
     switch (index) {
         case -3:
@@ -396,7 +427,7 @@ async function useBattleConsumable(consumableIndex) {
             inventoryIndex,
             itemData: assets.items.find(item => item.name === inventoryItem.name)
         }))
-        .filter(entry => entry.itemData && entry.itemData.name.toLowerCase().includes('potion'));
+        .filter(entry => entry.itemData?.battle === true);
 
     const selected = consumables[consumableIndex];
     if (!selected || !selected.itemData) return;
@@ -404,7 +435,7 @@ async function useBattleConsumable(consumableIndex) {
     return useBattleConsumableByInventoryIndex(selected.inventoryIndex);
 }
 
-async function useBattleConsumableByInventoryIndex(inventoryIndex) {
+async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {}) {
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
@@ -416,9 +447,15 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex) {
     if (!selectedInventoryItem) return;
 
     const itemData = assets.items.find(item => item.name === selectedInventoryItem.name);
-    if (!itemData || !itemData.name.toLowerCase().includes('potion')) return;
+    const isBattleItem = itemData?.battle === true;
+    if (!itemData || !isBattleItem) return;
 
     const effectText = [];
+    const target = options.target === 'player' ? 'player' : 'enemy';
+    const cleanseTarget = itemData.name === 'Purifying Water' ? 'player' : target;
+    const throwableDamage = itemData.damage !== undefined
+        ? Math.max(0, Math.floor(Number(itemData.damage) || 0))
+        : 0;
 
     if (itemData.health) {
         const healAmount = Math.floor(player.maxHealth * itemData.health);
@@ -439,6 +476,21 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex) {
         effectText.push(`gained <span style="color: lightblue;" data-tooltip="🌟 ${itemData.xp} XP">🌟${itemData.xp}</span>`);
     }
 
+    if (itemData.name === 'Purifying Flask' || itemData.name === 'Purifying Water') {
+        const targetStatuses = cleanseTarget === 'player' ? player.pstatus : encounter.estatus;
+        const removed = targetStatuses
+            .map(status => `<span style="color: lightblue;" data-tooltip="${status.id} ${status.name}\n\n${status.description}">${status.id}</span>`);
+        targetStatuses.length = 0;
+
+        if (removed.length > 0) effectText.push(`cleansed ${cleanseTarget === 'player' ? background.name : background.enemy.name} of [<span style="color: lightblue;">${removed.join('')}</span>]`);
+        else effectText.push(`cleansed ${cleanseTarget === 'player' ? background.name : background.enemy.name} of nothing`);
+    }
+
+    if (itemData.damage !== undefined) {
+        encounter.health -= throwableDamage;
+        effectText.push(`dealt <span style="color: lightblue;" data-tooltip="💥${throwableDamage}\n">💥${throwableDamage}</span>`);
+    }
+
     if (itemData.pstatus) {
         const granted = [];
         itemData.pstatus.forEach(statusId => {
@@ -449,28 +501,42 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex) {
             }
         });
         if (granted.length > 0) {
-            effectText.push(`gained <span style="color: lightblue;">[${granted.join('')}]</span>`);
+            effectText.push(`gained [<span style="color: lightblue;">${granted.join('')}</span>]`);
+        }
+    }
+
+    if (itemData.estatus) {
+        const granted = [];
+        itemData.estatus.forEach(statusId => {
+            const status = assets.statuses.find(s => s.id === statusId);
+            if (status && !encounter.estatus.some(s => s.id === statusId)) {
+                encounter.estatus.push({ ...status, damage: throwableDamage });
+                granted.push(`<span style="color: lightblue;" data-tooltip="${status.id} ${status.name}\n\n${status.description}">${status.id}</span>`);
+            }
+        });
+        if (granted.length > 0) {
+            effectText.push(`inflicted [<span style="color: lightblue;">${granted.join('')}</span>]`);
         }
     }
 
     if (itemData.buff) {
-        player.activePotion = {
+        syncPlayerActivePotion(player, {
             id: '🧪',
             name: selectedInventoryItem.name,
             type: 'attack',
             value: itemData.buff,
             rounds: (itemData.rounds || 1) + 1
-        };
-        effectText.push(`gained <span style="color: lightblue;" data-tooltip="⚔️ +${Math.floor(itemData.buff * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">[🧪]</span>`);
+        });
+        effectText.push(`gained [<span data-tooltip="⚔️ +${Math.floor(itemData.buff * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">🧪</span>]`);
     } else if (itemData.def) {
-        player.activePotion = {
+        syncPlayerActivePotion(player, {
             id: '🧪',
             name: selectedInventoryItem.name,
             type: 'defense',
             value: itemData.def,
             rounds: (itemData.rounds || 1) + 1
-        };
-        effectText.push(`gained <span style="color: lightblue;" data-tooltip="🛡️ +${Math.floor(itemData.def * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">[🧪]</span>`);
+        });
+        effectText.push(`gained [<span data-tooltip="🛡️ +${Math.floor(itemData.def * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">🧪</span>]`);
     }
 
     removeFromInventory(inventoryIndex);
@@ -505,10 +571,14 @@ async function turnManager(toPlayer) {
     const actorName = toPlayer ? background.name : background.enemy.name;
     var stunned = false;
 
+    if (toPlayer && player.activePotion && !player.activePotion.applied) {
+        syncPlayerActivePotion(player);
+    }
+
     if (toPlayer && player.activePotion?.rounds > 0) {
         player.activePotion.rounds -= 1;
         if (player.activePotion.rounds <= 0) {
-            player.activePotion = null;
+            syncPlayerActivePotion(player, null);
         }
     }
 
@@ -743,7 +813,7 @@ async function victory() {
         await new Promise(resolve => setTimeout(resolve, 500));
         player.health = player.maxHealth;
         player.pstatus = [];
-        player.activePotion = null;
+        syncPlayerActivePotion(player, null);
         player.experience = 0;
         if (player.level > 1) player.level -= 1;
     } else {
@@ -859,3 +929,5 @@ async function exportLog() {
     URL.revokeObjectURL(url);
     savePlayer();
 }
+
+window.setPlayerActivePotion = (player, potionData) => syncPlayerActivePotion(player, potionData);

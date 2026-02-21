@@ -828,6 +828,11 @@ img {
     cursor: grabbing;
 }
 
+body.inventory-shift-open-journal #inventory .inventory-item,
+body.inventory-shift-open-journal #inventory .inventory-item:active {
+    cursor: alias;
+}
+
 .inventory-item.dragging {
     opacity: 0.4;
 }
@@ -971,6 +976,220 @@ img {
     z-index: 2;
 }
 
+/* Journal */
+.journal-panel {
+    position: fixed;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 90%;
+    width: 90%;
+    color: white;
+    font-family: 'Pixelify Sans', sans-serif;
+    max-height: 95vh;
+    overflow: hidden;
+    text-align: left;
+    background-color: rgba(20, 20, 20, 0.95);
+    border: 2px solid #222;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    font-size: 18px;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.journal-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.journal-controls__label {
+    color: #fff;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.journal-controls__btn {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.journal-search-input,
+.journal-level-input {
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 14px;
+    padding: 6px 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid #333;
+    color: white;
+}
+
+.journal-search-input {
+    min-width: 280px;
+}
+
+.journal-level-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.journal-level-input {
+    width: 80px;
+}
+
+.journal-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 10px;
+    flex: 1;
+    min-height: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.journal-list,
+.journal-detail {
+    border: 2px solid #222;
+    background-color: rgba(10, 10, 10, 0.6);
+    overflow-y: auto;
+    position: relative;
+    min-height: 0;
+}
+
+.journal-entry {
+    width: calc(100% - 16px);
+    margin: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+    background: linear-gradient(180deg, #111 0%, #222 100%);
+    border: 2px solid #444;
+    color: white;
+    cursor: pointer;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+.journal-entry:hover {
+    transform: translateY(-2px);
+}
+
+.journal-entry--active {
+    border-color: #888;
+    background: linear-gradient(180deg, #1f1f1f 0%, #2f2f2f 100%);
+}
+
+.journal-entry__name {
+    font-size: 18px;
+}
+
+.journal-entry__meta {
+    font-size: 14px;
+    color: #c6c6c6;
+}
+
+.journal-detail__inner {
+    padding: 16px;
+}
+
+.journal-detail__header {
+    position: relative;
+    min-height: 0;
+}
+
+.journal-detail__heading {
+    min-width: 0;
+}
+
+.journal-detail__media {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    position: absolute;
+    top: 0;
+    right: 0;
+    pointer-events: none;
+}
+
+.journal-detail__title {
+    font-size: 34px;
+    font-family: 'Pixelify Sans', sans-serif;
+    margin-bottom: 4px;
+}
+
+.journal-detail__subtitle {
+    font-size: 18px;
+    color: #dadada;
+    margin-bottom: 12px;
+}
+
+.journal-detail__description {
+    font-size: 16px;
+    color: #cfcfcf;
+    margin-bottom: 8px;
+    white-space: pre-line;
+}
+
+.journal-group {
+    margin-top: 14px;
+}
+
+.journal-group__title {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.journal-lines {
+    margin: 0;
+    padding-left: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #ececec;
+}
+
+.journal-status-emoji {
+    cursor: pointer;
+}
+
+.journal-drop-link {
+    cursor: pointer;
+}
+
+.journal-area-enemy-link {
+    cursor: pointer;
+}
+
+.journal-chest-link {
+    cursor: pointer;
+}
+
+.journal-subcards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 10px;
+}
+
+.journal-subcard {
+    border: 2px solid #333;
+    background-color: rgba(0, 0, 0, 0.35);
+    padding: 10px;
+}
+
+.journal-subcard__title {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
 .equipment-display {
     position: fixed !important;
     top: 76vh;
@@ -990,7 +1209,7 @@ img {
     justify-content: baseline;
 }
 
-/* Crafting Panel */
+/* Crafting */
 .crafting-panel {
     position: fixed;
     z-index: 100;

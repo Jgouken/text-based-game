@@ -63,12 +63,29 @@ async function setPlayer() {
     player.maxHealth = 500 + ((player.level - 1) * 250)
     player.maxStamina = 50 + ((player.level - 1) * 5)
 
-    player.attack = Math.floor(32 + ((player.level - 1) * 6) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel))
-    player.defense = Math.floor(60 + ((player.level - 1) * 10) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult))
-    player.crit = player.weaponry.weapon.crit;
+    const baseAttack = Math.floor(32 + ((player.level - 1) * 6) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel));
+    const baseDefense = Math.floor(60 + ((player.level - 1) * 10) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult));
+
+    const activeSynergy = player.armory.armor?.synergies?.find(syn => syn.weapon === player.weaponry.weapon.name) || null;
+    const synergyAttack = Number(activeSynergy?.attack) || 0;
+    const synergyDefense = Number(activeSynergy?.defense) || 0;
+    const synergyCrit = Number(activeSynergy?.crit) || 0;
+    const synergyEvasion = Number(activeSynergy?.evasion) || 0;
+
+    player.synergyBonus = {
+        name: activeSynergy?.name || null,
+        attack: synergyAttack,
+        defense: synergyDefense,
+        crit: synergyCrit,
+        evasion: synergyEvasion
+    };
+
+    player.attack = Math.floor(baseAttack + synergyAttack)
+    player.defense = Math.floor(baseDefense + synergyDefense)
+    player.crit = player.weaponry.weapon.crit + synergyCrit;
     player.critdmg = player.weaponry.weapon.critdmg;
     player.accuracy = player.weaponry.weapon.accuracy;
-    player.evasion = player.armory.armor.evasion;
+    player.evasion = player.armory.armor.evasion + synergyEvasion;
 
     updateBars();
     savePlayer();

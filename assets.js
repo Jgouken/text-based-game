@@ -7490,11 +7490,13 @@ function getLocalAssets() {
 			},
 			{
 				name: "Purifying Flask",
+				description: "Thrown or drank to cleanse all effects.",
 				craft: ["Purified Salt", "Sticky Solution", "Water Bottle"],
 				battle: true
 			},
 			{
 				name: "Purifying Water",
+				description: "Drank to cleanse all effects.",
 				craft: ["Purified Salt", "Water Bottle"],
 				battle: true
 			},

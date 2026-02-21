@@ -1,6 +1,7 @@
 let draggedItem = null;
 let draggedItemIndex = null;
 let draggedEquipment = null;
+let inventoryShiftHintBound = false;
 
 function initInventoryDragDrop() {
     setTimeout(() => {
@@ -8,7 +9,30 @@ function initInventoryDragDrop() {
         setupEquipmentListeners();
         setupBattleConsumableListeners();
         enhanceInventoryTooltips();
+        setupInventoryShiftCursorHint();
     }, 500);
+}
+
+function setupInventoryShiftCursorHint() {
+    if (inventoryShiftHintBound) return;
+    inventoryShiftHintBound = true;
+
+    const updateShiftHintState = (isShiftDown) => {
+        document.body.classList.toggle('inventory-shift-open-journal', !!isShiftDown);
+    };
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Shift') updateShiftHintState(true);
+    });
+
+    document.addEventListener('keyup', (event) => {
+        if (event.key === 'Shift') updateShiftHintState(false);
+    });
+
+    window.addEventListener('blur', () => updateShiftHintState(false));
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState !== 'visible') updateShiftHintState(false);
+    });
 }
 
 function setDropHintText(target, text) {
@@ -49,7 +73,26 @@ function setupInventoryListeners() {
 
     inventoryPanel.addEventListener('dragstart', handleDragStart);
     inventoryPanel.addEventListener('dragend', handleDragEnd);
+    inventoryPanel.addEventListener('click', handleInventoryItemClick);
     setupDropZone();
+}
+
+function handleInventoryItemClick(e) {
+    if (!e.shiftKey) return;
+
+    const inventoryItem = e.target.closest('.inventory-item');
+    if (!inventoryItem) return;
+
+    const itemName = inventoryItem.querySelector('.inventory-item-name')?.textContent?.trim();
+    if (!itemName) return;
+    if (typeof window.openJournalItemFromInventory !== 'function') return;
+
+    const player = Alpine.$data(document.getElementById('player'));
+    const itemLevel = player ? getHoveredItemLevel(player, itemName) : 1;
+
+    e.preventDefault();
+    e.stopPropagation();
+    window.openJournalItemFromInventory(itemName, itemLevel);
 }
 
 function setupEquipmentListeners() {
@@ -166,14 +209,16 @@ function getItemTooltipText(itemName, level = 1, useColors = false) {
                 const currentDefense = Math.floor(currentArmor.defense + ((currentLevel - 1) * currentArmor.alvlmult));
                 const currentEvasion = Math.floor(currentArmor.evasion * 100);
 
-                parts.push(`🛡️ ${hoveredDefense} (${formatDiffText(hoveredDefense - currentDefense)})`);
-                parts.push(`💨 ${hoveredEvasion}% (${formatDiffText(hoveredEvasion - currentEvasion, '%')})`);
+                parts.push(`🛡️ ${hoveredDefense} ${formatDiffText(hoveredDefense - currentDefense)}`);
+                parts.push(`💨 ${hoveredEvasion}% ${formatDiffText(hoveredEvasion - currentEvasion, '%')}`);
             }
         }
     }
 
-    const isConsumable = item.name.toLowerCase().includes('potion');
-    if (isConsumable && player) {
+    const isPotion = item.name.toLowerCase().includes('potion');
+    const isThrowable = item.name.toLowerCase().endsWith('bomb') || item.name.toLowerCase().endsWith('flask') || item.damage !== undefined;
+    const isUsableItem = isPotion || isThrowable;
+    if (isUsableItem && player) {
         if (item.health) {
             const currentHealth = Math.round(player.health);
             const gainAmount = Math.round(player.maxHealth * item.health);
@@ -298,7 +343,7 @@ function updateEquipmentDisplay(type = null, itemData = null, anchorElement = nu
         const lines = getTooltipLines(itemData.name, hoveredLevel);
 
         if (synergy) {
-            lines.push(`<span style="color: gold;">✨ ${synergy.name}: ${getSynergyBonusesText(synergy)}</span>`);
+            lines.push(`\n<span style="color: gold;">✨ ${synergy.name} ✨\n${getSynergyBonusesText(synergy)}</span>`);
         }
 
         showEquipmentTooltip(lines, anchorElement);
@@ -311,7 +356,7 @@ function updateEquipmentDisplay(type = null, itemData = null, anchorElement = nu
         const lines = getTooltipLines(itemData.name, hoveredLevel);
 
         if (synergy) {
-            lines.push(`<span style="color: gold;">✨ ${synergy.name} - ${itemData.name}: ${getSynergyBonusesText(synergy)}</span>`);
+            lines.push(`\n<span style="color: gold;">✨ ${synergy.name} ✨\n${getSynergyBonusesText(synergy)}</span>`);
         }
 
         showEquipmentTooltip(lines, anchorElement);
@@ -373,7 +418,10 @@ function handleItemHover(e) {
 
     const isWeapon = itemData.attack !== undefined && itemData.skills;
     const isArmor = itemData.defense !== undefined && !itemData.skills && itemData.alvlmult !== undefined;
-    const isConsumable = itemData.name.toLowerCase().includes('potion');
+    const isConsumable = itemData.name.toLowerCase().includes('potion')
+        || itemData.name.toLowerCase().endsWith('bomb')
+        || itemData.name.toLowerCase().endsWith('flask')
+        || itemData.damage !== undefined;
 
     if (isWeapon) {
         updateEquipmentDisplay('weapon', itemData, itemElement);
@@ -542,11 +590,28 @@ function handleEquipmentDragStart(e) {
 
 function setupDropZone() {
     const playerBar = document.getElementById('player');
+    const encounterArea = document.getElementById('encounter');
+    const enemyArea = document.getElementById('enemy');
     if (!playerBar) return;
 
     playerBar.addEventListener('dragover', handleDragOver);
     playerBar.addEventListener('drop', handleDrop);
     playerBar.addEventListener('dragleave', handleDragLeave);
+
+    if (enemyArea) {
+        enemyArea.addEventListener('dragover', handleEnemyDragOver);
+        enemyArea.addEventListener('drop', handleEnemyDrop);
+        enemyArea.addEventListener('dragleave', handleEnemyDragLeave);
+    }
+
+    if (encounterArea) {
+        encounterArea.addEventListener('dragover', handleEnemyDragOver);
+        encounterArea.addEventListener('drop', handleEnemyDrop);
+    }
+}
+
+function isTopThrowableDropZone(event) {
+    return event && typeof event.clientY === 'number' && event.clientY <= (window.innerHeight * 0.4);
 }
 
 function getPlayerDropHintText(itemData) {
@@ -554,19 +619,42 @@ function getPlayerDropHintText(itemData) {
 
     const isWeapon = itemData.attack !== undefined && itemData.skills;
     const isArmor = itemData.defense !== undefined && !itemData.skills && itemData.alvlmult !== undefined;
-    const isConsumable = itemData.name.toLowerCase().includes('potion');
+    const isPotion = itemData.name.toLowerCase().includes('potion');
+    const isPurifyingFlask = itemData.name === 'Purifying Flask';
+    const isPurifyingWater = itemData.name === 'Purifying Water';
+    const isThrowable = itemData.name.toLowerCase().endsWith('bomb')
+        || itemData.name.toLowerCase().endsWith('flask')
+        || itemData.damage !== undefined;
+    const isConsumable = isPotion || isThrowable || isPurifyingWater;
 
     if (isWeapon || isArmor) return 'Drop here to equip';
+    if (isPurifyingWater) return 'Drop here to drink';
+    if (isPurifyingFlask) return 'Drop here to cleanse yourself';
+    if (isThrowable) return 'Throwables cannot be dropped on player';
     if (isConsumable) return 'Drop here to use';
     return 'Cannot be consumed or equipped';
 }
 
 function handleDragOver(e) {
     if (!draggedItem) return;
+    const itemData = getAssets().items.find(i => i.name === draggedItem.name);
+    const playerBar = document.getElementById('player');
+    const isThrowable = itemData && (
+        itemData.name.toLowerCase().endsWith('bomb')
+        || itemData.name.toLowerCase().endsWith('flask')
+        || itemData.damage !== undefined
+    );
+    const canDropOnPlayer = !isThrowable || itemData.name === 'Purifying Flask';
+
+    if (!canDropOnPlayer) {
+        playerBar.style.backgroundColor = '';
+        playerBar.classList.remove('drop-hint-target--active');
+        clearDropHintText(playerBar);
+        return;
+    }
+
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-    const playerBar = document.getElementById('player');
-    const itemData = getAssets().items.find(i => i.name === draggedItem.name);
     playerBar.style.backgroundColor = 'rgba(0, 255, 100, 0.2)';
     playerBar.style.transition = 'all 0.2s ease';
     playerBar.classList.add('drop-hint-target--active');
@@ -593,6 +681,13 @@ function handleDragEnd(e) {
         clearDropHintText(playerBar);
     }
 
+    const enemyArea = document.getElementById('enemy');
+    if (enemyArea) {
+        enemyArea.style.backgroundColor = '';
+        enemyArea.classList.remove('drop-hint-target--active');
+        clearDropHintText(enemyArea);
+    }
+
     draggedItem = null;
     draggedItemIndex = null;
     draggedEquipment = null;
@@ -605,6 +700,103 @@ function handleDragLeave(e) {
         playerBar.classList.remove('drop-hint-target--active');
         clearDropHintText(playerBar);
     }
+}
+
+function handleEnemyDragOver(e) {
+    if (!draggedItem) return;
+    const itemData = getAssets().items.find(i => i.name === draggedItem.name);
+    if (!itemData) return;
+
+    const isThrowable = itemData.name.toLowerCase().endsWith('bomb')
+        || itemData.name.toLowerCase().endsWith('flask')
+        || itemData.damage !== undefined;
+
+    if (!isThrowable) return;
+    if (!isTopThrowableDropZone(e)) {
+        const enemyAreaClear = document.getElementById('enemy');
+        if (enemyAreaClear) {
+            enemyAreaClear.style.backgroundColor = '';
+            enemyAreaClear.classList.remove('drop-hint-target--active');
+            clearDropHintText(enemyAreaClear);
+        }
+        return;
+    }
+
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+
+    const enemyArea = document.getElementById('enemy');
+    if (!enemyArea) return;
+
+    enemyArea.style.backgroundColor = 'rgba(255, 120, 120, 0.2)';
+    enemyArea.style.transition = 'all 0.2s ease';
+    enemyArea.classList.add('drop-hint-target--active');
+    setDropHintText(enemyArea, 'Drop here to throw');
+}
+
+function handleEnemyDragLeave(e) {
+    const enemyArea = document.getElementById('enemy');
+    if (e.currentTarget === enemyArea && !enemyArea.contains(e.relatedTarget)) {
+        enemyArea.style.backgroundColor = '';
+        enemyArea.classList.remove('drop-hint-target--active');
+        clearDropHintText(enemyArea);
+    }
+}
+
+async function handleEnemyDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const enemyArea = document.getElementById('enemy');
+    if (enemyArea) {
+        enemyArea.style.backgroundColor = '';
+        enemyArea.classList.remove('drop-hint-target--active');
+        clearDropHintText(enemyArea);
+    }
+
+    if (!draggedItem) return;
+
+    const itemData = getAssets().items.find(i => i.name === draggedItem.name);
+    if (!itemData) return;
+
+    const isThrowable = itemData.name.toLowerCase().endsWith('bomb')
+        || itemData.name.toLowerCase().endsWith('flask')
+        || itemData.damage !== undefined;
+
+    if (!isThrowable) {
+        showMessage('Only throwables can be used on enemies.', 'warning');
+        return;
+    }
+
+    if (!isTopThrowableDropZone(e)) {
+        showMessage('Throwables must be dropped in the top 40% of the screen.', 'warning');
+        return;
+    }
+
+    const background = Alpine.$data(document.getElementById('background-image'));
+    const encounter = Alpine.$data(document.getElementById('encounter'));
+    const battleStation = document.getElementById('battle-station')
+        ? Alpine.$data(document.getElementById('battle-station'))
+        : null;
+
+    const isBattleConsume =
+        background?.screen === 'encounter' &&
+        encounter?.battle &&
+        battleStation?.turn;
+
+    if (isBattleConsume && typeof window.useBattleConsumableByInventoryIndex === 'function') {
+        await window.useBattleConsumableByInventoryIndex(draggedItemIndex, { target: 'enemy' });
+    } else {
+        showMessage(`${draggedItem.name} can only be thrown during your turn in battle.`, 'warning');
+    }
+
+    draggedItem = null;
+    draggedItemIndex = null;
+
+    setTimeout(() => {
+        enhanceInventoryTooltips();
+        updateEquipmentDisplay();
+    }, 100);
 }
 
 function handleInventoryDragOver(e) {
@@ -685,7 +877,13 @@ async function handleDrop(e) {
 
     const isWeapon = itemData.attack !== undefined && itemData.skills;
     const isArmor = itemData.defense !== undefined && !itemData.skills && itemData.alvlmult !== undefined;
-    const isConsumable = itemData.name.toLowerCase().includes('potion');
+    const isPotion = itemData.name.toLowerCase().includes('potion');
+    const isPurifyingFlask = itemData.name === 'Purifying Flask';
+    const isPurifyingWater = itemData.name === 'Purifying Water';
+    const isThrowable = itemData.name.toLowerCase().endsWith('bomb')
+        || itemData.name.toLowerCase().endsWith('flask')
+        || itemData.damage !== undefined;
+    const isConsumable = isPotion || isThrowable || isPurifyingWater;
 
     if (isWeapon) {
         equipWeapon(itemData, draggedItem.level);
@@ -703,8 +901,12 @@ async function handleDrop(e) {
             encounter?.battle &&
             battleStation?.turn;
 
-        if (isBattleConsume && typeof window.useBattleConsumableByInventoryIndex === 'function') {
+        if (isBattleConsume && (isPurifyingFlask || isPurifyingWater) && typeof window.useBattleConsumableByInventoryIndex === 'function') {
+            await window.useBattleConsumableByInventoryIndex(draggedItemIndex, { target: 'player' });
+        } else if (isBattleConsume && !isThrowable && typeof window.useBattleConsumableByInventoryIndex === 'function') {
             await window.useBattleConsumableByInventoryIndex(draggedItemIndex);
+        } else if (isThrowable) {
+            showMessage(`${draggedItem.name} cannot be dropped on player. Drop it in the top 40% during battle.`, 'warning');
         } else {
             consumeItem(itemData);
         }
@@ -749,6 +951,12 @@ function equipArmor(armorData, level) {
 function consumeItem(itemData) {
     const player = Alpine.$data(document.getElementById('player'));
 
+    if (itemData.name === 'Purifying Water') {
+        const removed = player.pstatus.length;
+        player.pstatus.length = 0;
+        showMessage(removed > 0 ? 'Purified all status effects!' : 'No status effects to purify.', 'success');
+    }
+
     if (itemData.health) {
         const healAmount = Math.floor(player.maxHealth * itemData.health);
         player.health = Math.min(player.health + healAmount, player.maxHealth);
@@ -779,22 +987,22 @@ function consumeItem(itemData) {
     }
 
     if (itemData.buff) {
-        player.activePotion = {
+        setPlayerActivePotion(player, {
             id: '🧪',
             name: itemData.name,
             type: 'attack',
             value: itemData.buff,
             rounds: itemData.rounds || 1
-        };
+        });
         showMessage(`Attack potion active!`, 'success');
     } else if (itemData.def) {
-        player.activePotion = {
+        setPlayerActivePotion(player, {
             id: '🧪',
             name: itemData.name,
             type: 'defense',
             value: itemData.def,
             rounds: itemData.rounds || 1
-        };
+        });
         showMessage(`Defense potion active!`, 'success');
     }
 

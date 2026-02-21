@@ -19,6 +19,7 @@
     <script src="player.js"></script>
     <script src="inventory.js"></script>
     <script src="crafting.js"></script>
+    <script src="journal.js"></script>
 </head>
 
 <body>
@@ -53,6 +54,7 @@
                 attack: 32,
                 pstatus: [],
                 activePotion: null,
+                synergyBonus: { name: null, attack: 0, defense: 0, crit: 0, evasion: 0 },
                 inventory: [],
 
                 get experienceTooltip () {return `${Math.floor((this.experience/getRequiredXP(this.level)) * 100)}% XP\nGained to grow stronger.`},
@@ -276,7 +278,12 @@
                 <div class="battle-weaponry" id="battle-weaponry">
 
                     <span
-                        :data-tooltip="`Base Attack\n\n32 + ((${level || 1} - 1) * 6) + ${weaponry.weapon.attack} + ((${weaponry.level} - 1) * ${weaponry.weapon.attackPerLevel}) = ${Math.floor(32 + (((level || 1) - 1) * 6) + weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel))}`"
+                        :data-tooltip="(() => {
+                            const baseAttack = Math.floor(32 + (((level || 1) - 1) * 6) + weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel));
+                            const synAttack = Number(synergyBonus?.attack) || 0;
+                            const synName = synergyBonus?.name || 'Synergy';
+                            return `Base Attack\n\n32 + ((${level || 1} - 1) * 6) + ${weaponry.weapon.attack} + ((${weaponry.level} - 1) * ${weaponry.weapon.attackPerLevel})${synAttack ? ` + ${synAttack} (✨ ${synName})` : ''} = ${baseAttack + synAttack}`;
+                        })()"
                         x-text="`⚔️${attack}`"></span>
                     <span :data-tooltip="(() => {
                         const hasRigidity = pstatus.some(s => s.id == getStatusIdByName('Rigidity'));
@@ -286,7 +293,10 @@
                         const multiplier = 1 + rigidityBonus - fragilityPenalty;
                         const isModified = hasRigidity || hasFragility;
                         
-                        let tooltip = `Base Defense\n\n60 + ((${level || 1} - 1) * 10) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult}) = ${Math.floor(60 + (((level || 1) - 1) * 10) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult))}`;
+                        const baseDefense = Math.floor(60 + (((level || 1) - 1) * 10) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult));
+                        const synDefense = Number(synergyBonus?.defense) || 0;
+                        const synName = synergyBonus?.name || 'Synergy';
+                        let tooltip = `Base Defense\n\n60 + ((${level || 1} - 1) * 10) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult})${synDefense ? ` + ${synDefense} (✨ ${synName})` : ''} = ${baseDefense + synDefense}`;
                         if (isModified) {
                             tooltip += `\n${defense}`;
                             if (hasRigidity) tooltip += ` * (1 + ${rigidityBonus}) (${getStatusIdByName('Rigidity')})`;
@@ -706,8 +716,121 @@
         </div>
 
         <!-- Journal -->
-        <div id="journal" class="journal" x-show="screen === 'journal'">
+        <div id="journal" class="journal" x-show="screen === 'journal'" x-data="createJournalState()" x-init="init()"
+            x-effect="ensureSelection()">
+            <div class="journal-panel" id="journal-panel">
+                <div class="inventory-tabs">
+                    <button class="regular-button"
+                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
+                        @click="goBack()">Back</button>
+                    <button @click="setTab('player')" class="inventory-tab"
+                        :class="{ 'inventory-tab--active': activeTab === 'player' }">Player</button>
+                    <button @click="setTab('items')" class="inventory-tab"
+                        :class="{ 'inventory-tab--active': activeTab === 'items' }">Items</button>
+                    <button @click="setTab('enemies')" class="inventory-tab"
+                        :class="{ 'inventory-tab--active': activeTab === 'enemies' }">Enemies</button>
+                    <button @click="setTab('areas')" class="inventory-tab"
+                        :class="{ 'inventory-tab--active': activeTab === 'areas' }">Areas</button>
+                    <button @click="setTab('effects')" class="inventory-tab"
+                        :class="{ 'inventory-tab--active': activeTab === 'effects' }">Effects</button>
+                </div>
 
+                <div class="journal-controls">
+                    <span class="journal-controls__label">Search:</span>
+                    <input x-model="searchQuery" type="text" placeholder="Search journal..." class="journal-search-input" />
+                    <button class="inventory-tab journal-controls__btn" x-show="searchQuery" @click="searchQuery = ''">Clear</button>
+
+                    <template x-if="activeTab === 'items' || activeTab === 'enemies'">
+                        <div class="journal-level-group">
+                            <span class="journal-controls__label">Preview Level:</span>
+                            <input x-model.number="previewLevel" type="number" min="1" max="50" class="journal-level-input" />
+                        </div>
+                    </template>
+                </div>
+
+                <div class="journal-controls" x-show="activeTab === 'items'" style="padding-top: 6px; padding-bottom: 6px; gap: 6px; overflow-x: auto;">
+                    <span class="journal-controls__label" style="font-size: 13px;">Category:</span>
+                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'all' }" @click="itemSubTab = 'all'">All</button>
+                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'equipment' }" @click="itemSubTab = 'equipment'">Equipment</button>
+                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'consumables' }" @click="itemSubTab = 'consumables'">Consumables</button>
+                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'throwables' }" @click="itemSubTab = 'throwables'">Throwables</button>
+                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'keys' }" @click="itemSubTab = 'keys'">Keys</button>
+                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'misc' }" @click="itemSubTab = 'misc'">Misc</button>
+                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'chests' }" @click="itemSubTab = 'chests'">Chests</button>
+                </div>
+
+                <div class="journal-controls" x-show="activeTab === 'enemies'" style="padding-top: 6px; padding-bottom: 6px; gap: 6px; overflow-x: auto;">
+                    <span class="journal-controls__label" style="font-size: 13px;">Category:</span>
+                    <template x-for="tab in enemySubTabs" :key="tab.value">
+                        <button class="inventory-tab journal-controls__btn"
+                            :class="{ 'inventory-tab--active': enemySubTab === tab.value }"
+                            @click="enemySubTab = tab.value"
+                            x-text="tab.label"></button>
+                    </template>
+                </div>
+
+                <div class="journal-layout">
+                    <div class="journal-list">
+                        <template x-for="entry in filteredEntries" :key="entry.key">
+                            <button class="journal-entry" :class="{ 'journal-entry--active': selectedKey === entry.key }"
+                                @click="selectEntry(entry)">
+                                <span class="journal-entry__name" x-text="entry.name"></span>
+                                <span class="journal-entry__meta" x-show="entry.meta" x-text="entry.meta"></span>
+                            </button>
+                        </template>
+                        <div class="inventory-empty" x-show="filteredEntries.length === 0">No journal results</div>
+                    </div>
+
+                    <div class="journal-detail">
+                        <template x-if="activeDetails">
+                            <div class="journal-detail__inner">
+                                <div class="journal-detail__header">
+                                    <div class="journal-detail__heading">
+                                        <h2 class="journal-detail__title" x-text="activeDetails.title"></h2>
+                                        <p class="journal-detail__subtitle" x-show="activeDetails.subtitle" x-text="activeDetails.subtitle"></p>
+                                    </div>
+                                    <template x-if="activeDetails.mediaSrc">
+                                        <img class="journal-detail__media" :src="activeDetails.mediaSrc" :alt="activeDetails.mediaAlt || activeDetails.title" />
+                                    </template>
+                                </div>
+
+                                <template x-for="line in (activeDetails.descriptionLines || [])" :key="line">
+                                    <p class="journal-detail__description" x-text="line"></p>
+                                </template>
+
+                                <template x-for="group in (activeDetails.groups || [])" :key="group.title">
+                                    <div class="journal-group">
+                                        <h3 class="journal-group__title" x-text="group.title"></h3>
+
+                                        <template x-if="group.lines && group.lines.length">
+                                            <ul class="journal-lines">
+                                                <template x-for="line in group.lines" :key="line">
+                                                    <li x-html="renderLineWithStatusTooltips(line)"></li>
+                                                </template>
+                                            </ul>
+                                        </template>
+
+                                        <template x-if="group.items && group.items.length">
+                                            <div class="journal-subcards">
+                                                <template x-for="item in group.items" :key="item.title">
+                                                    <div class="journal-subcard">
+                                                        <h4 class="journal-subcard__title" x-text="item.title"></h4>
+                                                        <ul class="journal-lines">
+                                                            <template x-for="line in item.lines" :key="line">
+                                                                <li x-html="renderLineWithStatusTooltips(line)"></li>
+                                                            </template>
+                                                        </ul>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Crafting-->
@@ -1238,7 +1361,7 @@
                             :data-tooltip="`${getStatusIdByName('Evasion')} ${estatus.find(s => s.id == getStatusIdByName('Evasion')).name} - ${estatus.find(s => s.id == getStatusIdByName('Evasion')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Evasion')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Evasion')).description}`"
                             x-text="getStatusIdByName('Evasion')"></span>
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Poison'))"
-                            :data-tooltip="`${getStatusIdByName('Poison')} ${estatus.find(s => s.id == getStatusIdByName('Poison')).name} - ${estatus.find(s => s.id == getStatusIdByName('Poison')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Poison')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Poison')).description}\n\n${estatus.find(s => s.id == getStatusIdByName('Poison')).damage} * ${estatus.find(s => s.id == getStatusIdByName('Poison')).baseDam} = ${Math.floor(estatus.find(s => s.id == getStatusIdByName('Poison')).damage * estatus.find(s => s.id == getStatusIdByName('Poison')).baseDam)}`"
+                            :data-tooltip="`${getStatusIdByName('Poison')} ${estatus.find(s => s.id == getStatusIdByName('Poison')).name} - ${estatus.find(s => s.id == getStatusIdByName('Poison')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Poison')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Poison')).description}\n\n${maxHealth} * ${estatus.find(s => s.id == getStatusIdByName('Poison')).maxHP} = ${Math.floor(maxHealth * estatus.find(s => s.id == getStatusIdByName('Poison')).maxHP)}`"
                             x-text="getStatusIdByName('Poison')"></span>
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Acuity'))"
                             :data-tooltip="`${getStatusIdByName('Acuity')} ${estatus.find(s => s.id == getStatusIdByName('Acuity')).name} - ${estatus.find(s => s.id == getStatusIdByName('Acuity')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Acuity')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Acuity')).description}`"
@@ -1315,7 +1438,7 @@
                                 inventoryIndex,
                                 itemData: assets.items.find(item => item.name === inventoryItem.name)
                             }))
-                            .filter(entry => entry.itemData && entry.itemData.name.toLowerCase().includes('potion'));
+                            .filter(entry => entry.itemData?.battle === true);
                     }
                 }">
                 <div class="battle-buttons" x-show="battle">
