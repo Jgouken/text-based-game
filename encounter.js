@@ -459,18 +459,18 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex) {
             name: selectedInventoryItem.name,
             type: 'attack',
             value: itemData.buff,
-            rounds: itemData.rounds || 1
+            rounds: (itemData.rounds || 1) + 1
         };
-        effectText.push(`gained <span style="color: lightblue;" data-tooltip="🧪 Attack increased by ${Math.floor(itemData.buff * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">[⚔️]</span>`);
+        effectText.push(`gained <span style="color: lightblue;" data-tooltip="⚔️ +${Math.floor(itemData.buff * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">[🧪]</span>`);
     } else if (itemData.def) {
         player.activePotion = {
             id: '🧪',
             name: selectedInventoryItem.name,
             type: 'defense',
             value: itemData.def,
-            rounds: itemData.rounds || 1
+            rounds: (itemData.rounds || 1) + 1
         };
-        effectText.push(`gained <span style="color: lightblue;" data-tooltip="🧪 Defense increased by ${Math.floor(itemData.def * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">[🛡️]</span>`);
+        effectText.push(`gained <span style="color: lightblue;" data-tooltip="🛡️ +${Math.floor(itemData.def * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">[🧪]</span>`);
     }
 
     removeFromInventory(inventoryIndex);

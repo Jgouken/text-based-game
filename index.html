@@ -58,97 +58,100 @@
                 get experienceTooltip () {return `${Math.floor((this.experience/getRequiredXP(this.level)) * 100)}% XP\nGained to grow stronger.`},
                 get healthTooltip () {return `${Math.floor((this.health / this.maxHealth) * 100)}% Health\nUsed to keep you alive.`},
                 get staminaTooltip () {return `${Math.floor((this.stamina / this.maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.\nYou gain ⚡${Math.round(this.maxStamina * 0.1)} per turn.`},
-                tooltipMessages: [
-                    `It's just you.`,
-                    `Why hello, ${name}.`,
-                    `Me!`,
-                    `${name} is the best.`,
-                    `${name} can't be changed later.`,
-                    `${name}, meet ${name}.`,
-                    `Who am I?`,
-                    `Oh how the tables turn.`,
-                    `Why am I doing this?`,
-                    `Hi, I'm ${name}.`,
-                    name,
-                    `Thank you so much for playing.`,
-                    `Are you lost?`,
-                    `Are you an angel?`,
-                    `Welcome to ${location}`,
-                    `I bet you're afraid of the ${enemy.name}.`,
-                    `Mwahahaha!`,
-                    `Well well well, if it isn't ${name}.`,
-                    `:|`,
-                    `The ruler of them all.`,
-                    `The destroyer.`,
-                    `Are you inflicting 10% of base damage for 3 rounds? Because you are 🔥.`,
-                    `Are you negating all of my negative feelings? Because you are a blessing ✨.`,
-                    `Have any plans later today?`,
-                    `Who else but you, right?`,
-                    `Welcome to Text-Based-Game.`,
-                    `My favorite person.`,
-                    `I think you spelled this wrong, btw.`,
-                    `Lil Timmy would be impressed.`,
-                    `I remember you.`,
-                    `Why not craft some capital letters?`,
-                    `The sky falls without you.`,
-                    `How many of these are there?`,
-                    `You just keep coming back, huh?`,
-                    `You're unstoppable!`,
-                    `The chosen one.`,
-                    `The hero we need.`,
-                    `The hero we don't deserve.`,
-                    `The legend.`,
-                    `Villages fall and rise because of you.`,
-                    `Songs are sung about you.`,
-                    `Did you know you're my favorite player?`,
-                    `They grow up so fast.`,
-                    `Fighting all by yourself, handsome?`,
-                    `Ooo.`,
-                    `How do you even pronounce this??`,
-                    `Is that your real name?`,
-                    `I like your style.`,
-                    `You're looking good today.`,
-                    `Motivational statement.`,
-                    `Borederline flirtatious statement.`,
-                    `Sarcastic statement.`,
-                    `Complimenting statement.`,
-                    `Encouraging statement.`,
-                    `Humorous statement.`,
-                    `Inspirational statement.`,
-                    `???`,
-                    `🫵`,
-                    `🫶`,
-                    `👋`,
-                    `Back so soon?`,
-                    `I can't believe you made it through these texts.`,
-                    `Obligatory 'are you actually reading this' line.`,
-                    `This isn't the stanley parable.`,
-                    `Do you expect more to happen?`,
-                    `I'm literally out of things to say!`,
-                    `Stop.`,
-                    `Stop it!`,
-                    `Ha jk I don't really care.`,
-                    `Oh but you're actually still going.`,
-                    `Mk, that's ok. Fine. I can do this all day.`,
-                    `.`,
-                    `..`,
-                    `...`,
-                    `....`,
-                    `.....`,
-                    `......`,
-                    `.......`,
-                    `........`,
-                    `.........`,
-                    `..........`,
-                    `Ok fine, this is taking up too many lines of code.`,
-                    `Don't make me loop you.`,
-                    `I will!`,
-                    `Don't test me!`,
-                    `Last chance.`,
-                    `Last last chance!`,
-                    `Alright, you've left me no choice.`,
-                    `loop();`,
-                ],
+                get tooltipMessages () {
+                    return [
+                        `It's just you.`,
+                        `Why hello, ${name}.`,
+                        `Me!`,
+                        `${name} is the best.`,
+                        `${name} can't be changed later.`,
+                        `Actually it can if you double click.`,
+                        `${name}, meet ${name}.`,
+                        `Who am I?`,
+                        `Oh how the tables turn.`,
+                        `Why am I doing this?`,
+                        `Hi, I'm ${name}.`,
+                        name,
+                        `Thank you so much for playing.`,
+                        `Are you lost?`,
+                        `Are you an angel?`,
+                        `Welcome to ${location}`,
+                        `I bet you're afraid of the ${enemy.name}.`,
+                        `Mwahahaha!`,
+                        `Well well well, if it isn't ${name}.`,
+                        `:|`,
+                        `The ruler of them all.`,
+                        `The destroyer.`,
+                        `Are you inflicting 10% of base damage for 3 rounds? Because you are 🔥.`,
+                        `Are you negating all of my negative feelings? Because you are a blessing ✨.`,
+                        `Have any plans later today?`,
+                        `Who else but you, right?`,
+                        `Welcome to Text-Based-Game.`,
+                        `My favorite person.`,
+                        `I think you spelled this wrong, btw.`,
+                        `Lil Timmy would be impressed.`,
+                        `I remember you.`,
+                        `Why not craft some capital letters?`,
+                        `The sky falls without you.`,
+                        `How many of these are there?`,
+                        `You just keep coming back, huh?`,
+                        `You're unstoppable!`,
+                        `The chosen one.`,
+                        `The hero we need.`,
+                        `The hero we don't deserve.`,
+                        `The legend.`,
+                        `Villages fall and rise because of you.`,
+                        `Songs are sung about you.`,
+                        `Did you know you're my favorite player?`,
+                        `They grow up so fast.`,
+                        `Fighting all by yourself, handsome?`,
+                        `Ooo.`,
+                        `How do you even pronounce this??`,
+                        `Is that your real name?`,
+                        `I like your style.`,
+                        `You're looking good today.`,
+                        `Motivational statement.`,
+                        `Borederline flirtatious statement.`,
+                        `Sarcastic statement.`,
+                        `Complimenting statement.`,
+                        `Encouraging statement.`,
+                        `Humorous statement.`,
+                        `Inspirational statement.`,
+                        `???`,
+                        `🫵`,
+                        `🫶`,
+                        `👋`,
+                        `Back so soon?`,
+                        `I can't believe you made it through these texts.`,
+                        `Obligatory 'are you actually reading this' line.`,
+                        `This isn't the stanley parable.`,
+                        `Do you expect more to happen?`,
+                        `I'm literally out of things to say!`,
+                        `Stop.`,
+                        `Stop it!`,
+                        `Ha jk I don't really care.`,
+                        `Oh but you're actually still going.`,
+                        `Mk, that's ok. Fine. I can do this all day.`,
+                        `.`,
+                        `..`,
+                        `...`,
+                        `....`,
+                        `.....`,
+                        `......`,
+                        `.......`,
+                        `........`,
+                        `.........`,
+                        `..........`,
+                        `Ok fine, this is taking up too many lines of code.`,
+                        `Don't make me loop you.`,
+                        `I will!`,
+                        `Don't test me!`,
+                        `Last chance.`,
+                        `Last last chance!`,
+                        `Alright, you've left me no choice.`,
+                        `loop();`,
+                    ]
+                },
                 tooltipText: 'You!',
                 randomizeTooltip() {
                     this.tooltipIndex = ((this.tooltipIndex ?? -1) + 1) % this.tooltipMessages.length;
@@ -156,8 +159,13 @@
                 }
             }">
             <div class="player-hud">
-                <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px; width: fit-content;"
-                    @mouseenter="randomizeTooltip()" :data-tooltip="tooltipText" x-text="name"></p>
+                <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px; width: fit-content; border: none; outline: none;"
+                    @mouseenter="randomizeTooltip()" :data-tooltip="tooltipText" x-text="name"
+                    @dblclick="$el.contentEditable = true; $el.focus(); $el.style.outline = 'none'"
+                    @blur="if ($el.textContent.length > 16) { $el.textContent = $el.textContent.slice(0, 16); } else if ($el.textContent.length === 0) { $el.textContent = 'Anonymous'; } $el.contentEditable = false; name = $el.textContent; tooltipMessages = [...tooltipMessages]; savePlayer(); $el.style.outline = 'none'"
+                    @keydown.enter="if ($el.textContent.length > 16) { $el.textContent = $el.textContent.slice(0, 16); } else if ($el.textContent.length === 0) { $el.textContent = 'Anonymous'; } $el.contentEditable = false; name = $el.textContent; tooltipMessages = [...tooltipMessages]; savePlayer(); $el.style.outline = 'none'"
+                    @input="if ($el.textContent.length > 16) { $el.textContent = $el.textContent.slice(0, 16); const range = document.createRange(); const sel = window.getSelection(); range.selectNodeContents($el); range.collapse(false); sel.removeAllRanges(); sel.addRange(range); }"
+                ></p>
 
                 <div class="experience-bar-background" :data-tooltip="experienceTooltip">
                 </div>
@@ -365,7 +373,7 @@
                     :data-tooltip="`${getStatusIdByName('Malediction')} ${pstatus.find(s => s.id == getStatusIdByName('Malediction')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Malediction')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Malediction')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Malediction')).description}`"
                     x-text="getStatusIdByName('Malediction')"></span>
                 <span x-show="activePotion && activePotion.rounds > 0"
-                    :data-tooltip="`🧪 ${activePotion.name || 'Potion Effect'} - ${activePotion.rounds} round${activePotion.rounds > 1 ? 's' : ''} remaining\n\n${activePotion.type === 'attack' ? `Attack increased by ${Math.floor((activePotion.value || 0) * 100)}%` : `Defense increased by ${Math.floor((activePotion.value || 0) * 100)}%`}`">🧪</span>
+                    :data-tooltip="`🧪 ${activePotion.name || 'Potion Effect'} - ${activePotion.rounds} round${activePotion.rounds > 1 ? 's' : ''} remaining\n\n${activePotion.type === 'attack' ? `⚔️ +${Math.floor((activePotion.value || 0) * 100)}%` : `🛡️ +${Math.floor((activePotion.value || 0) * 100)}%`}`">🧪</span>
                 <span x-show="health <= 0" data-tooltip="You are dead.">☠️</span>
             </div>
         </div>
@@ -390,8 +398,8 @@
                 </div>
                 <div class="credits">
                     <span style="color: grey;">Made by Jgouken &amp; SavorySam</span>
-                    <span>Your gameplay is saved through cache and
-                        cookies. If you clear or block either on this website, <u>you will lose your data.</u></span>
+                    <span>Your gameplay is saved through local storage and JavaScript. If you block either on this
+                        website, <u>your progress cannot be saved.</u></span>
                     <span style="color: grey;">Art by MoBroPro</span>
                 </div>
             </div>
@@ -448,8 +456,8 @@
 
                 <div class="credits">
                     <span style="color: grey;">Made by Jgouken &amp; SavorySam</span>
-                    <span>Your gameplay is saved through cache and
-                        cookies. If you clear or block either on this website, <u>you will lose your data.</u></span>
+                    <span>Your gameplay is saved through local storage and JavaScript. If you block either on this
+                        website, <u>your progress cannot be saved.</u></span>
                     <span style="color: grey;">Art by MoBroPro</span>
                 </div>
             </div>
