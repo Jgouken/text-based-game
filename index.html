@@ -914,8 +914,11 @@
                         :class="{ 'inventory-tab--active': itemSubTab === 'all' }"
                         @click="itemSubTab = 'all'">All</button>
                     <button class="inventory-tab journal-controls__btn"
-                        :class="{ 'inventory-tab--active': itemSubTab === 'equipment' }"
-                        @click="itemSubTab = 'equipment'">Equipment</button>
+                        :class="{ 'inventory-tab--active': itemSubTab === 'weapon' }"
+                        @click="itemSubTab = 'weapon'">Weapons</button>
+                    <button class="inventory-tab journal-controls__btn"
+                        :class="{ 'inventory-tab--active': itemSubTab === 'armor' }"
+                        @click="itemSubTab = 'armor'">Armors</button>
                     <button class="inventory-tab journal-controls__btn"
                         :class="{ 'inventory-tab--active': itemSubTab === 'consumables' }"
                         @click="itemSubTab = 'consumables'">Consumables</button>

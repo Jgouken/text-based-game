@@ -78,10 +78,20 @@ async function startBattle(enemy = null) {
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
     const location = assets.areas.find(area => area.name == background.location)
-    const randomEnemy = randomByChance(location.enemies).name
-
-    const level = enemy ? (background.enemyLevel || 1) : (Math.floor(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl))
+    let randomEnemy;
+    let level;
+    if (location.name === 'Eternal Damnation') {
+        const allEnemies = assets.enemies;
+        randomEnemy = allEnemies[Math.floor(Math.random() * allEnemies.length)].name;
+        level = Math.max(player.level, 50);
+    } else {
+        randomEnemy = randomByChance(location.enemies).name;
+        level = enemy ? (background.enemyLevel || 1) : (Math.floor(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl));
+    }
     if (!enemy) enemy = assets.enemies.find(enemy => enemy.name == randomEnemy)
+    if (location.name === 'Eternal Damnation') {
+        background.enemyLevel = level;
+    }
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
 
     died = false;
@@ -809,7 +819,7 @@ async function victory() {
             `You're finally awake.`,
             `So, about your healing ability...`
         ]
-        alert(`${deathMessages[Math.floor(Math.random() * deathMessages.length)]}}\nYour health will be replinished, but your death has been punished.`);
+        alert(`${deathMessages[Math.floor(Math.random() * deathMessages.length)]}\nYour health will be replinished, but your death has been punished.`);
         await new Promise(resolve => setTimeout(resolve, 500));
         player.health = player.maxHealth;
         player.pstatus = [];

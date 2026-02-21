@@ -346,15 +346,22 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
 function getJournalAreaDetails(area) {
     if (!area) return null;
 
-    const enemyLines = (area.enemies || []).map((enemy) => {
-        const name = enemy.name || 'Unknown';
-        const chance = enemy.chance !== undefined ? ` (${Math.round(enemy.chance * 100)}%)` : '';
-        return `${name}${chance}`;
-    });
+    const subtitle = area.name === 'Eternal Damnation'
+        ? 'Level 50+'
+        : `Level ${area.minlvl} - ${area.maxlvl}`;
+
+    const enemyLines = area.name === 'Eternal Damnation'
+        ? ['All of them.']
+        : (area.enemies || []).map((enemy) => {
+            const name = enemy.name || 'Unknown';
+            const chance = enemy.chance !== undefined ? ` (${Math.round(enemy.chance * 100)}%)` : '';
+            return `${name}${chance}`;
+        });
 
     return {
         title: area.name,
-        subtitle: `Level ${area.minlvl} - ${area.maxlvl}`,
+        subtitle,
+        descriptionLines: area.description ? [area.description] : [],
         groups: [
             {
                 title: 'Enemies',
@@ -798,8 +805,10 @@ window.createJournalState = function createJournalState() {
             if (this.activeTab === 'items') {
                 const getItemCategory = (item) => {
                     if (!item) return 'misc';
-                    const isEquipment = (item.attack !== undefined && Array.isArray(item.skills)) || (item.defense !== undefined && !item.skills && item.alvlmult !== undefined);
-                    if (isEquipment) return 'equipment';
+                    const isWeapon = item.attack !== undefined && Array.isArray(item.skills);
+                    const isArmor = item.defense !== undefined && !item.skills && item.alvlmult !== undefined;
+                    if (isWeapon) return 'weapon';
+                    if (isArmor) return 'armor';
                     if (item.name?.toLowerCase().includes('potion')) return 'consumables';
                     if (item.name?.toLowerCase().endsWith('bomb') || item.name?.toLowerCase().endsWith('flask') || item.damage || item.estatus || (item.buff && item.rounds)) return 'throwables';
                     if (item.chest !== undefined) return 'keys';

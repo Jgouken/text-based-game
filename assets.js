@@ -5399,6 +5399,7 @@ function getLocalAssets() {
 				name: "Eternal Damnation",
 				minlvl: 50,
 				maxlvl: 50,
+				description: "This is the FFA area that scales with your level. The enemies here are all the enemies in the game, and they all have an equal chance to spawn. Good luck.",
 				enemies: [] // Um...all of them.
 			}
 		],
