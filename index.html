@@ -33,7 +33,7 @@
             enemyLevel: 1,
             foundChest: null,
             assets: getAssets()
-        }" x-effect="showPlayerBar = !['new-player','how-to-play','journal', 'travel'].includes(screen)">
+        }" x-effect="showPlayerBar = !['new-player','how-to-play', 'journal', 'travel'].includes(screen)">
 
         <div id="overlay-transparency" class="overlay-transparency"></div>
 
@@ -166,8 +166,8 @@
                     @dblclick="$el.contentEditable = true; $el.focus(); $el.style.outline = 'none'"
                     @blur="if ($el.textContent.length > 16) { $el.textContent = $el.textContent.slice(0, 16); } else if ($el.textContent.length === 0) { $el.textContent = 'Anonymous'; } $el.contentEditable = false; name = $el.textContent; tooltipMessages = [...tooltipMessages]; savePlayer(); $el.style.outline = 'none'"
                     @keydown.enter="if ($el.textContent.length > 16) { $el.textContent = $el.textContent.slice(0, 16); } else if ($el.textContent.length === 0) { $el.textContent = 'Anonymous'; } $el.contentEditable = false; name = $el.textContent; tooltipMessages = [...tooltipMessages]; savePlayer(); $el.style.outline = 'none'"
-                    @input="if ($el.textContent.length > 16) { $el.textContent = $el.textContent.slice(0, 16); const range = document.createRange(); const sel = window.getSelection(); range.selectNodeContents($el); range.collapse(false); sel.removeAllRanges(); sel.addRange(range); }"
-                ></p>
+                    @input="if ($el.textContent.length > 16) { $el.textContent = $el.textContent.slice(0, 16); const range = document.createRange(); const sel = window.getSelection(); range.selectNodeContents($el); range.collapse(false); sel.removeAllRanges(); sel.addRange(range); }">
+                </p>
 
                 <div class="experience-bar-background" :data-tooltip="experienceTooltip">
                 </div>
@@ -277,14 +277,12 @@
                 ">
                 <div class="battle-weaponry" id="battle-weaponry">
 
-                    <span
-                        :data-tooltip="(() => {
+                    <span :data-tooltip="(() => {
                             const baseAttack = Math.floor(32 + (((level || 1) - 1) * 6) + weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel));
                             const synAttack = Number(synergyBonus?.attack) || 0;
                             const synName = synergyBonus?.name || 'Synergy';
                             return `Base Attack\n\n32 + ((${level || 1} - 1) * 6) + ${weaponry.weapon.attack} + ((${weaponry.level} - 1) * ${weaponry.weapon.attackPerLevel})${synAttack ? ` + ${synAttack} (✨ ${synName})` : ''} = ${baseAttack + synAttack}`;
-                        })()"
-                        x-text="`⚔️${attack}`"></span>
+                        })()" x-text="`⚔️${attack}`"></span>
                     <span :data-tooltip="(() => {
                         const hasRigidity = pstatus.some(s => s.id == getStatusIdByName('Rigidity'));
                         const hasFragility = pstatus.some(s => s.id == getStatusIdByName('Fragility'));
@@ -421,7 +419,7 @@
                     x-text="location.toUpperCase()"></p>
 
                 <div class="centered-buttons"
-                    style="justify-content: right; margin-top: 0; margin-right: 10px; position: fixed; top: 10px; right: 10px; z-index: 1000;">
+                    style="justify-content: right; margin-top: 0; margin-right: 10px; position: fixed; top: 10px; right: 10px; z-index: 1001;">
                     <button class="regular-button"
                         style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); justify-content: right; font-size: large;"
                         @click="transition('returning', 'how-to-play')">How To Play</button>
@@ -495,8 +493,167 @@
             </div>
 
             <!-- How To Play -->
-            <div id="how-to-play" class="how-to-play" x-show="screen === 'how-to-play'">
+            <div id="how-to-play" class="how-to-play" x-show="screen === 'how-to-play'"
+                x-data="{ activeGuide: 'encounters' }">
+                <h1
+                    style="text-align: center; font-size: 44px; font-family: 'Pixelify Sans', sans-serif; margin-top: 24px;">
+                    How To Play</h1>
 
+                <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                    <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'encounters' }"
+                        @click="activeGuide = 'encounters'">Encounters</button>
+                    <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'inventory' }"
+                        @click="activeGuide = 'inventory'">Inventory</button>
+                    <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'journal' }"
+                        @click="activeGuide = 'journal'">Journal</button>
+                    <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'crafting' }"
+                        @click="activeGuide = 'crafting'">Crafting</button>
+                    <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'point' }"
+                        @click="activeGuide = 'point'">Point of the Game</button>
+                </div>
+
+                <div
+                    style="max-width: 1200px; height: calc(100vh - 260px); margin: 18px auto 0; overflow-y: auto; padding: 16px 22px; border: 5px solid rgba(255,255,255,0.25); background-color: rgba(0, 0, 0, 0.55); box-sizing: border-box;">
+                    <section x-show="activeGuide === 'encounters'" x-cloak>
+                        <h2 style="font-size: 34px; font-family: 'Pixelify Sans', sans-serif;">Encounters</h2>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            The actual gameplay happens in encounters. Encounters let you battle an enemy within the
+                            current area,
+                            and each enemy has a spawn chance and scaled level. Every area is designed for certain
+                            player levels
+                            and has its own enemy pool.
+                        </p>
+                        <br>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            During each battle, perform actions and manage your energy carefully to outlast your enemy.
+                            After each battle, you can earn experience, items, or chests.
+                        </p>
+                        <div
+                            style="margin-top: 10px; border: 4px solid rgb(88, 0, 0); background-color: rgba(117, 0, 0, 0.2); padding: 12px;">
+                            <p
+                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 22px; color: rgb(253, 113, 113);">
+                                Note:</p>
+                            <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 21px; line-height: 1.6;">
+                                You require the chest's specific key in order to unlock it, otherwise you must pass it
+                                up.</p>
+                        </div>
+                        <br>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            Take turns slapping enemies until either of you die. Battle your way through goblins,
+                            slimes,
+                            wizards, and even vampires to murder your way to the bosses, who may appear at any time in certain locations.
+                        </p>
+                    </section>
+
+                    <section x-show="activeGuide === 'inventory'" x-cloak>
+                        <h2 style="font-size: 34px; font-family: 'Pixelify Sans', sans-serif;">Inventory</h2>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            View your player's inventory of items collected throughout your adventure.
+                            Some items, titled Crafting Reagents, are used only for crafting.
+                            Other items, like weapons and armor, are equipable, while others can be used.
+                        </p>
+                        <br>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            Drag an item from your inventory to your player bars to equip or use it.
+                        </p>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            Certain weapons and armors synergize, giving you an additional boost when both are equipped.
+                        </p>
+                        <div
+                            style="margin-top: 10px; border: 4px solid rgb(0, 88, 0); background-color: rgba(42, 201, 42, 0.2); padding: 12px;">
+                            <p
+                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 22px; color: rgb(138, 233, 138);">
+                                Note:</p>
+                            <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 21px; line-height: 1.6;">You
+                                can hold shift to open the item at its level to the journal page, allowing you to view
+                                more detailed information.</p>
+                        </div>
+                        <br>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            During battles, only consumables and throwables can be used using the Item button. Drag an
+                            item to the player bars to use it, or on the enemy to throw it at them.
+                        </p>
+                    </section>
+
+                    <section x-show="activeGuide === 'journal'" x-cloak>
+                        <h2 style="font-size: 34px; font-family: 'Pixelify Sans', sans-serif;">Journal</h2>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            View specific information about an area, an enemy, battle effects, an item, or your player.
+                        </p>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            The journal is meant to attain specific knowledge for each value in the game,
+                            not as a guide to defeating them.
+                        </p>
+                        <div
+                            style="margin-top: 10px; border: 4px solid rgb(1, 0, 88); background-color: rgba(20, 5, 228, 0.2); padding: 12px;">
+                            <p
+                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 22px; color: rgb(147, 141, 255);">
+                                Note:</p>
+                            <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 21px; line-height: 1.6;">
+                                References to other items on most pages allow you to open the page of that item when
+                                clicked.</p>
+                        </div>
+                        <br>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            The journal does not provide any methods or tips, just the raw information which can be useful for strategies.
+                        </p>
+                    </section>
+
+                    <section x-show="activeGuide === 'crafting'" x-cloak>
+                        <h2 style="font-size: 34px; font-family: 'Pixelify Sans', sans-serif;">Crafting</h2>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            Using Craft Reagents from your inventory, you can craft useful battle items,
+                            including bombs, crystals, and flasks that can turn the fight in your favor.
+                        </p>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            Weapons and armor cannot be crafted. You must find them in encounters or in chests.
+                        </p>
+                        <div
+                            style="margin-top: 10px; border: 4px solid rgb(153, 9, 219); background-color: rgba(184, 111, 218, 0.2); padding: 12px;">
+                            <p
+                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 22px; color: rgb(228, 176, 249);">
+                                Uses:</p>
+                            <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 21px; line-height: 1.6;">
+                                Craft bombs for unprotectable damage, flasks for utility, and potions for tough fights.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section x-show="activeGuide === 'point'" x-cloak>
+                        <h2 style="font-size: 34px; font-family: 'Pixelify Sans', sans-serif;">Point of the Game</h2>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            The goal is to reach level 50, gather strong gear and resources, and progress to defeating
+                            the Demon Queen.
+                        </p>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            Progress is intentionally slow and difficult, but highly rewarding as your build, inventory,
+                            and combat choices come together.
+                        </p>
+                        <div
+                            style="margin-top: 10px; border: 4px solid rgb(245, 17, 17); background-color: rgba(255, 0, 0, 0.15); padding: 12px;">
+                            <p
+                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 22px; color: rgb(255, 159, 159);">
+                                What's after that?</p>
+                            <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 21px; line-height: 1.6;">
+                                After level 50, you can access "Eternal Damnation," an endless hellscape where the
+                                enemies now scale slightly above you as a perpetual challenge. Good for if you want to
+                                obtain the best gear. You can level up past 50, but the difficulty will continue to
+                                increase.
+                            </p>
+                        </div>
+                        <br>
+                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                            There is no shop or currency, so all of your resources must be obtained through battles and
+                            crafting. Spend them wisely!
+                        </p>
+                    </section>
+                </div>
+
+                <div class="centered-buttons" style="margin-top: 16px; margin-bottom: 20px;">
+                    <button class="regular-button"
+                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88);"
+                        @click="transition('how-to-play', 'returning')">Back</button>
+                </div>
             </div>
 
             <!-- Inventory -->
@@ -712,7 +869,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <!-- Journal -->
@@ -737,42 +893,61 @@
 
                 <div class="journal-controls">
                     <span class="journal-controls__label">Search:</span>
-                    <input x-model="searchQuery" type="text" placeholder="Search journal..." class="journal-search-input" />
-                    <button class="inventory-tab journal-controls__btn" x-show="searchQuery" @click="searchQuery = ''">Clear</button>
+                    <input x-model="searchQuery" type="text" placeholder="Search journal..."
+                        class="journal-search-input" />
+                    <button class="inventory-tab journal-controls__btn" x-show="searchQuery"
+                        @click="searchQuery = ''">Clear</button>
 
                     <template x-if="activeTab === 'items' || activeTab === 'enemies'">
                         <div class="journal-level-group">
                             <span class="journal-controls__label">Preview Level:</span>
-                            <input x-model.number="previewLevel" type="number" min="1" max="50" class="journal-level-input" />
+                            <input x-model.number="previewLevel" type="number" min="1" max="50"
+                                class="journal-level-input" />
                         </div>
                     </template>
                 </div>
 
-                <div class="journal-controls" x-show="activeTab === 'items'" style="padding-top: 6px; padding-bottom: 6px; gap: 6px; overflow-x: auto;">
+                <div class="journal-controls" x-show="activeTab === 'items'"
+                    style="padding-top: 6px; padding-bottom: 6px; gap: 6px; overflow-x: auto;">
                     <span class="journal-controls__label" style="font-size: 13px;">Category:</span>
-                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'all' }" @click="itemSubTab = 'all'">All</button>
-                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'equipment' }" @click="itemSubTab = 'equipment'">Equipment</button>
-                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'consumables' }" @click="itemSubTab = 'consumables'">Consumables</button>
-                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'throwables' }" @click="itemSubTab = 'throwables'">Throwables</button>
-                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'keys' }" @click="itemSubTab = 'keys'">Keys</button>
-                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'misc' }" @click="itemSubTab = 'misc'">Misc</button>
-                    <button class="inventory-tab journal-controls__btn" :class="{ 'inventory-tab--active': itemSubTab === 'chests' }" @click="itemSubTab = 'chests'">Chests</button>
+                    <button class="inventory-tab journal-controls__btn"
+                        :class="{ 'inventory-tab--active': itemSubTab === 'all' }"
+                        @click="itemSubTab = 'all'">All</button>
+                    <button class="inventory-tab journal-controls__btn"
+                        :class="{ 'inventory-tab--active': itemSubTab === 'equipment' }"
+                        @click="itemSubTab = 'equipment'">Equipment</button>
+                    <button class="inventory-tab journal-controls__btn"
+                        :class="{ 'inventory-tab--active': itemSubTab === 'consumables' }"
+                        @click="itemSubTab = 'consumables'">Consumables</button>
+                    <button class="inventory-tab journal-controls__btn"
+                        :class="{ 'inventory-tab--active': itemSubTab === 'throwables' }"
+                        @click="itemSubTab = 'throwables'">Throwables</button>
+                    <button class="inventory-tab journal-controls__btn"
+                        :class="{ 'inventory-tab--active': itemSubTab === 'keys' }"
+                        @click="itemSubTab = 'keys'">Keys</button>
+                    <button class="inventory-tab journal-controls__btn"
+                        :class="{ 'inventory-tab--active': itemSubTab === 'misc' }"
+                        @click="itemSubTab = 'misc'">Misc</button>
+                    <button class="inventory-tab journal-controls__btn"
+                        :class="{ 'inventory-tab--active': itemSubTab === 'chests' }"
+                        @click="itemSubTab = 'chests'">Chests</button>
                 </div>
 
-                <div class="journal-controls" x-show="activeTab === 'enemies'" style="padding-top: 6px; padding-bottom: 6px; gap: 6px; overflow-x: auto;">
+                <div class="journal-controls" x-show="activeTab === 'enemies'"
+                    style="padding-top: 6px; padding-bottom: 6px; gap: 6px; overflow-x: auto;">
                     <span class="journal-controls__label" style="font-size: 13px;">Category:</span>
                     <template x-for="tab in enemySubTabs" :key="tab.value">
                         <button class="inventory-tab journal-controls__btn"
                             :class="{ 'inventory-tab--active': enemySubTab === tab.value }"
-                            @click="enemySubTab = tab.value"
-                            x-text="tab.label"></button>
+                            @click="enemySubTab = tab.value" x-text="tab.label"></button>
                     </template>
                 </div>
 
                 <div class="journal-layout">
                     <div class="journal-list">
                         <template x-for="entry in filteredEntries" :key="entry.key">
-                            <button class="journal-entry" :class="{ 'journal-entry--active': selectedKey === entry.key }"
+                            <button class="journal-entry"
+                                :class="{ 'journal-entry--active': selectedKey === entry.key }"
                                 @click="selectEntry(entry)">
                                 <span class="journal-entry__name" x-text="entry.name"></span>
                                 <span class="journal-entry__meta" x-show="entry.meta" x-text="entry.meta"></span>
@@ -787,10 +962,12 @@
                                 <div class="journal-detail__header">
                                     <div class="journal-detail__heading">
                                         <h2 class="journal-detail__title" x-text="activeDetails.title"></h2>
-                                        <p class="journal-detail__subtitle" x-show="activeDetails.subtitle" x-text="activeDetails.subtitle"></p>
+                                        <p class="journal-detail__subtitle" x-show="activeDetails.subtitle"
+                                            x-text="activeDetails.subtitle"></p>
                                     </div>
                                     <template x-if="activeDetails.mediaSrc">
-                                        <img class="journal-detail__media" :src="activeDetails.mediaSrc" :alt="activeDetails.mediaAlt || activeDetails.title" />
+                                        <img class="journal-detail__media" :src="activeDetails.mediaSrc"
+                                            :alt="activeDetails.mediaAlt || activeDetails.title" />
                                     </template>
                                 </div>
 
