@@ -95,27 +95,32 @@ function getJournalSkillLines(skill, assets, actor = 'player') {
     const pStatusInfo = getSkillStatusDescriptor(skill, 'pstatus');
     const eStatusInfo = getSkillStatusDescriptor(skill, 'estatus');
 
-    if (pStatusInfo) {
-        const pLabel = actorIsPlayer ? 'Gains' : 'Inflicts';
-        if (pStatusInfo.isRandomizer) {
-            const pool = pStatusInfo.pool.join('');
-            const fallback = pStatusInfo.fallback || '';
-            lines.push(`${pLabel}: Picks up to ${pStatusInfo.maxPick} of ${pool} or otherwise selects ${fallback}`);
-        } else {
-            const pStatus = journalStatusText(pStatusInfo.value, assets);
-            if (pStatus) lines.push(`${pLabel}: ${pStatus}`);
+    if (skill.name === 'Yin and Yang') {
+        lines.push('Inflicts 🖤🌑🥀🌀 or 🔥👁️');
+        lines.push('Gains ✨🍀🛡️🏅 or 💢💨');
+    } else {
+        if (pStatusInfo) {
+            const pLabel = actorIsPlayer ? 'Gains' : 'Inflicts';
+            if (pStatusInfo.isRandomizer) {
+                const pool = pStatusInfo.pool.join('');
+                const fallback = pStatusInfo.fallback || '';
+                lines.push(`${pLabel}: Picks up to ${pStatusInfo.maxPick} of ${pool} or otherwise selects ${fallback}`);
+            } else {
+                const pStatus = journalStatusText(pStatusInfo.value, assets);
+                if (pStatus) lines.push(`${pLabel}: ${pStatus}`);
+            }
         }
-    }
 
-    if (eStatusInfo) {
-        const eLabel = actorIsPlayer ? 'Inflicts' : 'Gains';
-        if (eStatusInfo.isRandomizer) {
-            const pool = eStatusInfo.pool.join('');
-            const fallback = eStatusInfo.fallback || '';
-            lines.push(`${eLabel}: Picks up to ${eStatusInfo.maxPick} of ${pool} or otherwise selects ${fallback}`);
-        } else {
-            const eStatus = journalStatusText(eStatusInfo.value, assets);
-            if (eStatus) lines.push(`${eLabel}: ${eStatus}`);
+        if (eStatusInfo) {
+            const eLabel = actorIsPlayer ? 'Inflicts' : 'Gains';
+            if (eStatusInfo.isRandomizer) {
+                const pool = eStatusInfo.pool.join('');
+                const fallback = eStatusInfo.fallback || '';
+                lines.push(`${eLabel}: Picks up to ${eStatusInfo.maxPick} of ${pool} or otherwise selects ${fallback}`);
+            } else {
+                const eStatus = journalStatusText(eStatusInfo.value, assets);
+                if (eStatus) lines.push(`${eLabel}: ${eStatus}`);
+            }
         }
     }
 
@@ -509,7 +514,7 @@ window.createJournalState = function createJournalState() {
             return tooltip;
         },
 
-        getChestTooltipHtmlByName(chestName) {
+        getChestTooltipHtmlByNamel(chestName) {
             const chest = this.assets.chests.find((entry) => entry.name === chestName);
             if (!chest) return null;
             if (!chest.sprite) return `<div>${chest.name}</div>`;

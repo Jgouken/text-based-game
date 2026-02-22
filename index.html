@@ -1680,7 +1680,24 @@
                                 <button class="battle-skill1" id="battle-skill1" x-text="weapon.skills[1].name"
                                     :disabled="Alpine.$data(player).stamina < weapon.skills[1].cost || !turn"
                                     :style="`${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'not-allowed' : 'pointer' };`"
-                                    :data-tooltip="`${weapon.skills[1].description ? `${weapon.skills[1].description}\n` : ''}${weapon.skills[1].cost ? `⚡${weapon.skills[1].cost}\n` : ''}⚔️ x${weapon.skills[1].attack ? (weapon.skills[1].damage || 1) : 0}\n${weapon.skills[1].times ? `🔄️${weapon.skills[1].times}x\n` : ''}${weapon.skills[1].flatHealth ? `❤️ ${weapon.skills[1].flatHealth}\n` : ''}${weapon.skills[1].health ? `💖 ${Math.floor(weapon.skills[1].health * 100)}%\n` : ''}${weapon.skills[1].lifesteal ? `💞 ${Math.floor(weapon.skills[1].lifesteal * 100)}%\n` : ''}${weapon.skills[1].pstatus ? `Gains ${weapon.skills[1].pstatus.join('')}\n` : ''}${weapon.skills[1].estatus ? 'Inflicts ' + weapon.skills[1].estatus.join('') : ''}`"
+                                    :data-tooltip="(() => {
+                                        const skill = weapon.skills[1];
+                                        let tooltip = '';
+                                        if (skill.description) tooltip += skill.description + '\n';
+                                        if (skill.cost) tooltip += `⚡${skill.cost}\n`;
+                                        tooltip += `⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n`;
+                                        if (skill.times) tooltip += `🔄️${skill.times}x\n`;
+                                        if (skill.flatHealth) tooltip += `❤️ ${skill.flatHealth}\n`;
+                                        if (skill.health) tooltip += `💖 ${Math.floor(skill.health * 100)}%\n`;
+                                        if (skill.lifesteal) tooltip += `💞 ${Math.floor(skill.lifesteal * 100)}%\n`;
+                                        if (skill.name === 'Yin and Yang') {
+                                            tooltip += 'Inflicts 🖤🌑🥀🌀 or 🔥👁️\nGains ✨🍀🛡️🏅 or 💢💨';
+                                        } else {
+                                            if (skill.pstatus) tooltip += `Gains ${skill.pstatus.join('')}\n`;
+                                            if (skill.estatus) tooltip += 'Inflicts ' + skill.estatus.join('');
+                                        }
+                                        return tooltip;
+                                    })()"
                                     @click="skill(1)">
                                     ?
                                 </button>

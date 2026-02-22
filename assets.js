@@ -6744,7 +6744,7 @@ function getLocalAssets() {
 					{
 						name: "Yin and Yang",
 						cost: 111,
-						description: "Point Melanie or Alectrona upwards then unleashes its power which creates a massive blade of light or darkness before slamming it down on to the enemy and strengthening its wielder.\n\nRandomized for each turn:\nInflict Cursed, Bad Omen, Bad Luck, and Weakness\nOR\nInflict Burn, Blindness, and Bleed.\n\nThen, Gain Berserk and Evasion\nOR\nGain Blessing, Fortitude, Empowerment, and Luck",
+						description: "Point Melanie or Alectrona upwards then unleashes its power which creates a massive blade of light or darkness before slamming it down on to the enemy and strengthening its wielder.\n\nThe output of this ability is randomized for each turn.",
 						damage: 3,
 						get estatus() { return [["🖤", "🌑", "🥀", "🌀"], ["🔥", "👁️"]][Math.floor(Math.random() * 2)] },
 						get pstatus() { return [["💢", "💨"], ["✨", "🍀", "🛡️", "🏅"]][Math.floor(Math.random() * 2)] },

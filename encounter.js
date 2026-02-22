@@ -187,7 +187,19 @@ async function executeSkill({
     let crit = Math.random() >= 1 - attacker.crit - critDif;
     let totalDealt = 0;
 
-    let skillLog = `<span style="color:lightblue;" data-tooltip="${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.floor(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.floor(skill.lifesteal * 100)}%\n` : ''}${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + `${skill.pstatus.join('')}\n` : ''}${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}">${skill.cost ? '⚡' : ''}${skill.name}</span>`;
+    let skillLog;
+    let tooltip = `${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.floor(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.floor(skill.lifesteal * 100)}%\n` : ''}`;
+    
+    if (skill.name === "Yin and Yang") {
+        tooltip += `${isPlayer ? 'Gains ' : 'Inflicts '}🖤🌑🥀🌀 or 🔥👁️\n`;
+        tooltip += `${!isPlayer ? 'Gains ' : 'Inflicts '}✨🍀🛡️🏅 or 💢💨`;
+    } else {
+        tooltip += `${skill.pstatus ? (isPlayer ? 'Gains ' : 'Inflicts ') + `${skill.pstatus.join('')}\n` : ''}`;
+        tooltip += `${skill.estatus ? (!isPlayer ? 'Gains ' : 'Inflicts ') + skill.estatus.join('') : ''}`;
+    }
+
+    skillLog = `<span style="color:lightblue;" data-tooltip="${tooltip}">${skill.cost ? '⚡' : ''}${skill.name}</span>`;
+
     encounter.log.push(`- ${attackerName} used ${skillLog}`);
 
     let damageLog = (final) =>
@@ -306,7 +318,7 @@ async function executeSkill({
                     eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
                 }
             });
-            if (eviscerated.length > 0) encounter.log.push(`${statId('Malediction')} All of ${player.name}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
+            if (eviscerated.length > 0) encounter.log.push(`<span data-tooltip="${statId('Malediction')} Malediction\n\n${getStatusByName('Malediction').description}">${statId('Malediction')}</span> All of ${player.name}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
         } else if (hasStatus(player.pstatus, 'Blessing')) {
             let cleansed = [];
             player.pstatus.slice().forEach(s => {
@@ -316,14 +328,14 @@ async function executeSkill({
                 }
             });
 
-            if (cleansed.length > 0) encounter.log.push(`${statId('Blessing')} All of ${player.name}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
+            if (cleansed.length > 0) encounter.log.push(`<span data-tooltip="${statId('Blessing')} Blessing\n\n${getStatusByName('Blessing').description}">${statId('Blessing')}</span> All of ${player.name}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
         }
     }
 
     if (hasStatus(encounter.estatus, 'Blessing') || hasStatus(encounter.estatus, 'Malediction')) {
         if (hasStatus(encounter.estatus, 'Blessing') && hasStatus(encounter.estatus, 'Malediction')) {
             encounter.estatus.length = 0;
-            encounter.log.push(`${statId('Blessing')} All ${encounter.enemyName}'s effects were evaporated. ${statId('Malediction')}`);
+            encounter.log.push(`<span data-tooltip="${statId('Blessing')} Blessing\n\n${getStatusByName('Blessing').description}">${statId('Blessing')}</span> All ${encounter.enemyName}'s effects were evaporated. <span data-tooltip="${statId('Malediction')} Malediction\n\n${getStatusByName('Malediction').description}">${statId('Malediction')}</span>`);
         } else if (hasStatus(encounter.estatus, 'Malediction')) {
             let eviscerated = [];
             encounter.estatus.slice().forEach(s => {
@@ -332,7 +344,7 @@ async function executeSkill({
                     eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
                 }
             });
-            if (eviscerated.length > 0) encounter.log.push(`${statId('Malediction')} All of ${encounter.enemyName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
+            if (eviscerated.length > 0) encounter.log.push(`<span data-tooltip="${statId('Malediction')} Malediction\n\n${getStatusByName('Malediction').description}">${statId('Malediction')}</span> All of ${encounter.enemyName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
         } else if (hasStatus(encounter.estatus, 'Blessing')) {
             let cleansed = [];
             encounter.estatus.slice().forEach(s => {
@@ -342,7 +354,7 @@ async function executeSkill({
                 }
             });
 
-            if (cleansed.length > 0) encounter.log.push(`${statId('Blessing')} All of ${encounter.enemyName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
+            if (cleansed.length > 0) encounter.log.push(`<span data-tooltip="${statId('Blessing')} Blessing\n\n${getStatusByName('Blessing').description}">${statId('Blessing')}</span> All of ${encounter.enemyName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
         }
     }
 
