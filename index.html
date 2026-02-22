@@ -161,8 +161,7 @@
                 }
             }">
             <div class="player-hud">
-                <p style="font-size: 60px; font-family: 'Pixelify Sans', sans-serif; margin-left: 20px; width: fit-content; border: none; outline: none;"
-                    @mouseenter="randomizeTooltip()" :data-tooltip="tooltipText" x-text="name"
+                <p class="player-title" @mouseenter="randomizeTooltip()" :data-tooltip="tooltipText" x-text="name"
                     @dblclick="$el.contentEditable = true; $el.focus(); $el.style.outline = 'none'"
                     @blur="if ($el.textContent.length > 16) { $el.textContent = $el.textContent.slice(0, 16); } else if ($el.textContent.length === 0) { $el.textContent = 'Anonymous'; } $el.contentEditable = false; name = $el.textContent; tooltipMessages = [...tooltipMessages]; savePlayer(); $el.style.outline = 'none'"
                     @keydown.enter="if ($el.textContent.length > 16) { $el.textContent = $el.textContent.slice(0, 16); } else if ($el.textContent.length === 0) { $el.textContent = 'Anonymous'; } $el.contentEditable = false; name = $el.textContent; tooltipMessages = [...tooltipMessages]; savePlayer(); $el.style.outline = 'none'"
@@ -189,8 +188,7 @@
                     0/0</div>
 
                 <div class="mini-stats">
-                    <img src="assets/effects/Luck.png"
-                        style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
+                    <img src="assets/effects/Luck.png" class="mini-stat-icon">
                     <span :data-tooltip="(() => {
                         const hasLuck = pstatus.some(s => s.id == getStatusIdByName('Luck'));
                         const hasMisfortune = pstatus.some(s => s.id == getStatusIdByName('Misfortune'));
@@ -215,12 +213,10 @@
                             const isModified = hasLuck || hasMisfortune;
                             return `${Math.floor(modifiedCrit * 100)}%${isModified ? '*' : ''}`;
                         })()"></span>
-                    <img src="assets/effects/Strength.png"
-                        style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
+                    <img src="assets/effects/Strength.png" class="mini-stat-icon">
                     <span :data-tooltip="`Critical Multiplier\nMultiplies your output on a successful crit.`"
                         x-text="`${critdmg}x`"></span>
-                    <img src="assets/effects/Focus.png"
-                        style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
+                    <img src="assets/effects/Focus.png" class="mini-stat-icon">
                     <span :data-tooltip="(() => {
                         const hasAcuity = pstatus.some(s => s.id == getStatusIdByName('Acuity'));
                         const hasBlindness = pstatus.some(s => s.id == getStatusIdByName('Blindness'));
@@ -245,8 +241,7 @@
                             const isModified = hasAcuity || hasBlindness;
                             return `${Math.floor(modifiedAccuracy * 100)}%${isModified ? '*' : ''}`;
                         })()"></span>
-                    <img src="assets/effects/Evasion.png"
-                        style="width: 20px; height: 20px; display: inline-block; transform: translateY(4px);">
+                    <img src="assets/effects/Evasion.png" class="mini-stat-icon">
                     <span :data-tooltip="(() => {
                         const hasEvasion = pstatus.some(s => s.id == getStatusIdByName('Evasion'));
                         const evasionBonus = hasEvasion ? getAssets().statuses.find(s => s.name === 'Evasion').decEnAcc : 0;
@@ -389,118 +384,91 @@
         <div id="screen" class="screen">
             <!-- New Player (Title Screen)-->
             <div id="new-player" class="new-player" x-show="screen === 'new-player'">
-                <p style="text-align: center; font-size: 30px; top: 25px;">Welcome to</p>
-                <h1 style="text-align: center; font-weight: bold; font-size: clamp(24px, 8vw, 60px); top: 50px;">Text -
+                <p class="welcome-sub">Welcome to</p>
+                <h1 class="main-title">Text -
                     Based - Game</h1>
                 <div class="centered-inputs">
-                    <h1 style="text-align: center; font-family: 'Pixelify Sans', sans-serif; font-size: clamp(24px, 8vw, 60px); width: 90vw;"
+                    <h1 class="centered-heading"
                         x-text="`${name ? `Why hello, ${name}!` : 'What is your name, Traveler?'}`">What is your
                         name, Traveler?</h1>
                     <input class="name-input" type="text" id="name" name="name" required minlength="1" maxlength="16"
                         size="100" placeholder="I'm..." x-model="name" autocomplete="off"
                         @keyup.enter="if (name) { startGame(name); updateBars() }" />
-                    <button class="regular-button"
-                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
-                        @click="importButton()">IMPORT</button>
-                    <button class="regular-button" @click="startGame(name); updateBars()" x-show="name"
-                        style="background-color: green; border: 5px solid rgb(0, 88, 34); color: white;">Onwards</button>
+                    <button class="regular-button btn--primary" @click="importButton()">IMPORT</button>
+                    <button class="regular-button btn--success" @click="startGame(name); updateBars()"
+                        x-show="name">Onwards</button>
                 </div>
                 <div class="credits">
-                    <span style="color: grey;">Made by Jgouken &amp; SavorySam</span>
+                    <span class="credits-muted">Made by Jgouken &amp; SavorySam</span>
                     <span>Your gameplay is saved through local storage and JavaScript. If you block either on this
                         website, <u>your progress cannot be saved.</u></span>
-                    <span style="color: grey;">Art by MoBroPro</span>
+                    <span class="credits-muted">Art by MoBroPro</span>
                 </div>
             </div>
 
             <!-- Returning Player (Landing Screen)-->
-            <div id="returning" class="returning" x-show="screen === 'returning'" style="display: none;">
-                <p style="text-align: center; font-size: 30px; top: 25px;">Text-Based-Game</p>
-                <p style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif; top: 280px;"
-                    x-text="location.toUpperCase()"></p>
+            <div id="returning" class="returning" x-show="screen === 'returning'">
+                <p class="welcome-sub">Text-Based-Game</p>
+                <p class="returning-title" x-text="location.toUpperCase()"></p>
 
-                <div class="centered-buttons"
-                    style="justify-content: right; margin-top: 0; margin-right: 10px; position: fixed; top: 10px; right: 10px; z-index: 100; width: fit-content;">
-                    <button class="regular-button"
-                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); justify-content: right; font-size: large;"
-                        @click="transition('returning', 'how-to-play')">How To Play</button>
+                <div class="centered-buttons top-right-buttons">
+                    <button class="regular-button btn--primary" @click="transition('returning', 'how-to-play')">How To
+                        Play</button>
                 </div>
 
-                <div class="centered-buttons"
-                    style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; gap: 20px; width: fit-content; justify-content: flex-start; padding: 10px; margin-top: 0px;">
-                    <button class="regular-button"
-                        style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0); font-size: large;"
-                        @click="deleteButton()">DELETE</button>
-                    <button class="regular-button"
-                        style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0); font-size: large;"
-                        @click="exportButton()">EXPORT</button>
-                    <button class="regular-button"
-                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
-                        @click="importButton()">IMPORT</button>
+                <div class="centered-buttons top-fixed-button-row">
+                    <button class="regular-button btn--danger" @click="deleteButton()">DELETE</button>
+                    <button class="regular-button btn--success" @click="exportButton()">EXPORT</button>
+                    <button class="regular-button btn--primary" @click="importButton()">IMPORT</button>
                 </div>
 
-                <div class="centered-buttons" style="margin-top: 350px;">
-                    <button class="regular-button"
-                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88);"
+                <div class="centered-buttons centered-buttons--large-top">
+                    <button class="regular-button btn--landing-primary"
                         @click="transition('returning', 'travel')">Travel</button>
-                    <button class=" regular-button"
-                        style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0);"
+                    <button class="regular-button btn--landing-success"
                         @click="transition('returning', 'encounter'); startBattle()">Encounter</button>
-                    <button class="regular-button"
-                        style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0);"
-                        @click="quitButton()">Quit</button>
+                    <button class="regular-button btn--landing-danger" @click="quitButton()">Quit</button>
                 </div>
 
-                <div class="centered-buttons" style="margin-top: 20px;">
-                    <button class="regular-button"
-                        style="background-color: rgb(92, 80, 255); color: black; border: 5px solid rgb(6, 4, 122);"
+                <div class="centered-buttons centered-buttons--small-top">
+                    <button class="regular-button btn--purple"
                         @click="transition('returning', 'inventory')">Inventory</button>
-                    <button class="regular-button"
-                        style="background-color: rgb(184, 111, 218); border: 5px solid rgb(153, 9, 219);"
+                    <button class="regular-button btn--violet"
                         @click="transition('returning', 'journal')">Journal</button>
-                    <button class="regular-button"
-                        style="background-color: rgb(184, 255, 150); color: black; border: 5px solid rgb(15, 160, 1);"
+                    <button class="regular-button btn--lime"
                         @click="transition('returning', 'crafting')">Crafting</button>
                 </div>
 
                 <div class="credits">
-                    <span style="color: grey;">Made by Jgouken &amp; SavorySam</span>
+                    <span class="credits-muted">Made by Jgouken &amp; SavorySam</span>
                     <span>Your gameplay is saved through local storage and JavaScript. If you block either on this
                         website, <u>your progress cannot be saved.</u></span>
-                    <span style="color: grey;">Art by MoBroPro</span>
+                    <span class="credits-muted">Art by MoBroPro</span>
                 </div>
             </div>
 
             <!-- Found a Chest -->
-            <div id="chest-found" class="returning" x-show="screen === 'chest-found'" style="display: none;
-            margin-top: -100px;">
-                <p style="text-align: center; font-size: 54px; font-family: 'Pixelify Sans', sans-serif; margin-top: 130px;"
+            <div id="chest-found" class="returning chest-found" x-show="screen === 'chest-found'">
+                <p class="chest-title"
                     x-text="foundChest ? assets.chests[foundChest.chest]?.name || 'Mysterious Chest' : 'Mysterious Chest'">
                 </p>
 
-                <div style="display: flex; justify-content: center;">
-                    <img :src="foundChest ? assets.chests[foundChest.chest]?.sprite : ''"
-                        style="width: auto; height: 50vh; object-fit: contain; image-rendering: pixelated;" />
+                <div class="chest-img-wrap">
+                    <img :src="foundChest ? assets.chests[foundChest.chest]?.sprite : ''" class="chest-img" />
                 </div>
 
-                <div class="centered-buttons" style="margin-top: 0px;">
-                    <button class="regular-button"
-                        style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0);"
-                        @click="crackChestOpen()">Crack It Open</button>
-                    <button class="regular-button"
-                        style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0);"
-                        @click="declineChestFound()">No Thanks</button>
+                <div class="centered-buttons chest-buttons">
+                    <button class="regular-button btn--landing-success" @click="crackChestOpen()">Crack It Open</button>
+                    <button class="regular-button btn--landing-danger" @click="declineChestFound()">No Thanks</button>
                 </div>
             </div>
 
             <!-- How To Play -->
             <div id="how-to-play" class="how-to-play" x-show="screen === 'how-to-play'"
                 x-data="{ activeGuide: 'encounters' }">
-                <h1
-                    style="text-align: center; font-size: 44px; font-family: 'Pixelify Sans', sans-serif; margin-top: 24px;">
-                    How To Play</h1>
+                <h1 class="how-title">How To Play</h1>
 
-                <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                <div class="how-tabs">
                     <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'encounters' }"
                         @click="activeGuide = 'encounters'">Encounters</button>
                     <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'inventory' }"
@@ -513,11 +481,10 @@
                         @click="activeGuide = 'point'">Point of the Game</button>
                 </div>
 
-                <div
-                    style="max-width: 1200px; height: calc(100vh - 260px); margin: 18px auto 0; overflow-y: auto; padding: 16px 22px; border: 5px solid rgba(255,255,255,0.25); background-color: rgba(0, 0, 0, 0.55); box-sizing: border-box;">
+                <div class="how-content-box">
                     <section x-show="activeGuide === 'encounters'" x-cloak>
-                        <h2 style="font-size: 34px; font-family: 'Pixelify Sans', sans-serif;">Encounters</h2>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                        <h2 class="section-heading">Encounters</h2>
+                        <p class="how-paragraph">
                             The actual gameplay happens in encounters. Encounters let you battle an enemy within the
                             current area,
                             and each enemy has a spawn chance and scaled level. Every area is designed for certain
@@ -525,21 +492,18 @@
                             and has its own enemy pool.
                         </p>
                         <br>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                        <p class="how-paragraph">
                             During each battle, perform actions and manage your energy carefully to outlast your enemy.
                             After each battle, you can earn experience, items, or chests.
                         </p>
-                        <div
-                            style="margin-top: 10px; border: 4px solid rgb(88, 0, 0); background-color: rgba(117, 0, 0, 0.2); padding: 12px;">
-                            <p
-                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 22px; color: rgb(253, 113, 113);">
-                                Note:</p>
-                            <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 21px; line-height: 1.6;">
-                                You require the chest's specific key in order to unlock it, otherwise you must pass it
+                        <div class="note-box">
+                            <p class="note-heading">Note:</p>
+                            <p class="how-paragraph">You require the chest's specific key in order to unlock it,
+                                otherwise you must pass it
                                 up.</p>
                         </div>
                         <br>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                        <p class="how-paragraph">
                             Take turns slapping enemies until either of you die. Battle your way through goblins,
                             slimes,
                             wizards, and even vampires to murder your way to the bosses, who may appear at any time in
@@ -548,113 +512,93 @@
                     </section>
 
                     <section x-show="activeGuide === 'inventory'" x-cloak>
-                        <h2 style="font-size: 34px; font-family: 'Pixelify Sans', sans-serif;">Inventory</h2>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                        <h2 class="section-heading">Inventory</h2>
+                        <p class="how-paragraph">
                             View your player's inventory of items collected throughout your adventure.
                             Some items, titled Crafting Reagents, are used only for crafting.
                             Other items, like weapons and armor, are equipable, while others can be used.
                         </p>
                         <br>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
-                            Drag an item from your inventory to your player bars to equip or use it.
-                        </p>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
-                            Certain weapons and armors synergize, giving you an additional boost when both are equipped.
-                        </p>
-                        <div
-                            style="margin-top: 10px; border: 4px solid rgb(0, 88, 0); background-color: rgba(42, 201, 42, 0.2); padding: 12px;">
-                            <p
-                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 22px; color: rgb(138, 233, 138);">
-                                Note:</p>
-                            <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 21px; line-height: 1.6;">You
-                                can hold shift to open the item at its level to the journal page, allowing you to view
+                        <p class="how-lead">Drag an item from your inventory to your player bars to equip or use it.</p>
+                        <p class="how-lead">Certain weapons and armors synergize, giving you an additional boost when
+                            both are equipped.</p>
+                        <div class="note-box note-box--green">
+                            <p class="note-heading note-heading--green">Note:</p>
+                            <p class="how-paragraph">You can hold shift to open the item at its level to the journal
+                                page, allowing you to view
                                 more detailed information.</p>
                         </div>
                         <br>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
-                            During battles, only consumables and throwables can be used using the Item button. Drag an
-                            item to the player bars to use it, or on the enemy to throw it at them.
-                        </p>
+                        <p class="how-lead">During battles, only consumables and throwables can be used using the Item
+                            button. Drag an
+                            item to the player bars to use it, or on the enemy to throw it at them.</p>
                     </section>
 
                     <section x-show="activeGuide === 'journal'" x-cloak>
-                        <h2 style="font-size: 34px; font-family: 'Pixelify Sans', sans-serif;">Journal</h2>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                        <h2 class="section-heading">Journal</h2>
+                        <p class="how-paragraph">
                             View specific information about an area, an enemy, battle effects, an item, or your player.
                         </p>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
-                            The journal is meant to attain specific knowledge for each value in the game,
-                            not as a guide to defeating them.
-                        </p>
-                        <div
-                            style="margin-top: 10px; border: 4px solid rgb(1, 0, 88); background-color: rgba(20, 5, 228, 0.2); padding: 12px;">
-                            <p
-                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 22px; color: rgb(147, 141, 255);">
-                                Note:</p>
-                            <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 21px; line-height: 1.6;">
-                                References to other items on most pages allow you to open the page of that item when
+                        <p class="how-lead">The journal is meant to attain specific knowledge for each value in the
+                            game,
+                            not as a guide to defeating them.</p>
+                        <div class="note-box note-box--blue">
+                            <p class="note-heading note-heading--blue">Note:</p>
+                            <p class="how-paragraph">References to other items on most pages allow you to open the page
+                                of that item when
                                 clicked.</p>
                         </div>
                         <br>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                        <p class="how-paragraph">
                             The journal does not provide any methods or tips, just the raw information which can be
                             useful for strategies.
                         </p>
                     </section>
 
                     <section x-show="activeGuide === 'crafting'" x-cloak>
-                        <h2 style="font-size: 34px; font-family: 'Pixelify Sans', sans-serif;">Crafting</h2>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                        <h2 class="section-heading">Crafting</h2>
+                        <p class="how-paragraph">
                             Using Craft Reagents from your inventory, you can craft useful battle items,
                             including bombs, crystals, and flasks that can turn the fight in your favor.
                         </p>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
-                            Weapons and armor cannot be crafted. You must find them in encounters or in chests.
-                        </p>
-                        <div
-                            style="margin-top: 10px; border: 4px solid rgb(153, 9, 219); background-color: rgba(184, 111, 218, 0.2); padding: 12px;">
-                            <p
-                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 22px; color: rgb(228, 176, 249);">
-                                Uses:</p>
-                            <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 21px; line-height: 1.6;">
-                                Craft bombs for unprotectable damage, flasks for utility, and potions for tough fights.
+                        <p class="how-lead">Weapons and armor cannot be crafted. You must find them in encounters or in
+                            chests.</p>
+                        <div class="note-box note-box--violet">
+                            <p class="note-heading note-heading--violet">Uses:</p>
+                            <p class="how-paragraph">Craft bombs for unprotectable damage, flasks for utility, and
+                                potions for tough fights.
                             </p>
                         </div>
                     </section>
 
                     <section x-show="activeGuide === 'point'" x-cloak>
-                        <h2 style="font-size: 34px; font-family: 'Pixelify Sans', sans-serif;">Point of the Game</h2>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                        <h2 class="section-heading">Point of the Game</h2>
+                        <p class="how-paragraph">
                             The goal is to reach level 50, gather strong gear and resources, and progress to defeating
                             the Demon Queen.
                         </p>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
-                            Progress is intentionally slow and difficult, but highly rewarding as your build, inventory,
-                            and combat choices come together.
-                        </p>
-                        <div
-                            style="margin-top: 10px; border: 4px solid rgb(245, 17, 17); background-color: rgba(255, 0, 0, 0.15); padding: 12px;">
-                            <p
-                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 22px; color: rgb(255, 159, 159);">
-                                What's after that?</p>
-                            <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 21px; line-height: 1.6;">
-                                After level 50, you can access "Eternal Damnation," an endless hellscape where the
+                        <p class="how-lead">Progress is intentionally slow and difficult, but highly rewarding as your
+                            build, inventory,
+                            and combat choices come together.</p>
+                        <div class="how-point-warning">
+                            <p class="how-point-warning-title">What's after that?</p>
+                            <p class="how-point-warning-text">After level 50, you can access "Eternal Damnation," an
+                                endless hellscape where the
                                 enemies now scale slightly above you as a perpetual challenge. Good for if you want to
                                 obtain the best gear. You can level up past 50, but the difficulty will continue to
                                 increase.
                             </p>
                         </div>
                         <br>
-                        <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
+                        <p class="how-paragraph">
                             There is no shop or currency, so all of your resources must be obtained through battles and
                             crafting. Spend them wisely!
                         </p>
                     </section>
                 </div>
 
-                <div class="centered-buttons" style="margin-top: 16px; margin-bottom: 20px;">
-                    <button class="regular-button"
-                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88);"
+                <div class="centered-buttons centered-buttons--how-footer">
+                    <button class="regular-button btn--primary"
                         @click="transition('how-to-play', 'returning')">Back</button>
                 </div>
             </div>
@@ -670,8 +614,7 @@
                 <div class="inventory-panel" id="inventory-panel">
                     <!-- Folder-style tabs -->
                     <div class="inventory-tabs">
-                        <button class="regular-button"
-                            style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
+                        <button class="regular-button btn--primary"
                             @click="transition('inventory', 'returning')">Back</button>
                         <button @click="activeTab = 'all'" class="inventory-tab"
                             :class="{ 'inventory-tab--active': activeTab === 'all' }">
@@ -700,37 +643,34 @@
                     </div>
 
                     <!-- Sort options -->
-                    <div
-                        style="padding: 10px; display: flex; gap: 10px; align-items: center; background-color: rgba(0,0,0,0.3);">
-                        <span style="color: white; font-size: 14px;">Sort by:</span>
-                        <button @click="sortBy = 'name'; refreshSynergies()" class="inventory-tab"
-                            :class="{ 'inventory-tab--active': sortBy === 'name' }"
-                            style="padding: 5px 10px; font-size: 12px;">
+                    <div class="inventory-controls-row">
+                        <span class="controls-label">Sort by:</span>
+                        <button @click="sortBy = 'name'; refreshSynergies()"
+                            class="inventory-tab inventory-tab--compact"
+                            :class="{ 'inventory-tab--active': sortBy === 'name' }">
                             Name
                         </button>
-                        <button @click="sortBy = 'type'; refreshSynergies()" class="inventory-tab"
-                            :class="{ 'inventory-tab--active': sortBy === 'type' }"
-                            style="padding: 5px 10px; font-size: 12px;">
+                        <button @click="sortBy = 'type'; refreshSynergies()"
+                            class="inventory-tab inventory-tab--compact"
+                            :class="{ 'inventory-tab--active': sortBy === 'type' }">
                             Type
                         </button>
-                        <button @click="sortBy = 'level'; refreshSynergies()" class="inventory-tab"
-                            :class="{ 'inventory-tab--active': sortBy === 'level' }"
-                            style="padding: 5px 10px; font-size: 12px;">
+                        <button @click="sortBy = 'level'; refreshSynergies()"
+                            class="inventory-tab inventory-tab--compact"
+                            :class="{ 'inventory-tab--active': sortBy === 'level' }">
                             Level
                         </button>
                         <button @click="sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; refreshSynergies()"
-                            class="inventory-tab" style="padding: 5px 10px; font-size: 12px;"
-                            data-tooltip="Click to reverse">
+                            class="inventory-tab inventory-tab--compact" data-tooltip="Click to reverse">
                             <span x-text="sortOrder === 'asc' ? '↑ Ascending' : '↓ Descending'"></span>
                         </button>
                     </div>
 
-                    <div
-                        style="padding: 10px; display: flex; gap: 10px; align-items: center; background-color: rgba(0,0,0,0.25); border-top: 1px solid rgba(255,255,255,0.1);">
-                        <span style="color: white; font-size: 14px;">Search:</span>
+                    <div class="inventory-controls-row inventory-controls-row--muted">
+                        <span class="controls-label">Search:</span>
                         <input x-model="searchQuery" type="text" placeholder="Search inventory..."
-                            style="font-family: 'Pixelify Sans', sans-serif; font-size: 14px; padding: 6px 10px; min-width: 260px; background-color: rgba(0,0,0,0.5); border: 2px solid #333; color: white;" />
-                        <button class="inventory-tab" style="padding: 5px 10px; font-size: 12px;" x-show="searchQuery"
+                            class="inventory-search-input" />
+                        <button class="inventory-tab inventory-tab--compact" x-show="searchQuery"
                             @click="searchQuery = ''">Clear</button>
                     </div>
 
@@ -821,7 +761,7 @@
                                         :src="`assets/keys/${item.name.replace(/ /g, '')}.gif`" alt="" />
                                 </div>
                                 <div class="inventory-item-body">
-                                    <div style="display:flex; align-items:center; gap:8px;">
+                                    <div class="inventory-item-row">
                                         <div class="inventory-item-name" x-text="item.name">Item</div>
                                     </div>
                                     <div class="inventory-item-meta"
@@ -879,9 +819,7 @@
             x-effect="ensureSelection()">
             <div class="journal-panel" id="journal-panel">
                 <div class="inventory-tabs">
-                    <button class="regular-button"
-                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
-                        @click="goBack()">Back</button>
+                    <button class="regular-button btn--primary" @click="goBack()">Back</button>
                     <button @click="setTab('player')" class="inventory-tab"
                         :class="{ 'inventory-tab--active': activeTab === 'player' }">Player</button>
                     <button @click="setTab('items')" class="inventory-tab"
@@ -910,9 +848,8 @@
                     </template>
                 </div>
 
-                <div class="journal-controls" x-show="activeTab === 'items'"
-                    style="padding-top: 6px; padding-bottom: 6px; gap: 6px; overflow-x: auto;">
-                    <span class="journal-controls__label" style="font-size: 13px;">Category:</span>
+                <div class="journal-controls journal-controls--compact" x-show="activeTab === 'items'">
+                    <span class="journal-controls__label journal-controls__label--small">Category:</span>
                     <button class="inventory-tab journal-controls__btn"
                         :class="{ 'inventory-tab--active': itemSubTab === 'all' }"
                         @click="itemSubTab = 'all'">All</button>
@@ -939,9 +876,8 @@
                         @click="itemSubTab = 'chests'">Chests</button>
                 </div>
 
-                <div class="journal-controls" x-show="activeTab === 'enemies'"
-                    style="padding-top: 6px; padding-bottom: 6px; gap: 6px; overflow-x: auto;">
-                    <span class="journal-controls__label" style="font-size: 13px;">Category:</span>
+                <div class="journal-controls journal-controls--compact" x-show="activeTab === 'enemies'">
+                    <span class="journal-controls__label journal-controls__label--small">Category:</span>
                     <template x-for="tab in enemySubTabs" :key="tab.value">
                         <button class="inventory-tab journal-controls__btn"
                             :class="{ 'inventory-tab--active': enemySubTab === tab.value }"
@@ -1075,18 +1011,16 @@
                 <div class="crafting-columns">
                     <div class="crafting-column crafting-column--left">
                         <div class="inventory-tabs">
-                            <button class="regular-button"
-                                style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
+                            <button class="regular-button btn--primary"
                                 @click="transition('crafting', 'returning')">Back</button>
                             <button class="inventory-tab inventory-tab--active">Craftable</button>
                         </div>
-                        <div
-                            style="padding: 8px 16px; display: flex; gap: 8px; align-items: center; background-color: rgba(0,0,0,0.3);">
-                            <span style="font-size: 13px;">Search:</span>
+                        <div class="crafting-controls-row">
+                            <span class="journal-controls__label--small">Search:</span>
                             <input x-model="craftSearch" type="text" placeholder="Search craftables..."
-                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 13px; padding: 5px 8px; min-width: 220px; background-color: rgba(0,0,0,0.5); border: 2px solid #333; color: white;" />
-                            <button class="inventory-tab" style="padding: 4px 8px; font-size: 11px;"
-                                x-show="craftSearch" @click="craftSearch = ''">Clear</button>
+                                class="crafting-search-input" />
+                            <button class="inventory-tab inventory-tab--compact" x-show="craftSearch"
+                                @click="craftSearch = ''">Clear</button>
                         </div>
                         <div class="crafting-grid">
                             <template x-for="item in craftables" :key="item.name">
@@ -1094,8 +1028,7 @@
                                     @mouseenter="hoveredCraftItem = item" @mouseleave="hoveredCraftItem = null"
                                     :style="hoveredCraftItem && hoveredCraftItem.name === item.name ? 'border: 2px solid #f87171; background: linear-gradient(180deg, #2a1111 0%, #411414 100%);' : ''"
                                     :data-tooltip="getCraftableTooltipText(item)">
-                                    <div class="inventory-item-body"
-                                        style="width: 100%; align-items: center; text-align: center;">
+                                    <div class="inventory-item-body inventory-item-body--centered">
                                         <div class="inventory-item-name" x-text="item.name"></div>
                                         <div class="inventory-item-meta" x-html="item.craft.map((ingredient, idx) => {
                                             const requiredUpToThisSlot = item.craft.slice(0, idx + 1).filter(name => name === ingredient).length;
@@ -1129,32 +1062,29 @@
                                 :class="{ 'inventory-tab--active': activeTab === 'miscellaneous' }">Misc</button>
                         </div>
 
-                        <div
-                            style="padding: 10px; display: flex; gap: 10px; align-items: center; background-color: rgba(0,0,0,0.3);">
-                            <span style="color: white; font-size: 14px;">Sort by:</span>
-                            <button @click="sortBy = 'name'; refreshSynergies()" class="inventory-tab"
-                                :class="{ 'inventory-tab--active': sortBy === 'name' }"
-                                style="padding: 5px 10px; font-size: 12px;">Name</button>
-                            <button @click="sortBy = 'type'; refreshSynergies()" class="inventory-tab"
-                                :class="{ 'inventory-tab--active': sortBy === 'type' }"
-                                style="padding: 5px 10px; font-size: 12px;">Type</button>
-                            <button @click="sortBy = 'level'; refreshSynergies()" class="inventory-tab"
-                                :class="{ 'inventory-tab--active': sortBy === 'level' }"
-                                style="padding: 5px 10px; font-size: 12px;">Level</button>
+                        <div class="inventory-controls-row">
+                            <span class="controls-label">Sort by:</span>
+                            <button @click="sortBy = 'name'; refreshSynergies()"
+                                class="inventory-tab inventory-tab--compact"
+                                :class="{ 'inventory-tab--active': sortBy === 'name' }">Name</button>
+                            <button @click="sortBy = 'type'; refreshSynergies()"
+                                class="inventory-tab inventory-tab--compact"
+                                :class="{ 'inventory-tab--active': sortBy === 'type' }">Type</button>
+                            <button @click="sortBy = 'level'; refreshSynergies()"
+                                class="inventory-tab inventory-tab--compact"
+                                :class="{ 'inventory-tab--active': sortBy === 'level' }">Level</button>
                             <button @click="sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; refreshSynergies()"
-                                class="inventory-tab" style="padding: 5px 10px; font-size: 12px;"
-                                data-tooltip="Click to reverse">
+                                class="inventory-tab inventory-tab--compact" data-tooltip="Click to reverse">
                                 <span x-text="sortOrder === 'asc' ? '↑ Ascending' : '↓ Descending'"></span>
                             </button>
                         </div>
 
-                        <div
-                            style="padding: 10px; display: flex; gap: 10px; align-items: center; background-color: rgba(0,0,0,0.25); border-top: 1px solid rgba(255,255,255,0.1);">
-                            <span style="color: white; font-size: 14px;">Search:</span>
+                        <div class="inventory-controls-row inventory-controls-row--muted">
+                            <span class="controls-label">Search:</span>
                             <input x-model="searchQuery" type="text" placeholder="Search inventory..."
-                                style="font-family: 'Pixelify Sans', sans-serif; font-size: 14px; padding: 6px 10px; min-width: 260px; background-color: rgba(0,0,0,0.5); border: 2px solid #333; color: white;" />
-                            <button class="inventory-tab" style="padding: 5px 10px; font-size: 12px;"
-                                x-show="searchQuery" @click="searchQuery = ''">Clear</button>
+                                class="inventory-search-input" />
+                            <button class="inventory-tab inventory-tab--compact" x-show="searchQuery"
+                                @click="searchQuery = ''">Clear</button>
                         </div>
 
                         <div class="crafting-inventory-grid">
@@ -1246,7 +1176,7 @@
                                             :src="`assets/keys/${item.name.replace(/ /g, '')}.gif`" alt="" />
                                     </div>
                                     <div class="inventory-item-body">
-                                        <div style="display:flex; align-items:center; gap:8px;">
+                                        <div class="inventory-item-row--inline">
                                             <div class="inventory-item-name" x-text="item.name">Item</div>
                                         </div>
                                         <div class="inventory-item-meta"
@@ -1522,7 +1452,7 @@
                 <div class="enemy-level" x-text="`Level ${enemyLevel} ${enemy.block}`"
                     :data-tooltip="`💖 ${enemy.health} + (${Math.floor((maxHealth - enemy.health) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${maxHealth}\n⚔️ ${enemy.attack} + (${Math.floor((attack - enemy.attack) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${attack}\n🛡️ ${enemy.defense} + (${Math.floor((defense - enemy.defense) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${defense}\n🎯 ${Math.floor(accuracy * 100)}%\n🍀 ${Math.floor(crit * 100)}%`">
                     ?</div>
-                <div style="margin-top: 40px;">
+                <div class="enemy-top-spacing enemy-top-spacing--small">
                     <div class="enemy-name" x-text="enemy.name">???</div>
                     <div class="estatus-effects">
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Bleed'))"
@@ -1582,7 +1512,7 @@
                         <span x-show="health <= 0" :data-tooltip="`This ${enemyName} is dead.`">☠️</span>
                     </div>
                 </div>
-                <div style="margin-top: 70px;">
+                <div class="enemy-top-spacing enemy-top-spacing--large">
                     <img class="enemy-heart" :src="
                         enemy.name == 'Cursed Goblin' ? 'assets/enemy_hearts/Cursed.png'
                         : enemy.name == 'Attack Slime' ? 'assets/enemy_hearts/AttackSlime.png'
@@ -1595,7 +1525,7 @@
                         : enemy.name == 'Goblin King' ? 'assets/enemy_hearts/GoblinKing.png'
                         : enemy.name == 'Demon Queen' ? 'assets/enemy_hearts/DemonQueen.png'
                         : 'assets/enemy_hearts/Basic.png'
-                        " style="width: 80px; top: 70%; left: 1%; z-index: 3;">
+                        ">
                     <div class="enemy-health-bar-stats" x-text="`${health}/${maxHealth}`">0/0</div>
                     <div class="enemy-health-bar" id="enemy-health"></div>
                     <div class="enemy-health-bar-background"></div>
@@ -1625,34 +1555,34 @@
                     }
                 }">
                 <div class="battle-buttons" x-show="battle">
-                    <div class="battle-actions" x-show="!showConsumables" style="display: flex; gap: 20px;">
-                        <button class="battle-base-attack"
-                            :style="`background-color: ${turn ? 'rgb(253, 113, 113)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(245, 17, 17); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                    <div class="battle-actions" x-show="!showConsumables">
+                        <button class="battle-base-attack battle-button"
+                            :style="`background-color: ${turn ? 'rgb(253, 113, 113)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(245, 17, 17); cursor: ${turn ? 'pointer' : 'not-allowed'};`"
                             x-text="weapon.skills[0].name" :disabled="!turn" @click="skill(0)"
                             :data-tooltip="`${weapon.skills[0].description ? `${weapon.skills[0].description}\n` : ''}${weapon.skills[0].cost ? `⚡${weapon.skills[0].cost}\n` : ''}⚔️ x${weapon.skills[0].attack ? (weapon.skills[0].damage || 1) : 0}\n${weapon.skills[0].times ? `🔄️${weapon.skills[0].times}x\n` : ''}${weapon.skills[0].flatHealth ? `❤️ ${weapon.skills[0].flatHealth}\n` : ''}${weapon.skills[0].health ? `💖 ${Math.floor(weapon.skills[0].health * 100)}%\n` : ''}${weapon.skills[0].lifesteal ? `💞 ${Math.floor(weapon.skills[0].lifesteal * 100)}%\n` : ''}${weapon.skills[0].pstatus ? `Gains ${weapon.skills[0].pstatus.join('')}\n` : ''}${weapon.skills[0].estatus ? 'Inflicts ' + weapon.skills[0].estatus.join('') : ''}`">Attack</button>
-                        <button class="battle-pass"
-                            :style="`background-color: ${turn ? 'rgb(42, 143, 201)' : 'rgb(55, 55, 55)'}; border: 5px solid rgb(6, 0, 88); font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                        <button class="battle-pass battle-button"
+                            :style="`background-color: ${turn ? 'rgb(42, 143, 201)' : 'rgb(55, 55, 55)'}; border: 5px solid rgb(6, 0, 88); cursor: ${turn ? 'pointer' : 'not-allowed'};`"
                             :data-tooltip="`Skip your turn but gain⚡${Math.round(Alpine.$data(player).maxStamina * 0.1)}`"
                             :disabled="!turn" @click="skill(-1)">Pass</button>
-                        <button class="battle-item"
-                            :style="`background-color: ${turn && consumables.length > 0 ? 'rgb(138, 233, 138)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(0, 97, 21); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn && consumables.length > 0 ? 'pointer' : 'not-allowed'};`"
+                        <button class="battle-item battle-button"
+                            :style="`background-color: ${turn && consumables.length > 0 ? 'rgb(138, 233, 138)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(0, 97, 21); cursor: ${turn && consumables.length > 0 ? 'pointer' : 'not-allowed'};`"
                             :disabled="!turn || consumables.length === 0" @click="skill(-2)">Item</button>
-                        <button class="battle-flee"
-                            :style="`background-color: ${turn ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); font-size: 40px; font-size: 40px;font-family: 'Pixelify Sans', sans-serif; cursor: ${turn ? 'pointer' : 'not-allowed'};`"
+                        <button class="battle-flee battle-button"
+                            :style="`background-color: ${turn ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); cursor: ${turn ? 'pointer' : 'not-allowed'};`"
                             :disabled="!turn" @click="skill(-3)">Flee</button>
                     </div>
 
                     <div class="battle-consumables" x-show="turn && showConsumables && consumables.length > 0">
-                        <button class="battle-flee"
-                            :style="`background-color: ${turn && showConsumables ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); font-size: 20px; font-family: 'Pixelify Sans', sans-serif; cursor: ${turn && showConsumables ? 'pointer' : 'not-allowed'};`"
+                        <button class="battle-flee battle-button battle-button--small"
+                            :style="`background-color: ${turn && showConsumables ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); cursor: ${turn && showConsumables ? 'pointer' : 'not-allowed'};`"
                             data-tooltip="Close item menu" :disabled="!turn || !showConsumables"
                             @click="showConsumables = false">Cancel</button>
 
                         <template x-for="(entry, idx) in consumables" :key="`${entry.inventoryItem.name}-${idx}`">
-                            <div class="inventory-item battle-consumable-inventory-item"
+                            <div class="inventory-item battle-consumable-inventory-item inventory-item--draggable"
                                 :class="{'inventory-item--no-icon': !(entry.itemData?.sprite)}"
                                 :data-tooltip="window.getItemTooltipText(entry.inventoryItem.name, entry.inventoryItem.level ?? 1)"
-                                draggable="true" style="cursor: grab;">
+                                draggable="true">
                                 <div class="inventory-item-amount inventory-item-amount--inline"
                                     x-show="entry.inventoryItem.amount > 1 && !(entry.itemData?.sprite)">x<span
                                         x-text="entry.inventoryItem.amount"></span>
@@ -1663,7 +1593,7 @@
                                         :src="`assets/keys/${entry.inventoryItem.name.replace(/ /g, '')}.gif`" alt="" />
                                 </div>
                                 <div class="inventory-item-body">
-                                    <div style="display:flex; align-items:center; gap:8px;">
+                                    <div class="inventory-item-body--rowcenter">
                                         <div class="inventory-item-name" x-text="entry.inventoryItem.name">Item</div>
                                     </div>
                                     <div class="inventory-item-meta"
@@ -1674,15 +1604,15 @@
                         </template>
                     </div>
 
-                    <div class="battle-skills" x-show="!showConsumables"
-                        style="display: flex; flex-direction: row; gap: 20px; justify-content: center; align-items: flex-start;">
+                    <div class="battle-skills" x-show="!showConsumables">
 
                         <!-- Skill 1 Group -->
                         <div x-show="weapon.skills[1]">
-                            <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                <button class="battle-skill1" id="battle-skill1" x-text="weapon.skills[1].name"
+                            <div class="battle-skill-group">
+                                <button class="battle-skill1 battle-button" id="battle-skill1"
+                                    x-text="weapon.skills[1].name"
                                     :disabled="Alpine.$data(player).stamina < weapon.skills[1].cost || !turn"
-                                    :style="`${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'not-allowed' : 'pointer' };`"
+                                    :style="`${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); cursor: ${ (Alpine.$data(player).stamina < weapon.skills[1].cost || !turn) ? 'not-allowed' : 'pointer' };`"
                                     :data-tooltip="(() => {
                                         const skill = weapon.skills[1];
                                         let tooltip = '';
@@ -1703,24 +1633,22 @@
                                     })()" @click="skill(1)">
                                     ?
                                 </button>
-                                <span class="battle-skill1-cost" id="battle-skill1-cost"
-                                    style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
+                                <span class="battle-skill1-cost battle-skill-cost" id="battle-skill1-cost"
                                     x-text="`⚡${weapon.skills[1].cost}`">?</span>
                             </div>
                         </div>
 
                         <!-- Skill 2 Group -->
                         <div x-show="weapon.skills[2]">
-                            <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                <button class="battle-skill2" id="battle-skill2"
-                                    :style="`${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'not-allowed' : 'pointer' };`"
+                            <div class="battle-skill-group">
+                                <button class="battle-skill2 battle-button" id="battle-skill2"
+                                    :style="`${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); cursor: ${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'not-allowed' : 'pointer' };`"
                                     :disabled="Alpine.$data(player).stamina < weapon.skills[2].cost || !turn"
                                     :data-tooltip="`${weapon.skills[2].description ? `${weapon.skills[2].description}\n` : ''}${weapon.skills[2].cost ? `⚡${weapon.skills[2].cost}\n` : ''}⚔️ x${weapon.skills[2].attack ? (weapon.skills[2].damage || 1) : 0}\n${weapon.skills[2].times ? `🔄️${weapon.skills[2].times}x\n` : ''}${weapon.skills[2].flatHealth ? `❤️ ${weapon.skills[2].flatHealth}\n` : ''}${weapon.skills[2].health ? `💖 ${Math.floor(weapon.skills[2].health * 100)}%\n` : ''}${weapon.skills[2].lifesteal ? `💞 ${Math.floor(weapon.skills[2].lifesteal * 100)}%\n` : ''}${weapon.skills[2].pstatus ? `Gains ${weapon.skills[2].pstatus.join('')}\n` : ''}${weapon.skills[2].estatus ? 'Inflicts ' + weapon.skills[2].estatus.join('') : ''}`"
                                     x-text="weapon.skills[2].name" @click="skill(2)">
                                     ?
                                 </button>
-                                <span class="battle-skill2-cost" id="battle-skill2-cost"
-                                    style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
+                                <span class="battle-skill2-cost battle-skill-cost" id="battle-skill2-cost"
                                     x-text="`⚡${weapon.skills[2].cost}`">?</span>
                             </div>
                         </div>
@@ -1728,15 +1656,14 @@
 
                         <!-- Skill 3 Group -->
                         <div x-show="weapon.skills[3]">
-                            <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                                <button class="battle-skill3" id="battle-skill3"
-                                    :style="`${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: ${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'not-allowed' : 'pointer' };`"
+                            <div class="battle-skill-group">
+                                <button class="battle-skill3 battle-button" id="battle-skill3"
+                                    :style="`${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); cursor: ${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'not-allowed' : 'pointer' };`"
                                     :disabled="Alpine.$data(player).stamina < weapon.skills[3].cost || !turn"
                                     :data-tooltip="`${weapon.skills[3].description ? `${weapon.skills[3].description}\n` : ''}${weapon.skills[3].cost ? `⚡${weapon.skills[3].cost}\n` : ''}⚔️ x${weapon.skills[3].attack ? (weapon.skills[3].damage || 1) : 0}\n${weapon.skills[3].times ? `🔄️${weapon.skills[3].times}x\n` : ''}${weapon.skills[3].flatHealth ? `❤️ ${weapon.skills[3].flatHealth}\n` : ''}${weapon.skills[3].health ? `💖 ${Math.floor(weapon.skills[3].health * 100)}%\n` : ''}${weapon.skills[3].lifesteal ? `💞 ${Math.floor(weapon.skills[3].lifesteal * 100)}%\n` : ''}${weapon.skills[3].pstatus ? `Gains ${weapon.skills[3].pstatus.join('')}\n` : ''}${weapon.skills[3].estatus ? 'Inflicts ' + weapon.skills[3].estatus.join('') : ''}`"
                                     x-text="weapon.skills[3].name" @click="skill(3)">
                                 </button>
-                                <span class="battle-skill3-cost" id="battle-skill3-cost"
-                                    style="font-family: 'Pixel-Font', sans-serif; font-size: 24px;"
+                                <span class="battle-skill3-cost battle-skill-cost" id="battle-skill3-cost"
                                     x-text="`⚡${weapon.skills[3].cost}`">?</span>
                             </div>
                         </div>
@@ -1745,13 +1672,11 @@
 
                 </div>
                 <div class="battle-buttons" x-show="!battle">
-                    <button class="battle-item"
-                        style="background-color: rgb(42, 201, 42); border: 5px solid rgb(0, 88, 0); font-size: 40px; font-size: 40px; font-family: 'Pixelify Sans', sans-serif; cursor: pointer;"
-                        @click="victory()">Continue</button>
+                    <button class="battle-item battle-button battle-continue" @click="victory()">Continue</button>
                 </div>
                 <div class="round-info"
-                    x-text="health > 0 && Alpine.$data(document.getElementById('player')).health > 0 ? `Round ${round}\n\n${turn ? 'Your' : enemyName + `'s`} Turn` : health <= 0 ? `You Won` : `You Died`"
-                    style="white-space: pre-line; text-align: center;">Round 1\n\nYour Turn</div>
+                    x-text="health > 0 && Alpine.$data(document.getElementById('player')).health > 0 ? `Round ${round}\n\n${turn ? 'Your' : enemyName + `'s`} Turn` : health <= 0 ? `You Won` : `You Died`">
+                    Round 1\n\nYour Turn</div>
             </div>
         </div>
 
@@ -1760,9 +1685,7 @@
             <h1>⚙ Debug Panel</h1>
             <br>
             <div class="debug-grid">
-                <button @click="savePlayer()"
-                    style="font-family: 'Pixel-Font', sans-serif; background-color: transparent; border: 2px solid white; cursor: pointer; color: white;">Save
-                    Game</button>
+                <button @click="savePlayer()" class="debug-save-btn">Save Game</button>
                 <input placeholder="Set Level"
                     @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''; $event.target.blur()" />
 
