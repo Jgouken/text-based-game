@@ -125,12 +125,17 @@ img {
 }
 
 .centered-inputs {
+    position: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
     gap: 20px;
-    margin-top: 300px;
+    height: 50vh;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .centered-buttons {
@@ -139,13 +144,17 @@ img {
     justify-content: center;
     margin-top: 400px;
     gap: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    flex-wrap: wrap;
 }
 
 .name-input {
     font-family: "Pixelify Sans", sans-serif;
     font-size: 32px;
     padding: 8px;
-    width: 1000px;
+    width: 90%;
+    max-width: 1000px;
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid white;
     color: white;
@@ -162,27 +171,30 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: clamp(8px, 1vw, 1vw);
+    font-size: clamp(12px, 1vw, 1vw);
     padding: 10px 20px;
     box-sizing: border-box;
     z-index: 1000;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent);
     color: #fff;
+    overflow: visible;
 }
 
 .regular-button {
     font-family: "Pixelify Sans", sans-serif;
-    font-size: 32px;
-    padding: 10px 24px;
+    font-size: clamp(18px, 3vw, 32px);
+    padding: 10px 2vw;
     background-color: rgb(20, 5, 228);
     color: black;
     border: 5px solid rgb(1, 0, 88);
     cursor: pointer;
     opacity: 1;
+    min-width: 120px;
+    max-width: 90vw;
+    box-sizing: border-box;
 }
 
 /* Player HUD Styles */
-
 .player {
     position: fixed;
     left: 0;
@@ -199,7 +211,6 @@ img {
     z-index: 9999;
     transition: all 2.5s ease-in-out;
 }
-
 
 .player-hud {
     position: relative;
@@ -237,7 +248,7 @@ img {
     border: 5px solid rgba(0, 0, 0, 0.5);
 }
 
-.battle-weaponry > span {
+.battle-weaponry>span {
     display: flex;
     justify-content: center;
     align-items: center;

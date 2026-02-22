@@ -389,20 +389,21 @@
         <div id="screen" class="screen">
             <!-- New Player (Title Screen)-->
             <div id="new-player" class="new-player" x-show="screen === 'new-player'">
-                <button class="regular-button"
-                    style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
-                    @click="importButton()">IMPORT</button>
                 <p style="text-align: center; font-size: 30px; top: 25px;">Welcome to</p>
-                <h1 style="text-align: center; font-size: 60px; top: 50px; font-weight: bold;">Text - Based - Game</h1>
+                <h1 style="text-align: center; font-weight: bold; font-size: clamp(24px, 8vw, 60px); top: 50px;">Text -
+                    Based - Game</h1>
                 <div class="centered-inputs">
-                    <h1 style="text-align: center; font-size: 60px; font-family: 'Pixelify Sans', sans-serif;"
+                    <h1 style="text-align: center; font-family: 'Pixelify Sans', sans-serif; font-size: clamp(24px, 8vw, 60px); width: 90vw;"
                         x-text="`${name ? `Why hello, ${name}!` : 'What is your name, Traveler?'}`">What is your
                         name, Traveler?</h1>
                     <input class="name-input" type="text" id="name" name="name" required minlength="1" maxlength="16"
                         size="100" placeholder="I'm..." x-model="name" autocomplete="off"
                         @keyup.enter="if (name) { startGame(name); updateBars() }" />
+                    <button class="regular-button"
+                        style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); font-size: large;"
+                        @click="importButton()">IMPORT</button>
                     <button class="regular-button" @click="startGame(name); updateBars()" x-show="name"
-                        style="color: white;">Onwards</button>
+                        style="background-color: green; border: 5px solid rgb(0, 88, 34); color: white;">Onwards</button>
                 </div>
                 <div class="credits">
                     <span style="color: grey;">Made by Jgouken &amp; SavorySam</span>
@@ -541,7 +542,8 @@
                         <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
                             Take turns slapping enemies until either of you die. Battle your way through goblins,
                             slimes,
-                            wizards, and even vampires to murder your way to the bosses, who may appear at any time in certain locations.
+                            wizards, and even vampires to murder your way to the bosses, who may appear at any time in
+                            certain locations.
                         </p>
                     </section>
 
@@ -595,7 +597,8 @@
                         </div>
                         <br>
                         <p style="font-family: 'Pixelify Sans', sans-serif; font-size: 24px; line-height: 1.6;">
-                            The journal does not provide any methods or tips, just the raw information which can be useful for strategies.
+                            The journal does not provide any methods or tips, just the raw information which can be
+                            useful for strategies.
                         </p>
                     </section>
 
@@ -1697,8 +1700,7 @@
                                             if (skill.estatus) tooltip += 'Inflicts ' + skill.estatus.join('');
                                         }
                                         return tooltip;
-                                    })()"
-                                    @click="skill(1)">
+                                    })()" @click="skill(1)">
                                     ?
                                 </button>
                                 <span class="battle-skill1-cost" id="battle-skill1-cost"
