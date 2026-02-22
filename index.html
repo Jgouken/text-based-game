@@ -409,20 +409,17 @@
             <!-- Returning Player (Landing Screen)-->
             <div id="returning" class="returning" x-show="screen === 'returning'">
                 <p class="welcome-sub">Text-Based-Game</p>
-                <p class="returning-title" x-text="location.toUpperCase()"></p>
-
-                <div class="centered-buttons top-right-buttons">
-                    <button class="regular-button btn--primary" @click="transition('returning', 'how-to-play')">How To
-                        Play</button>
-                </div>
-
+                <br>
                 <div class="centered-buttons top-fixed-button-row">
                     <button class="regular-button btn--danger" @click="deleteButton()">DELETE</button>
                     <button class="regular-button btn--success" @click="exportButton()">EXPORT</button>
                     <button class="regular-button btn--primary" @click="importButton()">IMPORT</button>
+                    <button class="regular-button btn--primary" @click="transition('returning', 'how-to-play')">How To
+                        Play</button>
                 </div>
 
                 <div class="centered-buttons centered-buttons--large-top">
+                    <p class="returning-title" x-text="location.toUpperCase()"></p>
                     <button class="regular-button btn--landing-primary"
                         @click="transition('returning', 'travel')">Travel</button>
                     <button class="regular-button btn--landing-success"
@@ -437,13 +434,6 @@
                         @click="transition('returning', 'journal')">Journal</button>
                     <button class="regular-button btn--lime"
                         @click="transition('returning', 'crafting')">Crafting</button>
-                </div>
-
-                <div class="credits">
-                    <span class="credits-muted">Made by Jgouken &amp; SavorySam</span>
-                    <span>Your gameplay is saved through local storage and JavaScript. If you block either on this
-                        website, <u>your progress cannot be saved.</u></span>
-                    <span class="credits-muted">Art by MoBroPro</span>
                 </div>
             </div>
 
@@ -600,6 +590,13 @@
                 <div class="centered-buttons centered-buttons--how-footer">
                     <button class="regular-button btn--primary"
                         @click="transition('how-to-play', 'returning')">Back</button>
+                </div>
+
+                <div class="credits">
+                    <span class="credits-muted">Made by Jgouken &amp; SavorySam</span>
+                    <span>Your gameplay is saved through local storage and JavaScript. If you block either on this
+                        website, <u>your progress cannot be saved.</u></span>
+                    <span class="credits-muted">Art by MoBroPro</span>
                 </div>
             </div>
 

@@ -485,7 +485,7 @@ document.addEventListener('keydown', (e) => {
 function scalePlayerHUD() {
     const player = document.querySelector('.player');
     if (!player) return;
-    const minScale = 0.3;
+    const minScale = 0.2;
     const maxScale = 1;
     const minWidth = 320;
     const maxWidth = 900;
