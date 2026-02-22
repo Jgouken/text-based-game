@@ -420,14 +420,14 @@
                     x-text="location.toUpperCase()"></p>
 
                 <div class="centered-buttons"
-                    style="justify-content: right; margin-top: 0; margin-right: 10px; position: fixed; top: 10px; right: 10px; z-index: 1001;">
+                    style="justify-content: right; margin-top: 0; margin-right: 10px; position: fixed; top: 10px; right: 10px; z-index: 100; width: fit-content;">
                     <button class="regular-button"
                         style="background-color: rgb(20, 5, 228); color: white; border: 5px solid rgb(1, 0, 88); justify-content: right; font-size: large;"
                         @click="transition('returning', 'how-to-play')">How To Play</button>
                 </div>
 
                 <div class="centered-buttons"
-                    style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; gap: 20px; width: 100%; justify-content: flex-start; padding: 10px; margin-top: 0px;">
+                    style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; gap: 20px; width: fit-content; justify-content: flex-start; padding: 10px; margin-top: 0px;">
                     <button class="regular-button"
                         style="background-color: red; color: white; border: 5px solid rgb(88, 0, 0); font-size: large;"
                         @click="deleteButton()">DELETE</button>

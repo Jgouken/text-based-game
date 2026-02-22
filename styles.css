@@ -144,7 +144,6 @@ img {
     justify-content: center;
     margin-top: 400px;
     gap: 15px;
-    width: 100%;
     box-sizing: border-box;
     flex-wrap: wrap;
 }

@@ -141,7 +141,7 @@ async function quitButton() {
 async function fadeInOutEffect(to) {
     if (ready) return; // Prevent double-click during fade
     ready = true;
-    
+
     await fadeInEffect();
     await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -481,3 +481,33 @@ document.addEventListener('keydown', (e) => {
         Alpine.$data(panel).open = !Alpine.$data(panel).open;
     }
 });
+
+function scalePlayerHUD() {
+    const player = document.querySelector('.player');
+    if (!player) return;
+    const minScale = 0.3;
+    const maxScale = 1;
+    const minWidth = 320;
+    const maxWidth = 900;
+    const vw = window.innerWidth;
+    let scale = vw / maxWidth;
+    scale = Math.max(minScale, Math.min(maxScale, scale));
+    player.style.transform = `scale(${scale})`;
+    player.style.transformOrigin = 'bottom left';
+
+    const bgData = Alpine.$data(document.getElementById('background-image'));
+    const screen = bgData?.screen || '';
+
+    if (window.innerHeight > window.innerWidth) {
+        player.style.left = '50%';
+        player.style.transformOrigin = 'bottom center';
+        player.style.transform = `translateX(-50%) scale(${scale})`;
+    } else {
+        player.style.left = '0';
+        player.style.transformOrigin = 'bottom left';
+        player.style.transform = `scale(${scale})`;
+    }
+}
+
+window.addEventListener('resize', scalePlayerHUD);
+window.addEventListener('DOMContentLoaded', scalePlayerHUD);
