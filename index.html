@@ -199,8 +199,8 @@
                         let tooltip = 'Critical Chance\nThe chance your attack or heal will deal extra.';
                         if (isModified) {
                             tooltip += `\n${crit}`;
-                            if (hasLuck) tooltip += ` + ${luckBonus} (${getStatusIdByName('Luck')})`;
-                            if (hasMisfortune) tooltip += ` - ${misfortunePenalty} (${getStatusIdByName('Misfortune')})`;
+                            if (hasLuck) tooltip += ` + ${luckBonus} [${getStatusIdByName('Luck')}]`;
+                            if (hasMisfortune) tooltip += ` - ${misfortunePenalty} [${getStatusIdByName('Misfortune')}]`;
                             tooltip += ` = ${crit + luckBonus - misfortunePenalty}`;
                         }
                         return tooltip;
@@ -227,8 +227,8 @@
                         let tooltip = 'Accuracy\nThe chance to hit with an attack.';
                         if (isModified) {
                             tooltip += `\n${accuracy}`;
-                            if (hasAcuity) tooltip += ` + ${acuityBonus} (${getStatusIdByName('Acuity')})`;
-                            if (hasBlindness) tooltip += ` - ${blindnessPenalty} (${getStatusIdByName('Blindness')})`;
+                            if (hasAcuity) tooltip += ` + ${acuityBonus} [${getStatusIdByName('Acuity')}]`;
+                            if (hasBlindness) tooltip += ` - ${blindnessPenalty} [${getStatusIdByName('Blindness')}]`;
                             tooltip += ` = ${accuracy + acuityBonus - blindnessPenalty}`;
                         }
                         return tooltip;
@@ -250,7 +250,7 @@
                         let tooltip = 'Evasion\nDirectly decreases enemy accuracy.';
                         if (isModified) {
                             tooltip += `\n${evasion}`;
-                            if (hasEvasion) tooltip += ` + ${evasionBonus} (${getStatusIdByName('Evasion')})`;
+                            if (hasEvasion) tooltip += ` + ${evasionBonus} [${getStatusIdByName('Evasion')}]`;
                             tooltip += ` = ${evasion + evasionBonus}`;
                         }
                         return tooltip;
@@ -292,8 +292,8 @@
                         let tooltip = `Base Defense\n\n70 + ((${level || 1} - 1) * 30) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult})${synDefense ? ` + ${synDefense} (✨ ${synName})` : ''} = ${baseDefense + synDefense}`;
                         if (isModified) {
                             tooltip += `\n${defense}`;
-                            if (hasRigidity) tooltip += ` * (1 + ${rigidityBonus}) (${getStatusIdByName('Rigidity')})`;
-                            if (hasFragility) tooltip += ` * (1 - ${fragilityPenalty}) (${getStatusIdByName('Fragility')})`;
+                            if (hasRigidity) tooltip += ` * ${(1 + rigidityBonus).toFixed(2)} [${getStatusIdByName('Rigidity')}]`;
+                            if (hasFragility) tooltip += ` * ${(1 - fragilityPenalty).toFixed(2)} [${getStatusIdByName('Fragility')}]`;
                             tooltip += ` = ${Math.floor(defense * multiplier)}`;
                         }
                         return tooltip;
@@ -1401,10 +1401,10 @@
                             tooltip += `\n⚔️ ${attackModified ? modifiedAttack + '*' : this.attack}`;
                             if (attackModified) {
                                 tooltip += `\n  ${this.attack}`;
-                                if (hasEmpowerment) tooltip += ` * (1 + ${empowermentBonus}) (${getStatusIdByName('Empowerment')})`;
-                                if (hasStrength) tooltip += ` * (1 + ${strengthBonus}) (${getStatusIdByName('Strength')})`;
-                                if (hasBerserk) tooltip += ` * (1 + ${berserkBonus}) (${getStatusIdByName('Berserk')})`;
-                                if (hasWeakness) tooltip += ` * (1 - ${weaknessPenalty}) (${getStatusIdByName('Weakness')})`;
+                                if (hasEmpowerment) tooltip += ` * ${(1 + empowermentBonus).toFixed(2)} [${getStatusIdByName('Empowerment')}]`;
+                                if (hasStrength) tooltip += ` * ${(1 + strengthBonus).toFixed(2)} [${getStatusIdByName('Strength')}]`;
+                                if (hasBerserk) tooltip += ` * ${(1 + berserkBonus).toFixed(2)} [${getStatusIdByName('Berserk')}]`;
+                                if (hasWeakness) tooltip += ` * ${(1 - weaknessPenalty).toFixed(2)} [${getStatusIdByName('Weakness')}]`;
                                 tooltip += ` = ${modifiedAttack}`;
                             }
                             
@@ -1412,8 +1412,8 @@
                             tooltip += `\n🛡️ ${defenseModified ? modifiedDefense + '*' : this.defense}`;
                             if (defenseModified) {
                                 tooltip += `\n  ${this.defense}`;
-                                if (hasRigidity) tooltip += ` * (1 + ${rigidityBonus}) (${getStatusIdByName('Rigidity')})`;
-                                if (hasFragility) tooltip += ` * (1 - ${fragilityPenalty}) (${getStatusIdByName('Fragility')})`;
+                                if (hasRigidity) tooltip += ` * ${(1 + rigidityBonus).toFixed(2)} [${getStatusIdByName('Rigidity')}]`;
+                                if (hasFragility) tooltip += ` * ${(1 - fragilityPenalty).toFixed(2)} [${getStatusIdByName('Fragility')}]`;
                                 tooltip += ` = ${modifiedDefense}`;
                             }
                             
@@ -1421,8 +1421,8 @@
                             tooltip += `\n🎯 ${Math.floor((accuracyModified ? modifiedAccuracy : this.accuracy) * 100)}%${accuracyModified ? '*' : ''}`;
                             if (accuracyModified) {
                                 tooltip += `\n  ${this.accuracy}`;
-                                if (hasAcuity) tooltip += ` + ${acuityBonus} (${getStatusIdByName('Acuity')})`;
-                                if (hasBlindness) tooltip += ` - ${blindnessPenalty} (${getStatusIdByName('Blindness')})`;
+                                if (hasAcuity) tooltip += ` + ${acuityBonus} [${getStatusIdByName('Acuity')}]`;
+                                if (hasBlindness) tooltip += ` - ${blindnessPenalty} [${getStatusIdByName('Blindness')}]`;
                                 tooltip += ` = ${modifiedAccuracy}`;
                             }
                             
@@ -1430,8 +1430,8 @@
                             tooltip += `\n🍀 ${Math.floor((critModified ? modifiedCrit : this.crit) * 100)}%${critModified ? '*' : ''}`;
                             if (critModified) {
                                 tooltip += `\n  ${this.crit}`;
-                                if (hasLuck) tooltip += ` + ${luckBonus} (${getStatusIdByName('Luck')})`;
-                                if (hasMisfortune) tooltip += ` - ${misfortunePenalty} (${getStatusIdByName('Misfortune')})`;
+                                if (hasLuck) tooltip += ` + ${luckBonus} [${getStatusIdByName('Luck')}]`;
+                                if (hasMisfortune) tooltip += ` - ${misfortunePenalty} [${getStatusIdByName('Misfortune')}]`;
                                 tooltip += ` = ${modifiedCrit}`;
                             }
                             
@@ -1682,8 +1682,6 @@
             <h1>⚙ Debug Panel</h1>
             <br>
             <div class="debug-grid">
-                <button @click="savePlayer()" class="debug-save-btn">Save Game</button>
-
                 <input type="number" min="0" step="1" placeholder="Set Level"
                     @keyup.enter="Alpine.$data(document.getElementById('player')).level = Number($event.target.value); setPlayer(); $event.target.value = ''; $event.target.blur()" />
 
@@ -1716,7 +1714,6 @@
                         style="width:4ch;" />
                 </div>
 
-                <!-- Armor selector (typeable) + level -->
                 <div class="debug-composite">
                     <input list="armors-list" placeholder="Equip Armor"
                         @keyup.enter="(function(v){ const a = assets.items.find(i => i.name == v && i.defense !== undefined); if(a){ Alpine.$data(document.getElementById('player')).armory = {armor: a, level: Number(document.getElementById('debug-armor-level').value || 1)}; setPlayer(); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
@@ -1729,9 +1726,8 @@
                         style="width:4ch;" />
                 </div>
 
-                <!-- Get Item selector (typeable) + amount -->
                 <div class="debug-composite">
-                    <input list="items-list" placeholder="Get Item (type to filter)"
+                    <input list="items-list" placeholder="Get Item"
                         @keyup.enter="(function(v){ const it = assets.items.find(i => i.name == v); if(it){ addToInventory(it, Number(document.getElementById('debug-get-item-amount').value || 1)); setPlayer(); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
                     <datalist id="items-list">
                         <template x-for="it in assets.items" :key="it.name">
@@ -1741,17 +1737,40 @@
                     <input id="debug-get-item-amount" type="number" min="1" placeholder="Amount" value="5"
                         style="width:4ch;" />
                 </div>
-                
+
                 <div class="debug-composite">
-                    <input list="enemies-list" placeholder="Encounter Enemy (type to filter)"
+                    <input list="enemies-list" placeholder="Encounter Enemy"
                         @keyup.enter="(function(v){ const en = assets.enemies.find(e => e.name == v); if(en){ const lvl = Number(document.getElementById('debug-enemy-level').value || 1); enemyLevel = lvl; transition('debug','encounter'); startBattle(en); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
                     <datalist id="enemies-list">
                         <template x-for="en in assets.enemies" :key="en.name">
                             <option :value="en.name"></option>
                         </template>
                     </datalist>
-                    <input id="debug-enemy-level" type="number" min="1" placeholder="Lvl" value="1" style="width:3ch; margin-left:6px;" />
+                    <input id="debug-enemy-level" type="number" min="1" placeholder="Lvl" value="1"
+                        style="width:4ch;" />
                 </div>
+
+                <div class="debug-composite">
+                    <input list="statuses-list" placeholder="Pstatus"
+                        @keyup.enter="(function(v){ const s = assets.statuses.find(st => st.name == v); if(s){ const dmg = Number(document.getElementById('debug-status-damage-player').value || 0); const player = Alpine.$data(document.getElementById('player')); player.pstatus = player.pstatus || []; const newStatus = {...s, damage: dmg}; player.pstatus.push(newStatus); updateBars(); const enc = Alpine.$data(document.getElementById('encounter')); if(enc) enc.log.push(`Debug: ${player.name} gained [<span data-tooltip='${newStatus.id} ${newStatus.name}\n\n${newStatus.description}\n\nBased on ${dmg} initial damage.'>${newStatus.id}</span>]`); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
+                    <datalist id="statuses-list">
+                        <template x-for="st in assets.statuses" :key="st.name">
+                            <option :value="st.name"></option>
+                        </template>
+                    </datalist>
+                    <input id="debug-status-damage-player" type="number" min="0" placeholder="dmg" value="0"
+                        style="width:4ch;" />
+                </div>
+
+                <div class="debug-composite">
+                    <input list="statuses-list" placeholder="Estatus"
+                        @keyup.enter="(function(v){ const s = assets.statuses.find(st => st.name == v); if(s){ const dmg = Number(document.getElementById('debug-status-damage-enemy').value || 0); const enc = Alpine.$data(document.getElementById('encounter')); if(enc){ enc.estatus = enc.estatus || []; const newStatus = {...s, damage: dmg}; enc.estatus.push(newStatus); updateBars(); enc.log.push(`Debug: ${enc.enemyName} gained [<span data-tooltip='${newStatus.id} ${newStatus.name}\n\n${newStatus.description}\n\nBased on ${dmg} initial damage.'>${newStatus.id}</span>]`); } } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
+                    <input id="debug-status-damage-enemy" type="number" min="0" placeholder="dmg" value="0"
+                        style="width:4ch;" />
+                </div>
+
+                <button @click="savePlayer(); showMessage(`Saved Game`, 'success');" class="debug-save-btn">Save
+                    Game</button>
             </div>
             <br>
             <h2>Press ` to close</h2>

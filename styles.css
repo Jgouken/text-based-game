@@ -1708,10 +1708,13 @@ body.inventory-shift-open-journal #inventory .inventory-item:active {
 .debug-save-btn {
     font-family: 'Pixel-Font', sans-serif;
     background-color: transparent;
-    border: 2px solid white;
+    border: 2px solid rgb(109, 109, 109);
     cursor: pointer;
+    padding: 5px;
     color: white;
 }
+
+
 .debug-grid input {
     background-color: rgba(0, 0, 0, 0.65);
     border: 1px solid #333;

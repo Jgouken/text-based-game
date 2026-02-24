@@ -189,7 +189,7 @@ async function executeSkill({
 
     let skillLog;
     let tooltip = `${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.floor(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.floor(skill.lifesteal * 100)}%\n` : ''}`;
-    
+
     if (skill.name === "Yin and Yang") {
         tooltip += `${isPlayer ? 'Gains ' : 'Inflicts '}🖤🌑🥀🌀 or 🔥👁️\n`;
         tooltip += `${!isPlayer ? 'Gains ' : 'Inflicts '}✨🍀🛡️🏅 or 💢💨`;
@@ -628,10 +628,63 @@ async function turnManager(toPlayer) {
 
             while (player.experience + xpdrop > getRequiredXP(player.level)) {
                 xpdrop -= getRequiredXP(player.level) - player.experience;
+                const beforeStats = {
+                    maxHealth: player.maxHealth,
+                    maxStamina: player.maxStamina,
+                    attack: player.attack,
+                    defense: player.defense,
+                    crit: player.crit,
+                    critdmg: player.critdmg,
+                    accuracy: player.accuracy,
+                    evasion: player.evasion
+                };
+
                 player.level += 1;
                 player.experience = 0;
-                await new Promise(r => setTimeout(r, 200))
-                encounter.log.push(`⬆️ ${background.name} leveled up to level ${player.level}! ⬆️`)
+                await setPlayer();
+                updateBars();
+                await new Promise(r => setTimeout(r, 200));
+
+                const afterStats = {
+                    maxHealth: player.maxHealth,
+                    maxStamina: player.maxStamina,
+                    attack: player.attack,
+                    defense: player.defense,
+                    crit: player.crit,
+                    critdmg: player.critdmg,
+                    accuracy: player.accuracy,
+                    evasion: player.evasion
+                };
+
+                const diffs = [];
+                const hBefore = beforeStats.maxHealth, hAfter = afterStats.maxHealth;
+                if (hAfter !== hBefore) diffs.push(`💖 ${hBefore} → ${hAfter} <span style="color:lightgreen;">+${hAfter - hBefore}</span>`);
+
+                const sBefore = beforeStats.maxStamina, sAfter = afterStats.maxStamina;
+                if (sAfter !== sBefore) diffs.push(`⚡ ${sBefore} → ${sAfter} <span style="color:lightgreen;">+${sAfter - sBefore}</span>`);
+
+                const aBefore = beforeStats.attack, aAfter = afterStats.attack;
+                if (aAfter !== aBefore) diffs.push(`⚔️ ${aBefore} → ${aAfter} <span style="color:lightgreen;">+${aAfter - aBefore}</span>`);
+
+                const dBefore = beforeStats.defense, dAfter = afterStats.defense;
+                if (dAfter !== dBefore) diffs.push(`🛡️ ${dBefore} → ${dAfter} <span style="color:lightgreen;">+${dAfter - dBefore}</span>`);
+
+                const critBefore = Math.round(beforeStats.crit * 100), critAfter = Math.round(afterStats.crit * 100);
+                if (critAfter !== critBefore) diffs.push(`🍀 ${critBefore}% → ${critAfter}% <span style="color:lightgreen;">+${critAfter - critBefore}%</span>`);
+
+                const accBefore = Math.round(beforeStats.accuracy * 100), accAfter = Math.round(afterStats.accuracy * 100);
+                if (accAfter !== accBefore) diffs.push(`🎯 ${accBefore}% → ${accAfter}% <span style="color:lightgreen;">+${accAfter - accBefore}%</span>`);
+
+                const evBefore = Math.round(beforeStats.evasion * 100), evAfter = Math.round(afterStats.evasion * 100);
+                if (evAfter !== evBefore) diffs.push(`💨 ${evBefore}% → ${evAfter}% <span style="color:lightgreen;">+${evAfter - evBefore}%</span>`);
+
+                const cdBefore = beforeStats.critdmg, cdAfter = afterStats.critdmg;
+                if (cdAfter !== cdBefore) diffs.push(`⚔️ ${cdBefore}x → ${cdAfter}x <span style="color:lightgreen;">+${cdAfter - cdBefore}x</span>`);
+
+                const tooltipHtml = diffs.length > 0 ? `<div style="text-align:left;">${diffs.map(d => `<div>${d}</div>`).join('')}</div>` : `No visible stat increases.`;
+                const escaped = tooltipHtml.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&apos;').replace(/\n/g, '<br>');
+
+                encounter.log.push(`<span class='battle-log-hover-underline' data-tooltip-html="${escaped}">⬆️ ${background.name} leveled up to level ${player.level}! ⬆️</span>`);
             }
 
             player.experience += xpdrop;
