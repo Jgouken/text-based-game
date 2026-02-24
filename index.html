@@ -1683,44 +1683,75 @@
             <br>
             <div class="debug-grid">
                 <button @click="savePlayer()" class="debug-save-btn">Save Game</button>
-                <input placeholder="Set Level"
-                    @keyup.enter="Alpine.$data(document.getElementById('player')).level = $event.target.value; setPlayer(); $event.target.value = ''; $event.target.blur()" />
 
-                <input placeholder="Set Health"
-                    @keyup.enter="Alpine.$data(document.getElementById('player')).health = $event.target.value; updateBars(); $event.target.value = ''; $event.target.blur()" />
+                <input type="number" min="0" step="1" placeholder="Set Level"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).level = Number($event.target.value); setPlayer(); $event.target.value = ''; $event.target.blur()" />
 
-                <input placeholder="Set Max Health"
-                    @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = $event.target.value; updateBars(); $event.target.value = ''; $event.target.blur()" />
+                <input type="number" min="0" step="1" placeholder="Set Health"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).health = Number($event.target.value); updateBars(); $event.target.value = ''; $event.target.blur()" />
 
-                <input placeholder="Set Stamina"
-                    @keyup.enter="Alpine.$data(document.getElementById('player')).stamina = $event.target.value; updateBars(); $event.target.value = ''; $event.target.blur()" />
+                <input type="number" min="0" step="1" placeholder="Set Max Health"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).maxHealth = Number($event.target.value); updateBars(); $event.target.value = ''; $event.target.blur()" />
 
-                <input placeholder="Set Max Stamina"
-                    @keyup.enter="Alpine.$data(document.getElementById('player')).maxStamina = $event.target.value; updateBars(); $event.target.value = ''; $event.target.blur()" />
+                <input type="number" min="0" step="1" placeholder="Set Stamina"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).stamina = Number($event.target.value); updateBars(); $event.target.value = ''; $event.target.blur()" />
 
-                <input placeholder="Set XP"
-                    @keyup.enter="Alpine.$data(document.getElementById('player')).experience = $event.target.value; updateBars(); $event.target.value = ''; $event.target.blur()" />
+                <input type="number" min="0" step="1" placeholder="Set Max Stamina"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).maxStamina = Number($event.target.value); updateBars(); $event.target.value = ''; $event.target.blur()" />
 
-                <input placeholder="Set Weapon"
-                    @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry = {weapon: assets.items.find(w => w.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''; $event.target.blur()" />
+                <input type="number" min="0" step="1" placeholder="Set XP"
+                    @keyup.enter="Alpine.$data(document.getElementById('player')).experience = Number($event.target.value); updateBars(); $event.target.value = ''; $event.target.blur()" />
 
-                <input placeholder="Set Weapon Level"
-                    @keyup.enter="Alpine.$data(document.getElementById('player')).weaponry.level = $event.target.value; setPlayer(); $event.target.value = ''; $event.target.blur()" />
+                <!-- Weapon selector (typeable) + level -->
+                <div class="debug-composite">
+                    <input list="weapons-list" placeholder="Equip Weapon"
+                        @keyup.enter="(function(v){ const w = assets.items.find(i => i.name == v && i.attack !== undefined && i.skills); if(w){ Alpine.$data(document.getElementById('player')).weaponry = {weapon: w, level: Number(document.getElementById('debug-weapon-level').value || 1)}; setPlayer(); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
+                    <datalist id="weapons-list">
+                        <template x-for="it in assets.items.filter(i => i.attack !== undefined && i.skills)"
+                            :key="it.name">
+                            <option :value="it.name"></option>
+                        </template>
+                    </datalist>
+                    <input id="debug-weapon-level" type="number" min="1" placeholder="Weapon Level" value="1"
+                        style="width:4ch;" />
+                </div>
 
-                <input placeholder="Set Armor"
-                    @keyup.enter="Alpine.$data(document.getElementById('player')).armory = {armor: assets.items.find(a => a.name == $event.target.value), level: 1}; setPlayer(); $event.target.value = ''; $event.target.blur()" />
+                <!-- Armor selector (typeable) + level -->
+                <div class="debug-composite">
+                    <input list="armors-list" placeholder="Equip Armor"
+                        @keyup.enter="(function(v){ const a = assets.items.find(i => i.name == v && i.defense !== undefined); if(a){ Alpine.$data(document.getElementById('player')).armory = {armor: a, level: Number(document.getElementById('debug-armor-level').value || 1)}; setPlayer(); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
+                    <datalist id="armors-list">
+                        <template x-for="it in assets.items.filter(i => i.defense !== undefined)" :key="it.name">
+                            <option :value="it.name"></option>
+                        </template>
+                    </datalist>
+                    <input id="debug-armor-level" type="number" min="1" placeholder="Armor Level" value="1"
+                        style="width:4ch;" />
+                </div>
 
-                <input placeholder="Set Armor Level"
-                    @keyup.enter="Alpine.$data(document.getElementById('player')).armory.level = $event.target.value; setPlayer(); $event.target.value = ''; $event.target.blur()" />
-
-                <input placeholder="Get Item"
-                    @keyup.enter="addToInventory(assets.items.find(i => i.name == $event.target.value), 5); setPlayer(); $event.target.value = '';" />
-
-                <input placeholder="Enemy Level"
-                    @keyup.enter="enemyLevel = Number($event.target.value); setPlayer(); $event.target.value = ''; $event.target.blur()" />
-
-                <input placeholder="Encounter Enemy"
-                    @keyup.enter="transition('debug', 'encounter'); startBattle(assets.enemies.find(e => e.name == $event.target.value)); $event.target.value = ''; $event.target.blur()" />
+                <!-- Get Item selector (typeable) + amount -->
+                <div class="debug-composite">
+                    <input list="items-list" placeholder="Get Item (type to filter)"
+                        @keyup.enter="(function(v){ const it = assets.items.find(i => i.name == v); if(it){ addToInventory(it, Number(document.getElementById('debug-get-item-amount').value || 1)); setPlayer(); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
+                    <datalist id="items-list">
+                        <template x-for="it in assets.items" :key="it.name">
+                            <option :value="it.name"></option>
+                        </template>
+                    </datalist>
+                    <input id="debug-get-item-amount" type="number" min="1" placeholder="Amount" value="5"
+                        style="width:4ch;" />
+                </div>
+                
+                <div class="debug-composite">
+                    <input list="enemies-list" placeholder="Encounter Enemy (type to filter)"
+                        @keyup.enter="(function(v){ const en = assets.enemies.find(e => e.name == v); if(en){ const lvl = Number(document.getElementById('debug-enemy-level').value || 1); enemyLevel = lvl; transition('debug','encounter'); startBattle(en); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
+                    <datalist id="enemies-list">
+                        <template x-for="en in assets.enemies" :key="en.name">
+                            <option :value="en.name"></option>
+                        </template>
+                    </datalist>
+                    <input id="debug-enemy-level" type="number" min="1" placeholder="Lvl" value="1" style="width:3ch; margin-left:6px;" />
+                </div>
             </div>
             <br>
             <h2>Press ` to close</h2>
