@@ -42,7 +42,7 @@
                 critdmg: 0,
                 accuracy: 0,
                 evasion: 0,
-                defense: 60,
+                defense: 70,
                 experience: 0,
                 health: 500,
                 maxHealth: 500,
@@ -51,7 +51,7 @@
                 weaponry: { weapon: getAssets().items.find(weapon => weapon.name == 'Hands'), level: 1 },
                 armory: { armor: getAssets().items.find(armor => armor.name == 'None'), level: 1 },
                 level: 1,
-                attack: 32,
+                attack: 75,
                 pstatus: [],
                 activePotion: null,
                 synergyBonus: { name: null, attack: 0, defense: 0, crit: 0, evasion: 0 },
@@ -273,10 +273,10 @@
                 <div class="battle-weaponry" id="battle-weaponry">
 
                     <span :data-tooltip="(() => {
-                            const baseAttack = Math.floor(32 + (((level || 1) - 1) * 6) + weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel));
+                            const baseAttack = Math.floor(75 + (((level || 1) - 1) * 25) + weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel));
                             const synAttack = Number(synergyBonus?.attack) || 0;
                             const synName = synergyBonus?.name || 'Synergy';
-                            return `Base Attack\n\n32 + ((${level || 1} - 1) * 6) + ${weaponry.weapon.attack} + ((${weaponry.level} - 1) * ${weaponry.weapon.attackPerLevel})${synAttack ? ` + ${synAttack} (✨ ${synName})` : ''} = ${baseAttack + synAttack}`;
+                            return `Base Attack\n\n75 + ((${level || 1} - 1) * 25) + ${weaponry.weapon.attack} + ((${weaponry.level} - 1) * ${weaponry.weapon.attackPerLevel})${synAttack ? ` + ${synAttack} (✨ ${synName})` : ''} = ${baseAttack + synAttack}`;
                         })()" x-text="`⚔️${attack}`"></span>
                     <span :data-tooltip="(() => {
                         const hasRigidity = pstatus.some(s => s.id == getStatusIdByName('Rigidity'));
@@ -286,10 +286,10 @@
                         const multiplier = 1 + rigidityBonus - fragilityPenalty;
                         const isModified = hasRigidity || hasFragility;
                         
-                        const baseDefense = Math.floor(60 + (((level || 1) - 1) * 10) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult));
+                        const baseDefense = Math.floor(70 + (((level || 1) - 1) * 30) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult));
                         const synDefense = Number(synergyBonus?.defense) || 0;
                         const synName = synergyBonus?.name || 'Synergy';
-                        let tooltip = `Base Defense\n\n60 + ((${level || 1} - 1) * 10) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult})${synDefense ? ` + ${synDefense} (✨ ${synName})` : ''} = ${baseDefense + synDefense}`;
+                        let tooltip = `Base Defense\n\n70 + ((${level || 1} - 1) * 30) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult})${synDefense ? ` + ${synDefense} (✨ ${synName})` : ''} = ${baseDefense + synDefense}`;
                         if (isModified) {
                             tooltip += `\n${defense}`;
                             if (hasRigidity) tooltip += ` * (1 + ${rigidityBonus}) (${getStatusIdByName('Rigidity')})`;

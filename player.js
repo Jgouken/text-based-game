@@ -60,11 +60,12 @@ async function startPlayer() {
 
 async function setPlayer() {
     const player = Alpine.$data(document.getElementById('player'));
+
     player.maxHealth = 500 + ((player.level - 1) * 250)
     player.maxStamina = 50 + ((player.level - 1) * 5)
 
-    const baseAttack = Math.floor(32 + ((player.level - 1) * 6) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel));
-    const baseDefense = Math.floor(60 + ((player.level - 1) * 10) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult));
+    const baseAttack = Math.floor(75 + ((player.level - 1) * 25) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel));
+    const baseDefense = Math.floor(70 + ((player.level - 1) * 30) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult));
 
     const activeSynergy = player.armory.armor?.synergies?.find(syn => syn.weapon === player.weaponry.weapon.name) || null;
     const synergyAttack = Number(activeSynergy?.attack) || 0;
