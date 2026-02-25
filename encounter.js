@@ -269,10 +269,16 @@ async function executeSkill({
                 if ((hasStatus(player.pstatus, 'Malediction') && stasset.positive) || (hasStatus(player.pstatus, 'Blessing') && !stasset.positive)) {
                     negated.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
                 } else {
-                    const idx = player.pstatus.indexOf(player.pstatus.find(s => s.id == status));
-                    const newStatus = { ...stasset, damage: status == statId('Curse') ? attacker.attack : totalDealt };
-                    if (idx >= 0) player.pstatus[idx] = newStatus;
-                    else player.pstatus.push(newStatus);
+                    const idx = player.pstatus.findIndex(s => s.id == status);
+                    const existing = idx >= 0 ? player.pstatus[idx] : null;
+                    if (existing) {
+                        existing.damage = status == statId('Curse') ? attacker.attack : totalDealt;
+                        existing.rounds = (existing.rounds || stasset.rounds || 0) + (isPlayer ? 1 : 0);
+                        player.pstatus[idx] = existing;
+                    } else {
+                        const newStatus = { ...stasset, damage: status == statId('Curse') ? attacker.attack : totalDealt, rounds: (stasset.rounds || 0) + (isPlayer ? 1 : 0) };
+                        player.pstatus.push(newStatus);
+                    }
                     granted.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
                 }
             });
@@ -287,10 +293,16 @@ async function executeSkill({
                 if ((hasStatus(encounter.estatus, 'Malediction') && stasset.positive) || (hasStatus(encounter.estatus, 'Blessing') && !stasset.positive)) {
                     negated.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
                 } else {
-                    const idx = encounter.estatus.indexOf(encounter.estatus.find(s => s.id == status));
-                    const newStatus = { ...stasset, damage: status == statId('Curse') ? attacker.attack : totalDealt };
-                    if (idx >= 0) encounter.estatus[idx] = newStatus;
-                    else encounter.estatus.push(newStatus);
+                    const idx = encounter.estatus.findIndex(s => s.id == status);
+                    const existing = idx >= 0 ? encounter.estatus[idx] : null;
+                    if (existing) {
+                        existing.damage = status == statId('Curse') ? attacker.attack : totalDealt;
+                        existing.rounds = (existing.rounds || stasset.rounds || 0) + (!isPlayer ? 1 : 0);
+                        encounter.estatus[idx] = existing;
+                    } else {
+                        const newStatus = { ...stasset, damage: status == statId('Curse') ? attacker.attack : totalDealt, rounds: (stasset.rounds || 0) + (!isPlayer ? 1 : 0) };
+                        encounter.estatus.push(newStatus);
+                    }
                     granted.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`);
                 }
             });
