@@ -389,7 +389,7 @@ function getJournalEnemyDetails(enemy, previewLevel, assets) {
                 `Health: ${scaledStats.health}`,
                 `Attack: ${scaledStats.attack}`,
                 `Defense: ${scaledStats.defense}`,
-                `Accuracy: ${journalPercent(enemy.accuracy)}`,
+                `Accuracy: ${journalPercent(getEnemyAccuracy(enemy, level))}`,
                 `Crit Chance: ${journalPercent(enemy.crit)}`,
             ]
         }
@@ -633,13 +633,18 @@ window.createJournalState = function createJournalState() {
                         const lowStats = scaleEnemyStats(enemyData, areaMinLevel);
                         const highStats = scaleEnemyStats(enemyData, areaMaxLevel);
                         const statRange = (lowValue, highValue) => lowValue === highValue ? `${lowValue}` : `${lowValue} - ${highValue}`;
+                        // Use the journal preview level (clamped to the area's range) to show
+                        // a single, predictable accuracy value rather than a range.
+                        const previewLevel = clampJournalLevel(this.previewLevel || areaMinLevel);
+                        const tooltipLevel = Math.max(areaMinLevel, Math.min(areaMaxLevel, previewLevel));
+                        const acc = Math.floor(((typeof getEnemyAccuracy === 'function') ? getEnemyAccuracy(enemyData, tooltipLevel) : (enemyData.accuracy || 0)) * 100);
                         const enemyTooltipText =
                             `Level ${areaMinLevel === areaMaxLevel ? `${areaMinLevel}` : `${areaMinLevel} - ${areaMaxLevel}`}\n` +
                             `${enemyData.block || 'Unknown Block'}\n` +
                             `💖 ${statRange(lowStats.health, highStats.health)}\n` +
                             `⚔️ ${statRange(lowStats.attack, highStats.attack)}\n` +
                             `🛡️ ${statRange(lowStats.defense, highStats.defense)}\n` +
-                            `🎯 ${Math.floor(enemyData.accuracy * 100)}%\n` +
+                            `🎯 ${acc}%\n` +
                             `🍀 ${Math.floor(enemyData.crit * 100)}%`;
                         const escapedEnemyName = escapeJournalHtml(enemyName);
                         const enemyTooltip = escapeJournalHtml(enemyTooltipText);

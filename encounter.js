@@ -111,11 +111,11 @@ async function startBattle(enemy = null) {
     encounter.health = encounter.maxHealth;
     encounter.defense = scaledStats.defense;
     encounter.attack = scaledStats.attack;
-    encounter.estatus = []
-    encounter.crit = enemy.crit
-    encounter.accuracy = enemy.accuracy
+    encounter.estatus = [];
+    encounter.crit = enemy.crit;
+    encounter.accuracy = getEnemyAccuracy(enemy, level);
 
-    encounter.log = []
+    encounter.log = [];
     encounter.log.push(`⚔️${background.name} (${player.level}) vs. ${enemy.name} (${level})⚔️<i class="fa-solid fa-file-arrow-down" @click="exportLog()" data-tooltip="📄 Save Battle Log As..."
                         style="position: sticky; top: 0; float: right; right: 8px; z-index: 5; cursor: pointer; font-size: 24px; color: grey;"></i>`)
     battleStation.round = 1;

@@ -8831,6 +8831,12 @@ function scaleEnemyStats(enemyData, level) {
 	};
 }
 
+function getEnemyAccuracy(enemyData, level) {
+	const lvl = Math.max(1, Number(level) || 1);
+	const base = Number(enemyData?.accuracy) || 0;
+	return Math.min(1, base + 0.0025 * (lvl - 1));
+}
+
 function normalizeStatusReferences(assetRoot) {
 	if (!assetRoot || !Array.isArray(assetRoot.statuses)) return
 
