@@ -8791,13 +8791,13 @@ function getStatusIdByName(statusName) {
 }
 
 function scaleEnemyStats(enemyData, level) {
-	const lvl = Math.max(1, Number(level) || 1) - 1;
+	const lvl = Math.max(1, Number(level) || 1);
 
 	const blocks = (typeof getAssets === 'function' && getAssets()) ? (getAssets().blocks || []) : [];
 	const block = blocks.find((entry) => entry.name === enemyData?.block);
 
 	const getBlockTierKeyLocal = (l) => {
-		if (l >= 50) return 'fifty';
+		if (l == 50) return 'fifty';
 		if (l >= 40) return 'forty';
 		if (l >= 30) return 'thirty';
 		if (l >= 20) return 'twenty';
@@ -8805,12 +8805,12 @@ function scaleEnemyStats(enemyData, level) {
 		return 'zero';
 	};
 
-	if (block) {
+	if (block && lvl <= 50) {
 		const tier = block[getBlockTierKeyLocal(lvl)] || block.zero || {};
 		return {
-			health: Math.floor((enemyData?.health || 0) + ((tier.health || 0) * lvl)),
-			defense: Math.floor((enemyData?.defense || 0) + ((tier.defense || 0) * lvl)),
-			attack: Math.floor((enemyData?.attack || 0) + ((tier.attack || 0) * lvl))
+			health: Math.floor((enemyData?.health || 0) + ((tier.health || 0) * (lvl - 1))),
+			defense: Math.floor((enemyData?.defense || 0) + ((tier.defense || 0) * (lvl - 1))),
+			attack: Math.floor((enemyData?.attack || 0) + ((tier.attack || 0) * (lvl - 1)))
 		};
 	}
 
