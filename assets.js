@@ -8837,6 +8837,12 @@ function getEnemyAccuracy(enemyData, level) {
 	return Math.min(1, base + 0.0025 * (lvl - 1));
 }
 
+function getEnemyCrit(enemyData, level) {
+	const lvl = Math.max(1, Number(level) || 1);
+	const base = Number(enemyData?.crit) || 0;
+	return Math.min(1, base + 0.00125 * (lvl - 1));
+}
+
 function normalizeStatusReferences(assetRoot) {
 	if (!assetRoot || !Array.isArray(assetRoot.statuses)) return
 

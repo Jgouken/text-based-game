@@ -112,7 +112,7 @@ async function startBattle(enemy = null) {
     encounter.defense = scaledStats.defense;
     encounter.attack = scaledStats.attack;
     encounter.estatus = [];
-    encounter.crit = enemy.crit;
+    encounter.crit = getEnemyCrit(enemy, level);
     encounter.accuracy = getEnemyAccuracy(enemy, level);
 
     encounter.log = [];
@@ -552,9 +552,7 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {})
     }
 
     removeFromInventory(inventoryIndex);
-    const useTooltipRaw = (typeof window.getItemTooltipText === 'function')
-        ? window.getItemTooltipText(selectedInventoryItem.name, selectedInventoryItem.level ?? 1, true)
-        : (itemData.description || selectedInventoryItem.name);
+    const useTooltipRaw = window.getItemTooltipText(selectedInventoryItem.name, selectedInventoryItem.level ?? 1, true);
     const useTooltipHtml = useTooltipRaw
         .replace(/&/g, '&amp;')
         .replace(/"/g, '&quot;')
@@ -697,9 +695,7 @@ async function turnManager(toPlayer) {
             let level = 1
             if (loot.minlvl) level = loot.minlvl && loot.maxlvl ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
 
-            const descRaw = (typeof window.getItemTooltipText === 'function')
-                ? window.getItemTooltipText(loot.name, level, true)
-                : (loot.description || 'Crafting Reagent');
+            const descRaw = window.getItemTooltipText(loot.name, level, true);
 
             const descHtml = String(descRaw)
                 .replace(/&/g, '&amp;')

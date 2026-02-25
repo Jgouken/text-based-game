@@ -389,8 +389,8 @@ function getJournalEnemyDetails(enemy, previewLevel, assets) {
                 `Health: ${scaledStats.health}`,
                 `Attack: ${scaledStats.attack}`,
                 `Defense: ${scaledStats.defense}`,
-                `Accuracy: ${journalPercent(getEnemyAccuracy(enemy, level))}`,
-                `Crit Chance: ${journalPercent(enemy.crit)}`,
+                    `Accuracy: ${journalPercent(getEnemyAccuracy(enemy, level))}`,
+                    `Crit Chance: ${journalPercent(getEnemyCrit(enemy, level))}`,
             ]
         }
     ];
