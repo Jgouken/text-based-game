@@ -8,7 +8,6 @@ const hasStatus = (statusList, name) => statusList.some((status) => status.id ==
 var died = false;
 var fled = false;
 
-// Choices - Array of Objects
 function randomByChance(choices) {
     const totalChance = choices.reduce((sum, item) => sum + item.chance, 0); // In case it doesn't equal 100, it just corrects itself
     let randomNum = Math.random() * totalChance;
@@ -199,6 +198,11 @@ async function executeSkill({
         let final = hit ? Math.floor(damage * (crit ? critMult : 1)) : 0;
         defender.health -= final;
         totalDealt += final;
+        if (final > 0) {
+            const playerRef = Alpine.$data(document.getElementById('player'));
+            const ratio = Math.max(0, Math.min(1, final / (playerRef?.maxHealth || 1))); // currently forced to be 0.15 because higher ratios ruin things
+            triggerScreenShake(ratio);
+        }
         return final;
     };
 
@@ -879,6 +883,7 @@ async function victory() {
         alert(`${deathMessages[Math.floor(Math.random() * deathMessages.length)]}\nYour health will be replinished, but your death has been punished.`);
         await new Promise(resolve => setTimeout(resolve, 500));
         if (player.level > 1) player.level -= 1;
+        if (player.level < 1) player.level = 1;
         player.health = player.maxHealth;
         player.pstatus = [];
         player.experience = 0;

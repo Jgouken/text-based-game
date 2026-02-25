@@ -1344,6 +1344,83 @@
                     return Alpine.$data(document.getElementById('background-image')).enemy.name || 'Enemy';
                 },
 
+                buildTooltip() {
+                    const background = Alpine.$data(document.getElementById('background-image'));
+                    const enemy = background.enemy;
+                    const level = background.enemyLevel;
+
+                    const hasEmpowerment = this.estatus.some(s => s.id == getStatusIdByName('Empowerment'));
+                    const hasStrength = this.estatus.some(s => s.id == getStatusIdByName('Strength'));
+                    const hasWeakness = this.estatus.some(s => s.id == getStatusIdByName('Weakness'));
+                    const hasBerserk = this.estatus.some(s => s.id == getStatusIdByName('Berserk'));
+
+                    const hasRigidity = this.estatus.some(s => s.id == getStatusIdByName('Rigidity'));
+                    const hasFragility = this.estatus.some(s => s.id == getStatusIdByName('Fragility'));
+
+                    const hasAcuity = this.estatus.some(s => s.id == getStatusIdByName('Acuity'));
+                    const hasBlindness = this.estatus.some(s => s.id == getStatusIdByName('Blindness'));
+
+                    const hasLuck = this.estatus.some(s => s.id == getStatusIdByName('Luck'));
+                    const hasMisfortune = this.estatus.some(s => s.id == getStatusIdByName('Misfortune'));
+
+                    const empowermentBonus = hasEmpowerment ? getAssets().statuses.find(s => s.name === 'Empowerment').damAdd : 0;
+                    const strengthBonus = hasStrength ? getAssets().statuses.find(s => s.name === 'Strength').damAdd : 0;
+                    const berserkBonus = hasBerserk ? getAssets().statuses.find(s => s.name === 'Berserk').damAdd : 0;
+                    const weaknessPenalty = hasWeakness ? getAssets().statuses.find(s => s.name === 'Weakness').damReduc : 0;
+                    const attackMultiplier = 1 + empowermentBonus + strengthBonus + berserkBonus - weaknessPenalty;
+                    const modifiedAttack = Math.floor(this.attack * attackMultiplier);
+
+                    const rigidityBonus = hasRigidity ? getAssets().statuses.find(s => s.name === 'Rigidity').armorAdd : 0;
+                    const fragilityPenalty = hasFragility ? getAssets().statuses.find(s => s.name === 'Fragility').armorSub : 0;
+                    const defenseMultiplier = 1 + rigidityBonus - fragilityPenalty;
+                    const modifiedDefense = Math.floor(this.defense * defenseMultiplier);
+
+                    const acuityBonus = hasAcuity ? getAssets().statuses.find(s => s.name === 'Acuity').incAcc : 0;
+                    const blindnessPenalty = hasBlindness ? getAssets().statuses.find(s => s.name === 'Blindness').decAcc : 0;
+                    const modifiedAccuracy = this.accuracy + acuityBonus - blindnessPenalty;
+
+                    const luckBonus = hasLuck ? getAssets().statuses.find(s => s.name === 'Luck').incCrit : 0;
+                    const misfortunePenalty = hasMisfortune ? getAssets().statuses.find(s => s.name === 'Misfortune').decCrit : 0;
+                    const modifiedCrit = this.crit + luckBonus - misfortunePenalty;
+
+                    let tooltip = `Level ${level}\n${enemy.block}`;
+                    tooltip += `\n⚔️ ${ (hasEmpowerment || hasStrength || hasWeakness || hasBerserk) ? modifiedAttack + '*' : this.attack}`;
+                    if (hasEmpowerment || hasStrength || hasWeakness || hasBerserk) {
+                        tooltip += `\n  ${this.attack}`;
+                        if (hasEmpowerment) tooltip += ` * ${(1 + empowermentBonus).toFixed(2)} [${getStatusIdByName('Empowerment')}]`;
+                        if (hasStrength) tooltip += ` * ${(1 + strengthBonus).toFixed(2)} [${getStatusIdByName('Strength')}]`;
+                        if (hasBerserk) tooltip += ` * ${(1 + berserkBonus).toFixed(2)} [${getStatusIdByName('Berserk')}]`;
+                        if (hasWeakness) tooltip += ` * ${(1 - weaknessPenalty).toFixed(2)} [${getStatusIdByName('Weakness')}]`;
+                        tooltip += ` = ${modifiedAttack}`;
+                    }
+
+                    tooltip += `\n🛡️ ${ (hasRigidity || hasFragility) ? modifiedDefense + '*' : this.defense}`;
+                    if (hasRigidity || hasFragility) {
+                        tooltip += `\n  ${this.defense}`;
+                        if (hasRigidity) tooltip += ` * ${(1 + rigidityBonus).toFixed(2)} [${getStatusIdByName('Rigidity')}]`;
+                        if (hasFragility) tooltip += ` * ${(1 - fragilityPenalty).toFixed(2)} [${getStatusIdByName('Fragility')}]`;
+                        tooltip += ` = ${modifiedDefense}`;
+                    }
+
+                    tooltip += `\n🎯 ${Math.floor(( (hasAcuity || hasBlindness) ? modifiedAccuracy : this.accuracy) * 100)}%`;
+                    if (hasAcuity || hasBlindness) {
+                        tooltip += `\n  ${this.accuracy}`;
+                        if (hasAcuity) tooltip += ` + ${acuityBonus} [${getStatusIdByName('Acuity')}]`;
+                        if (hasBlindness) tooltip += ` - ${blindnessPenalty} [${getStatusIdByName('Blindness')}]`;
+                        tooltip += ` = ${modifiedAccuracy}`;
+                    }
+
+                    tooltip += `\n🍀 ${Math.floor(((hasLuck || hasMisfortune) ? modifiedCrit : this.crit) * 100)}%`;
+                    if (hasLuck || hasMisfortune) {
+                        tooltip += `\n  ${this.crit}`;
+                        if (hasLuck) tooltip += ` + ${luckBonus} [${getStatusIdByName('Luck')}]`;
+                        if (hasMisfortune) tooltip += ` - ${misfortunePenalty} [${getStatusIdByName('Misfortune')}]`;
+                        tooltip += ` = ${modifiedCrit}`;
+                    }
+
+                    return tooltip;
+                },
+
                 get formattedLog() {
                     const background = Alpine.$data(document.getElementById('background-image'));
                     const enemy = background.enemy;
@@ -1351,90 +1428,7 @@
                     
                     return this.log
                         .map(line => {
-                            // Calculate modified enemy stats based on status effects
-                            const hasEmpowerment = this.estatus.some(s => s.id == getStatusIdByName('Empowerment'));
-                            const hasStrength = this.estatus.some(s => s.id == getStatusIdByName('Strength'));
-                            const hasWeakness = this.estatus.some(s => s.id == getStatusIdByName('Weakness'));
-                            const hasBerserk = this.estatus.some(s => s.id == getStatusIdByName('Berserk'));
-                            
-                            const hasRigidity = this.estatus.some(s => s.id == getStatusIdByName('Rigidity'));
-                            const hasFragility = this.estatus.some(s => s.id == getStatusIdByName('Fragility'));
-                            
-                            const hasAcuity = this.estatus.some(s => s.id == getStatusIdByName('Acuity'));
-                            const hasBlindness = this.estatus.some(s => s.id == getStatusIdByName('Blindness'));
-                            
-                            const hasLuck = this.estatus.some(s => s.id == getStatusIdByName('Luck'));
-                            const hasMisfortune = this.estatus.some(s => s.id == getStatusIdByName('Misfortune'));
-                            
-                            // Attack modifiers (these affect damage output, not base attack display)
-                            const empowermentBonus = hasEmpowerment ? getAssets().statuses.find(s => s.name === 'Empowerment').damAdd : 0;
-                            const strengthBonus = hasStrength ? getAssets().statuses.find(s => s.name === 'Strength').damAdd : 0;
-                            const berserkBonus = hasBerserk ? getAssets().statuses.find(s => s.name === 'Berserk').damAdd : 0;
-                            const weaknessPenalty = hasWeakness ? getAssets().statuses.find(s => s.name === 'Weakness').damReduc : 0;
-                            const attackMultiplier = 1 + empowermentBonus + strengthBonus + berserkBonus - weaknessPenalty;
-                            const modifiedAttack = Math.floor(this.attack * attackMultiplier);
-                            const attackModified = hasEmpowerment || hasStrength || hasWeakness || hasBerserk;
-                            
-                            // Defense modifiers
-                            const rigidityBonus = hasRigidity ? getAssets().statuses.find(s => s.name === 'Rigidity').armorAdd : 0;
-                            const fragilityPenalty = hasFragility ? getAssets().statuses.find(s => s.name === 'Fragility').armorSub : 0;
-                            const defenseMultiplier = 1 + rigidityBonus - fragilityPenalty;
-                            const modifiedDefense = Math.floor(this.defense * defenseMultiplier);
-                            const defenseModified = hasRigidity || hasFragility;
-                            
-                            // Accuracy modifiers
-                            const acuityBonus = hasAcuity ? getAssets().statuses.find(s => s.name === 'Acuity').incAcc : 0;
-                            const blindnessPenalty = hasBlindness ? getAssets().statuses.find(s => s.name === 'Blindness').decAcc : 0;
-                            const modifiedAccuracy = this.accuracy + acuityBonus - blindnessPenalty;
-                            const accuracyModified = hasAcuity || hasBlindness;
-                            
-                            // Crit modifiers
-                            const luckBonus = hasLuck ? getAssets().statuses.find(s => s.name === 'Luck').incCrit : 0;
-                            const misfortunePenalty = hasMisfortune ? getAssets().statuses.find(s => s.name === 'Misfortune').decCrit : 0;
-                            const modifiedCrit = this.crit + luckBonus - misfortunePenalty;
-                            const critModified = hasLuck || hasMisfortune;
-                            
-                            // Build tooltip
-                            let tooltip = `Level ${level}\n${enemy.block}`;
-                            
-                            // Attack (show if modified by damage multipliers)
-                            tooltip += `\n⚔️ ${attackModified ? modifiedAttack + '*' : this.attack}`;
-                            if (attackModified) {
-                                tooltip += `\n  ${this.attack}`;
-                                if (hasEmpowerment) tooltip += ` * ${(1 + empowermentBonus).toFixed(2)} [${getStatusIdByName('Empowerment')}]`;
-                                if (hasStrength) tooltip += ` * ${(1 + strengthBonus).toFixed(2)} [${getStatusIdByName('Strength')}]`;
-                                if (hasBerserk) tooltip += ` * ${(1 + berserkBonus).toFixed(2)} [${getStatusIdByName('Berserk')}]`;
-                                if (hasWeakness) tooltip += ` * ${(1 - weaknessPenalty).toFixed(2)} [${getStatusIdByName('Weakness')}]`;
-                                tooltip += ` = ${modifiedAttack}`;
-                            }
-                            
-                            // Defense
-                            tooltip += `\n🛡️ ${defenseModified ? modifiedDefense + '*' : this.defense}`;
-                            if (defenseModified) {
-                                tooltip += `\n  ${this.defense}`;
-                                if (hasRigidity) tooltip += ` * ${(1 + rigidityBonus).toFixed(2)} [${getStatusIdByName('Rigidity')}]`;
-                                if (hasFragility) tooltip += ` * ${(1 - fragilityPenalty).toFixed(2)} [${getStatusIdByName('Fragility')}]`;
-                                tooltip += ` = ${modifiedDefense}`;
-                            }
-                            
-                            // Accuracy
-                            tooltip += `\n🎯 ${Math.floor((accuracyModified ? modifiedAccuracy : this.accuracy) * 100)}%${accuracyModified ? '*' : ''}`;
-                            if (accuracyModified) {
-                                tooltip += `\n  ${this.accuracy}`;
-                                if (hasAcuity) tooltip += ` + ${acuityBonus} [${getStatusIdByName('Acuity')}]`;
-                                if (hasBlindness) tooltip += ` - ${blindnessPenalty} [${getStatusIdByName('Blindness')}]`;
-                                tooltip += ` = ${modifiedAccuracy}`;
-                            }
-                            
-                            // Crit
-                            tooltip += `\n🍀 ${Math.floor((critModified ? modifiedCrit : this.crit) * 100)}%${critModified ? '*' : ''}`;
-                            if (critModified) {
-                                tooltip += `\n  ${this.crit}`;
-                                if (hasLuck) tooltip += ` + ${luckBonus} [${getStatusIdByName('Luck')}]`;
-                                if (hasMisfortune) tooltip += ` - ${misfortunePenalty} [${getStatusIdByName('Misfortune')}]`;
-                                tooltip += ` = ${modifiedCrit}`;
-                            }
-                            
+                            const tooltip = this.buildTooltip();
                             return line
                                 .replaceAll(this.playerName, `<span style='color:rgb(0, 255, 13);' data-tooltip='You!'>${this.playerName}</span>`)
                                 .replaceAll(this.enemyName, `<span style='color:red;' data-tooltip='${tooltip}'>${this.enemyName}</span>`)
@@ -1447,10 +1441,11 @@
             }">
             <div class="enemy" id="enemy">
                 <div class="enemy-level" x-text="`Level ${enemyLevel} ${enemy.block}`"
-                    :data-tooltip="`💖 ${enemy.health} + (${Math.floor((maxHealth - enemy.health) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${maxHealth}\n⚔️ ${enemy.attack} + (${Math.floor((attack - enemy.attack) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${attack}\n🛡️ ${enemy.defense} + (${Math.floor((defense - enemy.defense) / Alpine.$data(document.getElementById('background-image')).enemyLevel)} * ${Alpine.$data(document.getElementById('background-image')).enemyLevel}) = ${defense}\n🎯 ${Math.floor(accuracy * 100)}%\n🍀 ${Math.floor(crit * 100)}%`">
-                    ?</div>
+                    :data-tooltip="`💖 ${enemy.health} → ${maxHealth}\n⚔️ ${enemy.attack} → ${attack}\n🛡️ ${enemy.defense} → ${defense}\n🎯 ${Math.floor((enemy.accuracy || 0) * 100)}% → ${Math.floor(getEnemyAccuracy(enemy, enemyLevel) * 100)}%\n🍀 ${Math.floor((enemy.crit || 0) * 100)}% → ${Math.floor(getEnemyCrit(enemy, enemyLevel) * 100)}%`">
+                    Jgouken & SavorySam</div>
                 <div class="enemy-top-spacing enemy-top-spacing--small">
-                    <div class="enemy-name" x-text="enemy.name">???</div>
+                    <div class="enemy-name" x-text="enemy.name" :data-tooltip="buildTooltip()">
+                        ???</div>
                     <div class="estatus-effects">
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Bleed'))"
                             :data-tooltip="`${getStatusIdByName('Bleed')} ${estatus.find(s => s.id == getStatusIdByName('Bleed')).name} - ${estatus.find(s => s.id == getStatusIdByName('Bleed')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Bleed')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Bleed')).description}\n\n${estatus.find(s => s.id == getStatusIdByName('Bleed')).damage} * ${estatus.find(s => s.id == getStatusIdByName('Bleed')).baseDam} = ${Math.floor(estatus.find(s => s.id == getStatusIdByName('Bleed')).damage * estatus.find(s => s.id == getStatusIdByName('Bleed')).baseDam)}`"

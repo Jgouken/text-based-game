@@ -109,6 +109,8 @@ img {
     z-index: 1;
 }
 
+
+
 .overlay-transparency {
     position: fixed;
     height: 100%;
@@ -187,6 +189,60 @@ img {
     max-width: 90vw;
     box-sizing: border-box;
 }
+
+/* Subtle button hop on hover for interactive feel */
+button,
+input[type="button"],
+input[type="submit"],
+.regular-button,
+.btn--primary,
+.btn--success,
+.btn--danger,
+.btn--purple,
+.btn--violet,
+.btn--lime,
+.btn--landing-primary,
+.btn--landing-success,
+.btn--landing-danger,
+.battle-button,
+.battle-button--small,
+.travel-button,
+.battle-consumable-button {
+    will-change: transform;
+    transform-origin: center;
+    transition: transform 180ms cubic-bezier(0.2, 1, 0.2, 1);
+}
+
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+.regular-button:hover,
+.btn--primary:hover,
+.btn--success:hover,
+.btn--danger:hover,
+.btn--purple:hover,
+.btn--violet:hover,
+.btn--lime:hover,
+.btn--landing-primary:hover,
+.btn--landing-success:hover,
+.btn--landing-danger:hover,
+.battle-button:hover,
+.battle-button--small:hover,
+.travel-button:hover,
+.battle-consumable-button:hover {
+    transform: translateY(-6px) scale(1.02);
+}
+
+button:active,
+input[type="button"]:active,
+input[type="submit"]:active,
+.regular-button:active,
+.btn--primary:active,
+.battle-button:active,
+.travel-button:active {
+    transform: translateY(-2px) scale(0.995);
+}
+
 .player {
     position: fixed;
     left: 0;

@@ -511,3 +511,66 @@ function scalePlayerHUD() {
 
 window.addEventListener('resize', scalePlayerHUD);
 window.addEventListener('DOMContentLoaded', scalePlayerHUD);
+
+function triggerScreenShake(ratio = 0.25) {
+    ratio = 0.05;
+    const bg = document.getElementById('background-image');
+    const screenEl = document.getElementById('screen');
+    const target = screenEl || bg || document.body || document.documentElement;
+    if (!target) return;
+
+    const maxPx = 14;
+    const minPx = 2;
+    const px = Math.max(minPx, Math.round(minPx + (maxPx - minPx) * ratio));
+
+    const maxDeg = 3.2;
+    const minDeg = 0.25;
+    const deg = (minDeg + (maxDeg - minDeg) * ratio).toFixed(2) + 'deg';
+
+    const minDur = 260;
+    const maxDur = 640;
+    const duration = Math.round(minDur + (maxDur - minDur) * ratio) + 'ms';
+
+    target.style.setProperty('--shake-x', px + 'px');
+    target.style.setProperty('--shake-y', Math.round(px * 0.6) + 'px');
+    target.style.setProperty('--shake-rot', deg);
+    target.style.setProperty('--shake-duration', duration);
+
+    const frames = 7;
+    const timings = Array.from({ length: frames }, (_, i) => i / (frames - 1));
+
+    const rand = () => (Math.random() * 2 - 1);
+    const parseDeg = parseFloat(deg) || 0.5;
+    const maxExtraZoom = 0.06;
+    const baseZoom = 1 + ratio * maxExtraZoom;
+
+    const offsets = timings.map((t, i) => {
+        if (i === timings.length - 1) return { x: 0, y: 0, r: 0, s: 1 };
+        const falloff = 1 - (i / timings.length) * 0.85;
+        const jitterX = Math.round(rand() * px * (0.5 + Math.random() * 0.9) * falloff);
+        const jitterY = Math.round(rand() * px * (0.35 + Math.random() * 0.8) * falloff);
+        const jitterR = (rand() * parseDeg * (0.4 + Math.random() * 0.9) * falloff);
+        const s = 1 + (baseZoom - 1) * (0.6 + 0.4 * (1 - i / timings.length)) * falloff;
+        return { x: jitterX, y: jitterY, r: +jitterR.toFixed(2), s: +s.toFixed(4) };
+    });
+
+    const dur = Math.max(120, Math.round(Math.max(100, Number(duration.replace('ms', '')) || 420)));
+    const prevTransforms = new Map();
+    [target, bg].forEach(el => { if (el) prevTransforms.set(el, el.style.transform || ''); });
+
+    timings.forEach((t, i) => {
+        const when = Math.round(dur * t);
+        setTimeout(() => {
+            const o = offsets[i];
+            if (target) target.style.transform = `translate3d(${o.x}px, ${o.y}px, 0) rotate(${o.r}deg) scale(${o.s})`;
+            if (bg) bg.style.transform = `translate3d(${o.x}px, ${o.y}px, 0) rotate(${o.r}deg) scale(${o.s})`;
+        }, when);
+    });
+
+    setTimeout(() => {
+        try {
+            if (target) target.style.transform = prevTransforms.get(target) || '';
+            if (bg) bg.style.transform = prevTransforms.get(bg) || '';
+        } catch (e) { }
+    }, dur);
+}
