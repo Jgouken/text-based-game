@@ -1683,7 +1683,7 @@
             <br>
             <div class="debug-grid">
                 <input type="number" min="0" step="1" placeholder="Set Level"
-                    @keyup.enter="Alpine.$data(document.getElementById('player')).level = Number($event.target.value); setPlayer(); $event.target.value = ''; $event.target.blur()" />
+                    @keyup.enter="(function(v){ const p = Alpine.$data(document.getElementById('player')); p.level = Number(v); setPlayer(); p.health = p.maxHealth; p.stamina = p.maxStamina; updateBars(); savePlayer(); })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
 
                 <input type="number" min="0" step="1" placeholder="Set Health"
                     @keyup.enter="Alpine.$data(document.getElementById('player')).health = Number($event.target.value); updateBars(); $event.target.value = ''; $event.target.blur()" />

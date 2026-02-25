@@ -239,7 +239,7 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
         groups.push({ title: 'Crafting Recipe', lines: craftLines });
     }
     if (item.minlvl !== undefined || item.maxlvl !== undefined || item.attack !== undefined || item.defense !== undefined) {
-        descriptionLines.unshift(`Preview Level ${effectiveLevel}`);
+        descriptionLines.unshift(`Previewing at level ${effectiveLevel}`);
     }
 
     if (item.defense !== undefined && !item.skills) {
@@ -389,8 +389,8 @@ function getJournalEnemyDetails(enemy, previewLevel, assets) {
                 `Health: ${scaledStats.health}`,
                 `Attack: ${scaledStats.attack}`,
                 `Defense: ${scaledStats.defense}`,
-                    `Accuracy: ${journalPercent(getEnemyAccuracy(enemy, level))}`,
-                    `Crit Chance: ${journalPercent(getEnemyCrit(enemy, level))}`,
+                `Accuracy: ${journalPercent(getEnemyAccuracy(enemy, level))}`,
+                `Crit Chance: ${journalPercent(getEnemyCrit(enemy, level))}`,
             ]
         }
     ];
@@ -633,8 +633,6 @@ window.createJournalState = function createJournalState() {
                         const lowStats = scaleEnemyStats(enemyData, areaMinLevel);
                         const highStats = scaleEnemyStats(enemyData, areaMaxLevel);
                         const statRange = (lowValue, highValue) => lowValue === highValue ? `${lowValue}` : `${lowValue} - ${highValue}`;
-                        // Use the journal preview level (clamped to the area's range) to show
-                        // a single, predictable accuracy value rather than a range.
                         const previewLevel = clampJournalLevel(this.previewLevel || areaMinLevel);
                         const tooltipLevel = Math.max(areaMinLevel, Math.min(areaMaxLevel, previewLevel));
                         const acc = Math.floor(((typeof getEnemyAccuracy === 'function') ? getEnemyAccuracy(enemyData, tooltipLevel) : (enemyData.accuracy || 0)) * 100);

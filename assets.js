@@ -197,37 +197,37 @@ function getLocalAssets() {
 			{
 				name: "Lord",
 				fifty: {
-					health: 450,
+					health: 900,
 					attack: 40,
 					defense: 40,
 				},
 
 				forty: {
-					health: 400,
+					health: 800,
 					attack: 37,
 					defense: 37,
 				},
 
 				thirty: {
-					health: 385,
+					health: 770,
 					attack: 34,
 					defense: 34,
 				},
 
 				twenty: {
-					health: 370,
+					health: 740,
 					attack: 31,
 					defense: 31,
 				},
 
 				ten: {
-					health: 360,
+					health: 720,
 					attack: 28,
 					defense: 28,
 				},
 
 				zero: {
-					health: 350,
+					health: 700,
 					attack: 25,
 					defense: 25,
 				},
@@ -235,37 +235,37 @@ function getLocalAssets() {
 			{
 				name: "Elite",
 				fifty: {
-					health: 500,
+					health: 1000,
 					attack: 45,
 					defense: 45,
 				},
 
 				forty: {
-					health: 450,
+					health: 900,
 					attack: 42,
 					defense: 42,
 				},
 
 				thirty: {
-					health: 435,
+					health: 870,
 					attack: 39,
 					defense: 39,
 				},
 
 				twenty: {
-					health: 420,
+					health: 840,
 					attack: 36,
 					defense: 36,
 				},
 
 				ten: {
-					health: 410,
+					health: 820,
 					attack: 33,
 					defense: 33,
 				},
 
 				zero: {
-					health: 400,
+					health: 800,
 					attack: 30,
 					defense: 30,
 				},
@@ -319,7 +319,7 @@ function getLocalAssets() {
 				description: "Deal 20% more damage for 3 turns.",
 				damAdd: 0.2,
 				positive: true,
-				rounds: 4
+				rounds: 3
 			},
 			{
 				name: 'Empowerment',
@@ -327,7 +327,7 @@ function getLocalAssets() {
 				description: "Deal 40% more damage for 1 turn.",
 				damAdd: 0.4,
 				positive: true,
-				rounds: 2
+				rounds: 1
 			},
 			{
 				name: 'Stun',
@@ -358,7 +358,7 @@ function getLocalAssets() {
 				description: "Decreases accuracy by 15% for 3 turns.",
 				decAcc: 0.15,
 				positive: false,
-				rounds: 4
+				rounds: 3
 			},
 			{
 				name: 'Acuity',
@@ -366,7 +366,7 @@ function getLocalAssets() {
 				description: "Increases accuracy by 20% for 3 turns.",
 				incAcc: 0.2,
 				positive: true,
-				rounds: 4
+				rounds: 3
 			},
 			{
 				name: 'Curse',
@@ -399,7 +399,7 @@ function getLocalAssets() {
 				damAdd: 0.4,
 				incDamTaken: 0.3,
 				positive: true,
-				rounds: 4
+				rounds: 3
 			},
 			{
 				name: 'Evasion',
@@ -4217,7 +4217,7 @@ function getLocalAssets() {
 				block: "Elite",
 				sprite: 'assets/enemies/DemonQueen.gif',
 				weapon: null,
-				health: 6666,
+				health: 6666*7,
 				attack: 666,
 				defense: 666,
 				crit: 0.33,

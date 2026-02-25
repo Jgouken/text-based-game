@@ -1,6 +1,6 @@
 // This file is for *in-battle* game logic for both the player and enemy.
 const assets = getAssets()
-const blessingWords = ['cleansed', 'purified', 'dispelled', 'vanquished', 'dissipated', 'evaporated', 'cured', 'alleviated', 'relieved', 'mitigated', 'quelled'];
+const blessingWords = ['cleansed', 'purified', 'dispelled', 'vanquished', 'dissipated', 'evaporated', 'cured', 'alleviated', 'relieved', 'mitigated', 'quelled', 'annihilated'];
 const badOmenWords = ['corroded', 'eviscerated', 'devoured', 'eroded', 'withered', 'decayed', 'consumed', 'ravaged', 'tainted', 'spoiled', 'blighted', 'defiled', 'rotted'];
 const statId = (name) => getStatusIdByName(name);
 const statusByName = (name) => assets.statuses.find((status) => status.name === name);
@@ -878,11 +878,11 @@ async function victory() {
         ]
         alert(`${deathMessages[Math.floor(Math.random() * deathMessages.length)]}\nYour health will be replinished, but your death has been punished.`);
         await new Promise(resolve => setTimeout(resolve, 500));
+        if (player.level > 1) player.level -= 1;
         player.health = player.maxHealth;
         player.pstatus = [];
-        syncPlayerActivePotion(player, null);
         player.experience = 0;
-        if (player.level > 1) player.level -= 1;
+        syncPlayerActivePotion(player, null);
     } else {
         const area = assets.areas.find(a => a.name === background.location);
         const chestOutcome = rollAreaChestOutcome(area);
