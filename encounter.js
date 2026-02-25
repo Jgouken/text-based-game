@@ -80,6 +80,7 @@ async function startBattle(enemy = null) {
     const location = assets.areas.find(area => area.name == background.location)
     let randomEnemy;
     let level;
+
     if (location.name === 'Eternal Damnation') {
         const allEnemies = assets.enemies;
         randomEnemy = allEnemies[Math.floor(Math.random() * allEnemies.length)].name;
@@ -88,6 +89,7 @@ async function startBattle(enemy = null) {
         randomEnemy = randomByChance(location.enemies).name;
         level = enemy ? (background.enemyLevel || 1) : (Math.floor(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl));
     }
+
     if (!enemy) enemy = assets.enemies.find(enemy => enemy.name == randomEnemy)
     if (location.name === 'Eternal Damnation') {
         background.enemyLevel = level;
@@ -104,19 +106,7 @@ async function startBattle(enemy = null) {
         delete s._cooldown;
     });
 
-    const block = assets.blocks.find((entry) => entry.name === enemy.block);
-    const tier = block ? (block[getBlockTierKey(level)] || block.zero) : null;
-    const scaledStats = block
-        ? {
-            health: Math.floor(enemy.health + ((tier?.health || 0) * level)),
-            defense: Math.floor(enemy.defense + ((tier?.defense || 0) * level)),
-            attack: Math.floor(enemy.attack + ((tier?.attack || 0) * level)),
-        }
-        : {
-            health: Math.floor((enemy.health + (level ** 1.82424)) * (1 + (level / 200))),
-            defense: Math.floor((enemy.defense + ((level / 2) ** 1.82424)) * (1 + (level / 200))),
-            attack: Math.floor((enemy.attack + ((level / 2) ** 1.82424)) * (1 + (level / 200))),
-        };
+    const scaledStats = scaleEnemyStats(enemy, level);
     encounter.maxHealth = scaledStats.health;
     encounter.health = encounter.maxHealth;
     encounter.defense = scaledStats.defense;
@@ -707,13 +697,19 @@ async function turnManager(toPlayer) {
             let level = 1
             if (loot.minlvl) level = loot.minlvl && loot.maxlvl ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
 
-            const descRaw = (typeof window.getItemMetaText === 'function')
-                ? window.getItemMetaText(loot.name, level)
+            const descRaw = (typeof window.getItemTooltipText === 'function')
+                ? window.getItemTooltipText(loot.name, level, true)
                 : (loot.description || 'Crafting Reagent');
-            let descText = descRaw.replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
+            const descHtml = String(descRaw)
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&apos;')
+                .replace(/\n/g, '<br>');
+
             const lootResult = addToInventory(loot, level);
 
-            if (lootResult) encounter.log.push(`🎁 ${background.enemy.name} dropped a${/^[aeiou]/i.test(loot.name) ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip="${descText}">${loot.name}</span>! 🎁`);
+            if (lootResult) encounter.log.push(`🎁 ${background.enemy.name} dropped a${/^[aeiou]/i.test(loot.name) ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip-html="${descHtml}">${loot.name}</span>! 🎁`);
             else console.error(`Couldn't acquire ${drop.name}.`);
 
             return true;

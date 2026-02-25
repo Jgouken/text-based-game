@@ -286,10 +286,10 @@
                         const multiplier = 1 + rigidityBonus - fragilityPenalty;
                         const isModified = hasRigidity || hasFragility;
                         
-                        const baseDefense = Math.floor(70 + (((level || 1) - 1) * 30) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult));
+                        const baseDefense = Math.floor(80 + (((level || 1) - 1) * 30) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult));
                         const synDefense = Number(synergyBonus?.defense) || 0;
                         const synName = synergyBonus?.name || 'Synergy';
-                        let tooltip = `Base Defense\n\n70 + ((${level || 1} - 1) * 30) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult})${synDefense ? ` + ${synDefense} (✨ ${synName})` : ''} = ${baseDefense + synDefense}`;
+                        let tooltip = `Base Defense\n\n80 + ((${level || 1} - 1) * 30) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult})${synDefense ? ` + ${synDefense} (✨ ${synName})` : ''} = ${baseDefense + synDefense}`;
                         if (isModified) {
                             tooltip += `\n${defense}`;
                             if (hasRigidity) tooltip += ` * ${(1 + rigidityBonus).toFixed(2)} [${getStatusIdByName('Rigidity')}]`;
@@ -987,7 +987,7 @@
                     return craftList.filter(name => name === itemName).length;
                 },
                 getCraftableTooltipText(item) {
-                    const text = window.getItemTooltipText(item?.name, 1);
+                    const text = window.getItemTooltipText(item?.name, 1, true);
                     return text || null;
                 },
                 getCraftableDescription(item) {
@@ -1024,7 +1024,7 @@
                                 <div class="inventory-item crafting-item" draggable="true" :data-craft-name="item.name"
                                     @mouseenter="hoveredCraftItem = item" @mouseleave="hoveredCraftItem = null"
                                     :style="hoveredCraftItem && hoveredCraftItem.name === item.name ? 'border: 2px solid #f87171; background: linear-gradient(180deg, #2a1111 0%, #411414 100%);' : ''"
-                                    :data-tooltip="getCraftableTooltipText(item)">
+                                    :data-tooltip-html="getCraftableTooltipText(item)">
                                     <div class="inventory-item-body inventory-item-body--centered">
                                         <div class="inventory-item-name" x-text="item.name"></div>
                                         <div class="inventory-item-meta" x-html="item.craft.map((ingredient, idx) => {

@@ -65,7 +65,7 @@ async function setPlayer() {
     player.maxStamina = 50 + ((player.level - 1) * 5)
 
     const baseAttack = Math.floor(75 + ((player.level - 1) * 25) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel));
-    const baseDefense = Math.floor(70 + ((player.level - 1) * 30) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult));
+    const baseDefense = Math.floor(80 + ((player.level - 1) * 30) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult));
 
     const activeSynergy = player.armory.armor?.synergies?.find(syn => syn.weapon === player.weaponry.weapon.name) || null;
     const synergyAttack = Number(activeSynergy?.attack) || 0;

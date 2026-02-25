@@ -380,19 +380,7 @@ function getJournalEnemyDetails(enemy, previewLevel, assets) {
     if (!enemy) return null;
 
     const level = clampJournalLevel(previewLevel);
-    const block = assets.blocks.find((entry) => entry.name === enemy.block);
-    const tier = block ? (block[getJournalBlockTierKey(level)] || block.zero) : null;
-    const scaledStats = block
-        ? {
-            health: Math.floor(enemy.health + ((tier?.health || 0) * level)),
-            defense: Math.floor(enemy.defense + ((tier?.defense || 0) * level)),
-            attack: Math.floor(enemy.attack + ((tier?.attack || 0) * level))
-        }
-        : {
-            health: Math.floor((enemy.health + (level ** 1.82424)) * (1 + (level / 200))),
-            defense: Math.floor((enemy.defense + ((level / 2) ** 1.82424)) * (1 + (level / 200))),
-            attack: Math.floor((enemy.attack + ((level / 2) ** 1.82424)) * (1 + (level / 200)))
-        };
+    const scaledStats = scaleEnemyStats(enemy, level);
 
     const groups = [
         {
@@ -642,23 +630,8 @@ window.createJournalState = function createJournalState() {
                             areaMaxLevel = swap;
                         }
 
-                        const block = this.assets.blocks.find((entry) => entry.name === enemyData.block);
-                        const scaleEnemyStats = (level) => {
-                            const tier = block ? (block[getJournalBlockTierKey(level)] || block.zero) : null;
-                            return block
-                                ? {
-                                    health: Math.floor(enemyData.health + ((tier?.health || 0) * level)),
-                                    defense: Math.floor(enemyData.defense + ((tier?.defense || 0) * level)),
-                                    attack: Math.floor(enemyData.attack + ((tier?.attack || 0) * level))
-                                }
-                                : {
-                                    health: Math.floor((enemyData.health + (level ** 1.82424)) * (1 + (level / 200))),
-                                    defense: Math.floor((enemyData.defense + ((level / 2) ** 1.82424)) * (1 + (level / 200))),
-                                    attack: Math.floor((enemyData.attack + ((level / 2) ** 1.82424)) * (1 + (level / 200)))
-                                };
-                        };
-                        const lowStats = scaleEnemyStats(areaMinLevel);
-                        const highStats = scaleEnemyStats(areaMaxLevel);
+                        const lowStats = scaleEnemyStats(enemyData, areaMinLevel);
+                        const highStats = scaleEnemyStats(enemyData, areaMaxLevel);
                         const statRange = (lowValue, highValue) => lowValue === highValue ? `${lowValue}` : `${lowValue} - ${highValue}`;
                         const enemyTooltipText =
                             `Level ${areaMinLevel === areaMaxLevel ? `${areaMinLevel}` : `${areaMinLevel} - ${areaMaxLevel}`}\n` +

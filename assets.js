@@ -589,7 +589,7 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/HealthSlime.gif',
 				weapon: null,
 				health: 100,
-				attack: 25,
+				attack: 50,
 				defense: 50,
 				crit: 0.1,
 				accuracy: 0.8,
@@ -656,8 +656,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/AttackSlime.gif',
 				weapon: null,
 				health: 70,
-				attack: 50,
-				defense: 20,
+				attack: 70,
+				defense: 30,
 				crit: 0.2,
 				accuracy: 0.85,
 				skills: [
@@ -731,8 +731,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/DefenseSlime.gif',
 				weapon: null,
 				health: 75,
-				attack: 35,
-				defense: 100,
+				attack: 30,
+				defense: 70,
 				crit: 0.05,
 				accuracy: 0.75,
 				skills: [
@@ -801,8 +801,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/StaminaSlime.gif',
 				weapon: null,
 				health: 80,
-				attack: 30,
-				defense: 50,
+				attack: 60,
+				defense: 40,
 				crit: 0.5,
 				accuracy: 0.85,
 				skills: [
@@ -1080,8 +1080,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/ArmoredGoblin.gif',
 				weapon: "Spear & Shield",
 				health: 300,
-				attack: 160,
-				defense: 350,
+				attack: 85,
+				defense: 180,
 				crit: 0.05,
 				accuracy: 0.7,
 				skills: [
@@ -1147,8 +1147,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/GoblinRanger.gif',
 				weapon: "Bow & Arrow",
 				health: 150,
-				attack: 300,
-				defense: 225,
+				attack: 140,
+				defense: 80,
 				crit: 0.1,
 				accuracy: 0.7,
 				skills: [
@@ -1160,7 +1160,7 @@ function getLocalAssets() {
 					{
 						name: "Razor Bolt",
 						pstatus: ["🩸"],
-						damage: 1.4,
+						damage: 1.1,
 						chance: 0.1,
 						wait: 8,
 						attack: true
@@ -1168,7 +1168,7 @@ function getLocalAssets() {
 					{
 						name: "Flame Bolt",
 						pstatus: ["🔥"],
-						damage: 1.25,
+						damage: 0.95,
 						chance: 0.1,
 						wait: 7,
 						attack: true
@@ -1176,7 +1176,7 @@ function getLocalAssets() {
 					{
 						name: "Poison Bolt",
 						pstatus: ["💀"],
-						damage: 1,
+						damage: 0.8,
 						chance: 0.1,
 						wait: 10,
 						attack: true
@@ -1194,8 +1194,8 @@ function getLocalAssets() {
 				block: "General",
 				sprite: 'assets/enemies/GoblinGeneral.gif',
 				health: 250,
-				attack: 250,
-				defense: 275,
+				attack: 160,
+				defense: 140,
 				crit: 0.1,
 				accuracy: 0.8,
 				skills: [
@@ -1247,8 +1247,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/Orc.gif',
 				weapon: "Orc Club",
 				health: 500,
-				attack: 300,
-				defense: 150,
+				attack: 250,
+				defense: 100,
 				crit: 0.05,
 				accuracy: 0.8,
 				skills: [
@@ -1325,8 +1325,8 @@ function getLocalAssets() {
 				block: "General",
 				sprite: 'assets/enemies/Cyclops.gif',
 				health: 500,
-				attack: 150,
-				defense: 300,
+				attack: 100,
+				defense: 250,
 				crit: 0.1,
 				accuracy: 0.75,
 				skills: [
@@ -1531,7 +1531,7 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/GreaterHealthSlime.gif',
 				weapon: null,
 				health: 800,
-				attack: 175,
+				attack: 150,
 				defense: 150,
 				crit: 0.05,
 				accuracy: 0.75,
@@ -1606,8 +1606,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/GreaterAttackSlime.gif',
 				weapon: null,
 				health: 325,
-				attack: 300,
-				defense: 150,
+				attack: 210,
+				defense: 90,
 				crit: 0.15,
 				accuracy: 0.9,
 				skills: [
@@ -1682,8 +1682,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/GreaterDefenseSlime.gif',
 				weapon: null,
 				health: 550,
-				attack: 200,
-				defense: 350,
+				attack: 90,
+				defense: 210,
 				crit: 0.05,
 				accuracy: 0.8,
 				skills: [
@@ -1752,8 +1752,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/GreaterStaminaSlime.gif',
 				weapon: null,
 				health: 400,
-				attack: 250,
-				defense: 175,
+				attack: 180,
+				defense: 120,
 				crit: 0.2,
 				accuracy: 0.85,
 				skills: [
@@ -1823,14 +1823,14 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/OrangeFox.gif',
 				weapon: "Steel Dagger",
 				health: 700,
-				attack: 300,
-				defense: 200,
+				attack: 250,
+				defense: 150,
 				crit: 0.05,
 				accuracy: 0.95,
 				skills: [
 					{
 						name: "Hack",
-						damage: 0.6,
+						damage: 0.45,
 						times: 2,
 						chance: 0.6,
 						attack: true
@@ -1852,7 +1852,7 @@ function getLocalAssets() {
 					},
 					{
 						name: "Spin Attack",
-						damage: 0.65,
+						damage: 0.5,
 						times: 3,
 						chance: 0.20,
 						wait: 2,
@@ -1933,14 +1933,14 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/WhiteFox.gif',
 				weapon: "Steel Dagger",
 				health: 600,
-				attack: 260,
-				defense: 180,
+				attack: 210,
+				defense: 130,
 				crit: 0.1,
 				accuracy: 0.9,
 				skills: [
 					{
 						name: "Stab",
-						damage: 0.4,
+						damage: 0.3,
 						times: 3,
 						chance: 0.6,
 						attack: true
@@ -1962,7 +1962,7 @@ function getLocalAssets() {
 					{
 						name: "Flurry",
 						times: 6,
-						damage: 0.45,
+						damage: 0.15,
 						chance: 0.15,
 						wait: 3,
 						attack: true
@@ -1971,7 +1971,7 @@ function getLocalAssets() {
 						name: "Coated Shuriken",
 						pstatus: ["💀"],
 						times: 6,
-						damage: 0.20,
+						damage: 0.05,
 						chance: 0.1,
 						wait: 12,
 						attack: true
@@ -2045,15 +2045,15 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/BlueFox.gif',
 				weapon: "Steel Dagger",
 				health: 750,
-				attack: 190,
-				defense: 160,
+				attack: 170,
+				defense: 110,
 				crit: 0.15,
 				accuracy: 0.70,
 				skills: [
 					{
 						name: "Slash",
 						chance: 0.6,
-						damage: 0.35,
+						damage: 0.2,
 						times: 4,
 						attack: true
 					},
@@ -2075,7 +2075,7 @@ function getLocalAssets() {
 					{
 						name: "Onslaught",
 						times: 9,
-						damage: 0.35,
+						damage: 0.1,
 						chance: 0.1,
 						wait: 4,
 						attack: true
@@ -2083,7 +2083,7 @@ function getLocalAssets() {
 					{
 						name: "Deft Slash",
 						pstatus: ["🩸", "🩼"],
-						damage: 1.7,
+						damage: 1.15,
 						chance: 0.15,
 						wait: 4,
 						attack: true
@@ -2160,15 +2160,15 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/BlackFox.gif',
 				weapon: "Steel Bow",
 				health: 500,
-				attack: 200,
-				defense: 180,
+				attack: 150,
+				defense: 130,
 				crit: 0.15,
 				accuracy: 0.8,
 				skills: [
 					{
 						name: "Rapid Fire",
 						chance: 0.55,
-						damage: 0.35,
+						damage: 0.25,
 						times: 3,
 						attack: true
 					},
@@ -2190,7 +2190,7 @@ function getLocalAssets() {
 					{
 						name: "Razor Arrows",
 						times: 4,
-						damage: 0.7,
+						damage: 0.15,
 						pstatus: ["🩸"],
 						chance: 0.15,
 						wait: 4,
@@ -2199,7 +2199,7 @@ function getLocalAssets() {
 					{
 						name: "Flame Arrows",
 						times: 4,
-						damage: 0.6,
+						damage: 0.12,
 						pstatus: ["🔥"],
 						chance: 0.15,
 						wait: 4,
@@ -2942,7 +2942,7 @@ function getLocalAssets() {
 				skills: [
 					{
 						name: "Magic Missle",
-						damage: 0.3,
+						damage: 0.2,
 						times: 3,
 						chance: 0.5,
 						attack: true
@@ -2999,8 +2999,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/CalamityHealthSlime.gif',
 				weapon: null,
 				health: 3500,
-				attack: 200,
-				defense: 250,
+				attack: 300,
+				defense: 300,
 				crit: 0.05,
 				accuracy: 0.8,
 				skills: [
@@ -3061,8 +3061,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/CalamityAttackSlime.gif',
 				weapon: null,
 				health: 1400,
-				attack: 350,
-				defense: 300,
+				attack: 420,
+				defense: 180,
 				crit: 0.1,
 				accuracy: 0.95,
 				skills: [
@@ -3125,8 +3125,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/CalamityDefenseSlime.gif',
 				weapon: null,
 				health: 2000,
-				attack: 250,
-				defense: 550,
+				attack: 180,
+				defense: 420,
 				crit: 0.05,
 				accuracy: 0.85,
 				skills: [
@@ -3182,8 +3182,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/CalamityStaminaSlime.gif',
 				weapon: null,
 				health: 1600,
-				attack: 300,
-				defense: 400,
+				attack: 360,
+				defense: 240,
 				crit: 0.2,
 				accuracy: 0.8,
 				skills: [
@@ -3299,7 +3299,7 @@ function getLocalAssets() {
 				weapon: null,
 				health: 6666,
 				attack: 666,
-				defense: 666,
+				defense: 333,
 				crit: 0.33,
 				accuracy: 0.8,
 				skills: [
@@ -3500,14 +3500,14 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/GrandWizard.gif',
 				weapon: null,
 				health: 4500,
-				attack: 800,
-				defense: 275,
+				attack: 700,
+				defense: 190,
 				crit: 0.2,
 				accuracy: 0.95,
 				skills: [
 					{
 						name: "Crown Of Stars",
-						damage: 0.35,
+						damage: 0.25,
 						times: 3,
 						chance: 0.45,
 						attack: true
@@ -3654,7 +3654,7 @@ function getLocalAssets() {
 						damage: 1.33,
 						pstatus: ["🩸", "🩼", "🌀"],
 						chance: 0.15,
-						wait: 6,
+						wait: 13,
 						attack: true
 					},
 				],
@@ -3748,8 +3748,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/FoxKing.gif',
 				weapon: null,
 				health: 4750,
-				attack: 375,
-				defense: 325,
+				attack: 225,
+				defense: 175,
 				crit: 0.2,
 				accuracy: 0.8,
 				skills: [
@@ -3760,7 +3760,7 @@ function getLocalAssets() {
 					},
 					{
 						name: "Sly Chain",
-						damage: 0.35,
+						damage: 0.2,
 						times: 3,
 						chance: 0.15,
 						wait: 4,
@@ -3782,7 +3782,7 @@ function getLocalAssets() {
 					},
 					{
 						name: "Sly Blitz",
-						damage: 0.3,
+						damage: 0.1,
 						times: 12,
 						chance: 0.1,
 						wait: 2,
@@ -3791,7 +3791,7 @@ function getLocalAssets() {
 					{
 						name: "Fatal Slash",
 						pstatus: ["🩸", "🌀", "🩼"],
-						damage: 2,
+						damage: 1.3,
 						chance: 0.1,
 						attack: true,
 						wait: 1
@@ -3918,7 +3918,7 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/HealthSlimeLord.gif',
 				weapon: null,
 				health: 4000,
-				attack: 250,
+				attack: 400,
 				defense: 400,
 				crit: 0.05,
 				accuracy: 0.8,
@@ -3982,8 +3982,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/AttackSlimeLord.gif',
 				weapon: null,
 				health: 1750,
-				attack: 375,
-				defense: 350,
+				attack: 520,
+				defense: 280,
 				crit: 0.15,
 				accuracy: 1,
 				skills: [
@@ -4047,8 +4047,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/DefenseSlimeLord.gif',
 				weapon: null,
 				health: 2250,
-				attack: 275,
-				defense: 700,
+				attack: 280,
+				defense: 520,
 				crit: 0.05,
 				accuracy: 0.85,
 				skills: [
@@ -4104,8 +4104,8 @@ function getLocalAssets() {
 				sprite: 'assets/enemies/StaminaSlimeLord.gif',
 				weapon: null,
 				health: 1750,
-				attack: 325,
-				defense: 450,
+				attack: 460,
+				defense: 340,
 				crit: 0.3,
 				accuracy: 0.95,
 				skills: [
@@ -6830,8 +6830,8 @@ function getLocalAssets() {
 				]
 			},
 			{
-			name: "Rogue's Cloak",
-			description: "A brown cloak that's still in good condition that should provide light protection due to its strong fabric",
+				name: "Rogue's Cloak",
+				description: "A brown cloak that's still in good condition that should provide light protection due to its strong fabric",
 				defense: 29,
 				maxlvl: 12,
 				minlvl: 4,
@@ -8788,6 +8788,37 @@ function getStatusByName(statusName) {
 
 function getStatusIdByName(statusName) {
 	return getStatusByName(statusName)?.id || ""
+}
+
+function scaleEnemyStats(enemyData, level) {
+	const lvl = Math.max(1, Number(level) || 1) - 1;
+
+	const blocks = (typeof getAssets === 'function' && getAssets()) ? (getAssets().blocks || []) : [];
+	const block = blocks.find((entry) => entry.name === enemyData?.block);
+
+	const getBlockTierKeyLocal = (l) => {
+		if (l >= 50) return 'fifty';
+		if (l >= 40) return 'forty';
+		if (l >= 30) return 'thirty';
+		if (l >= 20) return 'twenty';
+		if (l >= 10) return 'ten';
+		return 'zero';
+	};
+
+	if (block) {
+		const tier = block[getBlockTierKeyLocal(lvl)] || block.zero || {};
+		return {
+			health: Math.floor((enemyData?.health || 0) + ((tier.health || 0) * lvl)),
+			defense: Math.floor((enemyData?.defense || 0) + ((tier.defense || 0) * lvl)),
+			attack: Math.floor((enemyData?.attack || 0) + ((tier.attack || 0) * lvl))
+		};
+	}
+
+	return {
+		health: Math.floor(((enemyData?.health || 0) + (lvl ** 1.82424)) * (1 + (lvl / 200))),
+		defense: Math.floor(((enemyData?.defense || 0) + ((lvl / 2) ** 1.82424)) * (1 + (lvl / 200))),
+		attack: Math.floor(((enemyData?.attack || 0) + ((lvl / 2) ** 1.82424)) * (1 + (lvl / 200)))
+	};
 }
 
 function normalizeStatusReferences(assetRoot) {
