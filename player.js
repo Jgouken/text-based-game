@@ -10,7 +10,7 @@ async function resetBars(screen) {
 }
 
 async function updateBars() {
-    await new Promise(resolve => setTimeout(resolve, 100)); // Forces it to wait a tick to allow CSS transition to work
+    await new Promise(resolve => setTimeout(resolve, 100));
     const alpinePlayerData = Alpine.$data(document.getElementById(`player`));
     const alpineEnemyData = Alpine.$data(document.getElementById(`enemy`));
 
@@ -116,7 +116,7 @@ async function savePlayer() {
 }
 
 async function resetPlayer() {
-    // set all player data to maximum values
+
     const player = Alpine.$data(document.getElementById('player'));
     player.health = player.maxHealth;
     player.stamina = player.maxStamina;
@@ -128,7 +128,7 @@ async function addToInventory(loot, level) {
     if (!loot) return false;
     else if (loot.name !== null) {
         if (player.inventory.some(i => i.name == loot.name)) {
-            // The player already has this item
+
             let foundItem = player.inventory.find(i => i.name == loot.name);
             if (foundItem.level == level) player.inventory[player.inventory.indexOf(foundItem)].amount += 1;
             else player.inventory.push({
@@ -137,7 +137,7 @@ async function addToInventory(loot, level) {
                 amount: 1
             });
         } else {
-            // The player does not have this item
+
             player.inventory.push({
                 name: loot.name,
                 level,

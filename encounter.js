@@ -924,16 +924,16 @@ async function victory() {
         const chestOutcome = rollAreaChestOutcome(area);
 
         if (chestOutcome.type === 'chest' && chestOutcome.entry && chestOutcome.entry.chest !== undefined) {
-                background.foundChest = {
-                    chest: chestOutcome.entry.chest,
-                    key: chestOutcome.entry.key
-                };
-                AudioManager.playChestFound();
-                await transition('encounter', 'chest-found');
-                updateBars();
-                savePlayer();
-                return;
-            }
+            background.foundChest = {
+                chest: chestOutcome.entry.chest,
+                key: chestOutcome.entry.key
+            };
+            AudioManager.playChestFound();
+            await transition('encounter', 'chest-found');
+            updateBars();
+            savePlayer();
+            return;
+        }
     }
     await transition('encounter', 'returning');
     updateBars();

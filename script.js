@@ -1,9 +1,4 @@
-// This file is for generic scene to scene functions.
-// There shouldn't be any overlap between this and encounter; they should work in parallel.
-
 let ready = false;
-
-// Audio manager: Web Audio API-based, sample-accurate sync and crossfades.
 const AudioManager = (function () {
     const basePath = 'assets/sounds/';
     const filenames = [
@@ -22,14 +17,12 @@ const AudioManager = (function () {
     const masterGain = audioContext.createGain();
     masterGain.gain.value = 1;
     masterGain.connect(audioContext.destination);
-
-    // Separate music and sfx buses
     const musicGain = audioContext.createGain();
     const sfxGain = audioContext.createGain();
     musicGain.connect(masterGain);
     sfxGain.connect(masterGain);
 
-    const tracks = {}; // name -> { buffer, gain, source }
+    const tracks = {};
     const lookup = {};
     for (const f of filenames) {
         const key = f.replace(/^TBG\s*/i, '').replace(/\.wav$/i, '').replace(/\s+/g, '').toLowerCase();
@@ -38,8 +31,6 @@ const AudioManager = (function () {
         tracks[f].gain.gain.value = 0;
         tracks[f].gain.connect(musicGain);
     }
-
-    // Add explicit aliases for locations that don't match filenames directly
     const aliases = {
         'sangstonmansion': 'TBG Sanguisuge.wav',
         'sangston': 'TBG Sanguisuge.wav',
@@ -47,9 +38,9 @@ const AudioManager = (function () {
     };
     for (const k of Object.keys(aliases)) lookup[k] = aliases[k];
 
-    let startTimestamp = null; // audioContext.currentTime corresponding to logical t=0
+    let startTimestamp = null;
     let decoded = false;
-    // persistent mute states (read from storage)
+
     let sfxMuted = false;
     let musicMuted = false;
     try { sfxMuted = JSON.parse(localStorage.getItem('tbgMuted') || 'false'); } catch (e) { sfxMuted = false; }
@@ -73,12 +64,12 @@ const AudioManager = (function () {
     function createAndStartSource(name) {
         const t = tracks[name];
         if (!t || !t.buffer) return;
-        if (t.source) return; // already started
+        if (t.source) return;
         const src = audioContext.createBufferSource();
         src.buffer = t.buffer;
         src.loop = true;
         src.connect(t.gain);
-        // compute offset aligned with startTimestamp
+
         const now = audioContext.currentTime;
         const offset = startTimestamp ? ((now - startTimestamp) % t.buffer.duration + t.buffer.duration) % t.buffer.duration : 0;
         try {
@@ -115,8 +106,6 @@ const AudioManager = (function () {
         }
         return null;
     }
-
-    // resume AudioContext & start sources on first user interaction
     let resumed = false;
     function tryResumeAndStart() {
         if (resumed) return;
@@ -125,7 +114,7 @@ const AudioManager = (function () {
             if (!decoded) await loadAll();
             ensureStartedAll();
             resumed = true;
-            // apply stored mute immediately if set
+
             try {
                 musicGain.gain.setValueAtTime(musicMuted ? 0 : 1, audioContext.currentTime);
                 sfxGain.gain.setValueAtTime(sfxMuted ? 0 : 1, audioContext.currentTime);
@@ -138,8 +127,6 @@ const AudioManager = (function () {
         document.addEventListener('touchstart', resumeIfNeeded, { once: true, passive: true });
         document.addEventListener('keydown', resumeIfNeeded, { once: true });
     }
-
-    // Public API
     async function update(playerName, location) {
         tryResumeAndStart();
         const main = 'TBG Main.wav';
@@ -147,17 +134,11 @@ const AudioManager = (function () {
         const mainVol = 0.45;
 
         const locTrack = findTrackForLocation(location);
-
-        // ensure buffers loaded (non-blocking)
         if (!decoded) loadAll();
-
-        // make sure sources exist (if decoded and resumed)
         if (decoded && resumed) ensureStartedAll();
-
-        // Always ensure main audible unless special-case locations
         const eternal = 'TBG Eternal Damnation.wav';
         if (locTrack === eternal) {
-            // Special exception: only play Eternal Damnation
+
             for (const name of filenames) {
                 if (name === eternal) setGain(name, 1.0);
                 else setGain(name, 0);
@@ -168,13 +149,13 @@ const AudioManager = (function () {
         setGain(main, mainVol);
 
         if (!playerName) {
-            // mute other tracks
+
             for (const name of filenames) if (name !== main) setGain(name, 0);
             return;
         }
 
         if (locTrack && locTrack !== main) setGain(locTrack, 0.7);
-        // Advanced-location heuristic: if location is advanced variant, layer Warhamshire
+
         if (locTrack && locTrack.toLowerCase() !== (('TBG ' + location + '.wav').toLowerCase())) {
             setGain(war, 0.35);
         } else if ((locTrack && locTrack === war) || (!locTrack && (location || '').replace(/\s+/g, '').toLowerCase() === 'warhamshire')) {
@@ -182,17 +163,11 @@ const AudioManager = (function () {
         } else {
             setGain(war, 0);
         }
-
-        // mute any other non-required tracks
         for (const name of filenames) {
             if (name !== main && name !== locTrack && name !== war) setGain(name, 0);
         }
     }
-
-    // start listening for user interaction immediately so manager can resume
     tryResumeAndStart();
-
-    // one-shot sound support (cached decoded buffers)
     const oneShotCache = {};
     async function loadOneShot(name) {
         if (oneShotCache[name]) return oneShotCache[name];
@@ -210,7 +185,7 @@ const AudioManager = (function () {
 
     function playOneShot(name, volume = 1) {
         try {
-            // If SFX are muted, don't bother decoding/creating nodes.
+
             if (sfxMuted) return;
             tryResumeAndStart();
             const play = async () => {
@@ -225,7 +200,7 @@ const AudioManager = (function () {
                     src.start(0);
                     src.onended = () => { try { src.disconnect(); g.disconnect(); } catch (e) { } };
                 } catch (e) {
-                    try { const a = new Audio(basePath + name); a.volume = Math.max(0, Math.min(1, volume)); a.play().catch(()=>{}); } catch(e){}
+                    try { const a = new Audio(basePath + name); a.volume = Math.max(0, Math.min(1, volume)); a.play().catch(() => { }); } catch (e) { }
                 }
             };
             play();
@@ -298,14 +273,12 @@ const AudioManager = (function () {
     }
 
     function isMusicMuted() { return !!musicMuted; }
-
-    // Backwards-compatible alias
     function setMuted(v) { return setSfxMuted(v); }
     function isMuted() { return isSfxMuted(); }
 
     return { update, setMuted, isMuted, setSfxMuted, isSfxMuted, setMusicMuted, isMusicMuted, playRandomHit, playEffectSound, playEffectNoAttack, playMiss, playAnimalNoise, playStatusEffect, playDeath, playCrit, playItemFound, playChestFound, playChestOpen, playChestLocked, playButtonHover, playClick };
 })();
-// Create persistent mute button in top-right
+
 document.addEventListener('DOMContentLoaded', () => {
     try {
         const musicBtn = document.createElement('button');
@@ -408,7 +381,7 @@ async function importButton() {
     }).toString(CryptoJS.enc.Utf8);
 
     try {
-        // Validate the decrypted data
+
         const parsed = JSON.parse(decrypted);
 
         const requiredKeys = [
@@ -492,7 +465,7 @@ async function quitButton() {
 }
 
 async function fadeInOutEffect(to) {
-    if (ready) return; // Prevent double-click during fade
+    if (ready) return;
     ready = true;
 
     await fadeInEffect();
@@ -501,16 +474,12 @@ async function fadeInOutEffect(to) {
     try {
         const bgData = Alpine.$data(document.getElementById('background-image'));
         const loc = (bgData && bgData.location) ? bgData.location : null;
-
-        // Build candidate base names (requested location first, then fallback Warhamshire)
         const bases = [];
         if (loc) bases.push(loc.replace(/\s+/g, ''));
         bases.push('Warhamshire');
 
         const exts = ['.jpg', '.png', '.gif'];
         let fileName = null;
-
-        // Try to find the first existing file by probing with HEAD requests
         for (const base of bases) {
             for (const ext of exts) {
                 const url = `assets/backgrounds/${base}${ext}`;
@@ -521,7 +490,7 @@ async function fadeInOutEffect(to) {
                         break;
                     }
                 } catch (e) {
-                    // ignore and try next
+
                 }
             }
             if (fileName) break;
@@ -546,7 +515,7 @@ async function fadeInOutEffect(to) {
         AudioManager.update(player.name, bg.location);
     } catch (e) { }
     await fadeOutEffect();
-    ready = false; // Allow interactions again
+    ready = false;
 }
 
 async function fadeOutEffect() {
@@ -595,29 +564,19 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             tooltip.textContent = content;
         }
-
-        // Reset first
         tooltip.style.transition = 'none';
         tooltip.style.visibility = 'hidden';
         tooltip.style.display = 'block';
         tooltip.style.left = '-9999px';
         tooltip.style.top = '-9999px';
-
-        // Force layout
         tooltip.getBoundingClientRect();
-
-        // Now position correctly
         moveTooltip(x, y);
-
-        // Reveal smoothly with animation
         tooltip.style.visibility = 'visible';
 
         if (animate) {
-            // Ensure we start from 0 opacity to trigger animation
+
             tooltip.style.opacity = 0;
             tooltip.style.transition = 'opacity 0.2s ease';
-
-            // Use requestAnimationFrame to ensure the opacity 0 is registered
             requestAnimationFrame(() => {
                 tooltip.style.opacity = 1;
             });
@@ -643,27 +602,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
-
-        // Default follow position
         let left = x + padding;
         let top = y + padding * 2;
-
-        // Clamp to right edge
         if (left + tooltipWidth > screenWidth - padding) {
             left = screenWidth - tooltipWidth - padding;
         }
-
-        // Clamp to bottom edge
         if (top + tooltipHeight > screenHeight - padding) {
             top = screenHeight - tooltipHeight - padding;
         }
-
-        // Clamp to left edge
         if (left < padding) {
             left = padding;
         }
-
-        // Clamp to top edge
         if (top < padding) {
             top = padding;
         }
@@ -717,13 +666,9 @@ document.addEventListener('DOMContentLoaded', () => {
         activeTooltipTarget = null;
         stopFollowingElement();
     }
-
-    // Desktop hover
     document.body.addEventListener('mouseover', e => {
         if (isTooltipLockedForMessage()) return;
         if (isTouchInteraction || Date.now() < suppressMouseUntil) return;
-
-        // Play button hover for interactive controls
         const hoverBtn = e.target.closest('button, [role="button"], .btn, .button');
         if (hoverBtn) {
             if (window.__lastHoverBtn !== hoverBtn) {
@@ -763,26 +708,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (relatedTooltipTarget && relatedTooltipTarget === target) return;
         hideTooltip();
     });
-
-    // Click sounds for button-like elements
     document.body.addEventListener('click', e => {
         const btn = e.target.closest('button, [role="button"], .btn, .button');
         if (btn) AudioManager.playClick();
     });
-
-    // Mobile touch
     document.body.addEventListener('touchstart', e => {
         if (isTooltipLockedForMessage()) return;
         isTouchInteraction = true;
         suppressMouseUntil = Date.now() + 700;
         const target = e.target.closest('[data-tooltip], [data-tooltip-html]');
-
-        // If tapping the same element that's already showing, ignore (prevent double tap)
         if (target && target === activeTooltipTarget) {
             return;
         }
-
-        // If tapping a different tooltip element, show new tooltip
         if (target) {
             activeTooltipTarget = target;
             const touch = e.touches[0];
@@ -792,7 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
             positionTooltipForElement(target);
             startFollowingElement();
         } else {
-            // Tapped elsewhere, hide tooltip
+
             hideTooltip();
         }
     }, { passive: true });

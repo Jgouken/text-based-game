@@ -195,7 +195,7 @@
                         const luckBonus = hasLuck ? getAssets().statuses.find(s => s.name === 'Luck').incCrit : 0;
                         const misfortunePenalty = hasMisfortune ? getAssets().statuses.find(s => s.name === 'Misfortune').decCrit : 0;
                         const isModified = hasLuck || hasMisfortune;
-                        
+
                         let tooltip = 'Critical Chance\nThe chance your attack or heal will deal extra.';
                         if (isModified) {
                             tooltip += `\n${crit}`;
@@ -223,7 +223,7 @@
                         const acuityBonus = hasAcuity ? getAssets().statuses.find(s => s.name === 'Acuity').incAcc : 0;
                         const blindnessPenalty = hasBlindness ? getAssets().statuses.find(s => s.name === 'Blindness').decAcc : 0;
                         const isModified = hasAcuity || hasBlindness;
-                        
+
                         let tooltip = 'Accuracy\nThe chance to hit with an attack.';
                         if (isModified) {
                             tooltip += `\n${accuracy}`;
@@ -246,7 +246,7 @@
                         const hasEvasion = pstatus.some(s => s.id == getStatusIdByName('Evasion'));
                         const evasionBonus = hasEvasion ? getAssets().statuses.find(s => s.name === 'Evasion').decEnAcc : 0;
                         const isModified = hasEvasion;
-                        
+
                         let tooltip = 'Evasion\nDirectly decreases enemy accuracy.';
                         if (isModified) {
                             tooltip += `\n${evasion}`;
@@ -285,7 +285,7 @@
                         const fragilityPenalty = hasFragility ? getAssets().statuses.find(s => s.name === 'Fragility').armorSub : 0;
                         const multiplier = 1 + rigidityBonus - fragilityPenalty;
                         const isModified = hasRigidity || hasFragility;
-                        
+
                         const baseDefense = Math.floor(80 + (((level || 1) - 1) * 30) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult));
                         const synDefense = Number(synergyBonus?.defense) || 0;
                         const synName = synergyBonus?.name || 'Synergy';
@@ -400,8 +400,6 @@
                         <button class="regular-button btn--primary" @click="importButton()"
                             x-show="!name">IMPORT</button>
                     </div>
-
-
                 </div>
                 <div class="credits">
                     <span class="credits-muted">Made by Jgouken &amp; SavorySam</span>
@@ -606,10 +604,10 @@
             </div>
 
             <!-- Inventory -->
-            <div id="inventory" class="inventory" x-show="screen === 'inventory'" x-data="{ 
-                    activeTab: 'all', 
-                    sortBy: 'name', 
-                    sortOrder: 'asc', 
+            <div id="inventory" class="inventory" x-show="screen === 'inventory'" x-data="{
+                    activeTab: 'all',
+                    sortBy: 'name',
+                    sortOrder: 'asc',
                     searchQuery: ''
                 }"
                 x-effect="$watch('sortBy', () => refreshSynergies()); $watch('sortOrder', () => refreshSynergies())">
@@ -679,26 +677,24 @@
                     <div class="inventory-grid">
                         <template x-for="(item, idx) in (() => {
                 let inventory = Alpine.$data(document.getElementById('player')).inventory;
-                
-                // Filter items
                 let filtered = inventory.filter((item, idx) => {
                     let it = assets.items.find(i => i.name === item.name);
                     if (!it) return false;
-                    
+
                     if (activeTab === 'all') return true;
-                    
+
                     const isEquipment = (it.attack !== undefined && it.skills) || (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
                     const isConsumable = it.name.toLowerCase().includes('potion');
                     const isBattleReady = it.name.toLowerCase().endsWith('bomb') || it.name.toLowerCase().endsWith('flask');
                     const isKey = it.chest !== undefined;
                     const isMiscellaneous = !isEquipment && !isConsumable && !isBattleReady && !isKey;
-                    
+
                     if (activeTab === 'equipment') return isEquipment;
                     if (activeTab === 'consumables') return isConsumable;
                     if (activeTab === 'battleReady') return isBattleReady;
                     if (activeTab === 'keys') return isKey;
                     if (activeTab === 'miscellaneous') return isMiscellaneous;
-                    
+
                     return false;
                 });
 
@@ -711,29 +707,29 @@
                         return nameMatch || descMatch;
                     });
                 }
-                
+
                 filtered.sort((a, b) => {
                     let aItem = assets.items.find(i => i.name === a.name);
                     let bItem = assets.items.find(i => i.name === b.name);
-                    
+
                     let compareVal = 0;
-                    
+
                     if (sortBy === 'name') {
                         compareVal = a.name.localeCompare(b.name);
                     } else if (sortBy === 'type') {
-                        // Weapons, Armor, Throwables, Consumables, Misc, Keys
+
                         const getTypeOrder = (item) => {
-                            if (item.attack !== undefined && item.skills) return 0; // weapon
-                            if (item.defense !== undefined && !item.skills && item.alvlmult !== undefined) return 1; // armor
-                            if (item.damage || item.estatus || (item.buff && item.rounds)) return 2; // throwables
-                            if (item.health || item.stamina || item.xp || item.pstatus) return 3; // consumable
-                            if (item.chest !== undefined) return 5; // keys
-                            return 4; // misc
+                            if (item.attack !== undefined && item.skills) return 0;
+                            if (item.defense !== undefined && !item.skills && item.alvlmult !== undefined) return 1;
+                            if (item.damage || item.estatus || (item.buff && item.rounds)) return 2;
+                            if (item.health || item.stamina || item.xp || item.pstatus) return 3;
+                            if (item.chest !== undefined) return 5;
+                            return 4;
                         };
-                        
+
                         const aType = getTypeOrder(aItem);
                         const bType = getTypeOrder(bItem);
-                        
+
                         compareVal = aType - bType;
                         if (compareVal === 0) {
                             compareVal = a.name.localeCompare(b.name);
@@ -746,10 +742,10 @@
                             compareVal = a.name.localeCompare(b.name);
                         }
                     }
-                    
+
                     return sortOrder === 'asc' ? compareVal : -compareVal;
                 });
-                
+
                 return filtered;
             })()" :key="idx">
                             <div class="inventory-item" :class="{'inventory-item--no-icon': !(item.sprite)}"
@@ -775,25 +771,25 @@
                         <div class="inventory-empty" x-show="(() => {
                 const inventory = Alpine.$data(document.getElementById('player')).inventory;
                 if (inventory.length === 0) return true;
-                
+
                 const filteredItems = inventory.filter(item => {
                     let it = assets.items.find(i => i.name === item.name);
                     if (!it) return false;
-                    
+
                     if (activeTab === 'all') return true;
-                    
+
                     const isEquipment = (it.attack !== undefined && it.skills) || (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
                     const isConsumable = it.name.toLowerCase().includes('potion');
                     const isBattleReady = it.name.toLowerCase().endsWith('bomb') || it.name.toLowerCase().endsWith('flask');
                     const isKey = it.chest !== undefined;
                     const isMiscellaneous = !isEquipment && !isConsumable && !isBattleReady && !isKey;
-                    
+
                     if (activeTab === 'equipment') return isEquipment;
                     if (activeTab === 'consumables') return isConsumable;
                     if (activeTab === 'battleReady') return isBattleReady;
                     if (activeTab === 'keys') return isKey;
                     if (activeTab === 'miscellaneous') return isMiscellaneous;
-                    
+
                     return false;
                 });
 
@@ -806,7 +802,7 @@
                         return nameMatch || descMatch;
                     })
                     : filteredItems;
-                
+
                 return searchedItems.length === 0;
             })()">
                             No items in this category
@@ -1092,26 +1088,24 @@
                         <div class="crafting-inventory-grid">
                             <template x-for="(item, idx) in (() => {
                 let inventory = Alpine.$data(document.getElementById('player')).inventory;
-                
-                // Filter items
                 let filtered = inventory.filter((item, idx) => {
                     let it = assets.items.find(i => i.name === item.name);
                     if (!it) return false;
-                    
+
                     if (activeTab === 'all') return true;
-                    
+
                     const isEquipment = (it.attack !== undefined && it.skills) || (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
                     const isConsumable = it.name.toLowerCase().includes('potion');
                     const isBattleReady = it.name.toLowerCase().endsWith('bomb') || it.name.toLowerCase().endsWith('flask');
                     const isKey = it.chest !== undefined;
                     const isMiscellaneous = !isEquipment && !isConsumable && !isBattleReady && !isKey;
-                    
+
                     if (activeTab === 'equipment') return isEquipment;
                     if (activeTab === 'consumables') return isConsumable;
                     if (activeTab === 'battleReady') return isBattleReady;
                     if (activeTab === 'keys') return isKey;
                     if (activeTab === 'miscellaneous') return isMiscellaneous;
-                    
+
                     return false;
                 });
 
@@ -1124,29 +1118,29 @@
                         return nameMatch || descMatch;
                     });
                 }
-                
+
                 filtered.sort((a, b) => {
                     let aItem = assets.items.find(i => i.name === a.name);
                     let bItem = assets.items.find(i => i.name === b.name);
-                    
+
                     let compareVal = 0;
-                    
+
                     if (sortBy === 'name') {
                         compareVal = a.name.localeCompare(b.name);
                     } else if (sortBy === 'type') {
-                        // Weapons, Armor, Throwables, Consumables, Misc, Keys
+
                         const getTypeOrder = (item) => {
-                            if (item.attack !== undefined && item.skills) return 0; // weapon
-                            if (item.defense !== undefined && !item.skills && item.alvlmult !== undefined) return 1; // armor
-                            if (item.damage || item.estatus || (item.buff && item.rounds)) return 2; // throwables
-                            if (item.health || item.stamina || item.xp || item.pstatus) return 3; // consumable
-                            if (item.chest !== undefined) return 5; // keys
-                            return 4; // misc
+                            if (item.attack !== undefined && item.skills) return 0;
+                            if (item.defense !== undefined && !item.skills && item.alvlmult !== undefined) return 1;
+                            if (item.damage || item.estatus || (item.buff && item.rounds)) return 2;
+                            if (item.health || item.stamina || item.xp || item.pstatus) return 3;
+                            if (item.chest !== undefined) return 5;
+                            return 4;
                         };
-                        
+
                         const aType = getTypeOrder(aItem);
                         const bType = getTypeOrder(bItem);
-                        
+
                         compareVal = aType - bType;
                         if (compareVal === 0) {
                             compareVal = a.name.localeCompare(b.name);
@@ -1159,10 +1153,10 @@
                             compareVal = a.name.localeCompare(b.name);
                         }
                     }
-                    
+
                     return sortOrder === 'asc' ? compareVal : -compareVal;
                 });
-                
+
                 return filtered;
             })()" :key="idx">
                                 <div class="inventory-item crafting-inventory-item"
@@ -1190,25 +1184,25 @@
                             <div class="inventory-empty" x-show="(() => {
                 const inventory = Alpine.$data(document.getElementById('player')).inventory;
                 if (inventory.length === 0) return true;
-                
+
                 const filteredItems = inventory.filter(item => {
                     let it = assets.items.find(i => i.name === item.name);
                     if (!it) return false;
-                    
+
                     if (activeTab === 'all') return true;
-                    
+
                     const isEquipment = (it.attack !== undefined && it.skills) || (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
                     const isConsumable = it.name.toLowerCase().includes('potion');
                     const isBattleReady = it.name.toLowerCase().endsWith('bomb') || it.name.toLowerCase().endsWith('flask');
                     const isKey = it.chest !== undefined;
                     const isMiscellaneous = !isEquipment && !isConsumable && !isBattleReady && !isKey;
-                    
+
                     if (activeTab === 'equipment') return isEquipment;
                     if (activeTab === 'consumables') return isConsumable;
                     if (activeTab === 'battleReady') return isBattleReady;
                     if (activeTab === 'keys') return isKey;
                     if (activeTab === 'miscellaneous') return isMiscellaneous;
-                    
+
                     return false;
                 });
 
@@ -1221,7 +1215,7 @@
                         return nameMatch || descMatch;
                     })
                     : filteredItems;
-                
+
                 return searchedItems.length === 0;
             })()">
                                 No items in this category
@@ -1430,7 +1424,7 @@
                     const background = Alpine.$data(document.getElementById('background-image'));
                     const enemy = background.enemy;
                     const level = background.enemyLevel;
-                    
+
                     return this.log
                         .map(line => {
                             const tooltip = this.buildTooltip();
@@ -1535,9 +1529,9 @@
                     })
                 })">
             </div>
-            <div class="battle-station" id="battle-station" x-data="{ 
-                    round: 1, 
-                    turn: true, 
+            <div class="battle-station" id="battle-station" x-data="{
+                    round: 1,
+                    turn: true,
                     showConsumables: false,
                     get weapon() { return Alpine.$data(document.getElementById('player')).weaponry.weapon },
                     get consumables() {
@@ -1649,8 +1643,6 @@
                                     x-text="`⚡${weapon.skills[2].cost}`">?</span>
                             </div>
                         </div>
-
-
                         <!-- Skill 3 Group -->
                         <div x-show="weapon.skills[3]">
                             <div class="battle-skill-group">

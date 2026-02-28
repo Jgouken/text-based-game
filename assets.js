@@ -4217,7 +4217,7 @@ function getLocalAssets() {
 				block: "Elite",
 				sprite: 'assets/enemies/DemonQueen.gif',
 				weapon: null,
-				health: 6666*7,
+				health: 6666 * 7,
 				attack: 666,
 				defense: 666,
 				crit: 0.33,
