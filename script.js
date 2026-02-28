@@ -3,6 +3,349 @@
 
 let ready = false;
 
+// Audio manager: Web Audio API-based, sample-accurate sync and crossfades.
+const AudioManager = (function () {
+    const basePath = 'assets/sounds/';
+    const filenames = [
+        'TBG Main.wav',
+        'TBG Hinterland.wav',
+        'TBG Vexadel.wav',
+        'TBG Vulpeston.wav',
+        'TBG Warhamshire.wav',
+        'TBG Eternal Damnation.wav',
+        'TBG Melody.wav',
+        'TBG Sanguisuge.wav',
+        'TBG Uralan Mountains.wav'
+    ];
+
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const masterGain = audioContext.createGain();
+    masterGain.gain.value = 1;
+    masterGain.connect(audioContext.destination);
+
+    // Separate music and sfx buses
+    const musicGain = audioContext.createGain();
+    const sfxGain = audioContext.createGain();
+    musicGain.connect(masterGain);
+    sfxGain.connect(masterGain);
+
+    const tracks = {}; // name -> { buffer, gain, source }
+    const lookup = {};
+    for (const f of filenames) {
+        const key = f.replace(/^TBG\s*/i, '').replace(/\.wav$/i, '').replace(/\s+/g, '').toLowerCase();
+        lookup[key] = f;
+        tracks[f] = { buffer: null, gain: audioContext.createGain(), source: null };
+        tracks[f].gain.gain.value = 0;
+        tracks[f].gain.connect(musicGain);
+    }
+
+    // Add explicit aliases for locations that don't match filenames directly
+    const aliases = {
+        'sangstonmansion': 'TBG Sanguisuge.wav',
+        'sangston': 'TBG Sanguisuge.wav',
+        'sanguisuge': 'TBG Sanguisuge.wav'
+    };
+    for (const k of Object.keys(aliases)) lookup[k] = aliases[k];
+
+    let startTimestamp = null; // audioContext.currentTime corresponding to logical t=0
+    let decoded = false;
+    // persistent mute states (read from storage)
+    let sfxMuted = false;
+    let musicMuted = false;
+    try { sfxMuted = JSON.parse(localStorage.getItem('tbgMuted') || 'false'); } catch (e) { sfxMuted = false; }
+    try { musicMuted = JSON.parse(localStorage.getItem('tbgMusicMuted') || 'false'); } catch (e) { musicMuted = false; }
+
+    async function loadAll() {
+        const promises = filenames.map(async (name) => {
+            try {
+                const res = await fetch(basePath + name);
+                const ab = await res.arrayBuffer();
+                const buf = await audioContext.decodeAudioData(ab.slice(0));
+                tracks[name].buffer = buf;
+            } catch (e) {
+                console.warn('Failed to load', name, e);
+            }
+        });
+        await Promise.all(promises);
+        decoded = true;
+    }
+
+    function createAndStartSource(name) {
+        const t = tracks[name];
+        if (!t || !t.buffer) return;
+        if (t.source) return; // already started
+        const src = audioContext.createBufferSource();
+        src.buffer = t.buffer;
+        src.loop = true;
+        src.connect(t.gain);
+        // compute offset aligned with startTimestamp
+        const now = audioContext.currentTime;
+        const offset = startTimestamp ? ((now - startTimestamp) % t.buffer.duration + t.buffer.duration) % t.buffer.duration : 0;
+        try {
+            src.start(0, offset);
+        } catch (e) { try { src.start(); } catch (e) { } }
+        t.source = src;
+    }
+
+    function ensureStartedAll() {
+        if (!startTimestamp) startTimestamp = audioContext.currentTime;
+        for (const name of filenames) createAndStartSource(name);
+    }
+
+    function setGain(name, value, fade = 0.6) {
+        const t = tracks[name];
+        if (!t) return;
+        const g = t.gain.gain;
+        const now = audioContext.currentTime;
+        try {
+            g.cancelScheduledValues(now);
+            g.setValueAtTime(g.value || 0, now);
+            g.linearRampToValueAtTime(value, now + fade);
+        } catch (e) {
+            try { g.value = value; } catch (_) { }
+        }
+    }
+
+    function findTrackForLocation(location) {
+        if (!location) return null;
+        const norm = location.replace(/\s+/g, '').toLowerCase();
+        if (lookup[norm]) return lookup[norm];
+        for (const key of Object.keys(lookup)) {
+            if (key.length >= 4 && (norm.includes(key) || key.includes(norm) || norm.slice(0, 5) === key.slice(0, 5))) return lookup[key];
+        }
+        return null;
+    }
+
+    // resume AudioContext & start sources on first user interaction
+    let resumed = false;
+    function tryResumeAndStart() {
+        if (resumed) return;
+        const resumeIfNeeded = async () => {
+            try { await audioContext.resume(); } catch (e) { }
+            if (!decoded) await loadAll();
+            ensureStartedAll();
+            resumed = true;
+            // apply stored mute immediately if set
+            try {
+                musicGain.gain.setValueAtTime(musicMuted ? 0 : 1, audioContext.currentTime);
+                sfxGain.gain.setValueAtTime(sfxMuted ? 0 : 1, audioContext.currentTime);
+            } catch (e) { }
+            document.removeEventListener('click', resumeIfNeeded);
+            document.removeEventListener('touchstart', resumeIfNeeded);
+            document.removeEventListener('keydown', resumeIfNeeded);
+        };
+        document.addEventListener('click', resumeIfNeeded, { once: true });
+        document.addEventListener('touchstart', resumeIfNeeded, { once: true, passive: true });
+        document.addEventListener('keydown', resumeIfNeeded, { once: true });
+    }
+
+    // Public API
+    async function update(playerName, location) {
+        tryResumeAndStart();
+        const main = 'TBG Main.wav';
+        const war = 'TBG Warhamshire.wav';
+        const mainVol = 0.45;
+
+        const locTrack = findTrackForLocation(location);
+
+        // ensure buffers loaded (non-blocking)
+        if (!decoded) loadAll();
+
+        // make sure sources exist (if decoded and resumed)
+        if (decoded && resumed) ensureStartedAll();
+
+        // Always ensure main audible unless special-case locations
+        const eternal = 'TBG Eternal Damnation.wav';
+        if (locTrack === eternal) {
+            // Special exception: only play Eternal Damnation
+            for (const name of filenames) {
+                if (name === eternal) setGain(name, 1.0);
+                else setGain(name, 0);
+            }
+            return;
+        }
+
+        setGain(main, mainVol);
+
+        if (!playerName) {
+            // mute other tracks
+            for (const name of filenames) if (name !== main) setGain(name, 0);
+            return;
+        }
+
+        if (locTrack && locTrack !== main) setGain(locTrack, 0.7);
+        // Advanced-location heuristic: if location is advanced variant, layer Warhamshire
+        if (locTrack && locTrack.toLowerCase() !== (('TBG ' + location + '.wav').toLowerCase())) {
+            setGain(war, 0.35);
+        } else if ((locTrack && locTrack === war) || (!locTrack && (location || '').replace(/\s+/g, '').toLowerCase() === 'warhamshire')) {
+            setGain(war, 0.35);
+        } else {
+            setGain(war, 0);
+        }
+
+        // mute any other non-required tracks
+        for (const name of filenames) {
+            if (name !== main && name !== locTrack && name !== war) setGain(name, 0);
+        }
+    }
+
+    // start listening for user interaction immediately so manager can resume
+    tryResumeAndStart();
+
+    // one-shot sound support (cached decoded buffers)
+    const oneShotCache = {};
+    async function loadOneShot(name) {
+        if (oneShotCache[name]) return oneShotCache[name];
+        try {
+            const res = await fetch(basePath + name);
+            const ab = await res.arrayBuffer();
+            const buf = await audioContext.decodeAudioData(ab.slice(0));
+            oneShotCache[name] = buf;
+            return buf;
+        } catch (e) {
+            console.warn('Failed to load one-shot', name, e);
+            throw e;
+        }
+    }
+
+    function playOneShot(name, volume = 1) {
+        try {
+            // If SFX are muted, don't bother decoding/creating nodes.
+            if (sfxMuted) return;
+            tryResumeAndStart();
+            const play = async () => {
+                try {
+                    const buf = await loadOneShot(name);
+                    const src = audioContext.createBufferSource();
+                    src.buffer = buf;
+                    const g = audioContext.createGain();
+                    g.gain.value = volume;
+                    src.connect(g);
+                    g.connect(sfxGain);
+                    src.start(0);
+                    src.onended = () => { try { src.disconnect(); g.disconnect(); } catch (e) { } };
+                } catch (e) {
+                    try { const a = new Audio(basePath + name); a.volume = Math.max(0, Math.min(1, volume)); a.play().catch(()=>{}); } catch(e){}
+                }
+            };
+            play();
+        } catch (e) { }
+    }
+
+    function playRandomHit() {
+        const idx = Math.floor(Math.random() * 4) + 1;
+        playOneShot(`hitHurt${idx}.wav`, 0.9);
+    }
+
+    function playEffectSound() {
+        playOneShot('Effect.wav', 1.0);
+    }
+
+    function playEffectNoAttack() {
+        playOneShot('EffectNoAttack.wav', 1.0);
+    }
+
+    function playMiss() {
+        playOneShot('Miss.wav', 0.9);
+    }
+
+    function playAnimalNoise() {
+        playOneShot('AnimalNoise.wav', 0.9);
+    }
+
+    function playStatusEffect() { playOneShot('StatusEffect.wav', 0.9); }
+    function playDeath() { playOneShot('Dead.wav', 0.8); }
+    function playCrit() { playOneShot('Crit.wav', 1.0); }
+    function playItemFound() { playOneShot('ItemFound.wav', 1.0); }
+    function playChestFound() { playOneShot('ChestFound.wav', 1.0); }
+    function playChestOpen() { playOneShot('ChestOpen.wav', 1.0); }
+    function playChestLocked() { playOneShot('ChestLocked.wav', 1.0); }
+
+    function playButtonHover() {
+        playOneShot('ButtonHover.wav', 0.5);
+    }
+
+    function playClick() {
+        playOneShot('Click.wav', 0.8);
+    }
+
+    function setSfxMuted(v) {
+        sfxMuted = !!v;
+        try {
+            const now = audioContext.currentTime;
+            sfxGain.gain.cancelScheduledValues(now);
+            sfxGain.gain.setValueAtTime(sfxGain.gain.value || (sfxMuted ? 0 : 1), now);
+            sfxGain.gain.linearRampToValueAtTime(sfxMuted ? 0 : 1, now + 0.05);
+        } catch (e) {
+            try { sfxGain.gain.value = sfxMuted ? 0 : 1; } catch (e) { }
+        }
+        try { localStorage.setItem('tbgMuted', JSON.stringify(sfxMuted)); } catch (e) { }
+    }
+
+    function isSfxMuted() { return !!sfxMuted; }
+
+    function setMusicMuted(v) {
+        musicMuted = !!v;
+        try {
+            const now = audioContext.currentTime;
+            musicGain.gain.cancelScheduledValues(now);
+            musicGain.gain.setValueAtTime(musicGain.gain.value || (musicMuted ? 0 : 1), now);
+            musicGain.gain.linearRampToValueAtTime(musicMuted ? 0 : 1, now + 0.05);
+        } catch (e) {
+            try { musicGain.gain.value = musicMuted ? 0 : 1; } catch (e) { }
+        }
+        try { localStorage.setItem('tbgMusicMuted', JSON.stringify(musicMuted)); } catch (e) { }
+    }
+
+    function isMusicMuted() { return !!musicMuted; }
+
+    // Backwards-compatible alias
+    function setMuted(v) { return setSfxMuted(v); }
+    function isMuted() { return isSfxMuted(); }
+
+    return { update, setMuted, isMuted, setSfxMuted, isSfxMuted, setMusicMuted, isMusicMuted, playRandomHit, playEffectSound, playEffectNoAttack, playMiss, playAnimalNoise, playStatusEffect, playDeath, playCrit, playItemFound, playChestFound, playChestOpen, playChestLocked, playButtonHover, playClick };
+})();
+// Create persistent mute button in top-right
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        const musicBtn = document.createElement('button');
+        musicBtn.id = 'music-button';
+        musicBtn.className = 'music-button';
+        const setMusicIcon = (muted) => {
+            musicBtn.innerHTML = muted ? '<i class="fa-solid fa-play"></i>' : '<i class="fa-solid fa-music"></i>';
+            musicBtn.dataset.tooltip = 'Toggle Background Music';
+            musicBtn.setAttribute('aria-pressed', muted ? 'true' : 'false');
+        };
+        try { setMusicIcon(AudioManager.isMusicMuted()); } catch (e) { setMusicIcon(false); }
+        musicBtn.addEventListener('click', (e) => {
+            try {
+                const willMute = !AudioManager.isMusicMuted();
+                AudioManager.setMusicMuted(willMute);
+                setMusicIcon(willMute);
+            } catch (err) { console.warn('Music toggle failed', err); }
+        });
+
+        const btn = document.createElement('button');
+        btn.id = 'mute-button';
+        btn.className = 'mute-button';
+        const setIcon = (muted) => {
+            btn.innerHTML = muted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
+            btn.dataset.tooltip = 'Toggle Sound Effects';
+            btn.setAttribute('aria-pressed', muted ? 'true' : 'false');
+        };
+        try { setIcon(AudioManager.isSfxMuted()); } catch (e) { setIcon(false); }
+        btn.addEventListener('click', (e) => {
+            try {
+                const willMute = !AudioManager.isSfxMuted();
+                AudioManager.setSfxMuted(willMute);
+                setIcon(willMute);
+            } catch (err) { console.warn('Mute toggle failed', err); }
+        });
+
+        document.body.appendChild(musicBtn);
+        document.body.appendChild(btn);
+    } catch (e) { console.warn('Failed to create mute button', e); }
+});
 function setBackgroundForLocation(location) {
     const loc = (location || 'Warhamshire').replace(/\s+/g, '');
     const bgEl = document.getElementById('background-image');
@@ -19,6 +362,10 @@ function startup() {
     const loc = saved?.location || bgData?.location || 'Warhamshire';
     setBackgroundForLocation(loc);
     fadeOutEffect();
+    try {
+        const player = Alpine.$data(document.getElementById('player')) || {};
+        AudioManager.update(player.name, loc);
+    } catch (e) { }
 }
 
 async function startGame(name) {
@@ -29,6 +376,12 @@ async function startGame(name) {
 
     await fadeInOutEffect("returning");
     Alpine.$data(document.getElementById("background-image")).showPlayerBar = true;
+
+    try {
+        const playerName = player?.name;
+        const bg = Alpine.$data(document.getElementById('background-image'));
+        AudioManager.update(playerName, bg?.location);
+    } catch (e) { }
 
     localStorage.setItem('textBasedData', JSON.stringify({
         name: player.name,
@@ -186,8 +539,12 @@ async function fadeInOutEffect(to) {
     } catch (e) {
         console.warn('Failed to update background for location', e);
     }
-
     Alpine.$data(document.getElementById("background-image")).screen = to;
+    try {
+        const player = Alpine.$data(document.getElementById('player')) || {};
+        const bg = Alpine.$data(document.getElementById('background-image')) || {};
+        AudioManager.update(player.name, bg.location);
+    } catch (e) { }
     await fadeOutEffect();
     ready = false; // Allow interactions again
 }
@@ -314,7 +671,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tooltip.style.left = left + 'px';
         tooltip.style.top = top + 'px';
     }
-
     function isElementVisible(element) {
         if (!element) return false;
         if (!element.isConnected) return false;
@@ -366,6 +722,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('mouseover', e => {
         if (isTooltipLockedForMessage()) return;
         if (isTouchInteraction || Date.now() < suppressMouseUntil) return;
+
+        // Play button hover for interactive controls
+        const hoverBtn = e.target.closest('button, [role="button"], .btn, .button');
+        if (hoverBtn) {
+            if (window.__lastHoverBtn !== hoverBtn) {
+                window.__lastHoverBtn = hoverBtn;
+                AudioManager.playButtonHover();
+            }
+        }
+
         const target = e.target.closest('[data-tooltip], [data-tooltip-html]');
         if (!target) return;
         const isDifferentTarget = activeTooltipTarget && activeTooltipTarget !== target;
@@ -384,6 +750,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('mouseout', e => {
         if (isTooltipLockedForMessage()) return;
         if (isTouchInteraction || Date.now() < suppressMouseUntil) return;
+        const btnEl = e.target.closest('button, [role="button"], .btn, .button');
+        if (btnEl) {
+            const related = e.relatedTarget;
+            if (!related || !btnEl.contains(related)) window.__lastHoverBtn = null;
+        }
         const target = e.target.closest('[data-tooltip], [data-tooltip-html]');
         if (!target) return;
         const related = e.relatedTarget;
@@ -391,6 +762,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const relatedTooltipTarget = related?.closest?.('[data-tooltip], [data-tooltip-html]');
         if (relatedTooltipTarget && relatedTooltipTarget === target) return;
         hideTooltip();
+    });
+
+    // Click sounds for button-like elements
+    document.body.addEventListener('click', e => {
+        const btn = e.target.closest('button, [role="button"], .btn, .button');
+        if (btn) AudioManager.playClick();
     });
 
     // Mobile touch
@@ -513,7 +890,7 @@ window.addEventListener('resize', scalePlayerHUD);
 window.addEventListener('DOMContentLoaded', scalePlayerHUD);
 
 function triggerScreenShake(ratio = 0.25) {
-    ratio = 0.05;
+    ratio = 0.015;
     const bg = document.getElementById('background-image');
     const screenEl = document.getElementById('screen');
     const target = screenEl || bg || document.body || document.documentElement;
@@ -524,7 +901,7 @@ function triggerScreenShake(ratio = 0.25) {
     const px = Math.max(minPx, Math.round(minPx + (maxPx - minPx) * ratio));
 
     const maxDeg = 3.2;
-    const minDeg = 0.25;
+    const minDeg = 0;
     const deg = (minDeg + (maxDeg - minDeg) * ratio).toFixed(2) + 'deg';
 
     const minDur = 260;

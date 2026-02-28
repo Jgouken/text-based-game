@@ -201,8 +201,14 @@ async function executeSkill({
         if (final > 0) {
             const playerRef = Alpine.$data(document.getElementById('player'));
             const ratio = Math.max(0, Math.min(1, final / (playerRef?.maxHealth || 1))); // currently forced to be 0.15 because higher ratios ruin things
+            if (crit && hit) AudioManager.playCrit();
+            else if (firstHit && (skill.pstatus || skill.estatus)) {
+                AudioManager.playEffectSound();
+            } else if (hit) {
+                AudioManager.playRandomHit();
+            }
             triggerScreenShake(ratio);
-        }
+        } else AudioManager.playMiss();
         return final;
     };
 
@@ -308,6 +314,7 @@ async function executeSkill({
             });
             encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${!isPlayer ? ` and gained ` : ` and inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${encounter.enemyName} ${hasStatus(encounter.estatus, 'Malediction') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
         }
+        if (!skill.attack && (skill.pstatus || skill.estatus)) AudioManager.playEffectNoAttack();
     }
 
     new Promise(r => setTimeout(r, 250))
@@ -616,8 +623,11 @@ async function turnManager(toPlayer) {
             died = true;
             background.enemy.skills.forEach(s => { delete s._cooldown; });
             encounter.battle = false;
-            if (encounter.health <= 0) encounter.log.push(`--- ${background.enemy.name} has died. ---`);
-            else {
+            AudioManager.playDeath();
+
+            if (encounter.health <= 0) {
+                encounter.log.push(`--- ${background.enemy.name} has died. ---`);
+            } else {
                 encounter.log.push(`--- ${background.name} has died. ---`);
                 await savePlayer();
                 return true;
@@ -721,8 +731,11 @@ async function turnManager(toPlayer) {
 
             const lootResult = addToInventory(loot, level);
 
-            if (lootResult) encounter.log.push(`🎁 ${background.enemy.name} dropped a${/^[aeiou]/i.test(loot.name) ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip-html="${descHtml}">${loot.name}</span>! 🎁`);
-            else console.error(`Couldn't acquire ${drop.name}.`);
+            if (lootResult) {
+                encounter.log.push(`🎁 ${background.enemy.name} dropped a${/^[aeiou]/i.test(loot.name) ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip-html="${descHtml}">${loot.name}</span>! 🎁`);
+                AudioManager.playItemFound();
+            }
+            else alert(`Couldn't acquire ${drop.name}.`);
 
             return true;
         } else return false;
@@ -762,6 +775,7 @@ async function turnManager(toPlayer) {
                 let damage = Math.floor(s.baseDam * s.damage);
                 encounter.log.push(`${actorName} is bleeding - <span style="color: lightblue;" data-tooltip="${statId('Bleed')} ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">${statId('Bleed')}${damage}</span>`);
                 actor.health -= damage;
+                AudioManager.playStatusEffect();
                 await new Promise(r => setTimeout(r, 400))
                 break;
             }
@@ -769,6 +783,7 @@ async function turnManager(toPlayer) {
                 let damage = Math.floor(s.baseDam * s.damage);
                 encounter.log.push(`${actorName} is on fire - <span style="color: lightblue;" data-tooltip="${statId('Burn')} ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">${statId('Burn')}${damage}</span>`);
                 actor.health -= damage;
+                AudioManager.playStatusEffect();
                 await new Promise(r => setTimeout(r, 400))
                 break;
             }
@@ -776,6 +791,7 @@ async function turnManager(toPlayer) {
                 let damage = Math.floor(s.baseDam * actor.attack);
                 encounter.log.push(`${actorName} is cursed - <span style="color: lightblue;" data-tooltip="${statId('Curse')} ${s.name}\n\n${s.description}\n\n${actor.attack} * ${s.baseDam} = ${damage}">${statId('Curse')}${damage}</span>`);
                 actor.health -= damage;
+                AudioManager.playStatusEffect();
                 await new Promise(r => setTimeout(r, 400))
                 break;
             }
@@ -783,6 +799,7 @@ async function turnManager(toPlayer) {
                 let damage = Math.floor(s.maxHP * actor.maxHealth);
                 encounter.log.push(`${actorName} is poisoned - <span style="color: lightblue;" data-tooltip="${statId('Poison')} ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${damage}">${statId('Poison')}${damage}</span>`);
                 actor.health -= damage;
+                AudioManager.playStatusEffect();
                 await new Promise(r => setTimeout(r, 400))
                 break;
             }
@@ -793,6 +810,7 @@ async function turnManager(toPlayer) {
 
                 encounter.log.push(`${actorName} is regenerating - <span style="color: lightblue;" data-tooltip="${statId('Regeneration')} ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${Math.floor(s.maxHP * actor.maxHealth)}${actor.health + Math.floor(s.maxHP * actor.maxHealth) > actor.maxHealth ? '\nCapped to max health.' : ''}">${statId('Regeneration')}${heal}</span>`);
                 actor.health += heal;
+                AudioManager.playStatusEffect();
                 await new Promise(r => setTimeout(r, 400))
                 break;
             }
@@ -896,24 +914,26 @@ async function victory() {
         await new Promise(resolve => setTimeout(resolve, 500));
         if (player.level > 1) player.level -= 1;
         if (player.level < 1) player.level = 1;
-        player.health = player.maxHealth;
+        player.health = await getPlayerMaxHealth(player.level);
         player.pstatus = [];
         player.experience = 0;
+        player.stamina = 0;
         syncPlayerActivePotion(player, null);
     } else {
         const area = assets.areas.find(a => a.name === background.location);
         const chestOutcome = rollAreaChestOutcome(area);
 
         if (chestOutcome.type === 'chest' && chestOutcome.entry && chestOutcome.entry.chest !== undefined) {
-            background.foundChest = {
-                chest: chestOutcome.entry.chest,
-                key: chestOutcome.entry.key
-            };
-            await transition('encounter', 'chest-found');
-            updateBars();
-            savePlayer();
-            return;
-        }
+                background.foundChest = {
+                    chest: chestOutcome.entry.chest,
+                    key: chestOutcome.entry.key
+                };
+                AudioManager.playChestFound();
+                await transition('encounter', 'chest-found');
+                updateBars();
+                savePlayer();
+                return;
+            }
     }
     await transition('encounter', 'returning');
     updateBars();
@@ -955,11 +975,15 @@ async function crackChestOpen() {
     const keyIndex = player.inventory.findIndex(item => item.name === keyName && item.amount > 0);
 
     if (keyName && keyIndex < 0) {
+        AudioManager.playChestLocked();
         alert(`You need ${keyName} to open this chest.`);
         return;
     }
 
-    if (keyIndex >= 0) removeFromInventory(keyIndex);
+    if (keyIndex >= 0) {
+        removeFromInventory(keyIndex);
+        AudioManager.playChestOpen();
+    }
 
     const drop = randomByChance(chestChoice.drops);
     const loot = assets.items.find(item => item.name === drop?.name);
@@ -989,6 +1013,7 @@ async function crackChestOpen() {
 async function declineChestFound() {
     const background = Alpine.$data(document.getElementById('background-image'));
     background.foundChest = null;
+    AudioManager.playMiss();
     await transition('chest-found', 'returning');
     updateBars();
     savePlayer();

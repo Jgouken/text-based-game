@@ -58,10 +58,14 @@ async function startPlayer() {
     setPlayer();
 }
 
+async function getPlayerMaxHealth(level) {
+    return 500 + ((level - 1) * 250);
+}
+
 async function setPlayer() {
     const player = Alpine.$data(document.getElementById('player'));
 
-    player.maxHealth = 500 + ((player.level - 1) * 250)
+    player.maxHealth = await getPlayerMaxHealth(player.level);
     player.maxStamina = 50 + ((player.level - 1) * 5)
 
     const baseAttack = Math.floor(75 + ((player.level - 1) * 25) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel));

@@ -394,9 +394,14 @@
                     <input class="name-input" type="text" id="name" name="name" required minlength="1" maxlength="16"
                         size="100" placeholder="I'm..." x-model="name" autocomplete="off"
                         @keyup.enter="if (name) { startGame(name); updateBars() }" />
-                    <button class="regular-button btn--primary" @click="importButton()">IMPORT</button>
-                    <button class="regular-button btn--success" @click="startGame(name); updateBars()"
-                        x-show="name">Onwards</button>
+                    <div>
+                        <button class="regular-button btn--success" @click="startGame(name); updateBars()"
+                            x-show="name">Onwards</button>
+                        <button class="regular-button btn--primary" @click="importButton()"
+                            x-show="!name">IMPORT</button>
+                    </div>
+
+
                 </div>
                 <div class="credits">
                     <span class="credits-muted">Made by Jgouken &amp; SavorySam</span>
