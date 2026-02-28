@@ -314,7 +314,11 @@ async function executeSkill({
             });
             encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${!isPlayer ? ` and gained ` : ` and inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${encounter.enemyName} ${hasStatus(encounter.estatus, 'Malediction') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
         }
-        if (!skill.attack && (skill.pstatus || skill.estatus)) AudioManager.playEffectNoAttack();
+        if (!skill.attack && (skill.pstatus || skill.estatus || skill.health || skill.flatHealth)) AudioManager.playEffectNoAttack();
+    }
+
+    if (!skill.attack && !(skill.pstatus || skill.estatus || skill.health || skill.flatHealth)) {
+        AudioManager.playAnimalNoise(attackerName);
     }
 
     new Promise(r => setTimeout(r, 250))
@@ -471,6 +475,7 @@ async function useBattleConsumable(consumableIndex) {
 }
 
 async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {}) {
+    let audioPlayed = false;
     const battleStation = Alpine.$data(document.getElementById('battle-station'));
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
@@ -523,6 +528,8 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {})
 
     if (itemData.damage !== undefined) {
         encounter.health -= throwableDamage;
+        AudioManager.playExplosion();
+        audioPlayed = true;
         effectText.push(`dealt <span style="color: lightblue;" data-tooltip="💥${throwableDamage}\n">💥${throwableDamage}</span>`);
     }
 
@@ -582,7 +589,7 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {})
         .replace(/'/g, '&apos;')
         .replace(/\n/g, '<br>');
     encounter.log.push(`- ${background.name} used <span class='battle-log-hover-underline' style='color: lightblue; cursor: default;' data-tooltip-html="${useTooltipHtml}">${selectedInventoryItem.name}</span>${effectText.length > 0 ? ` and ${effectText.join(' and ')}` : ''}`);
-
+    if (!audioPlayed) AudioManager.playEffectNoAttack();
     battleStation.showConsumables = false;
     battleStation.turn = false;
 

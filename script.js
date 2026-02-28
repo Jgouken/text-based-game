@@ -2,15 +2,15 @@ let ready = false;
 const AudioManager = (function () {
     const basePath = 'assets/sounds/';
     const filenames = [
-        'TBG Main.wav',
-        'TBG Hinterland.wav',
-        'TBG Vexadel.wav',
-        'TBG Vulpeston.wav',
-        'TBG Warhamshire.wav',
-        'TBG Eternal Damnation.wav',
-        'TBG Melody.wav',
-        'TBG Sanguisuge.wav',
-        'TBG Uralan Mountains.wav'
+        'TBG Main.mp3',
+        'TBG Hinterland.mp3',
+        'TBG Vexadel.mp3',
+        'TBG Vulpeston.mp3',
+        'TBG Warhamshire.mp3',
+        'TBG Eternal Damnation.mp3',
+        'TBG Melody.mp3',
+        'TBG Sanguisuge.mp3',
+        'TBG Uralan Mountains.mp3'
     ];
 
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -25,16 +25,16 @@ const AudioManager = (function () {
     const tracks = {};
     const lookup = {};
     for (const f of filenames) {
-        const key = f.replace(/^TBG\s*/i, '').replace(/\.wav$/i, '').replace(/\s+/g, '').toLowerCase();
+        const key = f.replace(/^TBG\s*/i, '').replace(/\.mp3$/i, '').replace(/\s+/g, '').toLowerCase();
         lookup[key] = f;
         tracks[f] = { buffer: null, gain: audioContext.createGain(), source: null };
         tracks[f].gain.gain.value = 0;
         tracks[f].gain.connect(musicGain);
     }
     const aliases = {
-        'sangstonmansion': 'TBG Sanguisuge.wav',
-        'sangston': 'TBG Sanguisuge.wav',
-        'sanguisuge': 'TBG Sanguisuge.wav'
+        'sangstonmansion': 'TBG Sanguisuge.mp3',
+        'sangston': 'TBG Sanguisuge.mp3',
+        'sanguisuge': 'TBG Sanguisuge.mp3'
     };
     for (const k of Object.keys(aliases)) lookup[k] = aliases[k];
 
@@ -129,14 +129,14 @@ const AudioManager = (function () {
     }
     async function update(playerName, location) {
         tryResumeAndStart();
-        const main = 'TBG Main.wav';
-        const war = 'TBG Warhamshire.wav';
+        const main = 'TBG Main.mp3';
+        const war = 'TBG Warhamshire.mp3';
         const mainVol = 0.45;
 
         const locTrack = findTrackForLocation(location);
         if (!decoded) loadAll();
         if (decoded && resumed) ensureStartedAll();
-        const eternal = 'TBG Eternal Damnation.wav';
+        const eternal = 'TBG Eternal Damnation.mp3';
         if (locTrack === eternal) {
 
             for (const name of filenames) {
@@ -156,7 +156,7 @@ const AudioManager = (function () {
 
         if (locTrack && locTrack !== main) setGain(locTrack, 0.7);
 
-        if (locTrack && locTrack.toLowerCase() !== (('TBG ' + location + '.wav').toLowerCase())) {
+        if (locTrack && locTrack.toLowerCase() !== (('TBG ' + location + '.mp3').toLowerCase())) {
             setGain(war, 0.35);
         } else if ((locTrack && locTrack === war) || (!locTrack && (location || '').replace(/\s+/g, '').toLowerCase() === 'warhamshire')) {
             setGain(war, 0.35);
@@ -209,40 +209,53 @@ const AudioManager = (function () {
 
     function playRandomHit() {
         const idx = Math.floor(Math.random() * 4) + 1;
-        playOneShot(`hitHurt${idx}.wav`, 0.9);
+        playOneShot(`hitHurt${idx}.mp3`, 0.9);
     }
 
     function playEffectSound() {
-        playOneShot('Effect.wav', 1.0);
+        playOneShot('Effect.mp3', 1.0);
     }
 
     function playEffectNoAttack() {
-        playOneShot('EffectNoAttack.wav', 1.0);
+        playOneShot('EffectNoAttack.mp3', 1.0);
     }
 
     function playMiss() {
-        playOneShot('Miss.wav', 0.9);
+        playOneShot('Miss.mp3', 0.9);
     }
 
-    function playAnimalNoise() {
-        playOneShot('AnimalNoise.wav', 0.9);
+    function playAnimalNoise(name) {
+        try {
+            const n = (name || '').toString().toLowerCase();
+            if (n.includes('cow')) playOneShot('Moo.mp3', 0.9);
+            else if (n.includes('sheep')) playOneShot('Sheep.mp3', 0.9);
+            else if (n.includes('chicken')) playOneShot('Chicken.mp3', 0.9);
+            else if (n.includes('pig')) playOneShot('Pig.mp3', 0.9);
+            else playOneShot('Moo.mp3', 0.9);
+        } catch (e) {
+            playOneShot('Moo.mp3', 0.9);
+        }
     }
 
-    function playStatusEffect() { playOneShot('StatusEffect.wav', 0.9); }
-    function playDeath() { playOneShot('Dead.wav', 0.8); }
-    function playCrit() { playOneShot('Crit.wav', 1.0); }
-    function playItemFound() { playOneShot('ItemFound.wav', 1.0); }
-    function playChestFound() { playOneShot('ChestFound.wav', 1.0); }
-    function playChestOpen() { playOneShot('ChestOpen.wav', 1.0); }
-    function playChestLocked() { playOneShot('ChestLocked.wav', 1.0); }
+    function playStatusEffect() { playOneShot('StatusEffect.mp3', 0.9); }
+    function playDeath() { playOneShot('Dead.mp3', 0.8); }
+    function playCrit() { playOneShot('Crit.mp3', 1.0); }
+    function playItemFound() { playOneShot('ItemFound.mp3', 1.0); }
+    function playChestFound() { playOneShot('ChestFound.mp3', 1.0); }
+    function playChestOpen() { playOneShot('ChestOpen.mp3', 1.0); }
+    function playChestLocked() { playOneShot('ChestLocked.mp3', 1.0); }
 
     function playButtonHover() {
-        playOneShot('ButtonHover.wav', 0.5);
+        playOneShot('ButtonHover.mp3', 0.5);
     }
 
     function playClick() {
-        playOneShot('Click.wav', 0.8);
+        playOneShot('Click.mp3', 0.8);
     }
+
+    function playEquip() { playOneShot('Equip.mp3', 1.0); }
+    function playUnequip() { playOneShot('Unequip.mp3', 1.0); }
+    function playExplosion() { playOneShot('Explosion.mp3', 1.0); }
 
     function setSfxMuted(v) {
         sfxMuted = !!v;
@@ -276,7 +289,7 @@ const AudioManager = (function () {
     function setMuted(v) { return setSfxMuted(v); }
     function isMuted() { return isSfxMuted(); }
 
-    return { update, setMuted, isMuted, setSfxMuted, isSfxMuted, setMusicMuted, isMusicMuted, playRandomHit, playEffectSound, playEffectNoAttack, playMiss, playAnimalNoise, playStatusEffect, playDeath, playCrit, playItemFound, playChestFound, playChestOpen, playChestLocked, playButtonHover, playClick };
+    return { update, setMuted, isMuted, setSfxMuted, isSfxMuted, setMusicMuted, isMusicMuted, playRandomHit, playEffectSound, playEffectNoAttack, playMiss, playAnimalNoise, playStatusEffect, playDeath, playCrit, playItemFound, playChestFound, playChestOpen, playChestLocked, playButtonHover, playClick, playEquip, playUnequip, playExplosion };
 })();
 
 document.addEventListener('DOMContentLoaded', () => {

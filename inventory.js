@@ -833,7 +833,7 @@ function handleInventoryDrop(e) {
             weapon: assets.items.find(w => w.name === 'Hands'),
             level: 1
         };
-
+        AudioManager.playUnequip();
         showMessage(`Unequipped Weapon`, 'warning');
     } else if (draggedEquipment === 'armor') {
         addToInventory(player.armory.armor, player.armory.level);
@@ -841,7 +841,7 @@ function handleInventoryDrop(e) {
             armor: assets.items.find(a => a.name === 'None'),
             level: 1
         };
-
+        AudioManager.playUnequip();
         showMessage(`Unequipped Armor`, 'warning');
     }
 
@@ -932,6 +932,7 @@ function equipWeapon(weaponData, level) {
     player.weaponry = { weapon: weaponData, level: level || 1 };
     removeFromInventory(draggedItemIndex);
     setPlayer();
+    AudioManager.playEquip();
     showMessage(`Equipped ${weaponData.name}!`, 'success');
 }
 
@@ -945,6 +946,7 @@ function equipArmor(armorData, level) {
     player.armory = { armor: armorData, level: level || 1 };
     removeFromInventory(draggedItemIndex);
     setPlayer();
+    AudioManager.playEquip();
     showMessage(`Equipped ${armorData.name}!`, 'success');
 }
 
