@@ -396,6 +396,7 @@ input[type="submit"]:active,
 .btn--violet {
     background-color: rgb(184, 111, 218);
     border: 5px solid rgb(153, 9, 219);
+    color: black;
 }
 
 .btn--lime {

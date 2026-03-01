@@ -172,6 +172,9 @@ function getJournalPlayerDetails(player, assets) {
                 lines: synergyLines
             });
         }
+        if (usedInItems.length) groups.push({ title: 'Used In', items: usedInItems });
+        if (droppedBy.length) groups.push({ title: 'Dropped By', lines: droppedBy });
+        if (foundInChests.length) groups.push({ title: 'Found In Chests', lines: foundInChests });
     }
 
     if (weapon?.skills?.length) {
@@ -215,6 +218,51 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
     }
 
     const item = entry.raw;
+
+    const usedInItems = (assets.items || [])
+        .filter((assetItem) => Array.isArray(assetItem.craft) && assetItem.craft.includes(item.name))
+        .map((assetItem) => {
+            const craftCounts = new Map();
+            const craftOrder = [];
+            assetItem.craft.forEach((ingredientName) => {
+                if (!craftCounts.has(ingredientName)) {
+                    craftCounts.set(ingredientName, 0);
+                    craftOrder.push(ingredientName);
+                }
+                craftCounts.set(ingredientName, craftCounts.get(ingredientName) + 1);
+            });
+
+            const craftLines = craftOrder.map((ingredientName) => {
+                const count = craftCounts.get(ingredientName) || 1;
+                return count > 1 ? `${ingredientName} x${count}` : ingredientName;
+            });
+
+            const previewLvl = clampJournalLevel(previewLevel || 1);
+            const minLevel = assetItem.minlvl !== undefined ? clampJournalLevel(assetItem.minlvl) : 1;
+            const maxLevel = assetItem.maxlvl !== undefined ? clampJournalLevel(assetItem.maxlvl) : 50;
+            const tooltipLevel = Math.max(minLevel, Math.min(maxLevel, previewLvl));
+            const itemTooltipHtml = (typeof window.getItemTooltipText === 'function')
+                ? window.getItemTooltipText(assetItem.name, tooltipLevel, true)
+                : `Open ${assetItem.name} in Journal`;
+            const escapedTooltip = escapeJournalHtml(itemTooltipHtml);
+            const tooltipAttr = typeof window.getItemTooltipText === 'function'
+                ? `data-tooltip-html="${escapedTooltip}"`
+                : `data-tooltip="${escapedTooltip}"`;
+            return {
+                title: assetItem.name,
+                lines: craftLines
+            };
+        });
+
+    const droppedBy = (assets.enemies || [])
+        .flatMap((enemy) => (Array.isArray(enemy.drops) ? enemy.drops.map(d => ({ enemy, drop: d })) : []))
+        .filter(({ drop }) => drop && drop.name === item.name)
+        .map(({ enemy, drop }) => `${enemy.name} (${String((drop.chance || 0) * 100).slice(0, 5)}%)`);
+
+    const foundInChests = (assets.chests || [])
+        .flatMap((chest) => (Array.isArray(chest.drops) ? chest.drops.map(d => ({ chest, drop: d })) : []))
+        .filter(({ drop }) => drop && drop.name === item.name)
+        .map(({ chest, drop }) => `${chest.name} - ${String((drop.chance || 0) * 100).slice(0, 5)}%`);
     const effectiveLevel = Math.max(item.minlvl || 1, Math.min(item.maxlvl || 50, clampJournalLevel(previewLevel)));
     const descriptionLines = [];
 
@@ -260,12 +308,33 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
                     if (syn.critical) synLines.push(`Crit +${journalPercent(syn.critical)}`);
                     if (syn.crit) synLines.push(`Crit +${journalPercent(syn.crit)}`);
                     if (syn.evasion) synLines.push(`Evasion +${journalPercent(syn.evasion)}`);
+                    const synLabel = `${syn.weapon}${syn.name ? ` - ${syn.name}` : ''}`;
+                    const weaponItem = (assets.items || []).find(i => i && i.name === syn.weapon) || null;
+                    const previewLvl = clampJournalLevel(previewLevel || 1);
+                    let tooltipLevel = previewLvl;
+                    if (weaponItem) {
+                        const minLevel = weaponItem.minlvl !== undefined ? clampJournalLevel(weaponItem.minlvl) : 1;
+                        const maxLevel = weaponItem.maxlvl !== undefined ? clampJournalLevel(weaponItem.maxlvl) : 50;
+                        tooltipLevel = Math.max(minLevel, Math.min(maxLevel, previewLvl));
+                    }
+                    const inventoryTooltip = weaponItem && typeof window.getItemTooltipText === 'function'
+                        ? window.getItemTooltipText(syn.weapon, tooltipLevel, true)
+                        : null;
+                    const fallbackTooltip = synLines.length ? `${synLabel}\n\n${synLines.join('\n')}` : synLabel;
+                    const finalTooltip = escapeJournalHtml(inventoryTooltip || fallbackTooltip);
+                    const escapedName = escapeJournalHtml(syn.weapon);
+                    const escapedLabel = escapeJournalHtml(synLabel);
+                    const tooltipAttr = inventoryTooltip ? `data-tooltip-html='${finalTooltip}'` : `data-tooltip='${finalTooltip}'`;
+                    const titleHtml = `<span class="journal-drop-link" data-drop-name='${escapedName}' data-item-level='${tooltipLevel}' ${tooltipAttr}>${escapedLabel}</span>`;
                     return {
-                        title: `${syn.weapon}${syn.name ? ` - ${syn.name}` : ''}`,
+                        title: titleHtml,
                         lines: synLines
                     };
                 })
             });
+            if (usedInItems.length) groups.push({ title: 'Used In', items: usedInItems });
+            if (droppedBy.length) groups.push({ title: 'Dropped By', lines: droppedBy });
+            if (foundInChests.length) groups.push({ title: 'Found In Chests', lines: foundInChests });
         }
     } else if (Array.isArray(item.skills)) {
         const attackValue = Math.round(item.attack + ((effectiveLevel - 1) * (item.attackPerLevel || 0)) + ((playerLevel - 1) * 6 * (item.plvlmult || 0)));
@@ -312,6 +381,9 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
                 items: armorSynergies
             });
         }
+        if (usedInItems.length) groups.push({ title: 'Used In', items: usedInItems });
+        if (droppedBy.length) groups.push({ title: 'Dropped By', lines: droppedBy });
+        if (foundInChests.length) groups.push({ title: 'Found In Chests', lines: foundInChests });
     } else {
         const effects = [];
         if (item.health) effects.push(`Heals ${journalPercent(item.health)} HP`);
@@ -325,7 +397,17 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
         if (item.estatus) effects.push(`Inflicts: ${journalStatusText(item.estatus, assets)}`);
 
         if (effects.length) groups.push({ title: 'Effects', lines: effects });
-        if (item.uses?.length) groups.push({ title: 'Used In', lines: item.uses });
+        if (usedInItems.length) groups.push({ title: 'Used In', items: usedInItems });
+        const droppedBy = (assets.enemies || [])
+            .flatMap((enemy) => (Array.isArray(enemy.drops) ? enemy.drops.map(d => ({ enemy, drop: d })) : []))
+            .filter(({ drop }) => drop && drop.name === item.name)
+            .map(({ enemy, drop }) => `${enemy.name} (${String((drop.chance || 0) * 100).slice(0, 5)}%)`);
+        if (droppedBy.length) groups.push({ title: 'Dropped By', lines: droppedBy });
+        const foundInChests = (assets.chests || [])
+            .flatMap((chest) => (Array.isArray(chest.drops) ? chest.drops.map(d => ({ chest, drop: d })) : []))
+            .filter(({ drop }) => drop && drop.name === item.name)
+            .map(({ chest, drop }) => `${chest.name} - ${String((drop.chance || 0) * 100).slice(0, 5)}%`);
+        if (foundInChests.length) groups.push({ title: 'Found In Chests', lines: foundInChests });
         if (item.chest !== undefined && assets.chests?.[item.chest]) groups.push({ title: 'Unlocks Chest', lines: [assets.chests[item.chest].name] });
 
         if (item.tier && Array.isArray(item.drops)) {
@@ -502,7 +584,7 @@ window.createJournalState = function createJournalState() {
             return tooltip;
         },
 
-        getChestTooltipHtmlByNamel(chestName) {
+        getChestTooltipHtmlByName(chestName) {
             const chest = this.assets.chests.find((entry) => entry.name === chestName);
             if (!chest) return null;
             if (!chest.sprite) return `<div>${chest.name}</div>`;
@@ -512,7 +594,13 @@ window.createJournalState = function createJournalState() {
         renderLineWithStatusTooltips(line) {
             if (typeof line !== 'string') return '';
 
-            let html = escapeJournalHtml(line);
+            let html;
+            // If caller provided raw HTML (we generate spans for titles with tooltips), preserve it.
+            if (typeof line === 'string' && line.trim().startsWith('<')) {
+                html = line;
+            } else {
+                html = escapeJournalHtml(line);
+            }
             const quantityLineMatch = line.match(/^(.*?)\s+x(\d+)$/i);
             const quantityLineName = quantityLineMatch ? (quantityLineMatch[1] || '').trim() : null;
             const statuses = [...this.assets.statuses].sort((a, b) => String(b.id).length - String(a.id).length);
@@ -584,9 +672,9 @@ window.createJournalState = function createJournalState() {
                     : `Open ${exactItem.name} in Journal`;
                 const escapedTooltip = escapeJournalHtml(itemTooltipHtml);
                 const tooltipAttr = typeof window.getItemTooltipText === 'function'
-                    ? `data-tooltip-html="${escapedTooltip}"`
-                    : `data-tooltip="${escapedTooltip}"`;
-                const itemLink = `<span class="journal-drop-link" data-drop-name="${escapedItemName}" data-item-level="${tooltipLevel}" ${tooltipAttr}>${escapedItemLabel}</span>`;
+                    ? `data-tooltip-html='${escapedTooltip}'`
+                    : `data-tooltip='${escapedTooltip}'`;
+                const itemLink = `<span class="journal-drop-link" data-drop-name='${escapedItemName}' data-item-level='${tooltipLevel}' ${tooltipAttr}>${escapedItemLabel}</span>`;
                 html = replaceFirstOccurrence(html, escapedItemLabel, itemLink);
             }
 
@@ -605,9 +693,9 @@ window.createJournalState = function createJournalState() {
                         : `Open ${equippedItem.name} in Journal`;
                     const escapedTooltip = escapeJournalHtml(itemTooltipHtml);
                     const tooltipAttr = typeof window.getItemTooltipText === 'function'
-                        ? `data-tooltip-html="${escapedTooltip}"`
-                        : `data-tooltip="${escapedTooltip}"`;
-                    const itemLink = `<span class="journal-drop-link" data-drop-name="${escapedEquippedName}" data-item-level="${tooltipLevel}" ${tooltipAttr}>${escapedEquippedName}</span>`;
+                        ? `data-tooltip-html='${escapedTooltip}'`
+                        : `data-tooltip='${escapedTooltip}'`;
+                    const itemLink = `<span class="journal-drop-link" data-drop-name='${escapedEquippedName}' data-item-level='${tooltipLevel}' ${tooltipAttr}>${escapedEquippedName}</span>`;
                     html = replaceFirstOccurrence(html, escapedEquippedName, itemLink);
                 }
             }
