@@ -485,7 +485,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         (async () => {
             try {
-                if (AudioManager && AudioManager.preloadAll) await AudioManager.preloadAll();
+                const waitForWindowLoad = () => new Promise(resolve => {
+                    if (document.readyState === 'complete') return resolve();
+                    window.addEventListener('load', () => resolve(), { once: true });
+                });
+
+                const audioPromise = (AudioManager && AudioManager.preloadAll) ? AudioManager.preloadAll() : Promise.resolve();
+                await Promise.all([waitForWindowLoad(), audioPromise]);
             } catch (e) { }
             try {
                 overlay.style.transition = 'opacity 0.3s ease';
@@ -834,91 +840,96 @@ async function transition(from, to) {
     await fadeInOutEffect(to);
 }
 
-async function quitButton() {
-    window.close();
-    alert("Close the tab to quit the game.");
-}
-
 async function fadeInOutEffect(to) {
     if (ready) return;
     ready = true;
-
-    await fadeInEffect();
-    await new Promise(resolve => setTimeout(resolve, 500));
-
     try {
-        const bgData = Alpine.$data(document.getElementById('background-image'));
-        const loc = (bgData && bgData.location) ? bgData.location : null;
-        const bases = [];
-        if (loc) bases.push(loc.replace(/\s+/g, ''));
-        bases.push('Warhamshire');
+        await fadeInEffect();
+        await new Promise(resolve => setTimeout(resolve, 500));
+        try {
+            const bgData = Alpine.$data(document.getElementById('background-image'));
+            const loc = (bgData && bgData.location) ? bgData.location : null;
+            const bases = [];
+            if (loc) bases.push(loc.replace(/\s+/g, ''));
 
-        const exts = ['.jpg', '.png', '.gif'];
-        let fileName = null;
-        for (const base of bases) {
-            for (const ext of exts) {
-                const url = `assets/backgrounds/${base}${ext}`;
-                try {
-                    const res = await fetch(url, { method: 'HEAD' });
-                    if (res && res.ok) {
-                        fileName = base + ext;
-                        break;
+            const exts = ['.jpg', '.png', '.gif'];
+            let fileName = null;
+            for (const base of bases) {
+                for (const ext of exts) {
+                    const url = `assets/backgrounds/${base}${ext}`;
+                    try {
+                        const res = await fetch(url, { method: 'HEAD' });
+                        if (res && res.ok) {
+                            fileName = base + ext;
+                            break;
+                        }
+                    } catch (e) {
+
                     }
-                } catch (e) {
-
                 }
+                if (fileName) break;
             }
-            if (fileName) break;
+
+            if (fileName) {
+                const bgEl = document.getElementById('background-image');
+                bgEl.style.background = `linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)), url('assets/backgrounds/${fileName}')`;
+                bgEl.style.backgroundPosition = 'center';
+                bgEl.style.backgroundRepeat = 'no-repeat';
+                bgEl.style.backgroundSize = 'cover';
+            } else {
+                console.warn('No background image found for', loc, 'or fallback Warhamshire.');
+            }
+        } catch (e) {
+            console.warn('Failed to update background for location', e);
         }
 
-        if (fileName) {
-            const bgEl = document.getElementById('background-image');
-            bgEl.style.background = `linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.75)), url('assets/backgrounds/${fileName}')`;
-            bgEl.style.backgroundPosition = 'center';
-            bgEl.style.backgroundRepeat = 'no-repeat';
-            bgEl.style.backgroundSize = 'cover';
-        } else {
-            console.warn('No background image found for', loc, 'or fallback Warhamshire.');
-        }
-    } catch (e) {
-        console.warn('Failed to update background for location', e);
+        Alpine.$data(document.getElementById("background-image")).screen = to;
+        try {
+            const player = Alpine.$data(document.getElementById('player')) || {};
+            const bg = Alpine.$data(document.getElementById('background-image')) || {};
+            AudioManager.update(player.name, bg.location);
+        } catch (e) { }
+
+        await fadeOutEffect();
+    } finally {
+        ready = false;
     }
-    Alpine.$data(document.getElementById("background-image")).screen = to;
-    try {
-        const player = Alpine.$data(document.getElementById('player')) || {};
-        const bg = Alpine.$data(document.getElementById('background-image')) || {};
-        AudioManager.update(player.name, bg.location);
-    } catch (e) { }
-    await fadeOutEffect();
-    ready = false;
 }
 
 async function fadeOutEffect() {
-    var opacity = 1;
-    var element = document.getElementById("overlay-transparency");
-    element.style.opacity = 1;
-    var fadeInterval = setInterval(function () {
-        if (opacity > 0) {
-            opacity -= 0.05;
-            element.style.opacity = opacity;
-        } else {
-            clearInterval(fadeInterval);
-        }
-    }, 25);
+    return new Promise(resolve => {
+        var opacity = 1;
+        var element = document.getElementById("overlay-transparency");
+        if (!element) return resolve();
+        element.style.opacity = 1;
+        var fadeInterval = setInterval(function () {
+            if (opacity > 0) {
+                opacity -= 0.05;
+                element.style.opacity = opacity;
+            } else {
+                clearInterval(fadeInterval);
+                resolve();
+            }
+        }, 25);
+    });
 }
 
 async function fadeInEffect() {
-    var opacity = 0;
-    var element = document.getElementById("overlay-transparency");
-    element.style.opacity = 0;
-    var fadeInterval = setInterval(function () {
-        if (opacity < 1) {
-            opacity += 0.05;
-            element.style.opacity = opacity;
-        } else {
-            clearInterval(fadeInterval);
-        }
-    }, 25);
+    return new Promise(resolve => {
+        var opacity = 0;
+        var element = document.getElementById("overlay-transparency");
+        if (!element) return resolve();
+        element.style.opacity = 0;
+        var fadeInterval = setInterval(function () {
+            if (opacity < 1) {
+                opacity += 0.05;
+                element.style.opacity = opacity;
+            } else {
+                clearInterval(fadeInterval);
+                resolve();
+            }
+        }, 25);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

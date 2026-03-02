@@ -329,6 +329,7 @@ input[type="submit"]:active,
     color: white;
     border: 5px solid rgb(1, 0, 88);
     font-size: inherit;
+    cursor: pointer;
 }
 
 .btn--success {
@@ -336,6 +337,7 @@ input[type="submit"]:active,
     border: 5px solid rgb(0, 88, 34);
     color: white;
     font-size: inherit;
+    cursor: pointer;
 }
 
 .btn--danger {

@@ -1664,6 +1664,7 @@
                 </div>
                 <div class="battle-buttons" x-show="!battle">
                     <button class="battle-item battle-button battle-continue" @click="victory()">Continue</button>
+                    <button class="battle-item battle-button btn--primary" @click="victory(true)">Encounter</button>
                 </div>
                 <div class="round-info"
                     x-text="health > 0 && Alpine.$data(document.getElementById('player')).health > 0 ? `Round ${round}\n\n${turn ? 'Your' : enemyName + `'s`} Turn` : health <= 0 ? `You Won` : `You Died`">

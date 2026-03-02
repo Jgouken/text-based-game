@@ -900,7 +900,7 @@ async function enemyMove() {
     turnManager(true);
 }
 
-async function victory() {
+async function victory(enc = false) {
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
@@ -951,7 +951,10 @@ async function victory() {
             }
         }
     }
-    await transition('encounter', 'returning');
+
+    if (!enc) await transition('encounter', 'returning');
+    else startBattle();
+
     updateBars();
     savePlayer();
 }
