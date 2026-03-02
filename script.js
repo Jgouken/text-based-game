@@ -836,7 +836,24 @@ async function howToPlay() {
 }
 
 async function transition(from, to) {
-    console.log(to.toUpperCase());
+    console.log('transition requested', from, '→', to);
+    if (ready) {
+        console.log('transition busy, queuing', to);
+        await new Promise(resolve => {
+            const start = Date.now();
+            const iv = setInterval(() => {
+                if (!ready) {
+                    clearInterval(iv);
+                    resolve();
+                }
+                if (Date.now() - start > 3000) {
+                    clearInterval(iv);
+                    resolve();
+                }
+            }, 50);
+        });
+    }
+    console.log('transition starting', to.toUpperCase());
     await fadeInOutEffect(to);
 }
 
