@@ -175,6 +175,7 @@ function getJournalPlayerDetails(player, assets) {
         if (usedInItems.length) groups.push({ title: 'Used In', items: usedInItems });
         if (droppedBy.length) groups.push({ title: 'Dropped By', lines: droppedBy });
         if (foundInChests.length) groups.push({ title: 'Found In Chests', lines: foundInChests });
+        if (foundInAreas.length) groups.push({ title: 'Found In Areas', lines: foundInAreas });
     }
 
     if (weapon?.skills?.length) {
@@ -206,6 +207,14 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
 
         if (chest.key) groups.push({ title: 'Key', lines: [chest.key] });
         if (drops.length) groups.push({ title: 'Drops', lines: drops });
+
+        // Which areas contain this chest
+        const chestIndex = this && this.assets ? this.assets.chests.findIndex((entryChest) => entryChest && entryChest.name === chest.name) : (assets.chests ? assets.chests.findIndex((entryChest) => entryChest && entryChest.name === chest.name) : -1);
+        const areasContaining = (assets.areas || [])
+            .flatMap((area) => (Array.isArray(area.chests) ? area.chests.map(c => ({ area, chestEntry: c })) : []))
+            .filter(({ chestEntry }) => chestIndex !== -1 && (chestEntry.chest === chestIndex || chestEntry.chest === String(chestIndex)))
+            .map(({ area, chestEntry }) => `${area.name} - ${String((chestEntry.chance || 0) * 100).slice(0, 5)}%`);
+        if (areasContaining.length) groups.push({ title: 'Found In Areas', lines: areasContaining });
 
         return {
             title: chest.name,
@@ -263,6 +272,22 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
         .flatMap((chest) => (Array.isArray(chest.drops) ? chest.drops.map(d => ({ chest, drop: d })) : []))
         .filter(({ drop }) => drop && drop.name === item.name)
         .map(({ chest, drop }) => `${chest.name} - ${String((drop.chance || 0) * 100).slice(0, 5)}%`);
+    const foundInAreas = (assets.areas || [])
+        .map((area) => {
+            let areaChance = 0;
+            const areaEnemies = Array.isArray(area.enemies) ? area.enemies : [];
+            areaEnemies.forEach((ae) => {
+                const enemyName = ae?.name || ae;
+                const enemyChanceInArea = Number(ae?.chance) || 0;
+                const enemyData = (assets.enemies || []).find((e) => e.name === enemyName);
+                if (!enemyData || !Array.isArray(enemyData.drops)) return;
+                const drop = enemyData.drops.find((d) => d && d.name === item.name);
+                if (drop) areaChance += enemyChanceInArea * (drop.chance || 0);
+            });
+            return { area, chance: areaChance };
+        })
+        .filter((x) => x.chance > 0)
+        .map(({ area, chance }) => `${area.name} - ${String(chance * 100).slice(0, 5)}%`);
     const effectiveLevel = Math.max(item.minlvl || 1, Math.min(item.maxlvl || 50, clampJournalLevel(previewLevel)));
     const descriptionLines = [];
 
@@ -335,6 +360,7 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
             if (usedInItems.length) groups.push({ title: 'Used In', items: usedInItems });
             if (droppedBy.length) groups.push({ title: 'Dropped By', lines: droppedBy });
             if (foundInChests.length) groups.push({ title: 'Found In Chests', lines: foundInChests });
+            if (foundInAreas.length) groups.push({ title: 'Found In Areas', lines: foundInAreas });
         }
     } else if (Array.isArray(item.skills)) {
         const attackValue = Math.round(item.attack + ((effectiveLevel - 1) * (item.attackPerLevel || 0)) + ((playerLevel - 1) * 6 * (item.plvlmult || 0)));
@@ -445,16 +471,30 @@ function getJournalAreaDetails(area) {
             return `${name}${chance}`;
         });
 
+    const chestLines = (area.chests || []).map((c) => {
+        const chestIndex = c?.chest;
+        const chest = (getAssets ? getAssets().chests : assets.chests)?.[chestIndex] || null;
+        const name = chest ? chest.name : `Chest ${String(chestIndex)}`;
+        const chance = c?.chance !== undefined ? ` - ${String((c.chance || 0) * 100).slice(0, 5)}%` : '';
+        return `${name}${chance}`;
+    });
+
+    const groups = [
+        {
+            title: 'Enemies',
+            lines: enemyLines
+        }
+    ];
+
+    if (chestLines && chestLines.length) {
+        groups.push({ title: 'Chests', lines: chestLines });
+    }
+
     return {
         title: area.name,
         subtitle,
         descriptionLines: area.description ? [area.description] : [],
-        groups: [
-            {
-                title: 'Enemies',
-                lines: enemyLines
-            }
-        ]
+        groups
     };
 }
 
@@ -493,6 +533,20 @@ function getJournalEnemyDetails(enemy, previewLevel, assets) {
             lines: enemy.drops.map((drop) => `${drop.name || 'Nothing'} - ${String((drop.chance || 0) * 100).slice(0, 5)}%`)
         });
     }
+
+    const foundInAreas = (assets.areas || [])
+        .map((area) => {
+            const found = (area.enemies || []).find((ae) => {
+                const name = ae?.name || ae;
+                return name === enemy.name;
+            });
+            const chance = found?.chance || 0;
+            return { area, chance };
+        })
+        .filter((x) => x.chance > 0)
+        .map(({ area, chance }) => `${area.name} - ${String((chance || 0) * 100).slice(0, 5)}%`);
+
+    if (foundInAreas.length) groups.push({ title: 'Found In Areas', lines: foundInAreas });
 
     return {
         title: enemy.name,
@@ -621,7 +675,8 @@ window.createJournalState = function createJournalState() {
                     const dropItem = this.assets.items.find((assetItem) => assetItem.name === dropName) || null;
                     const hasItem = !!dropItem;
                     const hasChest = this.assets.chests.some((chest) => chest.name === dropName);
-                    if (hasItem || hasChest) {
+                    const hasArea = this.assets.areas?.some((area) => area.name === dropName);
+                    if (hasItem || hasChest || hasArea) {
                         const escapedDropName = escapeJournalHtml(dropName);
                         const previewLevel = clampJournalLevel(this.previewLevel);
                         const minLevel = dropItem?.minlvl !== undefined ? clampJournalLevel(dropItem.minlvl) : 1;
@@ -637,12 +692,20 @@ window.createJournalState = function createJournalState() {
                             : null;
                         const fallbackTooltip = hasChest
                             ? `${dropName}\nChest`
-                            : `Open ${dropName} in Journal`;
+                            : hasArea
+                                ? `Open ${dropName} in Journal`
+                                : `Open ${dropName} in Journal`;
                         const finalTooltip = escapeJournalHtml(inventoryTooltip || chestTooltipHtml || fallbackTooltip);
                         const tooltipAttr = (inventoryTooltip || chestTooltipHtml)
                             ? `data-tooltip-html="${finalTooltip}"`
                             : `data-tooltip="${finalTooltip}"`;
-                        const dropLink = `<span class="journal-drop-link" data-drop-name="${escapedDropName}" ${tooltipAttr}>${escapedDropName}</span>`;
+                        let dropLink;
+                        if (hasItem || hasChest) {
+                            dropLink = `<span class="journal-drop-link" data-drop-name="${escapedDropName}" ${tooltipAttr}>${escapedDropName}</span>`;
+                        } else {
+                            // area
+                            dropLink = `<span class="journal-area-link" data-area-name="${escapedDropName}" ${tooltipAttr}>${escapedDropName}</span>`;
+                        }
                         html = replaceFirstOccurrence(html, escapedDropName, dropLink);
                     }
                 }
@@ -820,6 +883,21 @@ window.createJournalState = function createJournalState() {
                         this.selectedKey = `chest:${chestIndex}`;
                         this.ensureSelection();
                     }
+                    return;
+                }
+
+                const areaLink = event.target.closest('.journal-area-link');
+                if (areaLink) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this.hideGlobalTooltip();
+                    const areaName = areaLink.getAttribute('data-area-name');
+                    const areaEntry = areaName ? this.assets.areas.find((candidate) => candidate.name === areaName) : null;
+                    if (!areaEntry) return;
+                    this.activeTab = 'areas';
+                    this.searchQuery = '';
+                    this.selectedKey = `area:${areaEntry.name}`;
+                    this.ensureSelection();
                     return;
                 }
 

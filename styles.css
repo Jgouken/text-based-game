@@ -1553,6 +1553,10 @@ body.inventory-shift-open-journal #inventory .inventory-item:active {
     cursor: pointer;
 }
 
+.journal-area-link {
+    cursor: pointer;
+}
+
 .journal-chest-link {
     cursor: pointer;
 }

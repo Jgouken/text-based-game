@@ -400,9 +400,15 @@ async function skill(index) {
             battleStation.turn = false;
             battleStation.showConsumables = false;
             encounter.battle = false;
+            encounter.log.push(`${background.enemy.name} uses <span style="color: lightblue;" data-tooltip="A strike on a cowardly enemy.\n\nDeals unmodified base attack damage.">Opportunity Attack</span> for <span style="color: lightblue;" data-tooltip="Deals unmodified base attack damage.">⚔️${encounter.attack}</span>!`);
             encounter.log.push(`🏃💨 ${background.name} Fled!`);
-            transition('encounter', 'returning');
             shouldEndTurn = false;
+            player.pstatus = [{ ...statusByName('Weakness'), damage: 0 }, { ...statusByName('Fragility'), damage: 0 }];
+            player.stamina = 0;
+            player.health -= background.enemy.attack;
+            updateBars();
+            savePlayer();
+            encounter.battle = false;
             break;
         case -2:
             // Item
@@ -927,19 +933,22 @@ async function victory() {
         player.stamina = 0;
         syncPlayerActivePotion(player, null);
     } else {
-        const area = assets.areas.find(a => a.name === background.location);
-        const chestOutcome = rollAreaChestOutcome(area);
+        const hasFleed = encounter.log.some(entry => entry.includes('Opportunity Attack'));
+        if (!hasFleed) {
+            const area = assets.areas.find(a => a.name === background.location);
+            const chestOutcome = rollAreaChestOutcome(area);
 
-        if (chestOutcome.type === 'chest' && chestOutcome.entry && chestOutcome.entry.chest !== undefined) {
-            background.foundChest = {
-                chest: chestOutcome.entry.chest,
-                key: chestOutcome.entry.key
-            };
-            AudioManager.playChestFound();
-            await transition('encounter', 'chest-found');
-            updateBars();
-            savePlayer();
-            return;
+            if (chestOutcome.type === 'chest' && chestOutcome.entry && chestOutcome.entry.chest !== undefined) {
+                background.foundChest = {
+                    chest: chestOutcome.entry.chest,
+                    key: chestOutcome.entry.key
+                };
+                AudioManager.playChestFound();
+                await transition('encounter', 'chest-found');
+                updateBars();
+                savePlayer();
+                return;
+            }
         }
     }
     await transition('encounter', 'returning');

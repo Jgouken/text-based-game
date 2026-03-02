@@ -1558,10 +1558,11 @@
                             :disabled="!turn" @click="skill(-1)">Pass</button>
                         <button class="battle-item battle-button"
                             :style="`background-color: ${turn && consumables.length > 0 ? 'rgb(138, 233, 138)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(0, 97, 21); cursor: ${turn && consumables.length > 0 ? 'pointer' : 'not-allowed'};`"
-                            :disabled="!turn || consumables.length === 0" @click="skill(-2)">Item</button>
+                            :disabled="!turn || consumables.length === 0" @click="skill(-2)"
+                            data-tooltip="Use an item from your inventory.">Item</button>
                         <button class="battle-flee battle-button"
                             :style="`background-color: ${turn ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                            :disabled="!turn" @click="skill(-3)">Flee</button>
+                            :disabled="!turn" @click="skill(-3)" data-tooltip="Flee, but pay the price.">Flee</button>
                     </div>
 
                     <div class="battle-consumables" x-show="turn && showConsumables && consumables.length > 0">
@@ -1771,8 +1772,8 @@
                             <option :value="st"></option>
                         </template>
                     </datalist>
-                    <input id="debug-audio-volume" type="number" min="0" max="100" placeholder="Volume"
-                        value="100" style="width:4ch;" />
+                    <input id="debug-audio-volume" type="number" min="0" max="100" placeholder="Volume" value="100"
+                        style="width:4ch;" />
                 </div>
 
                 <button @click="savePlayer(); showMessage(`Saved Game`, 'success');" class="debug-save-btn">Save
