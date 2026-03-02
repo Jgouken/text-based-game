@@ -3,6 +3,7 @@ const AudioManager = (function () {
     const basePath = 'assets/sounds/';
     const filenames = [
         'TBG Main.mp3',
+        'TBG Low Health.mp3',
         'TBG Hinterland.mp3',
         'TBG Vexadel.mp3',
         'TBG Vulpeston.mp3',
@@ -40,11 +41,22 @@ const AudioManager = (function () {
 
     let startTimestamp = null;
     let decoded = false;
+    let lowHealthLocked = false;
 
     let sfxMuted = false;
     let musicMuted = false;
+    let musicVolume = 1;
+    let sfxVolume = 1;
     try { sfxMuted = JSON.parse(localStorage.getItem('tbgMuted') || 'false'); } catch (e) { sfxMuted = false; }
     try { musicMuted = JSON.parse(localStorage.getItem('tbgMusicMuted') || 'false'); } catch (e) { musicMuted = false; }
+    try { const mv = parseFloat(localStorage.getItem('tbgMusicVolume')); if (!isNaN(mv)) musicVolume = Math.max(0, Math.min(1, mv)); } catch (e) { }
+    try { const sv = parseFloat(localStorage.getItem('tbgSfxVolume')); if (!isNaN(sv)) sfxVolume = Math.max(0, Math.min(1, sv)); } catch (e) { }
+    try {
+        musicGain.gain.value = musicMuted ? 0 : musicVolume;
+    } catch (e) { }
+    try {
+        sfxGain.gain.value = sfxMuted ? 0 : sfxVolume;
+    } catch (e) { }
 
     async function loadAll() {
         const promises = filenames.map(async (name) => {
@@ -61,6 +73,64 @@ const AudioManager = (function () {
         decoded = true;
     }
 
+    async function preloadAll() {
+        if (decoded) return;
+        try {
+            await loadAll();
+        } catch (e) { }
+    }
+
+    function getSoundList() {
+        try { return filenames.slice(); } catch (e) { return []; }
+    }
+
+    function playDebug(name) {
+        if (!name) return;
+        try {
+            const url = basePath + name;
+            try {
+                const a = new Audio(url);
+                a.volume = 1;
+                a.play().catch(() => { });
+                return;
+            } catch (e) {
+
+                const b = new Audio(url);
+                b.volume = 1;
+                b.play().catch(() => { });
+            }
+        } catch (e) { }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            const sel = document.getElementById('debug-audio-select');
+            const btn = document.getElementById('debug-play-audio');
+            if (!sel || !btn) return;
+            const list = (window.AudioManager && AudioManager.getSoundList) ? AudioManager.getSoundList() : [];
+
+            sel.innerHTML = '';
+            list.forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.textContent = name;
+                sel.appendChild(opt);
+            });
+            btn.addEventListener('click', () => {
+                const v = sel.value;
+                if (!v) return;
+                try {
+                    if (window.AudioManager && AudioManager.playDebug) AudioManager.playDebug(v);
+                    else {
+                        const a = new Audio('assets/sounds/' + v);
+                        a.volume = 1;
+                        a.play().catch(() => { });
+                    }
+                } catch (e) { console.warn('Play debug audio failed', e); }
+            });
+        } catch (e) { }
+    });
+
     function createAndStartSource(name) {
         const t = tracks[name];
         if (!t || !t.buffer) return;
@@ -69,9 +139,9 @@ const AudioManager = (function () {
         src.buffer = t.buffer;
         src.loop = true;
         src.connect(t.gain);
-
+        if (!startTimestamp) startTimestamp = audioContext.currentTime;
         const now = audioContext.currentTime;
-        const offset = startTimestamp ? ((now - startTimestamp) % t.buffer.duration + t.buffer.duration) % t.buffer.duration : 0;
+        const offset = ((now - startTimestamp) % t.buffer.duration + t.buffer.duration) % t.buffer.duration;
         try {
             src.start(0, offset);
         } catch (e) { try { src.start(); } catch (e) { } }
@@ -116,8 +186,8 @@ const AudioManager = (function () {
             resumed = true;
 
             try {
-                musicGain.gain.setValueAtTime(musicMuted ? 0 : 1, audioContext.currentTime);
-                sfxGain.gain.setValueAtTime(sfxMuted ? 0 : 1, audioContext.currentTime);
+                musicGain.gain.setValueAtTime(musicMuted ? 0 : musicVolume, audioContext.currentTime);
+                sfxGain.gain.setValueAtTime(sfxMuted ? 0 : sfxVolume, audioContext.currentTime);
             } catch (e) { }
             document.removeEventListener('click', resumeIfNeeded);
             document.removeEventListener('touchstart', resumeIfNeeded);
@@ -130,6 +200,7 @@ const AudioManager = (function () {
     async function update(playerName, location) {
         tryResumeAndStart();
         const main = 'TBG Main.mp3';
+        const low = 'TBG Low Health.mp3';
         const war = 'TBG Warhamshire.mp3';
         const mainVol = 0.45;
 
@@ -145,8 +216,8 @@ const AudioManager = (function () {
             }
             return;
         }
-
-        setGain(main, mainVol);
+        const mainTrack = lowHealthLocked ? low : main;
+        setGain(mainTrack, mainVol);
 
         if (!playerName) {
 
@@ -164,7 +235,39 @@ const AudioManager = (function () {
             setGain(war, 0);
         }
         for (const name of filenames) {
-            if (name !== main && name !== locTrack && name !== war) setGain(name, 0);
+            if (name !== mainTrack && name !== locTrack && name !== war) setGain(name, 0);
+        }
+    }
+    async function switchMainForLowHealth() {
+        tryResumeAndStart();
+        if (!decoded) await loadAll();
+        if (decoded) ensureStartedAll();
+
+        const main = 'TBG Main.mp3';
+        const low = 'TBG Low Health.mp3';
+        const mainVol = 0.45;
+
+        let player = null;
+        try { player = Alpine.$data(document.getElementById('player')) || null; } catch (e) { player = null; }
+        let healthRatio = null;
+        if (player && typeof player === 'object') {
+            const h = Number(player.health || 0);
+            const mh = Number(player.maxHealth || player.maxhealth || 0);
+            if (mh > 0) healthRatio = h / mh;
+        }
+
+        if (healthRatio !== null && healthRatio < 0.25) {
+            console.debug('AudioManager.switchMainForLowHealth: player low health -> using low health track', healthRatio);
+            lowHealthLocked = true;
+            try { createAndStartSource(low); createAndStartSource(main); } catch (e) { }
+            setGain(low, mainVol);
+            setGain(main, 0);
+        } else {
+            console.debug('AudioManager.switchMainForLowHealth: player healthy -> using main track', healthRatio);
+            lowHealthLocked = false;
+            try { createAndStartSource(main); createAndStartSource(low); } catch (e) { }
+            setGain(main, mainVol);
+            setGain(low, 0);
         }
     }
     tryResumeAndStart();
@@ -241,6 +344,7 @@ const AudioManager = (function () {
     function playDeath() { playOneShot('Dead.mp3', 0.8); }
     function playCrit() { playOneShot('Crit.mp3', 1.0); }
     function playItemFound() { playOneShot('ItemFound.mp3', 1.0); }
+    function playCrafted() { playOneShot('Crafted.mp3', 1.0); }
     function playChestFound() { playOneShot('ChestFound.mp3', 1.0); }
     function playChestOpen() { playOneShot('ChestOpen.mp3', 1.0); }
     function playChestLocked() { playOneShot('ChestLocked.mp3', 1.0); }
@@ -257,30 +361,60 @@ const AudioManager = (function () {
     function playUnequip() { playOneShot('Unequip.mp3', 1.0); }
     function playExplosion() { playOneShot('Explosion.mp3', 1.0); }
 
+    function setSfxVolume(v) {
+        sfxVolume = Math.max(0, Math.min(1, Number(v) || 0));
+        try {
+            const now = audioContext.currentTime;
+            sfxGain.gain.cancelScheduledValues(now);
+            sfxGain.gain.setValueAtTime(sfxGain.gain.value || (sfxMuted ? 0 : sfxVolume), now);
+            sfxGain.gain.linearRampToValueAtTime(sfxMuted ? 0 : sfxVolume, now + 0.05);
+        } catch (e) {
+            try { sfxGain.gain.value = sfxMuted ? 0 : sfxVolume; } catch (e) { }
+        }
+        try { localStorage.setItem('tbgSfxVolume', String(sfxVolume)); } catch (e) { }
+    }
+
+    function getSfxVolume() { return sfxVolume; }
+
     function setSfxMuted(v) {
         sfxMuted = !!v;
         try {
             const now = audioContext.currentTime;
             sfxGain.gain.cancelScheduledValues(now);
-            sfxGain.gain.setValueAtTime(sfxGain.gain.value || (sfxMuted ? 0 : 1), now);
-            sfxGain.gain.linearRampToValueAtTime(sfxMuted ? 0 : 1, now + 0.05);
+            sfxGain.gain.setValueAtTime(sfxGain.gain.value || (sfxMuted ? 0 : sfxVolume), now);
+            sfxGain.gain.linearRampToValueAtTime(sfxMuted ? 0 : sfxVolume, now + 0.05);
         } catch (e) {
-            try { sfxGain.gain.value = sfxMuted ? 0 : 1; } catch (e) { }
+            try { sfxGain.gain.value = sfxMuted ? 0 : sfxVolume; } catch (e) { }
         }
         try { localStorage.setItem('tbgMuted', JSON.stringify(sfxMuted)); } catch (e) { }
     }
 
     function isSfxMuted() { return !!sfxMuted; }
 
+    function setMusicVolume(v) {
+        musicVolume = Math.max(0, Math.min(1, Number(v) || 0));
+        try {
+            const now = audioContext.currentTime;
+            musicGain.gain.cancelScheduledValues(now);
+            musicGain.gain.setValueAtTime(musicGain.gain.value || (musicMuted ? 0 : musicVolume), now);
+            musicGain.gain.linearRampToValueAtTime(musicMuted ? 0 : musicVolume, now + 0.05);
+        } catch (e) {
+            try { musicGain.gain.value = musicMuted ? 0 : musicVolume; } catch (e) { }
+        }
+        try { localStorage.setItem('tbgMusicVolume', String(musicVolume)); } catch (e) { }
+    }
+
+    function getMusicVolume() { return musicVolume; }
+
     function setMusicMuted(v) {
         musicMuted = !!v;
         try {
             const now = audioContext.currentTime;
             musicGain.gain.cancelScheduledValues(now);
-            musicGain.gain.setValueAtTime(musicGain.gain.value || (musicMuted ? 0 : 1), now);
-            musicGain.gain.linearRampToValueAtTime(musicMuted ? 0 : 1, now + 0.05);
+            musicGain.gain.setValueAtTime(musicGain.gain.value || (musicMuted ? 0 : musicVolume), now);
+            musicGain.gain.linearRampToValueAtTime(musicMuted ? 0 : musicVolume, now + 0.05);
         } catch (e) {
-            try { musicGain.gain.value = musicMuted ? 0 : 1; } catch (e) { }
+            try { musicGain.gain.value = musicMuted ? 0 : musicVolume; } catch (e) { }
         }
         try { localStorage.setItem('tbgMusicMuted', JSON.stringify(musicMuted)); } catch (e) { }
     }
@@ -289,49 +423,277 @@ const AudioManager = (function () {
     function setMuted(v) { return setSfxMuted(v); }
     function isMuted() { return isSfxMuted(); }
 
-    return { update, setMuted, isMuted, setSfxMuted, isSfxMuted, setMusicMuted, isMusicMuted, playRandomHit, playEffectSound, playEffectNoAttack, playMiss, playAnimalNoise, playStatusEffect, playDeath, playCrit, playItemFound, playChestFound, playChestOpen, playChestLocked, playButtonHover, playClick, playEquip, playUnequip, playExplosion };
+    return { update, switchMainForLowHealth, preloadAll, getSoundList, playDebug, setMuted, isMuted, setSfxMuted, isSfxMuted, setSfxVolume, getSfxVolume, setMusicMuted, isMusicMuted, setMusicVolume, getMusicVolume, playRandomHit, playEffectSound, playEffectNoAttack, playMiss, playAnimalNoise, playStatusEffect, playDeath, playCrit, playItemFound, playCrafted, playChestFound, playChestOpen, playChestLocked, playButtonHover, playClick, playEquip, playUnequip, playExplosion };
 })();
 
-document.addEventListener('DOMContentLoaded', () => {
+function playSound(name, volume) {
+    if (!name) return;
     try {
-        const musicBtn = document.createElement('button');
+        const url = (name && name.includes('/')) ? name : ('assets/sounds/' + name);
+        const a = new Audio(url);
+        let vol = 0.5;
+        if (typeof volume !== 'undefined' && volume !== null) {
+            vol = Number(volume) || 0;
+            if (vol > 1) vol = vol / 100;
+            if (vol < 0) vol = 0;
+            if (vol > 1) vol = 1;
+        }
+        a.volume = vol;
+        a.play().catch(() => { });
+    } catch (e) { console.warn('playSound failed', e); }
+}
+
+try { window.playSound = playSound; } catch (e) { }
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    try {
+        const overlay = document.createElement('div');
+        overlay.id = 'audio-loading-overlay';
+        overlay.style.position = 'fixed';
+        overlay.style.left = '0';
+        overlay.style.top = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.background = 'rgba(0,0,0,0.85)';
+        overlay.style.display = 'flex';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.zIndex = 10000;
+        overlay.style.color = 'white';
+        overlay.style.fontSize = '18px';
+        overlay.style.fontFamily = 'sans-serif';
+        overlay.innerHTML = '<div style="text-align:center"><div style="width:48px;height:48px;border:4px solid rgba(255,255,255,0.15);border-top-color:white;border-radius:50%;animation:spin 1s linear infinite"></div></div>';
+        const style = document.createElement('style');
+        style.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
+        document.head.appendChild(style);
+        document.body.appendChild(overlay);
+
+        (function addSkipOverlayListener() {
+            function onKey(e) {
+                if (e.key === 'Enter') {
+                    try {
+                        overlay.style.transition = 'opacity 0.15s ease';
+                        overlay.style.opacity = '0';
+                        setTimeout(() => { try { overlay.remove(); } catch (err) { } }, 180);
+                    } catch (err) { }
+                    document.removeEventListener('keydown', onKey);
+                }
+            }
+            document.addEventListener('keydown', onKey);
+        })();
+
+        (async () => {
+            try {
+                if (AudioManager && AudioManager.preloadAll) await AudioManager.preloadAll();
+            } catch (e) { }
+            try {
+                overlay.style.transition = 'opacity 0.3s ease';
+                overlay.style.opacity = '0';
+                setTimeout(() => { try { overlay.remove(); } catch (e) { } }, 350);
+            } catch (e) { try { overlay.remove(); } catch (e) { } }
+        })();
+
+    } catch (e) { }
+    try {
+        const audioContainer = document.createElement('div');
+        audioContainer.id = 'audio-controls';
+        audioContainer.style.position = 'fixed';
+        audioContainer.style.left = '12px';
+        audioContainer.style.bottom = '12px';
+        audioContainer.style.display = 'flex';
+        audioContainer.style.height = 'fit-content';
+        audioContainer.style.flexDirection = 'column';
+        audioContainer.style.gap = '6px';
+        audioContainer.style.padding = '6px';
+        audioContainer.style.background = 'rgba(0,0,0,0.0)';
+        audioContainer.style.borderRadius = '8px';
+        audioContainer.style.zIndex = 9999;
+        audioContainer.style.alignItems = 'flex-start';
+
+        function makeButton(html, title) {
+            const b = document.createElement('button');
+            b.className = 'audio-btn';
+            b.innerHTML = html;
+            b.style.width = '60px';
+            b.style.height = '60px';
+            b.style.borderRadius = '8px';
+            b.style.fontSize = '20px';
+            b.style.display = 'flex';
+            b.style.alignItems = 'center';
+            b.style.justifyContent = 'center';
+            b.style.background = 'rgba(30,30,30,0.85)';
+            b.style.color = 'white';
+            b.style.border = 'none';
+            b.style.cursor = 'pointer';
+            b.dataset.tooltip = title;
+            b.setAttribute('aria-pressed', 'false');
+            return b;
+        }
+
+        function makeSlider(initialPercent, onInput) {
+            const input = document.createElement('input');
+            input.type = 'range';
+            input.min = 0; input.max = 100; input.value = String(initialPercent);
+            input.style.width = '180px';
+            input.style.marginLeft = '10px';
+            input.style.display = 'none';
+            input.addEventListener('input', (e) => onInput(Number(e.target.value)));
+            return input;
+        }
+        const musicWrapper = document.createElement('div');
+        musicWrapper.style.display = 'flex';
+        musicWrapper.style.alignItems = 'center';
+        musicWrapper.style.gap = '8px';
+
+        const musicIconOn = '<i class="fa-solid fa-music"></i>';
+        const musicIconOff = '<i class="fa-solid fa-play"></i>';
+        const musicBtn = makeButton(musicIconOn, 'Background Music');
         musicBtn.id = 'music-button';
-        musicBtn.className = 'music-button';
-        const setMusicIcon = (muted) => {
-            musicBtn.innerHTML = muted ? '<i class="fa-solid fa-play"></i>' : '<i class="fa-solid fa-music"></i>';
-            musicBtn.dataset.tooltip = 'Toggle Background Music';
-            musicBtn.setAttribute('aria-pressed', muted ? 'true' : 'false');
-        };
-        try { setMusicIcon(AudioManager.isMusicMuted()); } catch (e) { setMusicIcon(false); }
-        musicBtn.addEventListener('click', (e) => {
+
+        const musicInitial = Math.round((AudioManager.getMusicVolume ? AudioManager.getMusicVolume() : 1) * 100);
+        const musicSlider = makeSlider(musicInitial, v => { try { AudioManager.setMusicVolume(v / 100); } catch (e) { } });
+
+        musicWrapper.appendChild(musicBtn);
+        musicWrapper.appendChild(musicSlider);
+        const sfxWrapper = document.createElement('div');
+        sfxWrapper.style.display = 'none';
+        sfxWrapper.style.alignItems = 'center';
+        sfxWrapper.style.gap = '8px';
+
+        const sfxIconOn = '<i class="fa-solid fa-volume-high"></i>';
+        const sfxIconOff = '<i class="fa-solid fa-volume-xmark"></i>';
+        const sfxBtn = makeButton(sfxIconOn, 'Sound Effects');
+        sfxBtn.id = 'mute-button';
+
+        const sfxInitial = Math.round((AudioManager.getSfxVolume ? AudioManager.getSfxVolume() : 1) * 100);
+        const sfxSlider = makeSlider(sfxInitial, v => { try { AudioManager.setSfxVolume(v / 100); } catch (e) { } });
+
+        sfxWrapper.appendChild(sfxBtn);
+        sfxWrapper.appendChild(sfxSlider);
+
+        audioContainer.appendChild(musicWrapper);
+        audioContainer.appendChild(sfxWrapper);
+        document.body.appendChild(audioContainer);
+        try {
+            const musicMutedNow = AudioManager.isMusicMuted ? AudioManager.isMusicMuted() : false;
+            musicBtn.innerHTML = musicMutedNow ? musicIconOff : musicIconOn;
+            musicBtn.setAttribute('aria-pressed', musicMutedNow ? 'true' : 'false');
+        } catch (e) { }
+        try {
+            const sfxMutedNow = AudioManager.isSfxMuted ? AudioManager.isSfxMuted() : false;
+            sfxBtn.innerHTML = sfxMutedNow ? sfxIconOff : sfxIconOn;
+            sfxBtn.setAttribute('aria-pressed', sfxMutedNow ? 'true' : 'false');
+        } catch (e) { }
+        audioContainer.addEventListener('mouseenter', () => {
+
+            sfxWrapper.style.display = 'flex';
+            musicSlider.style.display = 'block';
+            sfxSlider.style.display = 'none';
+        });
+        audioContainer.addEventListener('mouseleave', () => {
+
+            musicSlider.style.display = 'none';
+            sfxSlider.style.display = 'none';
+            sfxWrapper.style.display = 'none';
+        });
+        musicWrapper.addEventListener('mouseenter', () => {
+            musicSlider.style.display = 'block';
+            sfxSlider.style.display = 'none';
+        });
+        sfxWrapper.addEventListener('mouseenter', () => {
+            sfxSlider.style.display = 'block';
+            musicSlider.style.display = 'none';
+        });
+        musicBtn.addEventListener('click', () => {
             try {
-                const willMute = !AudioManager.isMusicMuted();
+                const willMute = !(AudioManager.isMusicMuted ? AudioManager.isMusicMuted() : false);
                 AudioManager.setMusicMuted(willMute);
-                setMusicIcon(willMute);
-            } catch (err) { console.warn('Music toggle failed', err); }
+                musicBtn.innerHTML = willMute ? musicIconOff : musicIconOn;
+                musicBtn.setAttribute('aria-pressed', willMute ? 'true' : 'false');
+            } catch (e) { console.warn('Music toggle failed', e); }
         });
-
-        const btn = document.createElement('button');
-        btn.id = 'mute-button';
-        btn.className = 'mute-button';
-        const setIcon = (muted) => {
-            btn.innerHTML = muted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
-            btn.dataset.tooltip = 'Toggle Sound Effects';
-            btn.setAttribute('aria-pressed', muted ? 'true' : 'false');
-        };
-        try { setIcon(AudioManager.isSfxMuted()); } catch (e) { setIcon(false); }
-        btn.addEventListener('click', (e) => {
+        sfxBtn.addEventListener('click', () => {
             try {
-                const willMute = !AudioManager.isSfxMuted();
+                const willMute = !(AudioManager.isSfxMuted ? AudioManager.isSfxMuted() : false);
                 AudioManager.setSfxMuted(willMute);
-                setIcon(willMute);
-            } catch (err) { console.warn('Mute toggle failed', err); }
+                sfxBtn.innerHTML = willMute ? sfxIconOff : sfxIconOn;
+                sfxBtn.setAttribute('aria-pressed', willMute ? 'true' : 'false');
+            } catch (e) { console.warn('SFX toggle failed', e); }
         });
+        musicBtn.addEventListener('touchstart', () => {
+            sfxWrapper.style.display = 'flex';
+            musicSlider.style.display = 'block';
+        }, { passive: true });
 
-        document.body.appendChild(musicBtn);
-        document.body.appendChild(btn);
-    } catch (e) { console.warn('Failed to create mute button', e); }
+    } catch (e) { console.warn('Failed to create audio controls', e); }
+    AudioManager.switchMainForLowHealth();
 });
+(() => {
+    let watcher = {
+        intervalId: null,
+        lastVal: null,
+        playerRef: null
+    };
+
+    function clearWatcher() {
+        if (watcher.intervalId) {
+            clearInterval(watcher.intervalId);
+            watcher.intervalId = null;
+        }
+        watcher.lastVal = null;
+        watcher.playerRef = null;
+    }
+
+    function attach() {
+        clearWatcher();
+        let player;
+        try { player = Alpine.$data(document.getElementById('player')); } catch (e) { player = null; }
+        if (!player) return;
+        watcher.playerRef = player;
+
+        try {
+            const desc = Object.getOwnPropertyDescriptor(player, 'health');
+
+            let val = player.health;
+
+            if (desc && desc.configurable === false) throw new Error('non-configurable');
+
+            Object.defineProperty(player, 'health', {
+                configurable: true,
+                enumerable: true,
+                get() { return val; },
+                set(v) {
+                    AudioManager.switchMainForLowHealth();
+                }
+            });
+            watcher.lastVal = val;
+        } catch (e) {
+
+            watcher.lastVal = player.health;
+            watcher.intervalId = setInterval(() => {
+                let p;
+                try { p = Alpine.$data(document.getElementById('player')); } catch (err) { p = null; }
+                if (!p) return;
+
+                if (p !== watcher.playerRef) {
+                    attach();
+                    return;
+                }
+                const v = p.health;
+                if (v !== watcher.lastVal) {
+                    watcher.lastVal = v;
+                    AudioManager.switchMainForLowHealth();
+                }
+            }, 200);
+        }
+    }
+    const tryAttachOnce = () => { try { attach(); } catch (e) { } };
+    document.addEventListener('DOMContentLoaded', tryAttachOnce);
+
+    setTimeout(tryAttachOnce, 500);
+    setTimeout(tryAttachOnce, 1500);
+})();
 function setBackgroundForLocation(location) {
     const loc = (location || 'Warhamshire').replace(/\s+/g, '');
     const bgEl = document.getElementById('background-image');

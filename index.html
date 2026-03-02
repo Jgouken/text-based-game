@@ -931,7 +931,8 @@
                                             <div class="journal-subcards">
                                                 <template x-for="item in group.items" :key="item.title">
                                                     <div class="journal-subcard">
-                                                        <h4 class="journal-subcard__title" x-html="renderLineWithStatusTooltips(item.title)"></h4>
+                                                        <h4 class="journal-subcard__title"
+                                                            x-html="renderLineWithStatusTooltips(item.title)"></h4>
                                                         <ul class="journal-lines">
                                                             <template x-for="line in item.lines" :key="line">
                                                                 <li x-html="renderLineWithStatusTooltips(line)"></li>
@@ -1671,7 +1672,8 @@
 
         <!-- Debug -->
         <div class="debug" x-data="{ open: false }" :class="{ 'open': open }" id="debug-panel">
-            <h1>⚙ Debug Panel</h1>
+            <h1 style="text-align: center;">⚙ Debug Panel</h1>
+            <h2 style="text-align: center;">Press ` to close</h2>
             <br>
             <div class="debug-grid">
                 <input type="number" min="0" step="1" placeholder="Set Level"
@@ -1761,11 +1763,22 @@
                         style="width:4ch;" />
                 </div>
 
+                <div class="debug-composite">
+                    <input list="audio-list" placeholder="Play Sound"
+                        @keyup.enter="(function(v){ const vol = Number(document.getElementById('debug-audio-volume').value || 100); playSound(v, vol); $event.target.value = ''; $event.target.blur(); })( $event.target.value );" />
+                    <datalist id="audio-list">
+                        <template x-for="st in assets.sounds" :key="st">
+                            <option :value="st"></option>
+                        </template>
+                    </datalist>
+                    <input id="debug-audio-volume" type="number" min="0" max="100" placeholder="Volume"
+                        value="100" style="width:4ch;" />
+                </div>
+
                 <button @click="savePlayer(); showMessage(`Saved Game`, 'success');" class="debug-save-btn">Save
                     Game</button>
             </div>
             <br>
-            <h2>Press ` to close</h2>
         </div>
     </div>
     </div>

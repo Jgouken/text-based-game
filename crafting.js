@@ -184,6 +184,7 @@ function applyCraftedItemDirectly(player, craftedItemData, craftedLevel) {
 		player.weaponry = { weapon: craftedItemData, level: craftedLevel || 1 };
 		setPlayer();
 		showMessage(`Crafted and equipped ${craftedItemData.name}!`, 'success');
+		AudioManager.playCrafted();
 		return true;
 	}
 
@@ -194,6 +195,7 @@ function applyCraftedItemDirectly(player, craftedItemData, craftedLevel) {
 		player.armory = { armor: craftedItemData, level: craftedLevel || 1 };
 		setPlayer();
 		showMessage(`Crafted and equipped ${craftedItemData.name}!`, 'success');
+		AudioManager.playCrafted();
 		return true;
 	}
 
@@ -225,6 +227,7 @@ function applyCraftedItemDirectly(player, craftedItemData, craftedLevel) {
 		updateBars();
 		savePlayer();
 		showMessage(`Crafted and used ${craftedItemData.name}!`, 'success');
+		AudioManager.playCrafted();
 		return true;
 	}
 
@@ -275,6 +278,7 @@ async function handleCraftingInventoryDrop(e) {
 	await addToInventory(context.craftItemData, context.craftedLevel);
 	await savePlayer();
 	showMessage(`Crafted ${context.craftItemData.name}!`, 'success');
+	AudioManager.playCrafted();
 
 	draggedCraftItemName = null;
 }
@@ -349,6 +353,7 @@ async function handleCraftingPlayerDrop(e) {
 	}
 
 	await savePlayer();
+	AudioManager.playCrafted();
 
 	draggedCraftItemName = null;
 }

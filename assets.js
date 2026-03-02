@@ -8566,6 +8566,33 @@ function getLocalAssets() {
 					},
 				]
 			}
+		],
+
+		sounds: [
+			"ButtonHover.mp3",
+			"ChestFound.mp3",
+			"ChestLocked.mp3",
+			"ChestOpen.mp3",
+			"Chicken.mp3",
+			"Click.mp3",
+			"Crafted.mp3",
+			"Crit.mp3",
+			"Dead.mp3",
+			"Effect.mp3",
+			"EffectNoAttack.mp3",
+			"Equip.mp3",
+			"Explosion.mp3",
+			"hitHurt1.mp3",
+			"hitHurt2.mp3",
+			"hitHurt3.mp3",
+			"hitHurt4.mp3",
+			"ItemFound.mp3",
+			"Miss.mp3",
+			"Moo.mp3",
+			"Pig.mp3",
+			"Sheep.mp3",
+			"StatusEffect.mp3",
+			"Unequip.mp3"
 		]
 	}
 }
