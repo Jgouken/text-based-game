@@ -8,6 +8,13 @@ const hasStatus = (statusList, name) => statusList.some((status) => status.id ==
 var died = false;
 var fled = false;
 
+const notify = (msg, type = 'info') => {
+    try {
+        if (typeof showMessage === 'function') return showMessage(msg, type);
+    } catch (e) { }
+    try { if (console && console.log) console.log(msg); } catch (e) { }
+};
+
 function randomByChance(choices) {
     const totalChance = choices.reduce((sum, item) => sum + item.chance, 0); // In case it doesn't equal 100, it just corrects itself
     let randomNum = Math.random() * totalChance;
@@ -748,7 +755,7 @@ async function turnManager(toPlayer) {
                 encounter.log.push(`🎁 ${background.enemy.name} dropped a${/^[aeiou]/i.test(loot.name) ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip-html="${descHtml}">${loot.name}</span>! 🎁`);
                 AudioManager.playItemFound();
             }
-            else alert(`Couldn't acquire ${drop.name}.`);
+            else notify(`Couldn't acquire ${drop.name}.`, 'warning');
 
             return true;
         } else return false;
@@ -923,7 +930,7 @@ async function victory(enc = false) {
             `You're finally awake.`,
             `So, about your healing ability...`
         ]
-        alert(`${deathMessages[Math.floor(Math.random() * deathMessages.length)]}\nYour health will be replinished, but your death has been punished.`);
+        notify(`${deathMessages[Math.floor(Math.random() * deathMessages.length)]}\nYour health will be replinished, but your death has been punished.`, 'warning');
         await new Promise(resolve => setTimeout(resolve, 500));
         if (player.level > 1) player.level -= 1;
         if (player.level < 1) player.level = 1;
@@ -995,7 +1002,7 @@ async function crackChestOpen() {
 
     if (keyName && keyIndex < 0) {
         AudioManager.playChestLocked();
-        alert(`You need ${keyName} to open this chest.`);
+        notify(`You need ${keyName} to open this chest.`, 'warning');
         return;
     }
 
@@ -1017,10 +1024,10 @@ async function crackChestOpen() {
 
         const lootAdded = addToInventory(loot, level);
         if (lootAdded) {
-            alert(`You opened ${chestChoice.name} and found ${level > 1 ? `Level ${level} ` : ''}${loot.name}!`);
+            notify(`You opened ${chestChoice.name} and found ${level > 1 ? `Level ${level} ` : ''}${loot.name}!`, 'success');
         }
     } else {
-        alert(`You opened ${chestChoice.name}, but it was empty.`);
+        notify(`You opened ${chestChoice.name}, but it was empty.`, 'info');
     }
 
     background.foundChest = null;
