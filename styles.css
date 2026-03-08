@@ -800,6 +800,61 @@ input[type="submit"]:active,
     transition: all 2.0s ease-out;
 }
 
+/* Loading tips carousel (styles kept in CSS; font comes from existing Pixelify Sans) */
+#audio-loading-overlay {
+    font-family: "Pixelify Sans", sans-serif;
+}
+#loading-tips-carousel {
+    position: fixed;
+    left: 50%;
+    top: 66vh;
+    transform: translateX(-50%);
+    width: 60%;
+    max-width: 720px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 10001;
+}
+.carousel-shell {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tip-item {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, calc(-50% + 48px));
+    color: #fff;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 18px;
+    text-align: center;
+    padding: 8px 16px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05));
+    border-radius: 8px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    pointer-events: none;
+}
+.tip-text { display: inline-block; }
+.fade-mask.top, .fade-mask.bottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    pointer-events: none;
+}
+.fade-mask.top { top: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0)); }
+.fade-mask.bottom { bottom: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0)); }
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
 .enemy-health-bar-stats {
     position: absolute;
     margin-top: 60px;

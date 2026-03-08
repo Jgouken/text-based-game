@@ -10,7 +10,7 @@ No AI assets were intentionally used on any part of this website.<br>
 No AI tools, except for GitHub's "GitHub Copilot Chat" Visual Studio Code extension (Inline Suggestions only), were used.
 
 ## Assets
-All enemy assets are made by MoBroPro.
+All enemy assets are made by Espie.
 Most other assets are made by Jgouken.
 
 Background assets were found or made on Freepik or Vecteezy, filtered from AI use, and are attributed below.

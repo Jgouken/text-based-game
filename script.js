@@ -10,6 +10,7 @@ const AudioManager = (function () {
         'TBG Warhamshire.mp3',
         'TBG Eternal Damnation.mp3',
         'TBG Melody.mp3',
+        'Campfire.mp3',
         'TBG Sanguisuge.mp3',
         'TBG Uralan Mountains.mp3'
     ];
@@ -28,9 +29,8 @@ const AudioManager = (function () {
     for (const f of filenames) {
         const key = f.replace(/^TBG\s*/i, '').replace(/\.mp3$/i, '').replace(/\s+/g, '').toLowerCase();
         lookup[key] = f;
-        tracks[f] = { buffer: null, gain: audioContext.createGain(), source: null };
-        tracks[f].gain.gain.value = 0;
-        tracks[f].gain.connect(musicGain);
+
+        tracks[f] = { buffer: null, gain: null, source: null };
     }
     const aliases = {
         'sangstonmansion': 'TBG Sanguisuge.mp3',
@@ -42,11 +42,14 @@ const AudioManager = (function () {
     let startTimestamp = null;
     let decoded = false;
     let lowHealthLocked = false;
+    let lastBgScreen = null;
 
     let sfxMuted = false;
     let musicMuted = false;
     let musicVolume = 1;
     let sfxVolume = 1;
+
+    let lastHoverAt = 0;
     try { sfxMuted = JSON.parse(localStorage.getItem('tbgMuted') || 'false'); } catch (e) { sfxMuted = false; }
     try { musicMuted = JSON.parse(localStorage.getItem('tbgMusicMuted') || 'false'); } catch (e) { musicMuted = false; }
     try { const mv = parseFloat(localStorage.getItem('tbgMusicVolume')); if (!isNaN(mv)) musicVolume = Math.max(0, Math.min(1, mv)); } catch (e) { }
@@ -59,25 +62,25 @@ const AudioManager = (function () {
     } catch (e) { }
 
     async function loadAll() {
-        const promises = filenames.map(async (name) => {
+
+        for (const name of filenames) {
             try {
                 const res = await fetch(basePath + name);
                 const ab = await res.arrayBuffer();
                 const buf = await audioContext.decodeAudioData(ab.slice(0));
                 tracks[name].buffer = buf;
+
+                await new Promise(r => setTimeout(r, 30));
             } catch (e) {
                 console.warn('Failed to load', name, e);
             }
-        });
-        await Promise.all(promises);
+        }
         decoded = true;
     }
 
     async function preloadAll() {
-        if (decoded) return;
-        try {
-            await loadAll();
-        } catch (e) { }
+        if (!decoded) return loadAll();
+        return Promise.resolve();
     }
 
     function getSoundList() {
@@ -135,6 +138,12 @@ const AudioManager = (function () {
         const t = tracks[name];
         if (!t || !t.buffer) return;
         if (t.source) return;
+
+        if (!t.gain) {
+            t.gain = audioContext.createGain();
+            try { t.gain.gain.value = 0; } catch (e) { }
+            t.gain.connect(musicGain);
+        }
         const src = audioContext.createBufferSource();
         src.buffer = t.buffer;
         src.loop = true;
@@ -146,6 +155,7 @@ const AudioManager = (function () {
             src.start(0, offset);
         } catch (e) { try { src.start(); } catch (e) { } }
         t.source = src;
+        
     }
 
     function ensureStartedAll() {
@@ -156,6 +166,12 @@ const AudioManager = (function () {
     function setGain(name, value, fade = 0.6) {
         const t = tracks[name];
         if (!t) return;
+
+        if (!t.gain) {
+            t.gain = audioContext.createGain();
+            try { t.gain.gain.value = 0; } catch (e) { }
+            t.gain.connect(musicGain);
+        }
         const g = t.gain.gain;
         const now = audioContext.currentTime;
         try {
@@ -207,6 +223,37 @@ const AudioManager = (function () {
         const locTrack = findTrackForLocation(location);
         if (!decoded) loadAll();
         if (decoded && resumed) ensureStartedAll();
+        try {
+            let bgScreen = null;
+            try { const bgData = Alpine.$data(document.getElementById('background-image')) || {}; bgScreen = bgData && (bgData.screen || bgData.currentScreen || null); } catch (e) { bgScreen = null; }
+            if (bgScreen === 'encounter' && lastBgScreen !== 'encounter') {
+
+                try {
+                    for (const name of filenames) {
+                        const t = tracks[name];
+                        if (t && t.source) {
+                            try { t.source.stop(); } catch (e) { }
+                            try { t.source.disconnect(); } catch (e) { }
+                            t.source = null;
+                        }
+                    }
+                } catch (e) { }
+                startTimestamp = null;
+                try { ensureStartedAll(); } catch (e) { }
+            }
+            lastBgScreen = bgScreen;
+        } catch (e) { }
+        try {
+            let bgScreen = null;
+            try { const bgData = Alpine.$data(document.getElementById('background-image')) || {}; bgScreen = bgData && (bgData.screen || bgData.currentScreen || null); } catch (e) { bgScreen = null; }
+            if (bgScreen !== 'encounter') {
+                for (const name of filenames) {
+                    if (name === 'Campfire.mp3') setGain(name, mainVol);
+                    else setGain(name, 0);
+                }
+                return;
+            }
+        } catch (e) { }
         const eternal = 'TBG Eternal Damnation.mp3';
         if (locTrack === eternal) {
 
@@ -246,6 +293,18 @@ const AudioManager = (function () {
         const main = 'TBG Main.mp3';
         const low = 'TBG Low Health.mp3';
         const mainVol = 0.45;
+        try {
+            let bgScreen = null;
+            try { const bgData = Alpine.$data(document.getElementById('background-image')) || {}; bgScreen = bgData && (bgData.screen || bgData.currentScreen || null); } catch (e) { bgScreen = null; }
+            if (bgScreen !== 'encounter') {
+                try { createAndStartSource('Campfire.mp3'); } catch (e) { }
+                for (const name of filenames) {
+                    if (name === 'Campfire.mp3') setGain(name, mainVol);
+                    else setGain(name, 0);
+                }
+                return;
+            }
+        } catch (e) { }
 
         let player = null;
         try { player = Alpine.$data(document.getElementById('player')) || null; } catch (e) { player = null; }
@@ -271,14 +330,21 @@ const AudioManager = (function () {
         }
     }
     tryResumeAndStart();
-    const oneShotCache = {};
+
+    const oneShotCache = new Map();
+    const ONE_SHOT_CACHE_LIMIT = 12;
     async function loadOneShot(name) {
-        if (oneShotCache[name]) return oneShotCache[name];
+        if (oneShotCache.has(name)) return oneShotCache.get(name);
         try {
             const res = await fetch(basePath + name);
             const ab = await res.arrayBuffer();
             const buf = await audioContext.decodeAudioData(ab.slice(0));
-            oneShotCache[name] = buf;
+            oneShotCache.set(name, buf);
+
+            if (oneShotCache.size > ONE_SHOT_CACHE_LIMIT) {
+                const firstKey = oneShotCache.keys().next().value;
+                oneShotCache.delete(firstKey);
+            }
             return buf;
         } catch (e) {
             console.warn('Failed to load one-shot', name, e);
@@ -350,6 +416,9 @@ const AudioManager = (function () {
     function playChestLocked() { playOneShot('ChestLocked.mp3', 1.0); }
 
     function playButtonHover() {
+        const now = Date.now();
+        if (now - lastHoverAt < 150) return;
+        lastHoverAt = now;
         playOneShot('ButtonHover.mp3', 0.5);
     }
 
@@ -462,13 +531,129 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.style.zIndex = 10000;
         overlay.style.color = 'white';
         overlay.style.fontSize = '18px';
-        overlay.style.fontFamily = 'sans-serif';
+        overlay.style.fontFamily = '"Pixelify Sans", sans-serif';
         overlay.innerHTML = '<div style="text-align:center"><div style="width:48px;height:48px;border:4px solid rgba(255,255,255,0.15);border-top-color:white;border-radius:50%;animation:spin 1s linear infinite"></div></div>';
-        const style = document.createElement('style');
-        style.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
-        document.head.appendChild(style);
+
         document.body.appendChild(overlay);
 
+        try {
+            function getDaysAgo(pastTimestamp) {
+
+                const now = new Date();
+                const pastDate = new Date(pastTimestamp);
+                now.setUTCHours(0, 0, 0, 0);
+                pastDate.setUTCHours(0, 0, 0, 0);
+                const timeDifference = now.getTime() - pastDate.getTime();
+                const millisecondsPerDay = 1000 * 60 * 60 * 24;
+                const daysAgo = Math.floor(timeDifference / millisecondsPerDay);
+
+                return daysAgo;
+            }
+
+            const tips = [
+                'You can change your name by <span style="color: lightblue">double clicking</span> your name.',
+                'These loading screens can be skipped by pressing <span style="color: yellow">Enter</span>.',
+                `This game started production <span style="color: lightgreen">${getDaysAgo(1686096000000)}</span> days ago.`,
+                `Nearly every number has a <span style="color: lightblue">tooltip</span> explaining it.`,
+                `If you notice any bugs, <span style='color: lightcoral'>pretend you didn't.</span>`,
+                `This game was built with the old and young gamers in mind.`,
+                `The number <span style="color: lightcoral" data-tooltip='You found me!'>5</span> [five] is considerably the <span style="color: lightcoral">worst</span> number in this font.`,
+                `"<span style='color: lightgreen'>Text-Based-Game</span>" was originally a <span style="color: lightblue">placeholder</span> name.`,
+                `This whole website was programmed singlehandedly. Thanks, <span style='color: orange'>Jgouken</span>!`,
+                `This music was entirely composed by <span style='color: orange'>Jgouken</span>!`,
+                `All in-game items were thought up by <span style='color: lightgreen'>SavorySam</span>!`,
+                `This game is inspired by some Roblox RPGs, like <span style='color: green'>Rogue Nightmare</span>, <span style='color: grey'>An Average Campaign</span>, and <span style='color: #8c00ff'>Absolvement</span>.`,
+                `The digital whiteboard of this game contains over <span style='color: lightgreen' data-tooltip='You found me!'>5000</span> words!`,
+                `This game's codebase contains over <span style='color: lightblue' data-tooltip='You found me!'>10,000</span> lines of code!`,
+                `This game was going to have a devlog series, but I felt it would lengthen its development too harshly.`,
+                `This styles code is <span style='color: lightcoral'>hardcoded</span> in pixels. :]`,
+                `This game <u style='color: lightcoral'>uses a lot of memory</u>, and this loading screen is taking it.`,
+                `There are plans to add <span style='color: yellow'>quests</span>, <span style='color: #006eff'>frost</span> status effects, and <span style='color: lightyellow'>revives</span> in an optional version.`
+            ];
+
+            function shuffleArray(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+            const carousel = document.createElement('div');
+            carousel.id = 'loading-tips-carousel';
+            const shell = document.createElement('div');
+            shell.className = 'carousel-shell';
+            carousel.appendChild(shell);
+
+            const maskTop = document.createElement('div'); maskTop.className = 'fade-mask top'; carousel.appendChild(maskTop);
+            const maskBottom = document.createElement('div'); maskBottom.className = 'fade-mask bottom'; carousel.appendChild(maskBottom);
+
+            overlay.appendChild(carousel);
+            function easeOutElastic(t) {
+                const c4 = (2 * Math.PI) / 3;
+                return t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;
+            }
+
+            function easeInCubic(t) { return t * t * t; }
+
+            let order = shuffleArray(tips.map((v, i) => i));
+            let idx = 0;
+            let running = true;
+
+            function escapeHtml(str) {
+                return String(str).replace(/[&<>"'`]/g, function (s) {
+                    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' })[s];
+                });
+            }
+
+            async function showTip(text) {
+                if (!running) return;
+
+                if (!overlay.parentNode) { running = false; return; }
+
+                const el = document.createElement('div');
+                el.className = 'tip-item';
+
+                if (/<[a-z][\s\S]*>/i.test(text)) {
+                    el.innerHTML = text;
+                } else {
+                    el.innerHTML = '<span class="tip-text">' + escapeHtml(text) + '</span>';
+                }
+                el.style.opacity = '0';
+                el.style.top = '50%';
+                el.style.transform = 'translate(-50%, calc(-50% + 48px))';
+                shell.appendChild(el);
+                await animate(el, { fromY: 48, toY: 0, fromOpacity: 0, toOpacity: 1, dur: 900, easing: easeOutElastic });
+                await wait(2300);
+                const outPromise = animate(el, { fromY: 0, toY: -48, fromOpacity: 1, toOpacity: 0, dur: 600, easing: t => 1 - easeInCubic(1 - t) });
+                outPromise.then(() => { try { shell.removeChild(el); } catch (e) { } });
+                return;
+            }
+
+            function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+            function animate(element, { fromY = 20, toY = 0, fromOpacity = 0, toOpacity = 1, dur = 600, easing = t => t }) {
+                return new Promise(resolve => {
+                    const start = performance.now();
+                    function frame(now) {
+                        const t = Math.min(1, (now - start) / dur);
+                        const e = easing(t);
+                        const y = fromY + (toY - fromY) * e;
+                        const o = fromOpacity + (toOpacity - fromOpacity) * e;
+                        element.style.transform = `translate(-50%, calc(-50% + ${y}px))`;
+                        element.style.opacity = String(o);
+                        if (t < 1) requestAnimationFrame(frame);
+                        else resolve();
+                    }
+                    requestAnimationFrame(frame);
+                });
+            }
+            (async function cycle() {
+                while (running && overlay.parentNode) {
+                    if (order.length === 0) order = shuffleArray(tips.map((v, i) => i));
+                    const i = order.shift();
+                    try { await showTip(tips[i]); } catch (e) { }
+
+                    await wait(0);
+                }
+                try { if (carousel.parentNode) carousel.parentNode.removeChild(carousel); } catch (e) { }
+            })();
+
+        } catch (e) { console.warn('Failed to create loading tips carousel', e); }
         (function addSkipOverlayListener() {
             function onKey(e) {
                 if (e.key === 'Enter') {
