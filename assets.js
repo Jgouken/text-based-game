@@ -457,12 +457,8 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.3
-					},
-					{
 						name: "Milk",
-						chance: 0.7
+						chance: 1
 					}
 				]
 			},
@@ -496,12 +492,8 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.3
-					},
-					{
-						name: "Pork",
-						chance: 0.7
+						name: "Milk",
+						chance: 1
 					}
 				]
 			},
@@ -535,12 +527,8 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.3
-					},
-					{
-						name: "Wool",
-						chance: 0.7
+						name: "Milk",
+						chance: 1
 					}
 				]
 			},
@@ -574,12 +562,8 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.3
-					},
-					{
-						name: "Egg",
-						chance: 0.7
+						name: "Milk",
+						chance: 1
 					}
 				]
 			},
@@ -624,30 +608,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.45
-					},
-					{
-						name: "Green Goo",
-						chance: 0.45
-					},
-					{
-						name: "Sticky Solution",
-						chance: 0.01
-					},
-					{
-						name: "Light Health Potion",
-						chance: 0.05
-					},
-					{
-						name: "Medium Health Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Health Potion",
-						chance: 0.01
-					},
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -699,30 +662,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.45
-					},
-					{
-						name: "Red Goo",
-						chance: 0.45
-					},
-					{
-						name: "Sticky Solution",
-						chance: 0.01
-					},
-					{
-						name: "Light Attack Potion",
-						chance: 0.05
-					},
-					{
-						name: "Medium Attack Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Attack Potion",
-						chance: 0.01
-					},
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -769,30 +711,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.45
-					},
-					{
-						name: "Blue Goo",
-						chance: 0.45
-					},
-					{
-						name: "Sticky Solution",
-						chance: 0.01
-					},
-					{
-						name: "Light Defense Potion",
-						chance: 0.05
-					},
-					{
-						name: "Medium Defense Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Defense Potion",
-						chance: 0.01
-					},
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -840,30 +761,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.45
-					},
-					{
-						name: "Yellow Goo",
-						chance: 0.45
-					},
-					{
-						name: "Sticky Solution",
-						chance: 0.01
-					},
-					{
-						name: "Light Stamina Potion",
-						chance: 0.05
-					},
-					{
-						name: "Medium Stamina Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Stamina Potion",
-						chance: 0.01
-					},
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -894,49 +794,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.60
-					},
-					{
-						name: "Wooden Key",
-						chance: 0.06
-					},
-					{
-						name: "Iron Key",
-						chance: 0.03
-					},
-					{
-						name: "Twig",
-						chance: 0.025
-					},
-					{
-						name: "Branch",
-						chance: 0.025
-					},
-					{
-						name: "Broken Dagger",
-						chance: 0.015
-					},
-					{
-						name: "Tattered Rags",
-						chance: 0.015
-					},
-					{
-						name: "Cloth",
-						chance: 0.05
-					},
-					{
-						name: "Empty Bottle",
-						chance: 0.08
-					},
-					{
-						name: "Water Bottle",
-						chance: 0.05
-					},
-					{
-						name: "Booze",
-						chance: 0.05
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -980,7 +840,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -1029,49 +889,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.65
-					},
-					{
-						name: "Wooden Key",
-						chance: 0.04
-					},
-					{
-						name: "Iron Key",
-						chance: 0.02
-					},
-					{
-						name: "Broken Dagger",
-						chance: 0.02
-					},
-					{
-						name: "Rusty Dagger",
-						chance: 0.01
-					},
-					{
-						name: "Damaged Cloak",
-						chance: 0.02
-					},
-					{
-						name: "Whetstone",
-						chance: 0.06
-					},
-					{
-						name: "Gunpowder",
-						chance: 0.05
-					},
-					{
-						name: "Empty Bottle",
-						chance: 0.05
-					},
-					{
-						name: "Water Bottle",
-						chance: 0.05
-					},
-					{
-						name: "Booze",
-						chance: 0.05
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -1116,29 +936,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.85
-					},
-					{
-						name: "Golden Key",
-						chance: 0.06
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.03
-					},
-					{
-						name: "Great Sword",
-						chance: 0.015
-					},
-					{
-						name: "Skull Crusher",
-						chance: 0.015
-					},
-					{
-						name: "Iron Armor",
-						chance: 0.03
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -1184,9 +984,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
-					},
+					}
 				]
 			},
 			{
@@ -1236,9 +1036,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
-					},
+					}
 				]
 			},
 			{
@@ -1283,41 +1083,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.55
-					},
-					{
-						name: "Iron Key",
-						chance: 0.1
-					},
-					{
-						name: "Golden Key",
-						chance: 0.04
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.01
-					},
-					{
-						name: "Cloth",
-						chance: 0.15
-					},
-					{
-						name: "Red Gem",
-						chance: 0.045
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.045
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.01
-					},
-					{
-						name: "Whetstone",
-						chance: 0.05
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -1360,9 +1128,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
-					},
+					}
 				]
 			},
 			{
@@ -1407,41 +1175,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.6
-					},
-					{
-						name: "Golden Key",
-						chance: 0.045
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.025
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.01
-					},
-					{
-						name: "Red Gem",
-						chance: 0.075
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.075
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.035
-					},
-					{
-						name: "Whetstone",
-						chance: 0.045
-					},
-					{
-						name: "Cloth",
-						chance: 0.09
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -1488,41 +1224,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.6
-					},
-					{
-						name: "Golden Key",
-						chance: 0.045
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.025
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.01
-					},
-					{
-						name: "Red Gem",
-						chance: 0.075
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.075
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.035
-					},
-					{
-						name: "Whetstone",
-						chance: 0.045
-					},
-					{
-						name: "Cloth",
-						chance: 0.09
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -1574,30 +1278,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.45
-					},
-					{
-						name: "Green Goo",
-						chance: 0.45
-					},
-					{
-						name: "Sticky Solution",
-						chance: 0.01
-					},
-					{
-						name: "Light Health Potion",
-						chance: 0.05
-					},
-					{
-						name: "Medium Health Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Health Potion",
-						chance: 0.01
-					},
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -1650,30 +1333,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.45
-					},
-					{
-						name: "Red Goo",
-						chance: 0.45
-					},
-					{
-						name: "Sticky Solution",
-						chance: 0.01
-					},
-					{
-						name: "Light Attack Potion",
-						chance: 0.05
-					},
-					{
-						name: "Medium Attack Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Attack Potion",
-						chance: 0.01
-					},
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -1720,30 +1382,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.45
-					},
-					{
-						name: "Blue Goo",
-						chance: 0.45
-					},
-					{
-						name: "Sticky Solution",
-						chance: 0.01
-					},
-					{
-						name: "Light Defense Potion",
-						chance: 0.05
-					},
-					{
-						name: "Medium Defense Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Defense Potion",
-						chance: 0.01
-					},
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -1791,30 +1432,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.45
-					},
-					{
-						name: "Yellow Goo",
-						chance: 0.45
-					},
-					{
-						name: "Sticky Solution",
-						chance: 0.01
-					},
-					{
-						name: "Light Stamina Potion",
-						chance: 0.05
-					},
-					{
-						name: "Medium Stamina Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Stamina Potion",
-						chance: 0.01
-					},
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -1868,63 +1488,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.55
-					},
-					{
-						name: "Iron Key",
-						chance: 0.06
-					},
-					{
-						name: "Golden Key",
-						chance: 0.04
-					},
-					{
-						name: "Dual Hatchets",
-						chance: 0.03
-					},
-					{
-						name: "Leather Armor",
-						chance: 0.02
-					},
-					{
-						name: "Purified Salt",
-						chance: 0.03
-					},
-					{
-						name: "Gunpowder",
-						chance: 0.03
-					},
-					{
-						name: "Empty Bottle",
-						chance: 0.03
-					},
-					{
-						name: "Water Bottle",
-						chance: 0.03
-					},
-					{
-						name: "Booze",
-						chance: 0.03
-					},
-					{
-						name: "Pepper",
-						chance: 0.02
-					},
-					{
-						name: "Pepper Bomb",
-						chance: 0.1
-					},
-					{
-						name: "Whetstone & Polish",
-						chance: 0.01
-					},
-					{
-						name: "Whetstone",
-						chance: 0.02
-					},
-
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -1979,64 +1545,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.55
-					},
-					{
-						name: "Iron Key",
-						chance: 0.05
-					},
-					{
-						name: "Golden Key",
-						chance: 0.05
-					},
-					{
-						name: "Dual Daggers",
-						chance: 0.03
-					},
-					{
-						name: "Leather Armor",
-						chance: 0.02
-					},
-					{
-						name: "Purified Salt",
-						chance: 0.03
-					},
-					{
-						name: "Gunpowder",
-						chance: 0.03
-					},
-					{
-						name: "Empty Bottle",
-						chance: 0.03
-					},
-					{
-						name: "Water Bottle",
-						chance: 0.03
-					},
-					{
-						name: "Booze",
-						chance: 0.03
-					},
-					{
-						name: "Pepper",
-						chance: 0.02
-					},
-					{
-						name: "Pepper Bomb",
-						chance: 0.1
-					},
-					{
-						name: "Whetstone & Polish",
-						chance: 0.01
-					},
-					{
-						name: "Whetstone",
-						chance: 0.02
-					},
-
-
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -2091,67 +1602,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.55
-					},
-					{
-						name: "Iron Key",
-						chance: 0.05
-					},
-					{
-						name: "Golden Key",
-						chance: 0.05
-					},
-					{
-						name: "Dual Daggers",
-						chance: 0.015
-					},
-					{
-						name: "Dual Hatchets",
-						chance: 0.015
-					},
-					{
-						name: "Leather Armor",
-						chance: 0.02
-					},
-					{
-						name: "Purified Salt",
-						chance: 0.03
-					},
-					{
-						name: "Gunpowder",
-						chance: 0.03
-					},
-					{
-						name: "Empty Bottle",
-						chance: 0.03
-					},
-					{
-						name: "Water Bottle",
-						chance: 0.03
-					},
-					{
-						name: "Booze",
-						chance: 0.03
-					},
-					{
-						name: "Pepper",
-						chance: 0.02
-					},
-					{
-						name: "Pepper Bomb",
-						chance: 0.1
-					},
-					{
-						name: "Venom",
-						chance: 0.02
-					},
-					{
-						name: "Whetstone & Polish",
-						chance: 0.02
-					},
-
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -2208,67 +1661,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.55
-					},
-					{
-						name: "Iron Key",
-						chance: 0.05
-					},
-					{
-						name: "Golden Key",
-						chance: 0.05
-					},
-					{
-						name: "Dual Daggers",
-						chance: 0.015
-					},
-					{
-						name: "Dual Hatchets",
-						chance: 0.015
-					},
-					{
-						name: "Leather Armor",
-						chance: 0.02
-					},
-					{
-						name: "Purified Salt",
-						chance: 0.03
-					},
-					{
-						name: "Gunpowder",
-						chance: 0.03
-					},
-					{
-						name: "Empty Bottle",
-						chance: 0.03
-					},
-					{
-						name: "Water Bottle",
-						chance: 0.03
-					},
-					{
-						name: "Booze",
-						chance: 0.03
-					},
-					{
-						name: "Pepper",
-						chance: 0.02
-					},
-					{
-						name: "Pepper Bomb",
-						chance: 0.1
-					},
-					{
-						name: "Venom",
-						chance: 0.02
-					},
-					{
-						name: "Whetstone & Polish",
-						chance: 0.02
-					},
-
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -2320,41 +1715,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.55
-					},
-					{
-						name: "Iron Key",
-						chance: 0.1
-					},
-					{
-						name: "Golden Key",
-						chance: 0.04
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.01
-					},
-					{
-						name: "Cloth",
-						chance: 0.15
-					},
-					{
-						name: "Red Gem",
-						chance: 0.045
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.045
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.01
-					},
-					{
-						name: "Whetstone",
-						chance: 0.05
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -2407,9 +1770,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
-					},
+					}
 				]
 			},
 			{
@@ -2461,9 +1824,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
-					},
+					}
 				]
 			},
 			{
@@ -2510,41 +1873,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.6
-					},
-					{
-						name: "Golden Key",
-						chance: 0.045
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.025
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.01
-					},
-					{
-						name: "Red Gem",
-						chance: 0.075
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.075
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.035
-					},
-					{
-						name: "Whetstone",
-						chance: 0.045
-					},
-					{
-						name: "Cloth",
-						chance: 0.09
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -2600,37 +1931,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.6
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.06
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.04
-					},
-					{
-						name: "Vampire Fangs",
-						chance: 0.1
-					},
-					{
-						name: "Red Gem",
-						chance: 0.05
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.05
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.025
-					},
-					{
-						name: "Venom",
-						chance: 0.075
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -2692,37 +1995,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.6
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.06
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.04
-					},
-					{
-						name: "Demon Horn",
-						chance: 0.10
-					},
-					{
-						name: "Red Gem",
-						chance: 0.06
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.06
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.035
-					},
-					{
-						name: "Mana Infused Crystal",
-						chance: 0.045
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -2767,37 +2042,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.6
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.07
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.04
-					},
-					{
-						name: "Werewolf Claw",
-						chance: 0.9
-					},
-					{
-						name: "Red Gem",
-						chance: 0.06
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.06
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.035
-					},
-					{
-						name: "Cloth",
-						chance: 0.035
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -2886,47 +2133,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.6
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.09
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.05
-					},
-					{
-						name: "Mana Infused Crystal",
-						chance: 0.02
-					},
-					{
-						name: "Witch Crystal",
-						chance: 0.06
-					},
-
-					{
-						name: "Red Gem",
-						chance: 0.05
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.05
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.025
-					},
-					{
-						name: "Purification Gem",
-						chance: 0.025
-					},
-					{
-						name: "Venom",
-						chance: 0.05
-					},
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -2988,7 +2197,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3050,7 +2259,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3114,7 +2323,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3171,7 +2380,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3229,7 +2438,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3287,7 +2496,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3351,7 +2560,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3398,7 +2607,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3489,7 +2698,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3553,7 +2762,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3603,7 +2812,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3660,7 +2869,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -3722,24 +2931,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.3
-					},
-					{
-						name: "Wooden Key",
-						chance: 0.35
-					},
-					{
-						name: "Iron Key",
-						chance: 0.25
-					},
-					{
-						name: "Golden Key",
-						chance: 0.1
-					},
-
-
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -3799,24 +2993,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.25
-					},
-					{
-						name: "Iron Key",
-						chance: 0.35
-					},
-					{
-						name: "Golden Key",
-						chance: 0.25
-					},
-
-					{
-						name: "Platinum Key",
-						chance: 0.15
-					},
-
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -3892,24 +3071,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.2
-					},
-					{
-						name: "Golden Key",
-						chance: 0.4
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.25
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.15
-					},
-
-
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -3971,7 +3135,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -4036,7 +3200,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -4093,7 +3257,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -4150,7 +3314,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -4207,7 +3371,7 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
+						name: "Milk",
 						chance: 1
 					}
 				]
@@ -4289,25 +3453,9 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: null,
-						chance: 0.15
-					},
-					{
-						name: "Golden Key",
-						chance: 0.35
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.3
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.2
-					},
-
-
-
-
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 		],
@@ -7257,352 +6405,165 @@ function getLocalAssets() {
 			},
 
 			// Stamina
-			{
-				name: "Light Stamina Potion",
-				stamina: 0.15,
-				battle: true
-			},
-			{
-				name: "Medium Stamina Potion",
-				stamina: 0.3,
-				battle: true,
-				craft: ["Yellow Goo", "Water Bottle"]
-			},
-			{
-				name: "Heavy Stamina Potion",
-				stamina: 0.5,
-				battle: true,
-				craft: ["Yellow Goo", "Milk", "Empty Bottle"]
-			},
-			{
-				name: "Great Stamina Potion",
-				stamina: 0.7,
-				battle: true,
-				craft: ["Yellow Goo", "Witch Crystal", "Milk", "Empty Bottle"]
-			},
-			{
-				name: "Grand Stamina Potion",
-				stamina: 0.9,
-				battle: true
-			},
-			// Health
-			{
-				name: "Light Health Potion",
-				health: 0.15,
-				battle: true
-			},
-			{
-				name: "Medium Health Potion",
-				health: 0.25,
-				battle: true,
-				craft: ["Green Goo", "Water Bottle"]
-			},
-			{
-				name: "Heavy Health Potion",
-				health: 0.5,
-				battle: true,
-				craft: ["Green Goo", "Egg", "Empty Bottle"]
-			},
-			{
-				name: "Great Health Potion",
-				health: 0.7,
-				battle: true,
-				craft: ["Green Goo", "Vampire Fang", "Egg", "Empty Bottle"]
-			},
-			{
-				name: "Grand Health Potion",
-				health: 0.9,
-				battle: true
-			},
-			// Defense
-			{
-				name: "Light Defense Potion",
-				def: 0.15,
-				rounds: 3,
-				battle: true
-			},
-			{
-				name: "Medium Defense Potion",
-				def: 0.3,
-				rounds: 3,
-				battle: true,
-				craft: ["Blue Goo", "Water Bottle"]
-			},
-			{
-				name: "Heavy Defense Potion",
-				def: 0.5,
-				rounds: 3,
-				battle: true,
-				craft: ["Blue Goo", "Egg", "Empty Bottle"]
-			},
-			{
-				name: "Great Defense Potion",
-				def: 0.7,
-				rounds: 3,
-				battle: true,
-				craft: ["Green Goo", "Demon Horn", "Egg", "Empty Bottle"]
-			},
-			{
-				name: "Grand Defense Potion",
-				def: 0.9,
-				rounds: 3,
-				battle: true
-			},
-			// Attack
-			{
-				name: "Light Attack Potion",
-				buff: 0.15,
-				rounds: 3,
-				battle: true
-			},
-			{
-				name: "Medium Attack Potion",
-				buff: 0.3,
-				rounds: 3,
-				battle: true,
-				craft: ["Red Goo", "Water Bottle"]
-			},
-			{
-				name: "Heavy Attack Potion",
-				buff: 0.5,
-				rounds: 3,
-				battle: true,
-				craft: ["Red Goo", "Milk", "Empty Bottle"]
-			},
-			{
-				name: "Great Attack Potion",
-				buff: 0.7,
-				rounds: 3,
-				battle: true,
-				craft: ["Red Goo", "Werewolf Claw", "Milk", "Empty Bottle"]
-			},
-			{
-				name: "Grand Attack Potion",
-				buff: 0.9,
-				rounds: 3,
-				battle: true
-			},
-			// Energy
-			{
-				name: "Light Energy Potion",
-				health: 0.15,
-				stamina: 0.15,
-				battle: true
-			},
-			{
-				name: "Medium Energy Potion",
-				health: 0.15,
-				stamina: 0.3,
-				battle: true
-			},
-			{
-				name: "Heavy Energy Potion",
-				health: 0.15,
-				stamina: 0.5,
-				battle: true
-			},
-			{
-				name: "Great Energy Potion",
-				health: 0.15,
-				stamina: 0.7,
-				battle: true
-			},
-			{
-				name: "Grand Energy Potion",
-				health: 0.15,
-				stamina: 0.9,
-				battle: true
-			},
-			// XP
-			{
-				name: "Light XP Potion",
-				xp: 638
-			},
-			{
-				name: "Medium XP Potion",
-				xp: 5740
-			},
-			{
-				name: "Heavy XP Potion",
-				xp: 15943
-			},
-			{
-				name: "Great XP Potion",
-				xp: 31250
-			},
-			{
-				name: "Grand XP Potion",
-				xp: 51658
-			},
-			// Chest Keys
-			{
-				name: "Wooden Key",
-				sprite: "assets/keys/WoodenKey.gif",
-				chest: 0
-			},
-			{
-				name: "Iron Key",
-				sprite: "assets/keys/IronKey.gif",
-				chest: 1
-			},
-			{
-				name: "Golden Key",
-				sprite: "assets/keys/GoldenKey.gif",
-				chest: 2
-			},
-			{
-				name: "Platinum Key",
-				sprite: "assets/keys/PlatinumKey.gif",
-				chest: 3
-			},
-			{
-				name: "Adamantine Key",
-				sprite: "assets/keys/AdamantineKey.gif",
-				chest: 4
-			},
+			{ name: "Light Stamina Potion", stamina: 0.15, battle: true },
+			{ name: "Medium Stamina Potion", stamina: 0.3, battle: true },
+			{ name: "Heavy Stamina Potion", stamina: 0.5, battle: true },
+			{ name: "Great Stamina Potion", stamina: 0.7, battle: true },
+			{ name: "Grand Stamina Potion", stamina: 0.9, battle: true },
 
-			// Craftables
-			{
-				name: "Molotov",
-				craft: ["Cloth", "Booze"],
-				damage: 350,
-				estatus: ["🔥"],
-				battle: true
-			},
-			{
-				name: "Ordinary Bomb",
-				craft: ["Gunpowder", "Sticky Solution", "Empty Bottle"],
-				damage: 420,
-				battle: true
-			},
-			{
-				name: "Pepper Bomb",
-				craft: ["Gunpowder", "Sticky Solution", "Empty Bottle", "Pepper"],
-				damage: 400,
-				estatus: ["👁️"],
-				battle: true
-			},
-			{
-				name: "Shrapnel Bomb",
-				craft: ["Gunpowder", "Sticky Solution", "Empty Bottle", "Whetstone"],
-				damage: 450,
-				estatus: ["🩸"],
-				battle: true
-			},
-			{
-				name: "Purifying Flask",
-				description: "Thrown or drank to cleanse all effects.",
-				craft: ["Purified Salt", "Sticky Solution", "Water Bottle"],
-				battle: true
-			},
-			{
-				name: "Purifying Water",
-				description: "Drank to cleanse all effects.",
-				craft: ["Purified Salt", "Water Bottle"],
-				battle: true
-			},
-			{
-				name: "Poison Bomb",
-				estatus: ["💀"],
-				craft: ["Venom", "Booze"],
-				damage: 260,
-				battle: true
-			},
-			{
-				name: "Cloth",
-				craft: ["Wool", "Wool"],
-			},
-			{
-				name: "Purple Gem",
-				craft: ["Red Gem", "Blue Gem"]
-			},
-			{
-				name: "Sticky Solution",
-				craft: ["Yellow Goo", "Green Goo", "Blue Goo", "Red Goo", "Empty Bottle"]
-			},
-			{
-				name: "Mana Infused Crystal",
-				craft: ["Witch Crystal", "Werewolf Claw", "Demon Horn", "Vampire Fang"],
-			},
-			{
-				name: "Enchanting Crystal",
-				craft: ["Mana Infused Crystal", "Sticky Solution", "Water Bottle"]
-			},
-			{
-				name: "Purification Gem",
-				craft: ["Purple Gem", "Sticky Solution", "Purifying Water"]
-			},
-			{
-				name: "Whetstone & Polish",
-				craft: ["Whetstone", "Sticky Solution", "Water Bottle", "Cloth"]
-			},
-			// Drops
-			{
-				name: "Yellow Goo",
-			},
-			{
-				name: "Green Goo",
-			},
-			{
-				name: "Blue Goo",
-			},
-			{
-				name: "Red Goo",
-			},
-			{
-				name: "Pepper",
-			},
-			{
-				name: "Wool",
-			},
-			{
-				name: "Milk",
-			},
-			{
-				name: "Pork",
-			},
-			{
-				name: "Egg",
-			},
-			{
-				name: "Vampire Fang",
-			},
-			{
-				name: "Demon Horn",
-			},
-			{
-				name: "Werewolf Claw",
-			},
-			{
-				name: "Witch Crystal",
-			},
-			{
-				name: "Red Gem",
-			},
-			{
-				name: "Blue Gem",
-			},
-			{
-				name: "Water Bottle",
-			},
-			{
-				name: "Booze",
-			},
-			{
-				name: "Empty Bottle",
-			},
-			{
-				name: "Venom",
-			},
-			{
-				name: "Purified Salt",
-			},
-			{
-				name: "Gunpowder",
-			},
-			{
-				name: "Whetstone",
-			}
+			// Health
+			{ name: "Light Health Potion", health: 0.15, battle: true },
+			{ name: "Medium Health Potion", health: 0.25, battle: true },
+			{ name: "Heavy Health Potion", health: 0.5, battle: true },
+			{ name: "Great Health Potion", health: 0.7, battle: true },
+			{ name: "Grand Health Potion", health: 0.9, battle: true },
+
+			// Defense
+			{ name: "Light Defense Potion", def: 0.15, rounds: 3, battle: true },
+			{ name: "Medium Defense Potion", def: 0.3, rounds: 3, battle: true },
+			{ name: "Heavy Defense Potion", def: 0.5, rounds: 3, battle: true },
+			{ name: "Great Defense Potion", def: 0.7, rounds: 3, battle: true },
+			{ name: "Grand Defense Potion", def: 0.9, rounds: 3, battle: true },
+
+			// Attack
+			{ name: "Light Attack Potion", buff: 0.15, rounds: 3, battle: true },
+			{ name: "Medium Attack Potion", buff: 0.3, rounds: 3, battle: true },
+			{ name: "Heavy Attack Potion", buff: 0.5, rounds: 3, battle: true },
+			{ name: "Great Attack Potion", buff: 0.7, rounds: 3, battle: true },
+			{ name: "Grand Attack Potion", buff: 0.9, rounds: 3, battle: true },
+
+			// Energy
+			{ name: "Light Energy Potion", health: 0.15, stamina: 0.15, battle: true },
+			{ name: "Medium Energy Potion", health: 0.15, stamina: 0.3, battle: true },
+			{ name: "Heavy Energy Potion", health: 0.15, stamina: 0.5, battle: true },
+			{ name: "Great Energy Potion", health: 0.15, stamina: 0.7, battle: true },
+			{ name: "Grand Energy Potion", health: 0.15, stamina: 0.9, battle: true },
+
+			// XP
+			{ name: "Light XP Potion", xp: 638 },
+			{ name: "Medium XP Potion", xp: 5740 },
+			{ name: "Heavy XP Potion", xp: 15943 },
+			{ name: "Great XP Potion", xp: 31250 },
+			{ name: "Grand XP Potion", xp: 51658 },
+
+			// Misc consumables / foods
+			{ name: "Purity Potion" },
+			{ name: "Milk", description: "Clears all debuffs.", battle: true },
+			{ name: "Cheese", description: "Yes, Milk + Milk = Cheese.\n\nClears all debuffs.", flatHealth: 250, craft: ['Milk', 'Milk'], battle: true  },
+			{ name: "Beef", description: "A type of red meat from a cow.", flatHealth: 350, battle: true  },
+			{ name: "Pork", description: "A type of red meat from a pig.", flatHealth: 200, battle: true  },
+			{ name: "Mutton", description: "You can't get mutton from a young sheep.", flatHealth: 150, battle: true  },
+			{ name: "Chicken", description: "A type of white meat from a chicken.", flatHealth: 100, battle: true  },
+			{ name: "Egg", description: "This isn't a dairy product, at least.", flatHealth: 50, battle: true  },
+			{ name: "Tea", description: "Herb Water.", health: 0.03, craft: ['Water Bottle', 'Green Herb'], battle: true  },
+			{ name: "Breakfast", description: "Serving it up Gary's way.", health: 0.15, craft: ['Pork', 'Egg', 'Milk'] },
+			{ name: "Shepherd's Pie", description: "Vegetables surrounded by meat in cheese, topped with mashed potato.", health: 0.25, craft: ['Mutton', 'Beef', 'Cheese', 'Green Herb'] },
+			{ name: "Meatloaf", description: "Meat mash, essentially.", health: 0.3, craft: ['Pork', 'Mutton', 'Chicken', 'Beef'] },
+			{ name: "Banquet", description: "A feast fit for a king, or at least a very hungry adventurer.", health: 0.5, craft: ['Shepherd\'s Pie', 'Meatloaf', 'Tea'] },
+			{ name: "Suspicious Eggnog", description: "Gain a random status effect.", craft: ['Egg', 'Milk'] },
+			{ name: "Bandage", description: "Patch yourself up and stop the bleeding.", health: 0.1, battle: true },
+
+			// Bombs / explosives
+			{ name: "Bomb" },
+			{ name: "Cluster Bomb" },
+			{ name: "Blaze Bomb" },
+			{ name: "Shrapnel Bomb" },
+			{ name: "Poison Bomb", estatus: ["💀"], battle: true },
+			{ name: "Blinding Bomb" },
+			{ name: "Sinister Bomb" },
+			{ name: "Storm Bomb" },
+			{ name: "Decay Bomb" },
+			{ name: "Unstable Bomb" },
+			{ name: "Unstable Cluster Bomb" },
+			{ name: "Unstable Shrapnel Bomb" },
+
+			// Charms / utility
+			{ name: "Boss Lure" },
+			{ name: "Monster Compass" },
+			{ name: "Treasure Map" },
+			{ name: "B-Gone" },
+			{ name: "A-Frayed Compass" },
+			{ name: "Loot Charm" },
+			{ name: "Soul Charm" },
+			{ name: "Spirit Charm" },
+			{ name: "Focus Charm" },
+
+			// Keys
+			{ name: "Wooden Key", sprite: "assets/keys/WoodenKey.gif", chest: 0 },
+			{ name: "Silver Key" },
+			{ name: "Gold Key" },
+			{ name: "Platinum Key", sprite: "assets/keys/PlatinumKey.gif", chest: 3 },
+			{ name: "Adamantine Key", sprite: "assets/keys/AdamantineKey.gif", chest: 4 },
+
+			// Cursed keys
+			{ name: "Cursed Wooden Key" },
+			{ name: "Cursed Silver Key" },
+			{ name: "Cursed Gold Key" },
+			{ name: "Cursed Platinum Key" },
+			{ name: "Cursed Adamantine Key" },
+
+			// Lockpicks / tools
+			{ name: "Novice Lockpick" },
+			{ name: "Lockpick" },
+			{ name: "Master Lockpick" },
+			{ name: "Whetstone & Polish" },
+			{ name: "Hexed Whetstone & Polish" },
+
+			// Slime / corrupted / fragments / crystals / geodes
+			{ name: "Slime Goop" },
+			{ name: "Corrupted Goop" },
+			{ name: "Slime Fragment" },
+			{ name: "Corrupted Fragment" },
+			{ name: "Slime Crystal" },
+			{ name: "Corrupted Crystal" },
+			{ name: "Slime Geode" },
+			{ name: "Corrupted Geode" },
+
+			// Corrupted / mana materials
+			{ name: "Corrupted Shard" },
+			{ name: "Corrupted Core" },
+			{ name: "Mana Shard" },
+			{ name: "Mana Fragment" },
+			{ name: "Mana Crystal" },
+			{ name: "Mana Core" },
+			{ name: "Goblin Blood" },
+
+			// Herbs / blooms / mushrooms
+			{ name: "Red Herb" },
+			{ name: "Green Herb" },
+			{ name: "Blue Herb" },
+			{ name: "Yellow Herb" },
+			{ name: "Black Herb" },
+			{ name: "White Herb" },
+			{ name: "Crimson Bloom" },
+			{ name: "Life Bloom" },
+			{ name: "Oceanshroom" },
+			{ name: "Stormshroom" },
+			{ name: "Tainted Rose" },
+			{ name: "Angelic Rose" },
+			{ name: "Mana Bloom" },
+
+			// Misc
+			{ name: "Ember Core" },
+			{ name: "Stone" },
+			{ name: "Lucky Rabbit Foot" },
+			{ name: "Cloth" },
+			{ name: "Empty Bottle" },
+			{ name: "Water Bottle" },
+			{ name: "Whetstone" },
+			{ name: "Map Fragment" },
+			{ name: "Soul Fragment" },
+
+			// Powders / flasks / salts / ashes / gunpowder
+			{ name: "Enchanting Powder" },
+			{ name: "Blinding Powder" },
+			{ name: "Blaze Powder" },
+			{ name: "Poison Powder" },
+			{ name: "Reinforced Flask" },
+			{ name: "Purified Salt" },
+			{ name: "Tainted Ashes" },
+			{ name: "Gunpowder" },
+			{ name: "Packed Gunpowder" }
 		],
 
 		chests: [
@@ -7613,125 +6574,9 @@ function getLocalAssets() {
 				key: "Wooden Key",
 				drops: [
 					{
-						name: "Rusty Dagger",
-						chance: 0.12
-					},
-					{
-						name: "Trusty Dagger",
-						chance: 0.08
-					},
-					{
-						name: "Perfect Stick",
-						chance: 0.04
-					},
-					{
-						name: "Damaged Cloak",
-						chance: 0.12
-					},
-					{
-						name: "Rogue's Cloak",
-						chance: 0.08
-					},
-					{
-						name: "Perfect Leaf",
-						chance: 0.04
-					},
-					{
-						name: "Light Stamina Potion",
-						chance: 0.02
-					},
-					{
-						name: "Light Health Potion",
-						chance: 0.02
-					},
-					{
-						name: "Light Attack Potion",
-						chance: 0.02
-					},
-					{
-						name: "Light Defense Potion",
-						chance: 0.02
-					},
-					{
-						name: "Light Energy Potion",
-						chance: 0.02
-					},
-					{
-						name: "Light XP Potion",
-						chance: 0.02
-					},
-					{
-						name: "Medium Stamina Potion",
-						chance: 0.01
-					},
-					{
-						name: "Medium Health Potion",
-						chance: 0.01
-					},
-					{
-						name: "Medium Attack Potion",
-						chance: 0.01
-					},
-					{
-						name: "Medium Defense Potion",
-						chance: 0.01
-					},
-					{
-						name: "Medium Energy Potion",
-						chance: 0.01
-					},
-					{
-						name: "Medium XP Potion",
-						chance: 0.01
-					},
-					{
-						name: "Empty Bottle",
-						chance: 0.025
-					},
-					{
-						name: "Water Bottle",
-						chance: 0.025
-					},
-					{
-						name: "Booze",
-						chance: 0.025
-					},
-					{
-						name: "Pepper",
-						chance: 0.025
-					},
-					{
-						name: "Venom",
-						chance: 0.025
-					},
-					{
-						name: "Gunpowder",
-						chance: 0.025
-					},
-					{
-						name: "Ordinary Bomb",
-						chance: 0.07
-					},
-					{
-						name: "Pepper Bomb",
-						chance: 0.04
-					},
-					{
-						name: "Molotov",
-						chance: 0.04
-					},
-					{
-						name: "Wooden Key",
-						chance: 0.01
-					},
-					{
-						name: "Iron Key",
-						chance: 0.02
-					},
-					{
-						name: "Golden Key",
-						chance: 0.01
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -7741,181 +6586,9 @@ function getLocalAssets() {
 				key: "Iron Key",
 				drops: [
 					{
-						name: "Iron Short Sword",
-						chance: 0.1
-					},
-					{
-						name: "Dual Daggers",
-						chance: 0.05
-					},
-					{
-						name: "Dual Hatchets",
-						chance: 0.05
-					},
-					{
-						name: "Padded Clothing",
-						chance: 0.1
-					},
-					{
-						name: "Leather Armor",
-						chance: 0.1
-					},
-					{
-						name: "Light Stamina Potion",
-						chance: 0.015
-					},
-					{
-						name: "Light Health Potion",
-						chance: 0.015
-					},
-					{
-						name: "Light Attack Potion",
-						chance: 0.015
-					},
-					{
-						name: "Light Defense Potion",
-						chance: 0.015
-					},
-					{
-						name: "Light Energy Potion",
-						chance: 0.015
-					},
-					{
-						name: "Light XP Potion",
-						chance: 0.015
-					},
-					{
-						name: "Medium Stamina Potion",
-						chance: 0.01
-					},
-					{
-						name: "Medium Health Potion",
-						chance: 0.01
-					},
-					{
-						name: "Medium Attack Potion",
-						chance: 0.01
-					},
-					{
-						name: "Medium Defense Potion",
-						chance: 0.01
-					},
-					{
-						name: "Medium Energy Potion",
-						chance: 0.01
-					},
-					{
-						name: "Medium XP Potion",
-						chance: 0.01
-					},
-					{
-						name: "Heavy Stamina Potion",
-						chance: 0.005
-					},
-					{
-						name: "Heavy Health Potion",
-						chance: 0.005
-					},
-					{
-						name: "Heavy Attack Potion",
-						chance: 0.005
-					},
-					{
-						name: "Heavy Defense Potion",
-						chance: 0.005
-					},
-					{
-						name: "Heavy Energy Potion",
-						chance: 0.005
-					},
-					{
-						name: "Heavy XP Potion",
-						chance: 0.005
-					},
-					{
-						name: "Sticky Solution",
-						chance: 0.01
-					},
-					{
-						name: "Empty Bottle",
-						chance: 0.02
-					},
-					{
-						name: "Water Bottle",
-						chance: 0.02
-					},
-					{
-						name: "Booze",
-						chance: 0.02
-					},
-					{
-						name: "Pepper",
-						chance: 0.02
-					},
-					{
-						name: "Venom",
-						chance: 0.02
-					},
-					{
-						name: "Gunpowder",
-						chance: 0.02
-					},
-					{
-						name: "Purified Salt",
-						chance: 0.01
-					},
-					{
-						name: "Red Gem",
-						chance: 0.02
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.02
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.01
-					},
-					{
-						name: "Whetstone",
-						chance: 0.01
-					},
-					{
-						name: "Ordinary Bomb",
-						chance: 0.02
-					},
-					{
-						name: "Pepper Bomb",
-						chance: 0.02
-					},
-					{
-						name: "Poison Bomb",
-						chance: 0.02
-					},
-					{
-						name: "Shrapnel Bomb",
-						chance: 0.02
-					},
-					{
-						name: "Molotov",
-						chance: 0.02
-					},
-					{
-						name: "Wooden Key",
-						chance: 0.01
-					},
-					{
-						name: "Iron Key",
-						chance: 0.05
-					},
-					{
-						name: "Golden Key",
-						chance: 0.04
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.02
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -7925,236 +6598,8 @@ function getLocalAssets() {
 				key: "Golden Key",
 				drops: [
 					{
-						name: "Iron Sword",
-						chance: 0.05
-					},
-					{
-						name: "Wooden Bow",
-						chance: 0.02
-					},
-					{
-						name: "Lumberjack Axe",
-						chance: 0.02
-					},
-					{
-						name: "Silver Dagger",
-						chance: 0.02
-					},
-					{
-						name: "Golden Stick",
-						chance: 0.01
-					},
-					{
-						name: "Light Armor",
-						chance: 0.05
-					},
-					{
-						name: "Hunter Armor",
-						chance: 0.02
-					},
-					{
-						name: "Lumberjack Attire",
-						chance: 0.02
-					},
-					{
-						name: "Assassin Cloak",
-						chance: 0.02
-					},
-					{
-						name: "Confidence",
-						chance: 0.01
-					},
-					{
-						name: "Medium Stamina Potion",
-						chance: 0.015
-					},
-					{
-						name: "Medium Health Potion",
-						chance: 0.015
-					},
-					{
-						name: "Medium Attack Potion",
-						chance: 0.015
-					},
-					{
-						name: "Medium Defense Potion",
-						chance: 0.015
-					},
-					{
-						name: "Medium Energy Potion",
-						chance: 0.015
-					},
-					{
-						name: "Medium XP Potion",
-						chance: 0.015
-					},
-					{
-						name: "Heavy Stamina Potion",
-						chance: 0.01
-					},
-					{
-						name: "Heavy Health Potion",
-						chance: 0.01
-					},
-					{
-						name: "Heavy Attack Potion",
-						chance: 0.01
-					},
-					{
-						name: "Heavy Defense Potion",
-						chance: 0.01
-					},
-					{
-						name: "Heavy Energy Potion",
-						chance: 0.01
-					},
-					{
-						name: "Heavy XP Potion",
-						chance: 0.01
-					},
-					{
-						name: "Great Stamina Potion",
-						chance: 0.005
-					},
-					{
-						name: "Great Health Potion",
-						chance: 0.05
-					},
-					{
-						name: "Great Attack Potion",
-						chance: 0.005
-					},
-					{
-						name: "Great Defense Potion",
-						chance: 0.005
-					},
-					{
-						name: "Great Energy Potion",
-						chance: 0.005
-					},
-					{
-						name: "Great XP Potion",
-						chance: 0.005
-					},
-					{
-						name: "Grand Stamina Potion",
-						chance: 0.005
-					},
-					{
-						name: "Grand Health Potion",
-						chance: 0.005
-					},
-					{
-						name: "Grand Attack Potion",
-						chance: 0.005
-					},
-					{
-						name: "Grand Defense Potion",
-						chance: 0.005
-					},
-					{
-						name: "Grand Energy Potion",
-						chance: 0.005
-					},
-					{
-						name: "Grand XP Potion",
-						chance: 0.005
-					},
-					{
-						name: "Sticky Solution",
-						chance: 0.03
-					},
-					{
-						name: "Gunpowder",
-						chance: 0.02
-					},
-					{
-						name: "Red Gem",
-						chance: 0.02
-					},
-					{
-						name: "Blue Gem",
-						chance: 0.02
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.01
-					},
-					{
-						name: "Vampire Fang",
-						chance: 0.01
-					},
-					{
-						name: "Demon Horn",
-						chance: 0.01
-					},
-					{
-						name: "Werewolf Claw",
-						chance: 0.01
-					},
-					{
-						name: "Witch Crystal",
-						chance: 0.01
-					},
-					{
-						name: "Mana Infused Crystal",
-						chance: 0.01
-					},
-					{
-						name: "Purified Salt",
-						chance: 0.02
-					},
-					{
-						name: "Purification Gem",
-						chance: 0.03
-					},
-					{
-						name: "Whetstone",
-						chance: 0.02
-					},
-					{
-						name: "Whetstone & Polish",
-						chance: 0.03
-					},
-					{
-						name: "Ordinary Bomb",
-						chance: 0.03
-					},
-					{
-						name: "Poison Bomb",
-						chance: 0.03
-					},
-					{
-						name: "Shrapnel Bomb",
-						chance: 0.03
-					},
-					{
-						name: "Pepper Bomb",
-						chance: 0.03
-					},
-					{
-						name: "Purifying Flask",
-						chance: 0.03
-					},
-					{
-						name: "Purifying Water",
-						chance: 0.03
-					},
-					{
-						name: "Iron Key",
-						chance: 0.01
-					},
-					{
-						name: "Golden Key",
-						chance: 0.01
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.07
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.03
+						name: "Milk",
+						chance: 1
 					}
 				]
 			},
@@ -8165,217 +6610,9 @@ function getLocalAssets() {
 				key: "Platinum Key",
 				drops: [
 					{
-						name: "Martial Arts",
-						chance: 0.02
-					},
-					{
-						name: "Chainsaw",
-						chance: 0.01
-					},
-					{
-						name: "Twin Swords",
-						chance: 0.02
-					},
-					{
-						name: "Spiked Gauntlets",
-						chance: 0.02
-					},
-					{
-						name: "Ninja Arts",
-						chance: 0.01
-					},
-					{
-						name: "Holy Spear",
-						chance: 0.01
-					},
-					{
-						name: "Cursed Bone Bow",
-						chance: 0.01
-					},
-					{
-						name: "Thick Sleeveless Hoodie",
-						chance: 0.02
-					},
-					{
-						name: "Leather Apron & Mask",
-						chance: 0.01
-					},
-					{
-						name: "Dragon Cloak",
-						chance: 0.02
-					},
-					{
-						name: "Spiked Leather Armor",
-						chance: 0.02
-					},
-					{
-						name: "Shinobi Garments",
-						chance: 0.01
-					},
-					{
-						name: "Holy Knight Armor",
-						chance: 0.01
-					},
-					{
-						name: "Shadow Cloak",
-						chance: 0.01
-					},
-					{
-						name: "Heavy Stamina Potion",
-						chance: 0.015
-					},
-					{
-						name: "Heavy Health Potion",
-						chance: 0.015
-					},
-					{
-						name: "Heavy Attack Potion",
-						chance: 0.015
-					},
-					{
-						name: "Heavy Defense Potion",
-						chance: 0.015
-					},
-					{
-						name: "Heavy Energy Potion",
-						chance: 0.015
-					},
-					{
-						name: "Heavy XP Potion",
-						chance: 0.015
-					},
-					{
-						name: "Great Stamina Potion",
-						chance: 0.01
-					},
-					{
-						name: "Great Health Potion",
-						chance: 0.01
-					},
-					{
-						name: "Great Attack Potion",
-						chance: 0.01
-					},
-					{
-						name: "Great Defense Potion",
-						chance: 0.01
-					},
-					{
-						name: "Great Energy Potion",
-						chance: 0.01
-					},
-					{
-						name: "Great XP Potion",
-						chance: 0.01
-					},
-					{
-						name: "Grand Stamina Potion",
-						chance: 0.005
-					},
-					{
-						name: "Grand Health Potion",
-						chance: 0.005
-					},
-					{
-						name: "Grand Attack Potion",
-						chance: 0.005
-					},
-					{
-						name: "Grand Defense Potion",
-						chance: 0.005
-					},
-					{
-						name: "Grand Energy Potion",
-						chance: 0.005
-					},
-					{
-						name: "Grand XP Potion",
-						chance: 0.005
-					},
-					{
-						name: "Sticky Solution",
-						chance: 0.03
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.04
-					},
-					{
-						name: "Purification Gem",
-						chance: 0.05
-					},
-					{
-						name: "Vampire Fang",
-						chance: 0.03
-					},
-					{
-						name: "Demon Horn",
-						chance: 0.03
-					},
-					{
-						name: "Werewolf Claw",
-						chance: 0.03
-					},
-					{
-						name: "Witch Crystal",
-						chance: 0.03
-					},
-					{
-						name: "Mana Infused Crystal",
-						chance: 0.05
-					},
-					{
-						name: "Enchanting Crystal",
-						chance: 0.05
-					},
-					{
-						name: "Purified Salt",
-						chance: 0.02
-					},
-					{
-						name: "Whetstone",
-						chance: 0.03
-					},
-					{
-						name: "Whetstone & Polish",
-						chance: 0.05
-					},
-					{
-						name: "Ordinary Bomb",
-						chance: 0.02
-					},
-					{
-						name: "Poison Bomb",
-						chance: 0.02
-					},
-					{
-						name: "Shrapnel Bomb",
-						chance: 0.02
-					},
-					{
-						name: "Pepper Bomb",
-						chance: 0.02
-					},
-					{
-						name: "Purifying Flask",
-						chance: 0.02
-					},
-					{
-						name: "Purifying Water",
-						chance: 0.03
-					},
-					{
-						name: "Golden Key",
-						chance: 0.01
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.02
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.02
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			},
 			{
@@ -8385,185 +6622,9 @@ function getLocalAssets() {
 				key: "Adamantine Key",
 				drops: [
 					{
-						name: "Cursed Fangs",
-						chance: 0.03
-					},
-					{
-						name: "Evil Pulverizer",
-						chance: 0.03
-					},
-					{
-						name: "Demonic Nunchucks",
-						chance: 0.0175
-					},
-					{
-						name: "Holy Arts",
-						chance: 0.0175
-					},
-					{
-						name: "Iris & Hermes",
-						chance: 0.0055
-					},
-					{
-						name: "Orcus",
-						chance: 0.0055
-					},
-					{
-						name: "Alectrona & Melanie",
-						chance: 0.004
-					},
-					{
-						name: "Holy Knight Armor",
-						chance: 0.03
-					},
-					{
-						name: "Shadow Cloak",
-						chance: 0.03
-					},
-					{
-						name: "Sinner Jacket",
-						chance: 0.0175
-					},
-					{
-						name: "Blessed Gi",
-						chance: 0.0175
-					},
-					{
-						name: "Walking Church",
-						chance: 0.0055
-					},
-					{
-						name: "Black Mourning",
-						chance: 0.0055
-					},
-					{
-						name: "Equinox",
-						chance: 0.004
-					},
-					{
-						name: "Heavy Stamina Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Health Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Attack Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Defense Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy Energy Potion",
-						chance: 0.03
-					},
-					{
-						name: "Heavy XP Potion",
-						chance: 0.03
-					},
-					{
-						name: "Great Stamina Potion",
-						chance: 0.02
-					},
-					{
-						name: "Great Health Potion",
-						chance: 0.02
-					},
-					{
-						name: "Great Attack Potion",
-						chance: 0.02
-					},
-					{
-						name: "Great Defense Potion",
-						chance: 0.02
-					},
-					{
-						name: "Great Energy Potion",
-						chance: 0.02
-					},
-					{
-						name: "Great XP Potion",
-						chance: 0.02
-					},
-					{
-						name: "Grand Stamina Potion",
-						chance: 0.01
-					},
-					{
-						name: "Grand Health Potion",
-						chance: 0.01
-					},
-					{
-						name: "Grand Attack Potion",
-						chance: 0.01
-					},
-					{
-						name: "Grand Defense Potion",
-						chance: 0.01
-					},
-					{
-						name: "Grand Energy Potion",
-						chance: 0.01
-					},
-					{
-						name: "Grand XP Potion",
-						chance: 0.01
-					},
-					{
-						name: "Purple Gem",
-						chance: 0.04
-					},
-					{
-						name: "Mana Infused Crystal",
-						chance: 0.03
-					},
-					{
-						name: "Enchanting Crystal",
-						chance: 0.03
-					},
-					{
-						name: "Purification Gem",
-						chance: 0.04
-					},
-					{
-						name: "Whetstone & Polish",
-						chance: 0.03
-					},
-					{
-						name: "Poison Bomb",
-						chance: 0.04
-					},
-					{
-						name: "Shrapnel Bomb",
-						chance: 0.04
-					},
-					{
-						name: "Pepper Bomb",
-						chance: 0.04
-					},
-					{
-						name: "Purified Salt",
-						chance: 0.04
-					},
-					{
-						name: "Purifying Flask",
-						chance: 0.04
-					},
-					{
-						name: "Purifying Water",
-						chance: 0.04
-					},
-					{
-						name: "Platinum Key",
-						chance: 0.01
-					},
-					{
-						name: "Adamantine Key",
-						chance: 0.02
-					},
+						name: "Milk",
+						chance: 1
+					}
 				]
 			}
 		],

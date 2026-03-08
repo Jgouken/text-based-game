@@ -536,6 +536,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.body.appendChild(overlay);
 
+        const carousel = document.createElement('div');
+        carousel.id = 'loading-tips-carousel';
+        const shell = document.createElement('div');
+        shell.className = 'carousel-shell';
+        carousel.appendChild(shell);
+        overlay.appendChild(carousel);
+
         try {
             function getDaysAgo(pastTimestamp) {
 

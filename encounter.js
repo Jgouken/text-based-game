@@ -433,7 +433,7 @@ async function skill(index) {
             // Pass
             battleStation.turn = false;
             battleStation.showConsumables = false;
-            var staminaRegen = Math.round(player.maxStamina * 0.1);
+            var staminaRegen = Math.round(player.maxStamina * 0.05);
             if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
             player.stamina += staminaRegen;
             battleStation._regenThisRound = (battleStation._regenThisRound || 0) + staminaRegen;
@@ -660,7 +660,7 @@ async function turnManager(toPlayer) {
             await new Promise(r => setTimeout(r, 200))
             encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
 
-            while (player.experience + xpdrop > getRequiredXP(player.level)) {
+            while (player.experience + xpdrop >= getRequiredXP(player.level)) {
                 xpdrop -= getRequiredXP(player.level) - player.experience;
                 const beforeStats = {
                     maxHealth: player.maxHealth,
@@ -844,7 +844,7 @@ async function turnManager(toPlayer) {
 
     if (toPlayer) {
         const already = battleStation._regenThisRound || 0;
-        const desiredTotal = already > 0 ? Math.round(player.maxStamina * 0.2) : Math.round(player.maxStamina * 0.1);
+        const desiredTotal = already > 0 ? Math.round(player.maxStamina * 0.1) : Math.round(player.maxStamina * 0.05);
         let staminaRegen = Math.max(0, desiredTotal - already);
         if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
         if (staminaRegen > 0) player.stamina += staminaRegen;

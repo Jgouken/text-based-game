@@ -1039,53 +1039,39 @@ input[type="submit"]:active,
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
-    max-width: 1100px;
-    height: auto;
-    max-height: 28vh;
+    height: 20%;
     background-color: rgba(4, 0, 39, 0.37);
     z-index: 2;
-    box-sizing: border-box;
-    padding: 6px;
-    align-items: flex-start;
-    overflow: hidden;
 }
 
 .battle-buttons {
     flex: 7;
     display: flex;
     background-color: rgba(0, 0, 0, 0.5);
-    margin: 6px;
-    padding: 8px;
+    margin: 10px;
+    padding: 10px;
     font-family: 'Pixel-Font', sans-serif;
-    font-size: 20px;
+    font-size: 24px;
     color: white;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    max-height: calc(28vh - 20px);
-    overflow-y: auto;
-    box-sizing: border-box;
+    gap: 20px;
 }
 
 .battle-actions {
     display: flex;
     flex-direction: row;
-    gap: 8px;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
+    gap: 20px;
 }
 
 .battle-skills {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin: 0;
+    align-items: flex-start;
+    gap: 20px;
 }
 
 .battle-consumables {
@@ -1398,33 +1384,6 @@ body.inventory-shift-open-journal #inventory .inventory-item:active {
 
 .inventory-item.dragging {
     opacity: 0.4;
-}
-
-/* Mobile: place round-info above the battle buttons so counter is visible */
-@media (max-width: 768px) {
-    .battle-station {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .round-info {
-        order: -1;
-        width: 100%;
-        margin: 4px 6px 0 6px;
-        padding: 6px 8px;
-        font-size: clamp(12px, 3vw, 16px);
-        border-width: 1px;
-        box-sizing: border-box;
-        min-height: 36px;
-        align-items: center;
-    }
-
-    .battle-buttons {
-        order: 0;
-        width: 100%;
-        margin-top: 4px;
-        padding: 6px 6px;
-    }
 }
 
 .player.drop-target {
@@ -1981,13 +1940,12 @@ body.inventory-shift-open-journal #inventory .inventory-item:active {
 
 .battle-button {
     font-family: 'Pixelify Sans', sans-serif;
-    font-size: clamp(14px, 4vw, 36px);
-    line-height: 1.1;
+    font-size: 40px;
 }
 
 .battle-button--small {
     font-family: 'Pixelify Sans', sans-serif;
-    font-size: clamp(12px, 3vw, 48px);
+    font-size: 20px;
 }
 
 .battle-continue {
