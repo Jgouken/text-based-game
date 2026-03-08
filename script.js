@@ -155,7 +155,7 @@ const AudioManager = (function () {
             src.start(0, offset);
         } catch (e) { try { src.start(); } catch (e) { } }
         t.source = src;
-        
+
     }
 
     function ensureStartedAll() {
@@ -221,7 +221,7 @@ const AudioManager = (function () {
         const mainVol = 0.45;
 
         const locTrack = findTrackForLocation(location);
-        if (!decoded) loadAll();
+        if (!decoded) await loadAll();
         if (decoded && resumed) ensureStartedAll();
         try {
             let bgScreen = null;
@@ -417,7 +417,7 @@ const AudioManager = (function () {
 
     function playButtonHover() {
         const now = Date.now();
-        if (now - lastHoverAt < 150) return;
+        if (now - lastHoverAt < 100) return;
         lastHoverAt = now;
         playOneShot('ButtonHover.mp3', 0.5);
     }
@@ -573,16 +573,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function shuffleArray(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
 
-            const carousel = document.createElement('div');
-            carousel.id = 'loading-tips-carousel';
-            const shell = document.createElement('div');
-            shell.className = 'carousel-shell';
-            carousel.appendChild(shell);
-
-            const maskTop = document.createElement('div'); maskTop.className = 'fade-mask top'; carousel.appendChild(maskTop);
-            const maskBottom = document.createElement('div'); maskBottom.className = 'fade-mask bottom'; carousel.appendChild(maskBottom);
-
-            overlay.appendChild(carousel);
             function easeOutElastic(t) {
                 const c4 = (2 * Math.PI) / 3;
                 return t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;

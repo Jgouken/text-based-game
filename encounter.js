@@ -412,7 +412,7 @@ async function skill(index) {
             shouldEndTurn = false;
             player.pstatus = [{ ...statusByName('Weakness'), damage: 0 }, { ...statusByName('Fragility'), damage: 0 }];
             player.stamina = 0;
-            player.health -= background.enemy.attack;
+            player.health -= encounter.attack;
             updateBars();
             savePlayer();
             encounter.battle = false;

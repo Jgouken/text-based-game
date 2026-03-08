@@ -456,10 +456,12 @@
 
             <!-- How To Play -->
             <div id="how-to-play" class="how-to-play" x-show="screen === 'how-to-play'"
-                x-data="{ activeGuide: 'encounters' }">
+                x-data="{ activeGuide: 'point' }">
                 <h1 class="how-title">How To Play</h1>
 
                 <div class="how-tabs">
+                    <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'point' }"
+                        @click="activeGuide = 'point'">Point of the Game</button>
                     <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'encounters' }"
                         @click="activeGuide = 'encounters'">Encounters</button>
                     <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'inventory' }"
@@ -468,11 +470,34 @@
                         @click="activeGuide = 'journal'">Journal</button>
                     <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'crafting' }"
                         @click="activeGuide = 'crafting'">Crafting</button>
-                    <button class="inventory-tab" :class="{ 'inventory-tab--active': activeGuide === 'point' }"
-                        @click="activeGuide = 'point'">Point of the Game</button>
                 </div>
 
                 <div class="how-content-box">
+                    <section x-show="activeGuide === 'point'" x-cloak>
+                        <h2 class="section-heading">Point of the Game</h2>
+                        <p class="how-paragraph">
+                            The goal is to reach level 50, gather strong gear and resources, and progress to defeating
+                            the Demon Queen.
+                        </p>
+                        <p class="how-lead">Progress is intentionally slow and difficult, but highly rewarding as your
+                            build, inventory,
+                            and combat choices come together.</p>
+                        <div class="how-point-warning">
+                            <p class="how-point-warning-title">What's after that?</p>
+                            <p class="how-point-warning-text">After level 50, you can access "Eternal Damnation," an
+                                endless hellscape where the
+                                enemies now scale slightly above you as a perpetual challenge. Good for if you want to
+                                obtain the best gear. You can level up past 50, but the difficulty will continue to
+                                increase.
+                            </p>
+                        </div>
+                        <br>
+                        <p class="how-paragraph">
+                            There is no shop or currency, so all of your resources must be obtained through battles and
+                            crafting. Spend them wisely!
+                        </p>
+                    </section>
+
                     <section x-show="activeGuide === 'encounters'" x-cloak>
                         <h2 class="section-heading">Encounters</h2>
                         <p class="how-paragraph">
@@ -561,43 +586,11 @@
                             </p>
                         </div>
                     </section>
-
-                    <section x-show="activeGuide === 'point'" x-cloak>
-                        <h2 class="section-heading">Point of the Game</h2>
-                        <p class="how-paragraph">
-                            The goal is to reach level 50, gather strong gear and resources, and progress to defeating
-                            the Demon Queen.
-                        </p>
-                        <p class="how-lead">Progress is intentionally slow and difficult, but highly rewarding as your
-                            build, inventory,
-                            and combat choices come together.</p>
-                        <div class="how-point-warning">
-                            <p class="how-point-warning-title">What's after that?</p>
-                            <p class="how-point-warning-text">After level 50, you can access "Eternal Damnation," an
-                                endless hellscape where the
-                                enemies now scale slightly above you as a perpetual challenge. Good for if you want to
-                                obtain the best gear. You can level up past 50, but the difficulty will continue to
-                                increase.
-                            </p>
-                        </div>
-                        <br>
-                        <p class="how-paragraph">
-                            There is no shop or currency, so all of your resources must be obtained through battles and
-                            crafting. Spend them wisely!
-                        </p>
-                    </section>
                 </div>
 
                 <div class="centered-buttons centered-buttons--how-footer">
                     <button class="regular-button btn--primary"
                         @click="transition('how-to-play', 'returning')">Back</button>
-                </div>
-
-                <div class="credits">
-                    <span class="credits-muted">Made by Jgouken &amp; SavorySam</span>
-                    <span>Your gameplay is saved through local storage and JavaScript. If you block either on this
-                        website, <u>your progress cannot be saved.</u></span>
-                    <span class="credits-muted">Art by Espie</span>
                 </div>
             </div>
 
