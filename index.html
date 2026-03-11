@@ -27,7 +27,7 @@
     <div alt="Background" id="background-image" class="background-image" x-init="startup()" x-data="{
             name: JSON.parse(localStorage.getItem('textBasedData'))?.name || '',
             location: 'Warhamshire',
-            screen: JSON.parse(localStorage.getItem('textBasedData'))?.name ? 'returning' : 'new-player',
+            screen: JSON.parse(localStorage.getItem('textBasedData'))?.name ? (JSON.parse(localStorage.getItem('textBasedData'))?.enemy?.battle ? 'encounter' : 'returning') : 'new-player',
             showPlayerBar: false,
             enemy: getAssets().enemies.find(enemy => enemy.name == 'Fox King'),
             enemyLevel: 1,
@@ -54,6 +54,7 @@
                 attack: 75,
                 pstatus: [],
                 activePotion: null,
+                enemy: null,
                 synergyBonus: { name: null, attack: 0, defense: 0, crit: 0, evasion: 0 },
                 inventory: [],
 
@@ -611,48 +612,40 @@
                             :class="{ 'inventory-tab--active': activeTab === 'all' }">
                             All
                         </button>
-                        <button @click="activeTab = 'equipment'" class="inventory-tab"
-                            :class="{ 'inventory-tab--active': activeTab === 'equipment' }">
-                            Equipment
-                        </button>
-                        <button @click="activeTab = 'consumables'" class="inventory-tab"
-                            :class="{ 'inventory-tab--active': activeTab === 'consumables' }">
-                            Consumables
-                        </button>
-                        <button @click="activeTab = 'battleReady'" class="inventory-tab"
-                            :class="{ 'inventory-tab--active': activeTab === 'battleReady' }">
-                            Throwables
-                        </button>
+                        <button @click="activeTab = 'weapons'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'weapons' }">⚔️ Weapons</button>
+                        <button @click="activeTab = 'armors'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'armors' }">🛡️ Armors</button>
+                        <button @click="activeTab = 'potions'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'potions' }">🧪 Potions</button>
+                        <button @click="activeTab = 'eatables'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'eatables' }">🍖 Eatables</button>
+                        <button @click="activeTab = 'bombs'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'bombs' }">💣 Bombs</button>
+                        <button @click="activeTab = 'useables'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'useables' }">✨ Useables</button>
                         <button @click="activeTab = 'keys'" class="inventory-tab"
-                            :class="{ 'inventory-tab--active': activeTab === 'keys' }">
-                            Keys
-                        </button>
-                        <button @click="activeTab = 'miscellaneous'" class="inventory-tab"
-                            :class="{ 'inventory-tab--active': activeTab === 'miscellaneous' }">
-                            Misc
-                        </button>
+                            :class="{ 'inventory-tab--active': activeTab === 'keys' }">🗝️ Keys</button>
                     </div>
 
                     <!-- Sort options -->
                     <div class="inventory-controls-row">
                         <span class="controls-label">Sort by:</span>
-                        <button @click="sortBy = 'name'; refreshSynergies()"
-                            class="inventory-tab inventory-tab--compact"
+                        <button @click="sortBy = 'name'; refreshSynergies()" class="inventory-tab journal-controls__btn"
                             :class="{ 'inventory-tab--active': sortBy === 'name' }">
                             Name
                         </button>
-                        <button @click="sortBy = 'type'; refreshSynergies()"
-                            class="inventory-tab inventory-tab--compact"
+                        <button @click="sortBy = 'type'; refreshSynergies()" class="inventory-tab journal-controls__btn"
                             :class="{ 'inventory-tab--active': sortBy === 'type' }">
                             Type
                         </button>
                         <button @click="sortBy = 'level'; refreshSynergies()"
-                            class="inventory-tab inventory-tab--compact"
+                            class="inventory-tab journal-controls__btn"
                             :class="{ 'inventory-tab--active': sortBy === 'level' }">
                             Level
                         </button>
                         <button @click="sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; refreshSynergies()"
-                            class="inventory-tab inventory-tab--compact" data-tooltip="Click to reverse">
+                            class="inventory-tab journal-controls__btn" data-tooltip="Click to reverse">
                             <span x-text="sortOrder === 'asc' ? '↑ Ascending' : '↓ Descending'"></span>
                         </button>
                     </div>
@@ -661,7 +654,7 @@
                         <span class="controls-label">Search:</span>
                         <input x-model="searchQuery" type="text" placeholder="Search inventory..."
                             class="inventory-search-input" />
-                        <button class="inventory-tab inventory-tab--compact" x-show="searchQuery"
+                        <button class="inventory-tab journal-controls__btn" x-show="searchQuery"
                             @click="searchQuery = ''">Clear</button>
                     </div>
 
@@ -669,20 +662,27 @@
                         <template x-for="(item, idx) in (() => {
                 let inventory = Alpine.$data(document.getElementById('player')).inventory;
                 let filtered = inventory.filter((item, idx) => {
-                    let it = assets.items.find(i => i.name === item.name);
+                    let it = (assets.items.find(i => i.name === item.name) || assets.weapons.find(w => w.name === item.name) || assets.armors.find(a => a.name === item.name));
                     if (!it) return false;
 
                     if (activeTab === 'all') return true;
 
-                    const isEquipment = (it.attack !== undefined && it.skills) || (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
-                    const isConsumable = it.name.toLowerCase().includes('potion');
-                    const isBattleReady = it.name.toLowerCase().endsWith('bomb') || it.name.toLowerCase().endsWith('flask');
-                    const isKey = it.chest !== undefined;
-                    const isMiscellaneous = !isEquipment && !isConsumable && !isBattleReady && !isKey;
+                    const id = it.id ?? null;
+                    const isWeapon = (it.attack !== undefined && Array.isArray(it.skills));
+                    const isArmor = (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
+                    const isPotions = id === '🧪';
+                    const isEatables = id === '🍖';
+                    const isBombs = id === '💣';
+                    const isUseables = id === '✨';
+                    const isKey = id === '🗝️' || it.chest !== undefined;
+                    const isMiscellaneous = !isWeapon && !isArmor && !isPotions && !isEatables && !isBombs && !isUseables && !isKey;
 
-                    if (activeTab === 'equipment') return isEquipment;
-                    if (activeTab === 'consumables') return isConsumable;
-                    if (activeTab === 'battleReady') return isBattleReady;
+                    if (activeTab === 'weapons') return isWeapon;
+                    if (activeTab === 'armors') return isArmor;
+                    if (activeTab === 'potions') return isPotions;
+                    if (activeTab === 'eatables') return isEatables;
+                    if (activeTab === 'bombs') return isBombs;
+                    if (activeTab === 'useables') return isUseables;
                     if (activeTab === 'keys') return isKey;
                     if (activeTab === 'miscellaneous') return isMiscellaneous;
 
@@ -692,7 +692,7 @@
                 const query = searchQuery.toLowerCase().trim();
                 if (query) {
                     filtered = filtered.filter(item => {
-                        const it = assets.items.find(i => i.name === item.name);
+                        const it = (assets.items.find(i => i.name === item.name) || assets.weapons.find(w => w.name === item.name) || assets.armors.find(a => a.name === item.name));
                         const nameMatch = item.name.toLowerCase().includes(query);
                         const descMatch = (it?.description || '').toLowerCase().includes(query);
                         return nameMatch || descMatch;
@@ -700,52 +700,37 @@
                 }
 
                 filtered.sort((a, b) => {
-                    let aItem = assets.items.find(i => i.name === a.name);
-                    let bItem = assets.items.find(i => i.name === b.name);
+                    const aItem = (assets.items.find(i => i.name === a.name) || assets.weapons.find(w => w.name === a.name) || assets.armors.find(a2 => a2.name === a.name));
+                    const bItem = (assets.items.find(i => i.name === b.name) || assets.weapons.find(w => w.name === b.name) || assets.armors.find(a2 => a2.name === b.name));
 
-                    let compareVal = 0;
-
-                    if (sortBy === 'name') {
-                        compareVal = a.name.localeCompare(b.name);
-                    } else if (sortBy === 'type') {
-
-                        const getTypeOrder = (item) => {
-                            if (item.attack !== undefined && item.skills) return 0;
-                            if (item.defense !== undefined && !item.skills && item.alvlmult !== undefined) return 1;
-                            if (item.damage || item.estatus || (item.buff && item.rounds)) return 2;
-                            if (item.health || item.stamina || item.xp || item.pstatus) return 3;
-                            if (item.chest !== undefined) return 5;
-                            return 4;
-                        };
-
-                        const aType = getTypeOrder(aItem);
-                        const bType = getTypeOrder(bItem);
-
-                        compareVal = aType - bType;
-                        if (compareVal === 0) {
-                            compareVal = a.name.localeCompare(b.name);
-                        }
-                    } else if (sortBy === 'level') {
-                        const aLevel = a.level ?? 1;
-                        const bLevel = b.level ?? 1;
-                        compareVal = aLevel - bLevel;
-                        if (compareVal === 0) {
-                            compareVal = a.name.localeCompare(b.name);
-                        }
+                    // If viewing weapons or armors, sort by minlvl then name
+                    if (activeTab === 'weapons' || activeTab === 'armors') {
+                        const aMax = aItem?.maxlvl ?? aItem?.minlvl ?? 1;
+                        const bMax = bItem?.maxlvl ?? bItem?.minlvl ?? 1;
+                        if (aMax !== bMax) return aMax - bMax;
+                        return a.name.localeCompare(b.name);
                     }
 
-                    return sortOrder === 'asc' ? compareVal : -compareVal;
+                    const idOrder = { '🧪': 0, '🍖': 1, '💣': 2, '✨': 3, '🗝️': 4 };
+                    const aId = aItem?.id ?? null;
+                    const bId = bItem?.id ?? null;
+                    const aOrder = aId ? (idOrder[aId] ?? 99) : 99;
+                    const bOrder = bId ? (idOrder[bId] ?? 99) : 99;
+
+                    if (aOrder !== bOrder) return aOrder - bOrder;
+                    return a.name.localeCompare(b.name);
                 });
 
                 return filtered;
             })()" :key="idx">
                             <div class="inventory-item" :class="{'inventory-item--no-icon': !(item.sprite)}"
-                                :data-tooltip="window.getItemTooltipText(item.name, item.level ?? 1)" draggable="true">
+                                :data-tooltip-html="window.getItemTooltipText(item.name, item.level ?? 1, true)"
+                                draggable="true">
                                 <div class="inventory-item-amount inventory-item-amount--inline"
                                     x-show="item.amount > 1 && !(item.sprite)">x<span x-text="item.amount"></span>
                                 </div>
                                 <div class="inventory-item-icon-wrap"
-                                    x-show="(() => { let it = assets.items.find(i => i.name === item.name); return it && it.chest !== undefined; })()">
+                                    x-show="(() => { let it = (assets.items.find(i => i.name === item.name) || assets.weapons.find(w => w.name === item.name) || assets.armors.find(a => a.name === item.name)); return it && it.chest !== undefined; })()">
                                     <img class="inventory-item-icon"
                                         :src="`assets/keys/${item.name.replace(/ /g, '')}.gif`" alt="" />
                                 </div>
@@ -764,20 +749,27 @@
                 if (inventory.length === 0) return true;
 
                 const filteredItems = inventory.filter(item => {
-                    let it = assets.items.find(i => i.name === item.name);
+                    let it = (assets.items.find(i => i.name === item.name) || assets.weapons.find(w => w.name === item.name) || assets.armors.find(a => a.name === item.name));
                     if (!it) return false;
 
                     if (activeTab === 'all') return true;
 
-                    const isEquipment = (it.attack !== undefined && it.skills) || (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
-                    const isConsumable = it.name.toLowerCase().includes('potion');
-                    const isBattleReady = it.name.toLowerCase().endsWith('bomb') || it.name.toLowerCase().endsWith('flask');
-                    const isKey = it.chest !== undefined;
-                    const isMiscellaneous = !isEquipment && !isConsumable && !isBattleReady && !isKey;
+                    const id = it.id ?? null;
+                    const isWeapon = (it.attack !== undefined && Array.isArray(it.skills));
+                    const isArmor = (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
+                    const isPotions = id === '🧪';
+                    const isEatables = id === '🍖';
+                    const isBombs = id === '💣';
+                    const isUseables = id === '✨';
+                    const isKey = id === '🗝️';
+                    const isMiscellaneous = !isWeapon && !isArmor && !isPotions && !isEatables && !isBombs && !isUseables && !isKey;
 
-                    if (activeTab === 'equipment') return isEquipment;
-                    if (activeTab === 'consumables') return isConsumable;
-                    if (activeTab === 'battleReady') return isBattleReady;
+                    if (activeTab === 'weapons') return isWeapon;
+                    if (activeTab === 'armors') return isArmor;
+                    if (activeTab === 'potions') return isPotions;
+                    if (activeTab === 'eatables') return isEatables;
+                    if (activeTab === 'bombs') return isBombs;
+                    if (activeTab === 'useables') return isUseables;
                     if (activeTab === 'keys') return isKey;
                     if (activeTab === 'miscellaneous') return isMiscellaneous;
 
@@ -787,7 +779,7 @@
                 const query = searchQuery.toLowerCase().trim();
                 const searchedItems = query
                     ? filteredItems.filter(item => {
-                        let it = assets.items.find(i => i.name === item.name);
+                        let it = (assets.items.find(i => i.name === item.name) || assets.weapons.find(w => w.name === item.name) || assets.armors.find(a => a.name === item.name));
                         const nameMatch = item.name.toLowerCase().includes(query);
                         const descMatch = (it?.description || '').toLowerCase().includes(query);
                         return nameMatch || descMatch;
@@ -843,26 +835,26 @@
                         :class="{ 'inventory-tab--active': itemSubTab === 'all' }"
                         @click="itemSubTab = 'all'">All</button>
                     <button class="inventory-tab journal-controls__btn"
-                        :class="{ 'inventory-tab--active': itemSubTab === 'weapon' }"
-                        @click="itemSubTab = 'weapon'">Weapons</button>
+                        :class="{ 'inventory-tab--active': itemSubTab === 'weapon' }" @click="itemSubTab = 'weapon'">⚔️
+                        Weapons</button>
                     <button class="inventory-tab journal-controls__btn"
-                        :class="{ 'inventory-tab--active': itemSubTab === 'armor' }"
-                        @click="itemSubTab = 'armor'">Armors</button>
+                        :class="{ 'inventory-tab--active': itemSubTab === 'armor' }" @click="itemSubTab = 'armor'">🛡️
+                        Armors</button>
                     <button class="inventory-tab journal-controls__btn"
-                        :class="{ 'inventory-tab--active': itemSubTab === 'consumables' }"
-                        @click="itemSubTab = 'consumables'">Consumables</button>
+                        :class="{ 'inventory-tab--active': itemSubTab === 'potions' }"
+                        @click="itemSubTab = 'potions'">🧪 Potions</button>
                     <button class="inventory-tab journal-controls__btn"
-                        :class="{ 'inventory-tab--active': itemSubTab === 'throwables' }"
-                        @click="itemSubTab = 'throwables'">Throwables</button>
+                        :class="{ 'inventory-tab--active': itemSubTab === 'eatables' }"
+                        @click="itemSubTab = 'eatables'">🍖 Eatables</button>
                     <button class="inventory-tab journal-controls__btn"
-                        :class="{ 'inventory-tab--active': itemSubTab === 'keys' }"
-                        @click="itemSubTab = 'keys'">Keys</button>
+                        :class="{ 'inventory-tab--active': itemSubTab === 'bombs' }" @click="itemSubTab = 'bombs'">💣
+                        Bombs</button>
                     <button class="inventory-tab journal-controls__btn"
-                        :class="{ 'inventory-tab--active': itemSubTab === 'misc' }"
-                        @click="itemSubTab = 'misc'">Misc</button>
+                        :class="{ 'inventory-tab--active': itemSubTab === 'useables' }"
+                        @click="itemSubTab = 'useables'">✨ Useables</button>
                     <button class="inventory-tab journal-controls__btn"
-                        :class="{ 'inventory-tab--active': itemSubTab === 'chests' }"
-                        @click="itemSubTab = 'chests'">Chests</button>
+                        :class="{ 'inventory-tab--active': itemSubTab === 'keys' }" @click="itemSubTab = 'keys'">🗝️
+                        Keys</button>
                 </div>
 
                 <div class="journal-controls journal-controls--compact" x-show="activeTab === 'enemies'">
@@ -945,6 +937,7 @@
         <!-- Crafting-->
         <div id="crafting" class="crafting" x-show="screen === 'crafting'" x-data="{
                 activeTab: 'all',
+                craftTab: 'all',
                 sortBy: 'name',
                 sortOrder: 'asc',
                 searchQuery: '',
@@ -953,8 +946,19 @@
                 craftingInventorySearch: '',
                 get craftables() {
                     const query = this.craftSearch.toLowerCase().trim();
-                    return assets.items.filter(item => {
-                        if (!item.craft) return false;
+                    const all = assets.items.filter(item => item.craft);
+                    const filteredByTab = all.filter(item => {
+                        if (this.craftTab === 'all') return true;
+                        if (this.craftTab === 'weapons') return Array.isArray(item.skills) || !!(assets.weapons.find(w => w.name === item.name));
+                        if (this.craftTab === 'armors') return (!!item.defense && !!item.alvlmult) || !!(assets.armors.find(a => a.name === item.name));
+                        if (this.craftTab === 'potions') return item.id === '🧪';
+                        if (this.craftTab === 'eatables') return item.id === '🍖';
+                        if (this.craftTab === 'bombs') return item.id === '💣';
+                        if (this.craftTab === 'useables') return item.id === '✨';
+                        if (this.craftTab === 'keys') return item.id === '🗝️';
+                        return true;
+                    });
+                    return filteredByTab.filter(item => {
                         const hasAnyIngredient = item.craft.some(ingredient => this.getOwnedAmount(ingredient) > 0);
                         if (!query) return hasAnyIngredient;
                         return item.name.toLowerCase().includes(query) || (item.description || '').toLowerCase().includes(query);
@@ -967,7 +971,7 @@
                     const query = this.craftingInventorySearch.toLowerCase().trim();
                     if (!query) return this.playerInventory;
                     return this.playerInventory.filter(item => {
-                        const it = assets.items.find(i => i.name === item.name);
+                        const it = (assets.items.find(i => i.name === item.name) || assets.weapons.find(w => w.name === item.name) || assets.armors.find(a => a.name === item.name));
                         return item.name.toLowerCase().includes(query) || (it?.description || '').toLowerCase().includes(query);
                     });
                 },
@@ -1003,13 +1007,28 @@
                         <div class="inventory-tabs">
                             <button class="regular-button btn--primary"
                                 @click="transition('crafting', 'returning')">Back</button>
-                            <button class="inventory-tab inventory-tab--active">Craftable</button>
+                            <button @click="craftTab = 'all'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': craftTab === 'all' }">All</button>
+                            <button @click="craftTab = 'weapons'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': craftTab === 'weapons' }">⚔️ Weapons</button>
+                            <button @click="craftTab = 'armors'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': craftTab === 'armors' }">🛡️ Armors</button>
+                            <button @click="craftTab = 'potions'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': craftTab === 'potions' }">🧪 Potions</button>
+                            <button @click="craftTab = 'eatables'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': craftTab === 'eatables' }">🍖 Eatables</button>
+                            <button @click="craftTab = 'bombs'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': craftTab === 'bombs' }">💣 Bombs</button>
+                            <button @click="craftTab = 'useables'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': craftTab === 'useables' }">✨ Useables</button>
+                            <button @click="activeTab = 'keys'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': activeTab === 'keys' }">🗝️ Keys</button>
                         </div>
                         <div class="crafting-controls-row">
                             <span class="journal-controls__label--small">Search:</span>
                             <input x-model="craftSearch" type="text" placeholder="Search craftables..."
                                 class="crafting-search-input" />
-                            <button class="inventory-tab inventory-tab--compact" x-show="craftSearch"
+                            <button class="inventory-tab journal-controls__btn" x-show="craftSearch"
                                 @click="craftSearch = ''">Clear</button>
                         </div>
                         <div class="crafting-grid">
@@ -1040,31 +1059,35 @@
                         <div class="inventory-tabs">
                             <button @click="activeTab = 'all'" class="inventory-tab"
                                 :class="{ 'inventory-tab--active': activeTab === 'all' }">All</button>
-                            <button @click="activeTab = 'equipment'" class="inventory-tab"
-                                :class="{ 'inventory-tab--active': activeTab === 'equipment' }">Equipment</button>
-                            <button @click="activeTab = 'consumables'" class="inventory-tab"
-                                :class="{ 'inventory-tab--active': activeTab === 'consumables' }">Consumables</button>
-                            <button @click="activeTab = 'battleReady'" class="inventory-tab"
-                                :class="{ 'inventory-tab--active': activeTab === 'battleReady' }">Throwables</button>
+                            <button @click="activeTab = 'weapons'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': activeTab === 'weapons' }">⚔️ Weapons</button>
+                            <button @click="activeTab = 'armors'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': activeTab === 'armors' }">🛡️ Armors</button>
+                            <button @click="activeTab = 'potions'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': activeTab === 'potions' }">🧪 Potions</button>
+                            <button @click="activeTab = 'eatables'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': activeTab === 'eatables' }">🍖 Eatables</button>
+                            <button @click="activeTab = 'bombs'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': activeTab === 'bombs' }">💣 Bombs</button>
+                            <button @click="activeTab = 'useables'" class="inventory-tab"
+                                :class="{ 'inventory-tab--active': activeTab === 'useables' }">✨ Useables</button>
                             <button @click="activeTab = 'keys'" class="inventory-tab"
-                                :class="{ 'inventory-tab--active': activeTab === 'keys' }">Keys</button>
-                            <button @click="activeTab = 'miscellaneous'" class="inventory-tab"
-                                :class="{ 'inventory-tab--active': activeTab === 'miscellaneous' }">Misc</button>
+                                :class="{ 'inventory-tab--active': activeTab === 'keys' }">🗝️ Keys</button>
                         </div>
 
                         <div class="inventory-controls-row">
                             <span class="controls-label">Sort by:</span>
                             <button @click="sortBy = 'name'; refreshSynergies()"
-                                class="inventory-tab inventory-tab--compact"
+                                class="inventory-tab journal-controls__btn"
                                 :class="{ 'inventory-tab--active': sortBy === 'name' }">Name</button>
                             <button @click="sortBy = 'type'; refreshSynergies()"
-                                class="inventory-tab inventory-tab--compact"
+                                class="inventory-tab journal-controls__btn"
                                 :class="{ 'inventory-tab--active': sortBy === 'type' }">Type</button>
                             <button @click="sortBy = 'level'; refreshSynergies()"
-                                class="inventory-tab inventory-tab--compact"
+                                class="inventory-tab journal-controls__btn"
                                 :class="{ 'inventory-tab--active': sortBy === 'level' }">Level</button>
                             <button @click="sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'; refreshSynergies()"
-                                class="inventory-tab inventory-tab--compact" data-tooltip="Click to reverse">
+                                class="inventory-tab journal-controls__btn" data-tooltip="Click to reverse">
                                 <span x-text="sortOrder === 'asc' ? '↑ Ascending' : '↓ Descending'"></span>
                             </button>
                         </div>
@@ -1073,7 +1096,7 @@
                             <span class="controls-label">Search:</span>
                             <input x-model="searchQuery" type="text" placeholder="Search inventory..."
                                 class="inventory-search-input" />
-                            <button class="inventory-tab inventory-tab--compact" x-show="searchQuery"
+                            <button class="inventory-tab journal-controls__btn" x-show="searchQuery"
                                 @click="searchQuery = ''">Clear</button>
                         </div>
 
@@ -1081,20 +1104,27 @@
                             <template x-for="(item, idx) in (() => {
                 let inventory = Alpine.$data(document.getElementById('player')).inventory;
                 let filtered = inventory.filter((item, idx) => {
-                    let it = assets.items.find(i => i.name === item.name);
+                    let it = (assets.items.find(i => i.name === item.name) || assets.weapons.find(w => w.name === item.name) || assets.armors.find(a => a.name === item.name));
                     if (!it) return false;
 
                     if (activeTab === 'all') return true;
 
-                    const isEquipment = (it.attack !== undefined && it.skills) || (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
-                    const isConsumable = it.name.toLowerCase().includes('potion');
-                    const isBattleReady = it.name.toLowerCase().endsWith('bomb') || it.name.toLowerCase().endsWith('flask');
-                    const isKey = it.chest !== undefined;
-                    const isMiscellaneous = !isEquipment && !isConsumable && !isBattleReady && !isKey;
+                    const id = it.id ?? null;
+                    const isWeapon = (it.attack !== undefined && Array.isArray(it.skills));
+                    const isArmor = (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
+                    const isPotions = id === '🧪';
+                    const isEatables = id === '🍖';
+                    const isBombs = id === '💣';
+                    const isUseables = id === '✨';
+                    const isKey = id === '🗝️' || it.chest !== undefined;
+                    const isMiscellaneous = !isWeapon && !isArmor && !isPotions && !isEatables && !isBombs && !isUseables && !isKey;
 
-                    if (activeTab === 'equipment') return isEquipment;
-                    if (activeTab === 'consumables') return isConsumable;
-                    if (activeTab === 'battleReady') return isBattleReady;
+                    if (activeTab === 'weapons') return isWeapon;
+                    if (activeTab === 'armors') return isArmor;
+                    if (activeTab === 'potions') return isPotions;
+                    if (activeTab === 'eatables') return isEatables;
+                    if (activeTab === 'bombs') return isBombs;
+                    if (activeTab === 'useables') return isUseables;
                     if (activeTab === 'keys') return isKey;
                     if (activeTab === 'miscellaneous') return isMiscellaneous;
 
@@ -1104,7 +1134,7 @@
                 const query = searchQuery.toLowerCase().trim();
                 if (query) {
                     filtered = filtered.filter(item => {
-                        const it = assets.items.find(i => i.name === item.name);
+                        const it = (assets.items.find(i => i.name === item.name) || assets.weapons.find(w => w.name === item.name) || assets.armors.find(a => a.name === item.name));
                         const nameMatch = item.name.toLowerCase().includes(query);
                         const descMatch = (it?.description || '').toLowerCase().includes(query);
                         return nameMatch || descMatch;
@@ -1112,54 +1142,38 @@
                 }
 
                 filtered.sort((a, b) => {
-                    let aItem = assets.items.find(i => i.name === a.name);
-                    let bItem = assets.items.find(i => i.name === b.name);
+                    const aItem = (assets.items.find(i => i.name === a.name) || assets.weapons.find(w => w.name === a.name) || assets.armors.find(a2 => a2.name === a.name));
+                    const bItem = (assets.items.find(i => i.name === b.name) || assets.weapons.find(w => w.name === b.name) || assets.armors.find(a2 => a2.name === b.name));
 
-                    let compareVal = 0;
-
-                    if (sortBy === 'name') {
-                        compareVal = a.name.localeCompare(b.name);
-                    } else if (sortBy === 'type') {
-
-                        const getTypeOrder = (item) => {
-                            if (item.attack !== undefined && item.skills) return 0;
-                            if (item.defense !== undefined && !item.skills && item.alvlmult !== undefined) return 1;
-                            if (item.damage || item.estatus || (item.buff && item.rounds)) return 2;
-                            if (item.health || item.stamina || item.xp || item.pstatus) return 3;
-                            if (item.chest !== undefined) return 5;
-                            return 4;
-                        };
-
-                        const aType = getTypeOrder(aItem);
-                        const bType = getTypeOrder(bItem);
-
-                        compareVal = aType - bType;
-                        if (compareVal === 0) {
-                            compareVal = a.name.localeCompare(b.name);
-                        }
-                    } else if (sortBy === 'level') {
-                        const aLevel = a.level ?? 1;
-                        const bLevel = b.level ?? 1;
-                        compareVal = aLevel - bLevel;
-                        if (compareVal === 0) {
-                            compareVal = a.name.localeCompare(b.name);
-                        }
+                    // If viewing weapons or armors, sort by minlvl then name
+                    if (activeTab === 'weapons' || activeTab === 'armors') {
+                        const aMax = aItem?.maxlvl ?? aItem?.minlvl ?? 1;
+                        const bMax = bItem?.maxlvl ?? bItem?.minlvl ?? 1;
+                        if (aMax !== bMax) return aMax - bMax;
+                        return a.name.localeCompare(b.name);
                     }
 
-                    return sortOrder === 'asc' ? compareVal : -compareVal;
+                    const idOrder = { '🧪': 0, '🍖': 1, '💣': 2, '✨': 3, '🗝️': 4 };
+                    const aId = aItem?.id ?? null;
+                    const bId = bItem?.id ?? null;
+                    const aOrder = aId ? (idOrder[aId] ?? 99) : 99;
+                    const bOrder = bId ? (idOrder[bId] ?? 99) : 99;
+
+                    if (aOrder !== bOrder) return aOrder - bOrder;
+                    return a.name.localeCompare(b.name);
                 });
 
                 return filtered;
             })()" :key="idx">
                                 <div class="inventory-item crafting-inventory-item"
                                     :class="{'inventory-item--no-icon': !(item.sprite)}"
-                                    :data-tooltip="window.getItemTooltipText(item.name, item.level ?? 1)"
+                                    :data-tooltip-html="window.getItemTooltipText(item.name, item.level ?? 1, true)"
                                     draggable="true">
                                     <div class="inventory-item-amount inventory-item-amount--inline"
                                         x-show="item.amount > 1 && !(item.sprite)">x<span x-text="item.amount"></span>
                                     </div>
                                     <div class="inventory-item-icon-wrap"
-                                        x-show="(() => { let it = assets.items.find(i => i.name === item.name); return it && it.chest !== undefined; })()">
+                                        x-show="(() => { let it = (assets.items.find(i => i.name === item.name) || assets.weapons.find(w => w.name === item.name) || assets.armors.find(a => a.name === item.name)); return it && it.chest !== undefined; })()">
                                         <img class="inventory-item-icon"
                                             :src="`assets/keys/${item.name.replace(/ /g, '')}.gif`" alt="" />
                                     </div>
@@ -1178,20 +1192,27 @@
                 if (inventory.length === 0) return true;
 
                 const filteredItems = inventory.filter(item => {
-                    let it = assets.items.find(i => i.name === item.name);
+                    let it = (assets.items.find(i => i.name === item.name) || assets.weapons.find(w => w.name === item.name) || assets.armors.find(a => a.name === item.name));
                     if (!it) return false;
 
                     if (activeTab === 'all') return true;
 
-                    const isEquipment = (it.attack !== undefined && it.skills) || (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
-                    const isConsumable = it.name.toLowerCase().includes('potion');
-                    const isBattleReady = it.name.toLowerCase().endsWith('bomb') || it.name.toLowerCase().endsWith('flask');
-                    const isKey = it.chest !== undefined;
-                    const isMiscellaneous = !isEquipment && !isConsumable && !isBattleReady && !isKey;
+                    const id = it.id ?? null;
+                    const isWeapon = (it.attack !== undefined && Array.isArray(it.skills));
+                    const isArmor = (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
+                    const isPotions = id === '🧪';
+                    const isEatables = id === '🍖';
+                    const isBombs = id === '💣';
+                    const isUseables = id === '✨';
+                    const isKey = id === '🗝️' || it.chest !== undefined;
+                    const isMiscellaneous = !isWeapon && !isArmor && !isPotions && !isEatables && !isBombs && !isUseables && !isKey;
 
-                    if (activeTab === 'equipment') return isEquipment;
-                    if (activeTab === 'consumables') return isConsumable;
-                    if (activeTab === 'battleReady') return isBattleReady;
+                    if (activeTab === 'weapons') return isWeapon;
+                    if (activeTab === 'armors') return isArmor;
+                    if (activeTab === 'potions') return isPotions;
+                    if (activeTab === 'eatables') return isEatables;
+                    if (activeTab === 'bombs') return isBombs;
+                    if (activeTab === 'useables') return isUseables;
                     if (activeTab === 'keys') return isKey;
                     if (activeTab === 'miscellaneous') return isMiscellaneous;
 
@@ -1201,7 +1222,7 @@
                 const query = searchQuery.toLowerCase().trim();
                 const searchedItems = query
                     ? filteredItems.filter(item => {
-                        let it = assets.items.find(i => i.name === item.name);
+                        let it = (assets.items.find(i => i.name === item.name) || assets.weapons.find(w => w.name === item.name) || assets.armors.find(a => a.name === item.name));
                         const nameMatch = item.name.toLowerCase().includes(query);
                         const descMatch = (it?.description || '').toLowerCase().includes(query);
                         return nameMatch || descMatch;
@@ -1532,7 +1553,7 @@
                             .map((inventoryItem, inventoryIndex) => ({
                                 inventoryItem,
                                 inventoryIndex,
-                                itemData: assets.items.find(item => item.name === inventoryItem.name)
+                                itemData: (assets.items.find(item => item.name === inventoryItem.name) || assets.weapons.find(w => w.name === inventoryItem.name) || assets.armors.find(a => a.name === inventoryItem.name))
                             }))
                             .filter(entry => entry.itemData?.battle === true);
                     }
@@ -1553,7 +1574,8 @@
                             data-tooltip="Use an item from your inventory.">Item</button>
                         <button class="battle-flee battle-button"
                             :style="`background-color: ${turn ? 'red' : 'background-color: rgb(55, 55, 55)'}; color: white; border: 5px solid rgb(88, 0, 0); cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                            :disabled="!turn" @click="skill(-3)" data-tooltip="Flee, but pay the price.">Flee</button>
+                            :disabled="!turn" @click="skill(-3)"
+                            :data-tooltip="`Run Away\n- Get hit with an Opportunity Attack\n- Lose all Stamina\n- Lose all status effects\nGain [🌀🩼]`">Flee</button>
                     </div>
 
                     <div class="battle-consumables" x-show="turn && showConsumables && consumables.length > 0">
@@ -1565,7 +1587,7 @@
                         <template x-for="(entry, idx) in consumables" :key="`${entry.inventoryItem.name}-${idx}`">
                             <div class="inventory-item battle-consumable-inventory-item inventory-item--draggable"
                                 :class="{'inventory-item--no-icon': !(entry.itemData?.sprite)}"
-                                :data-tooltip="window.getItemTooltipText(entry.inventoryItem.name, entry.inventoryItem.level ?? 1)"
+                                :data-tooltip-html="window.getItemTooltipText(entry.inventoryItem.name, entry.inventoryItem.level ?? 1, true)"
                                 draggable="true">
                                 <div class="inventory-item-amount inventory-item-amount--inline"
                                     x-show="entry.inventoryItem.amount > 1 && !(entry.itemData?.sprite)">x<span
@@ -1658,7 +1680,7 @@
                     <button class="battle-item battle-button battle-continue" @click="victory()">Campfire</button>
                 </div>
                 <div class="round-info"
-                    x-text="health > 0 && Alpine.$data(document.getElementById('player')).health > 0 ? `Round ${round - 1}\n\n${turn ? 'Your' : enemyName + `'s`} Turn` : health <= 0 ? `You Won\n\n${round - 1} Rounds` : `You Died\n\n${round - 1} Rounds`">
+                    x-text="health > 0 && Alpine.$data(document.getElementById('player')).health > 0 ? `Round ${round}\n\n${turn ? 'Your' : enemyName + `'s`} Turn` : health <= 0 ? `You Won\n\n${round} Rounds` : `You Died\n\n${round} Rounds`">
                     Round 1\n\nYour Turn</div>
             </div>
         </div>
@@ -1690,9 +1712,9 @@
                 <!-- Weapon selector (typeable) + level -->
                 <div class="debug-composite">
                     <input list="weapons-list" placeholder="Equip Weapon"
-                        @keyup.enter="(function(v){ const w = assets.items.find(i => i.name == v && i.attack !== undefined && i.skills); if(w){ Alpine.$data(document.getElementById('player')).weaponry = {weapon: w, level: Number(document.getElementById('debug-weapon-level').value || 1)}; setPlayer(); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
+                        @keyup.enter="(function(v){ const w = (assets.weapons.find(i => i.name == v && i.attack !== undefined && i.skills) || assets.items.find(i => i.name == v && i.attack !== undefined && i.skills)); if(w){ Alpine.$data(document.getElementById('player')).weaponry = {weapon: w, level: Number(document.getElementById('debug-weapon-level').value || 1)}; setPlayer(); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
                     <datalist id="weapons-list">
-                        <template x-for="it in assets.items.filter(i => i.attack !== undefined && i.skills)"
+                        <template x-for="it in (assets.weapons || []).filter(i => i.attack !== undefined && i.skills)"
                             :key="it.name">
                             <option :value="it.name"></option>
                         </template>
@@ -1703,9 +1725,10 @@
 
                 <div class="debug-composite">
                     <input list="armors-list" placeholder="Equip Armor"
-                        @keyup.enter="(function(v){ const a = assets.items.find(i => i.name == v && i.defense !== undefined); if(a){ Alpine.$data(document.getElementById('player')).armory = {armor: a, level: Number(document.getElementById('debug-armor-level').value || 1)}; setPlayer(); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
+                        @keyup.enter="(function(v){ const a = (assets.armors.find(i => i.name == v && i.defense !== undefined) || assets.items.find(i => i.name == v && i.defense !== undefined)); if(a){ Alpine.$data(document.getElementById('player')).armory = {armor: a, level: Number(document.getElementById('debug-armor-level').value || 1)}; setPlayer(); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
                     <datalist id="armors-list">
-                        <template x-for="it in assets.items.filter(i => i.defense !== undefined)" :key="it.name">
+                        <template x-for="it in (assets.armors || []).filter(i => i.defense !== undefined)"
+                            :key="it.name">
                             <option :value="it.name"></option>
                         </template>
                     </datalist>
@@ -1715,13 +1738,14 @@
 
                 <div class="debug-composite">
                     <input list="items-list" placeholder="Get Item"
-                        @keyup.enter="(function(v){ const it = assets.items.find(i => i.name == v); if(it){ addToInventory(it, Number(document.getElementById('debug-get-item-amount').value || 1)); setPlayer(); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
+                        @keyup.enter="(function(v){ const it = (assets.items.find(i => i.name == v) || assets.weapons.find(w => w.name == v) || assets.armors.find(a => a.name == v)); if(it){ addToInventory(it, Number(document.getElementById('debug-get-item-amount').value || 1)); setPlayer(); } })( $event.target.value ); $event.target.value = ''; $event.target.blur()" />
                     <datalist id="items-list">
-                        <template x-for="it in assets.items" :key="it.name">
+                        <template x-for="it in (assets.items || []).concat(assets.weapons || [], assets.armors || [])"
+                            :key="it.name">
                             <option :value="it.name"></option>
                         </template>
                     </datalist>
-                    <input id="debug-get-item-amount" type="number" min="1" placeholder="Amount" value="5"
+                    <input id="debug-get-item-amount" type="number" min="1" placeholder="Lvl" value="1"
                         style="width:4ch;" />
                 </div>
 

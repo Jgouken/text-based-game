@@ -7,6 +7,7 @@ function initInventoryDragDrop() {
     setTimeout(() => {
         setupInventoryListeners();
         setupEquipmentListeners();
+        setupCraftingListeners();
         setupBattleConsumableListeners();
         enhanceInventoryTooltips();
         setupInventoryShiftCursorHint();
@@ -85,14 +86,14 @@ function handleInventoryItemClick(e) {
 
     const itemName = inventoryItem.querySelector('.inventory-item-name')?.textContent?.trim();
     if (!itemName) return;
-    if (typeof window.openJournalItemFromInventory !== 'function') return;
+    if (!window.openJournalItemFromInventory) return;
 
     const player = Alpine.$data(document.getElementById('player'));
     const itemLevel = player ? getHoveredItemLevel(player, itemName) : 1;
 
     e.preventDefault();
     e.stopPropagation();
-    window.openJournalItemFromInventory(itemName, itemLevel);
+    window.openJournalItemFromInventory(itemName, itemLevel, 'inventory');
 }
 
 function setupEquipmentListeners() {
@@ -125,30 +126,40 @@ function getHoveredItemLevel(player, itemName) {
 
 function getItemMetaText(itemName, level = 1) {
     const assets = getAssets();
-    const item = assets.items.find(i => i.name === itemName);
+    const item = (assets.items.find(i => i.name === itemName) || assets.weapons.find(w => w.name === itemName) || assets.armors.find(a => a.name === itemName));
     if (!item) return '';
 
     const itemLevel = level ?? 1;
     const parts = [];
 
+    if (item.id) {
+        const kind = item.id == '🧪' ? 'Potion' : item.id == '🍖' ? 'Eatable' : item.id === '💣' ? 'Throwable' : item.id === '✨' ? 'Useable' : '';
+        if (kind) parts.push(`${item.id} ${kind}`);
+    } else if (item.accuracy) {
+        parts.push(`⚔️ Weapon`);
+    } else if (item.evasion) {
+        parts.push(`🛡️ Armor`);
+    }
+
     if (item.attack !== undefined || item.defense !== undefined || item.maxlvl !== undefined) {
         parts.push('Level ' + itemLevel);
-
     }
 
     if (item.health) parts.push(`💖 +${Math.round(item.health * 100)}%`);
+    if (item.flatHealth) parts.push(`❤️ +${item.flatHealth}`);
     if (item.def) parts.push(`🛡️ +${Math.round(item.def * 100)}% ${item.rounds ? `for ${item.rounds} turns` : 'for 1 turn'}`);
     if (item.stamina) parts.push(`⚡ +${Math.round(item.stamina * 100)}%`);
     if (item.buff) parts.push(`⚔️ +${Math.round(item.buff * 100)}% for ${item.rounds ? `${item.rounds} turns` : '1 turn'}`);
     if (item.xp) parts.push(`🌟 ${item.xp} XP`);
-    if (item.chest !== undefined && assets.chests?.[item.chest]) parts.push(`Opens ${assets.chests[item.chest].name}`);
+    if (item.chest) parts.push(`Opens ${assets.chests[item.chest].name}`);
     if (item.damage) parts.push(`💥 ${item.damage}`);
     if (item.pstatus) parts.push(`Gain ${item.pstatus.join(', ')}`);
     if (item.estatus) parts.push(`Inflicts ${item.estatus.join(', ')}`);
 
-    const keyCount = Object.keys(item).length;
-    const isCraftingReagent = keyCount === 1 || (keyCount === 2 && item.craft !== undefined);
-    if (parts.length === 0) return isCraftingReagent ? 'Crafting Reagent' : (item.description || 'No description available');
+    if (item.usability) parts.push(item.usability);
+
+    const isCraftingReagent = !item.id && !item.attack && !item.defense;
+    if (parts.length < 1) parts.push(isCraftingReagent ? 'Crafting Reagent' : (item.description || '???'));
 
     return parts.join('\n');
 }
@@ -157,7 +168,7 @@ window.getItemMetaText = getItemMetaText;
 
 function getItemTooltipText(itemName, level = 1, useColors = false) {
     const assets = getAssets();
-    const item = assets.items.find(i => i.name === itemName);
+    const item = (assets.items.find(i => i.name === itemName) || assets.weapons.find(w => w.name === itemName) || assets.armors.find(a => a.name === itemName));
     if (!item) return '';
 
     const playerElement = document.getElementById('player');
@@ -173,6 +184,8 @@ function getItemTooltipText(itemName, level = 1, useColors = false) {
         const color = diff > 0 ? 'lime' : 'red';
         return `<span style="color: ${color};">${sign}${value}${suffix}</span>`;
     };
+
+    if (item.description) parts.push(item.description);
 
     const baseText = getItemMetaText(itemName, itemLevel);
     if (baseText) {
@@ -215,16 +228,22 @@ function getItemTooltipText(itemName, level = 1, useColors = false) {
         }
     }
 
-    const isPotion = item.name.toLowerCase().includes('potion');
-    const isThrowable = item.name.toLowerCase().endsWith('bomb') || item.name.toLowerCase().endsWith('flask') || item.damage !== undefined;
-    const isUsableItem = isPotion || isThrowable;
+    const isUsableItem = item.id === '🍖' || item.id === '🧪' || item.id === '💣';
     if (isUsableItem && player) {
+        if (item.flatHealth) {
+            const currentHealth = Math.round(player.health);
+            const gainAmount = item.flatHealth;
+            const newHealth = Math.min(currentHealth + gainAmount, player.maxHealth);
+            const actualGain = newHealth - currentHealth;
+            parts.push(`${currentHealth} → ${useColors ? `<span style="color: lime;">${newHealth}</span>` : newHealth} ${useColors ? `<span style="color: #888;">(+${actualGain})${gainAmount > actualGain ? `\n(capped to max health)` : ''}</span>` : `(+${actualGain})${gainAmount > actualGain ? `\n(capped to max health)` : ''}`}`);
+        }
+
         if (item.health) {
             const currentHealth = Math.round(player.health);
             const gainAmount = Math.round(player.maxHealth * item.health);
             const newHealth = Math.min(currentHealth + gainAmount, player.maxHealth);
             const actualGain = newHealth - currentHealth;
-            parts.push(`${currentHealth} → ${useColors ? `<span style="color: lime;">${newHealth}</span>` : newHealth} ${useColors ? `<span style="color: #888;">(+${gainAmount})${gainAmount > actualGain ? `\n(capped to max health)` : ''}</span>` : `(+${actualGain})${gainAmount > actualGain ? `\n(capped to max health)` : ''}`}`);
+            parts.push(`${currentHealth} → ${useColors ? `<span style="color: lime;">${newHealth}</span>` : newHealth} ${useColors ? `<span style="color: #888;">(+${actualGain})${gainAmount > actualGain ? `\n(capped to max health)` : ''}</span>` : `(+${actualGain})${gainAmount > actualGain ? `\n(capped to max health)` : ''}`}`);
         }
 
         if (item.stamina) {
@@ -232,7 +251,7 @@ function getItemTooltipText(itemName, level = 1, useColors = false) {
             const gainAmount = Math.round(player.maxStamina * item.stamina);
             const newStamina = Math.min(currentStamina + gainAmount, player.maxStamina);
             const actualGain = newStamina - currentStamina;
-            parts.push(`${currentStamina} → ${useColors ? `<span style="color: lime;">${newStamina}</span>` : newStamina} ${useColors ? `<span style="color: #888;">(+${gainAmount})${gainAmount > actualGain ? `\n(capped to max stamina)` : ''}</span>` : `(+${actualGain})${gainAmount > actualGain ? `\n(capped to max stamina)` : ''}`}`);
+            parts.push(`${currentStamina} → ${useColors ? `<span style="color: lime;">${newStamina}</span>` : newStamina} ${useColors ? `<span style="color: #888;">(+${actualGain})${gainAmount > actualGain ? `\n(capped to max stamina)` : ''}</span>` : `(+${actualGain})${gainAmount > actualGain ? `\n(capped to max stamina)` : ''}`}`);
         }
 
         if (item.def) {
@@ -413,15 +432,12 @@ function handleItemHover(e) {
     const itemName = itemElement.dataset.craftName || itemElement.querySelector('.inventory-item-name')?.textContent?.trim() || '';
     if (!itemName) return;
 
-    const itemData = assets.items.find(i => i.name === itemName);
+    const itemData = (assets.items.find(i => i.name === itemName) || assets.weapons.find(w => w.name === itemName) || assets.armors.find(a => a.name === itemName));
     if (!itemData) return;
 
-    const isWeapon = itemData.attack !== undefined && itemData.skills;
-    const isArmor = itemData.defense !== undefined && !itemData.skills && itemData.alvlmult !== undefined;
-    const isConsumable = itemData.name.toLowerCase().includes('potion')
-        || itemData.name.toLowerCase().endsWith('bomb')
-        || itemData.name.toLowerCase().endsWith('flask')
-        || itemData.damage !== undefined;
+    const isWeapon = itemData.attack !== undefined && Array.isArray(itemData.skills);
+    const isArmor = itemData.defense !== undefined && !Array.isArray(itemData.skills) && itemData.alvlmult !== undefined;
+    const isConsumable = itemData.id === '🍖';
 
     if (isWeapon) {
         updateEquipmentDisplay('weapon', itemData, itemElement);
@@ -489,7 +505,7 @@ function updateItemTooltip(itemElement) {
         return;
     }
 
-    const itemData = assets.items.find(i => i.name === inventoryItem.name);
+    const itemData = (assets.items.find(i => i.name === inventoryItem.name) || assets.weapons.find(w => w.name === inventoryItem.name) || assets.armors.find(a => a.name === inventoryItem.name));
     if (!itemData) {
         itemElement.style.border = '2px solid #444';
         itemElement.style.backgroundColor = '';
@@ -498,11 +514,11 @@ function updateItemTooltip(itemElement) {
         return;
     }
 
-    const tooltipText = getItemTooltipText(inventoryItem.name, inventoryItem.level ?? 1);
+    const tooltipText = getItemTooltipText(inventoryItem.name, inventoryItem.level ?? 1, true);
 
     let hasSynergy = false;
 
-    if (itemData.attack !== undefined && itemData.skills) {
+    if (itemData.attack !== undefined && Array.isArray(itemData.skills)) {
         const currentArmor = player.armory.armor;
         if (currentArmor && currentArmor.synergies && currentArmor.synergies.some(syn => syn.weapon === itemData.name)) {
             hasSynergy = true;
@@ -519,9 +535,17 @@ function updateItemTooltip(itemElement) {
     }
 
     if (tooltipText) {
-        itemElement.setAttribute('data-tooltip', tooltipText);
+        const isHtmlTooltip = /<[^>]+>/.test(tooltipText);
+        if (isHtmlTooltip) {
+            itemElement.setAttribute('data-tooltip-html', tooltipText);
+            itemElement.removeAttribute('data-tooltip');
+        } else {
+            itemElement.setAttribute('data-tooltip', tooltipText);
+            itemElement.removeAttribute('data-tooltip-html');
+        }
     } else {
         itemElement.removeAttribute('data-tooltip');
+        itemElement.removeAttribute('data-tooltip-html');
     }
 
     if (hasSynergy) {
@@ -617,19 +641,12 @@ function isTopThrowableDropZone(event) {
 function getPlayerDropHintText(itemData) {
     if (!itemData) return 'Cannot be consumed or equipped';
 
-    const isWeapon = itemData.attack !== undefined && itemData.skills;
-    const isArmor = itemData.defense !== undefined && !itemData.skills && itemData.alvlmult !== undefined;
-    const isPotion = itemData.name.toLowerCase().includes('potion');
-    const isPurifyingFlask = itemData.name === 'Purifying Flask';
-    const isPurifyingWater = itemData.name === 'Purifying Water';
-    const isThrowable = itemData.name.toLowerCase().endsWith('bomb')
-        || itemData.name.toLowerCase().endsWith('flask')
-        || itemData.damage !== undefined;
-    const isConsumable = isPotion || isThrowable || isPurifyingWater;
+    const isWeapon = itemData.attack !== undefined && Array.isArray(itemData.skills);
+    const isArmor = itemData.defense !== undefined && !Array.isArray(itemData.skills) && itemData.alvlmult !== undefined;
+    const isThrowable = itemData.id === '💣';
+    const isConsumable = Boolean(itemData.flatHealth || itemData.health || itemData.stamina || itemData.xp || itemData.pstatus || itemData.buff || itemData.def || itemData.damage || itemData.id === '🍖' || itemData.id === '🧪');
 
     if (isWeapon || isArmor) return 'Drop here to equip';
-    if (isPurifyingWater) return 'Drop here to drink';
-    if (isPurifyingFlask) return 'Drop here to cleanse yourself';
     if (isThrowable) return 'Throwables cannot be dropped on player';
     if (isConsumable) return 'Drop here to use';
     return 'Cannot be consumed or equipped';
@@ -637,14 +654,11 @@ function getPlayerDropHintText(itemData) {
 
 function handleDragOver(e) {
     if (!draggedItem) return;
-    const itemData = getAssets().items.find(i => i.name === draggedItem.name);
+    const assets = getAssets();
+    const itemData = (assets.items.find(i => i.name === draggedItem.name) || assets.weapons.find(w => w.name === draggedItem.name) || assets.armors.find(a => a.name === draggedItem.name));
     const playerBar = document.getElementById('player');
-    const isThrowable = itemData && (
-        itemData.name.toLowerCase().endsWith('bomb')
-        || itemData.name.toLowerCase().endsWith('flask')
-        || itemData.damage !== undefined
-    );
-    const canDropOnPlayer = !isThrowable || itemData.name === 'Purifying Flask';
+    const isThrowable = itemData && itemData.id === '💣';
+    const canDropOnPlayer = !isThrowable;
 
     if (!canDropOnPlayer) {
         playerBar.style.backgroundColor = '';
@@ -704,12 +718,11 @@ function handleDragLeave(e) {
 
 function handleEnemyDragOver(e) {
     if (!draggedItem) return;
-    const itemData = getAssets().items.find(i => i.name === draggedItem.name);
+    const assets = getAssets();
+    const itemData = (assets.items.find(i => i.name === draggedItem.name) || assets.weapons.find(w => w.name === draggedItem.name) || assets.armors.find(a => a.name === draggedItem.name));
     if (!itemData) return;
 
-    const isThrowable = itemData.name.toLowerCase().endsWith('bomb')
-        || itemData.name.toLowerCase().endsWith('flask')
-        || itemData.damage !== undefined;
+    const isThrowable = itemData.id === '💣';
 
     if (!isThrowable) return;
     if (!isTopThrowableDropZone(e)) {
@@ -756,12 +769,11 @@ async function handleEnemyDrop(e) {
 
     if (!draggedItem) return;
 
-    const itemData = getAssets().items.find(i => i.name === draggedItem.name);
+    const assets = getAssets();
+    const itemData = (assets.items.find(i => i.name === draggedItem.name) || assets.weapons.find(w => w.name === draggedItem.name) || assets.armors.find(a => a.name === draggedItem.name));
     if (!itemData) return;
 
-    const isThrowable = itemData.name.toLowerCase().endsWith('bomb')
-        || itemData.name.toLowerCase().endsWith('flask')
-        || itemData.damage !== undefined;
+    const isThrowable = itemData.id === '💣';
 
     if (!isThrowable) {
         showMessage('Only throwables can be used on enemies.', 'warning');
@@ -830,7 +842,7 @@ function handleInventoryDrop(e) {
     if (draggedEquipment === 'weapon') {
         addToInventory(player.weaponry.weapon, player.weaponry.level);
         player.weaponry = {
-            weapon: assets.items.find(w => w.name === 'Hands'),
+            weapon: (assets.weapons.find(w => w.name === 'Hands') || assets.items.find(w => w.name === 'Hands')),
             level: 1
         };
         AudioManager.playUnequip();
@@ -838,7 +850,7 @@ function handleInventoryDrop(e) {
     } else if (draggedEquipment === 'armor') {
         addToInventory(player.armory.armor, player.armory.level);
         player.armory = {
-            armor: assets.items.find(a => a.name === 'None'),
+            armor: (assets.armors.find(a => a.name === 'None') || assets.items.find(a => a.name === 'None')),
             level: 1
         };
         AudioManager.playUnequip();
@@ -866,7 +878,7 @@ async function handleDrop(e) {
 
     const player = Alpine.$data(document.getElementById('player'));
     const assets = getAssets();
-    const itemData = assets.items.find(i => i.name === draggedItem.name);
+    const itemData = (assets.items.find(i => i.name === draggedItem.name) || assets.weapons.find(w => w.name === draggedItem.name) || assets.armors.find(a => a.name === draggedItem.name));
 
     if (!itemData) {
         console.error('Item not found:', draggedItem.name);
@@ -875,15 +887,10 @@ async function handleDrop(e) {
         return;
     }
 
-    const isWeapon = itemData.attack !== undefined && itemData.skills;
+    const isWeapon = itemData.attack !== undefined && Array.isArray(itemData.skills);
     const isArmor = itemData.defense !== undefined && !itemData.skills && itemData.alvlmult !== undefined;
-    const isPotion = itemData.name.toLowerCase().includes('potion');
-    const isPurifyingFlask = itemData.name === 'Purifying Flask';
-    const isPurifyingWater = itemData.name === 'Purifying Water';
-    const isThrowable = itemData.name.toLowerCase().endsWith('bomb')
-        || itemData.name.toLowerCase().endsWith('flask')
-        || itemData.damage !== undefined;
-    const isConsumable = isPotion || isThrowable || isPurifyingWater;
+    const isThrowable = itemData.id === '💣';
+    const isConsumable = Boolean(itemData.flatHealth || itemData.health || itemData.stamina || itemData.xp || itemData.pstatus || itemData.buff || itemData.def || itemData.damage || itemData.id === '🍖' || itemData.id === '🧪');
 
     if (isWeapon) {
         equipWeapon(itemData, draggedItem.level);
@@ -901,9 +908,7 @@ async function handleDrop(e) {
             encounter?.battle &&
             battleStation?.turn;
 
-        if (isBattleConsume && (isPurifyingFlask || isPurifyingWater) && typeof window.useBattleConsumableByInventoryIndex === 'function') {
-            await window.useBattleConsumableByInventoryIndex(draggedItemIndex, { target: 'player' });
-        } else if (isBattleConsume && !isThrowable && typeof window.useBattleConsumableByInventoryIndex === 'function') {
+        if (isBattleConsume && !isThrowable && typeof window.useBattleConsumableByInventoryIndex === 'function') {
             await window.useBattleConsumableByInventoryIndex(draggedItemIndex);
         } else if (isThrowable) {
             showMessage(`${draggedItem.name} cannot be dropped on player. Drop it in the top 40% during battle.`, 'warning');
@@ -953,10 +958,10 @@ function equipArmor(armorData, level) {
 function consumeItem(itemData) {
     const player = Alpine.$data(document.getElementById('player'));
 
-    if (itemData.name === 'Purifying Water') {
-        const removed = player.pstatus.length;
-        player.pstatus.length = 0;
-        showMessage(removed > 0 ? 'Purified all status effects!' : 'No status effects to purify.', 'success');
+    if (itemData.flatHealth) {
+        const healAmount = Math.floor(itemData.flatHealth);
+        player.health = Math.min(player.health + healAmount, player.maxHealth);
+        showMessage(`Restored ${healAmount} HP!`, 'success');
     }
 
     if (itemData.health) {
@@ -975,6 +980,12 @@ function consumeItem(itemData) {
         player.experience += itemData.xp;
         showMessage(`Gained ${itemData.xp} XP!`, 'success');
         checkLevelUp();
+    }
+
+    if (itemData.purify) {
+        const purifiedStatuses = player.pstatus.filter(s => s.id !== '🌑' && !s.positive).map(s => s.name).join('');
+        showMessage(`Purified ${purifiedStatuses ? `[${purifiedStatuses}]` : 'Nothing!'}`, 'success');
+        player.pstatus = player.pstatus.filter(s => s.id === '🌑' || s.positive);
     }
 
     if (itemData.pstatus) {
@@ -1025,18 +1036,7 @@ function removeFromInventory(index) {
     savePlayer();
 }
 
-function checkLevelUp() {
-    const player = Alpine.$data(document.getElementById('player'));
-    const requiredXP = getRequiredXP(player.level);
 
-    if (player.experience >= requiredXP) {
-        player.level += 1;
-        player.experience -= requiredXP;
-        showMessage(`Level Up! Now level ${player.level}!`, 'success');
-        setPlayer();
-        checkLevelUp();
-    }
-}
 
 function showMessage(message, type = 'info') {
     const messageEl = document.createElement('div');

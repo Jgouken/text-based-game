@@ -1,4 +1,3 @@
-// This file is for *in-battle* game logic for both the player and enemy.
 const assets = getAssets()
 const blessingWords = ['cleansed', 'purified', 'dispelled', 'vanquished', 'dissipated', 'evaporated', 'cured', 'alleviated', 'relieved', 'mitigated', 'quelled', 'annihilated'];
 const badOmenWords = ['corroded', 'eviscerated', 'devoured', 'eroded', 'withered', 'decayed', 'consumed', 'ravaged', 'tainted', 'spoiled', 'blighted', 'defiled', 'rotted'];
@@ -16,7 +15,7 @@ const notify = (msg, type = 'info') => {
 };
 
 function randomByChance(choices) {
-    const totalChance = choices.reduce((sum, item) => sum + item.chance, 0); // In case it doesn't equal 100, it just corrects itself
+    const totalChance = choices.reduce((sum, item) => sum + item.chance, 0);
     let randomNum = Math.random() * totalChance;
     for (const item of choices) {
         randomNum -= item.chance;
@@ -79,21 +78,62 @@ function syncPlayerActivePotion(player, nextPotion = undefined) {
     potion.applied = true;
 }
 
-async function startBattle(enemy = null) {
+async function resumeBattle() {
+    const player = Alpine.$data(document.getElementById('player'));
+    const encounter = Alpine.$data(document.getElementById('encounter'));
+    if (!player.enemy) return;
+    const savedEnemy = player.enemy || {};
+    const savedEncounter = (savedEnemy && savedEnemy.encounter) ? savedEnemy.encounter : savedEnemy;
+
+    const enemyRef = assets.enemies.find(enemy => enemy.name === savedEnemy.name);
+    await startBattle(enemyRef, savedEnemy.level || 1);
+    try {
+        const background = Alpine.$data(document.getElementById('background-image'));
+        if (savedEnemy.level) background.enemyLevel = savedEnemy.level;
+    } catch (e) { }
+    encounter.level = savedEnemy.level || encounter.level || 1;
+    encounter.log = Array.isArray(savedEncounter.log) ? savedEncounter.log.slice() : (savedEncounter.log || encounter.log || []);
+    encounter.health = savedEncounter.health ?? encounter.health ?? 1;
+    encounter.maxHealth = savedEncounter.maxHealth ?? encounter.maxHealth ?? 1;
+    encounter.defense = savedEncounter.defense ?? encounter.defense ?? 0;
+    encounter.attack = savedEncounter.attack ?? encounter.attack ?? 0;
+    encounter.crit = savedEncounter.crit ?? encounter.crit ?? 0;
+    encounter.accuracy = savedEncounter.accuracy ?? encounter.accuracy ?? 0;
+    encounter.estatus = Array.isArray(savedEncounter.estatus) ? savedEncounter.estatus.slice() : (savedEncounter.estatus || encounter.estatus || []);
+    encounter.battle = savedEncounter.battle ?? true;
+    try {
+        const background = Alpine.$data(document.getElementById('background-image'));
+        const battleStation = Alpine.$data(document.getElementById('battle-station')) || {};
+        if (background && background.enemy && Array.isArray(background.enemy.skills) && Array.isArray(savedEnemy.skills)) {
+            for (const sk of savedEnemy.skills) {
+                const match = background.enemy.skills.find(bs => bs.name === sk.name);
+                if (match && sk._cooldown != null) match._cooldown = sk._cooldown;
+            }
+        }
+        try {
+            if (savedEnemy.round != null) battleStation.round = savedEnemy.round;
+            if (savedEnemy.turn != null) battleStation.turn = savedEnemy.turn;
+            if (savedEnemy._regenThisRound != null) battleStation._regenThisRound = savedEnemy._regenThisRound;
+        } catch (e) { }
+    } catch (e) { }
+
+    turnManager(!!savedEnemy.turnManager);
+}
+
+async function startBattle(enemy = null, level = null) {
     const background = Alpine.$data(document.getElementById('background-image'));
     const encounter = Alpine.$data(document.getElementById('encounter'));
     const player = Alpine.$data(document.getElementById('player'));
     const location = assets.areas.find(area => area.name == background.location)
     let randomEnemy;
-    let level;
 
     if (location.name === 'Eternal Damnation') {
         const allEnemies = assets.enemies;
         randomEnemy = allEnemies[Math.floor(Math.random() * allEnemies.length)].name;
-        level = Math.max(player.level, 50);
+        if (!level) level = Math.max(player.level, 50);
     } else {
         randomEnemy = randomByChance(location.enemies).name;
-        level = enemy ? (background.enemyLevel || 1) : (Math.floor(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl));
+        if (!level) level = enemy ? (background.enemyLevel || 1) : (Math.floor(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl));
     }
 
     if (!enemy) enemy = assets.enemies.find(enemy => enemy.name == randomEnemy)
@@ -127,6 +167,13 @@ async function startBattle(enemy = null) {
     battleStation.round = 1;
     battleStation.turn = false;
     battleStation._regenThisRound = 0;
+
+    player.enemy = {
+        name: enemy.name,
+        level: level,
+        ...encounter,
+        turnManager: true,
+    }
 
     updateBars()
     turnManager(true);
@@ -207,7 +254,7 @@ async function executeSkill({
         totalDealt += final;
         if (final > 0) {
             const playerRef = Alpine.$data(document.getElementById('player'));
-            const ratio = Math.max(0, Math.min(1, final / (playerRef?.maxHealth || 1))); // currently forced to be 0.15 because higher ratios ruin things
+            const ratio = Math.max(0, Math.min(1, final / (playerRef?.maxHealth || 1)));
             if (crit && hit) AudioManager.playCrit();
             else if (firstHit && (skill.pstatus || skill.estatus)) {
                 AudioManager.playEffectSound();
@@ -396,7 +443,7 @@ async function skill(index) {
         .map((inventoryItem, inventoryIndex) => ({
             inventoryItem,
             inventoryIndex,
-            itemData: assets.items.find(item => item.name === inventoryItem.name)
+            itemData: (assets.items.find(item => item.name === inventoryItem.name) || assets.weapons.find(w => w.name === inventoryItem.name) || assets.armors.find(a => a.name === inventoryItem.name))
         }))
         .filter(entry => entry.itemData?.battle === true);
 
@@ -413,6 +460,7 @@ async function skill(index) {
             player.pstatus = [{ ...statusByName('Weakness'), damage: 0 }, { ...statusByName('Fragility'), damage: 0 }];
             player.stamina = 0;
             player.health -= encounter.attack;
+            player.enemy = null;
             updateBars();
             savePlayer();
             encounter.battle = false;
@@ -477,7 +525,7 @@ async function useBattleConsumable(consumableIndex) {
         .map((inventoryItem, inventoryIndex) => ({
             inventoryItem,
             inventoryIndex,
-            itemData: assets.items.find(item => item.name === inventoryItem.name)
+            itemData: (assets.items.find(item => item.name === inventoryItem.name) || assets.weapons.find(w => w.name === inventoryItem.name) || assets.armors.find(a => a.name === inventoryItem.name))
         }))
         .filter(entry => entry.itemData?.battle === true);
 
@@ -499,13 +547,14 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {})
     const selectedInventoryItem = player.inventory[inventoryIndex];
     if (!selectedInventoryItem) return;
 
-    const itemData = assets.items.find(item => item.name === selectedInventoryItem.name);
+    const itemData = (assets.items.find(item => item.name === selectedInventoryItem.name) || assets.weapons.find(w => w.name === selectedInventoryItem.name) || assets.armors.find(a => a.name === selectedInventoryItem.name));
     const isBattleItem = itemData?.battle === true;
     if (!itemData || !isBattleItem) return;
 
     const effectText = [];
     const target = options.target === 'player' ? 'player' : 'enemy';
-    const cleanseTarget = itemData.name === 'Purifying Water' ? 'player' : target;
+    const isPurifying = itemData.purify;
+    const cleanseTarget = itemData.target === 'player' ? 'player' : target;
     const throwableDamage = itemData.damage !== undefined
         ? Math.max(0, Math.floor(Number(itemData.damage) || 0))
         : 0;
@@ -529,7 +578,7 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {})
         effectText.push(`gained <span style="color: lightblue;" data-tooltip="🌟 ${itemData.xp} XP">🌟${itemData.xp}</span>`);
     }
 
-    if (itemData.name === 'Purifying Flask' || itemData.name === 'Purifying Water') {
+    if (isPurifying) {
         const targetStatuses = cleanseTarget === 'player' ? player.pstatus : encounter.estatus;
         const removed = targetStatuses
             .map(status => `<span style="color: lightblue;" data-tooltip="${status.id} ${status.name}\n\n${status.description}">${status.id}</span>`);
@@ -635,12 +684,20 @@ async function turnManager(toPlayer) {
         }
     }
 
+    player.enemy = {
+        name: background.enemy.name,
+        level: background.enemyLevel,
+        ...encounter,
+        turnManager: toPlayer,
+    }
+
     updateBars();
     await new Promise(resolve => setTimeout(resolve, 250));
 
     const death = async () => {
         if (encounter.health <= 0 || player.health <= 0) {
             died = true;
+            player.enemy = null;
             background.enemy.skills.forEach(s => { delete s._cooldown; });
             encounter.battle = false;
             AudioManager.playDeath();
@@ -660,25 +717,22 @@ async function turnManager(toPlayer) {
             await new Promise(r => setTimeout(r, 200))
             encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
 
-            while (player.experience + xpdrop >= getRequiredXP(player.level)) {
-                xpdrop -= getRequiredXP(player.level) - player.experience;
-                const beforeStats = {
-                    maxHealth: player.maxHealth,
-                    maxStamina: player.maxStamina,
-                    attack: player.attack,
-                    defense: player.defense,
-                    crit: player.crit,
-                    critdmg: player.critdmg,
-                    accuracy: player.accuracy,
-                    evasion: player.evasion
-                };
+            const beforeStats = {
+                maxHealth: player.maxHealth,
+                maxStamina: player.maxStamina,
+                attack: player.attack,
+                defense: player.defense,
+                crit: player.crit,
+                critdmg: player.critdmg,
+                accuracy: player.accuracy,
+                evasion: player.evasion
+            };
 
-                player.level += 1;
-                player.experience = 0;
-                await setPlayer();
-                updateBars();
-                await new Promise(r => setTimeout(r, 200));
+            player.experience += xpdrop;
+            await checkLevelUp();
+            await new Promise(r => setTimeout(r, 200));
 
+            if (player.level > currentLevel) {
                 const afterStats = {
                     maxHealth: player.maxHealth,
                     maxStamina: player.maxStamina,
@@ -719,19 +773,15 @@ async function turnManager(toPlayer) {
                 const escaped = tooltipHtml.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&apos;').replace(/\n/g, '<br>');
 
                 encounter.log.push(`<span class='battle-log-hover-underline' data-tooltip-html="${escaped}">⬆️ ${background.name} leveled up to level ${player.level}! ⬆️</span>`);
-            }
 
-            player.experience += xpdrop;
-            if (player.level > currentLevel) {
                 player.health = player.maxHealth;
                 player.stamina = player.maxStamina;
             }
+
             await setPlayer();
             updateBars();
-
-            // Pick a drop from the enemy
             const drop = randomByChance(background.enemy.drops)
-            const loot = assets.items.find(item => item.name == drop.name);
+            const loot = (assets.items.find(item => item.name == drop.name) || assets.weapons.find(w => w.name == drop.name) || assets.armors.find(a => a.name == drop.name));
 
             if (loot === undefined && loot !== null) {
                 console.error(`Item not found: ${drop.name}`);
@@ -752,7 +802,7 @@ async function turnManager(toPlayer) {
             const lootResult = addToInventory(loot, level);
 
             if (lootResult) {
-                encounter.log.push(`🎁 ${background.enemy.name} dropped a${/^[aeiou]/i.test(loot.name) ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span style='color: lightblue;' data-tooltip-html="${descHtml}">${loot.name}</span>! 🎁`);
+                encounter.log.push(`🎁 ${background.enemy.name} dropped a${/^[aeiou]/i.test(loot.name) ? 'n' : ''} ${level > 1 ? 'Level ' + level + ' ' : ''}<span class='battle-log-hover-underline' style='color: lightblue; cursor: default;' data-tooltip-html="${descHtml}">${loot.name}</span>! 🎁`);
                 AudioManager.playItemFound();
             }
             else notify(`Couldn't acquire ${drop.name}.`, 'warning');
@@ -849,7 +899,6 @@ async function turnManager(toPlayer) {
         if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
         if (staminaRegen > 0) player.stamina += staminaRegen;
         battleStation._regenThisRound = 0;
-        battleStation.round += 1;
     }
 
     updateBars();
@@ -862,8 +911,6 @@ async function turnManager(toPlayer) {
         });
         return turnManager(!toPlayer);
     }
-
-    // ya know...
     if (fled) return;
 
     if (toPlayer) battleStation.turn = true;
@@ -903,6 +950,11 @@ async function enemyMove() {
         targetName: background.name,
         critMult: 1.6
     });
+
+    try {
+        const battleStation = Alpine.$data(document.getElementById('battle-station')) || {};
+        battleStation.round = (Number(battleStation.round) || 0) + 1;
+    } catch (e) { }
 
     turnManager(true);
 }
@@ -1012,7 +1064,7 @@ async function crackChestOpen() {
     }
 
     const drop = randomByChance(chestChoice.drops);
-    const loot = assets.items.find(item => item.name === drop?.name);
+    const loot = (assets.items.find(item => item.name === drop?.name) || assets.weapons.find(w => w.name === drop?.name) || assets.armors.find(a => a.name === drop?.name));
 
     if (loot) {
         let level = 1;

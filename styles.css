@@ -1378,7 +1378,13 @@ input[type="submit"]:active,
 }
 
 body.inventory-shift-open-journal #inventory .inventory-item,
-body.inventory-shift-open-journal #inventory .inventory-item:active {
+body.inventory-shift-open-journal #inventory .inventory-item:active,
+body.inventory-shift-open-journal #crafting .inventory-item,
+body.inventory-shift-open-journal #crafting .inventory-item:active,
+body.inventory-shift-open-journal #crafting-panel .inventory-item,
+body.inventory-shift-open-journal .crafting-panel .inventory-item,
+body.inventory-shift-open-journal .crafting-grid .inventory-item,
+body.inventory-shift-open-journal .crafting-inventory-grid .inventory-item {
     cursor: alias;
 }
 

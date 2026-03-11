@@ -44,7 +44,7 @@ function getSkillStatusDescriptor(skill, key) {
     if (!skill || !key) return null;
 
     const descriptor = Object.getOwnPropertyDescriptor(skill, key);
-    if (descriptor && typeof descriptor.get === 'function') {
+    if (descriptor && descriptor.get) {
         const source = descriptor.get.toString();
         const arrayMatch = source.match(/\[([\s\S]*?)\]/);
         const pool = [];
@@ -250,13 +250,9 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
             const minLevel = assetItem.minlvl !== undefined ? clampJournalLevel(assetItem.minlvl) : 1;
             const maxLevel = assetItem.maxlvl !== undefined ? clampJournalLevel(assetItem.maxlvl) : 50;
             const tooltipLevel = Math.max(minLevel, Math.min(maxLevel, previewLvl));
-            const itemTooltipHtml = (typeof window.getItemTooltipText === 'function')
-                ? window.getItemTooltipText(assetItem.name, tooltipLevel, true)
-                : `Open ${assetItem.name} in Journal`;
+            const itemTooltipHtml = window.getItemTooltipText ? window.getItemTooltipText(assetItem.name, tooltipLevel, true) : `Open ${assetItem.name} in Journal`;
             const escapedTooltip = escapeJournalHtml(itemTooltipHtml);
-            const tooltipAttr = typeof window.getItemTooltipText === 'function'
-                ? `data-tooltip-html="${escapedTooltip}"`
-                : `data-tooltip="${escapedTooltip}"`;
+            const tooltipAttr = window.getItemTooltipText ? `data-tooltip-html="${escapedTooltip}"` : `data-tooltip="${escapedTooltip}"`;
             return {
                 title: assetItem.name,
                 lines: craftLines
@@ -315,7 +311,7 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
         descriptionLines.unshift(`Previewing at level ${effectiveLevel}`);
     }
 
-    if (item.defense !== undefined && !item.skills) {
+    if (item.defense !== undefined && !Array.isArray(item.skills)) {
         const armorValue = Math.round(item.defense + ((effectiveLevel - 1) * (item.alvlmult || 0)) + ((playerLevel - 1) * 10 * (item.plvlmult || 0)));
         const lines = [
             `Armor: +${armorValue}`,
@@ -334,7 +330,7 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
                     if (syn.crit) synLines.push(`Crit +${journalPercent(syn.crit)}`);
                     if (syn.evasion) synLines.push(`Evasion +${journalPercent(syn.evasion)}`);
                     const synLabel = `${syn.weapon}${syn.name ? ` - ${syn.name}` : ''}`;
-                    const weaponItem = (assets.items || []).find(i => i && i.name === syn.weapon) || null;
+                    const weaponItem = (assets.weapons || []).find(i => i && i.name === syn.weapon) || (assets.items || []).find(i => i && i.name === syn.weapon) || null;
                     const previewLvl = clampJournalLevel(previewLevel || 1);
                     let tooltipLevel = previewLvl;
                     if (weaponItem) {
@@ -342,9 +338,7 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
                         const maxLevel = weaponItem.maxlvl !== undefined ? clampJournalLevel(weaponItem.maxlvl) : 50;
                         tooltipLevel = Math.max(minLevel, Math.min(maxLevel, previewLvl));
                     }
-                    const inventoryTooltip = weaponItem && typeof window.getItemTooltipText === 'function'
-                        ? window.getItemTooltipText(syn.weapon, tooltipLevel, true)
-                        : null;
+                    const inventoryTooltip = weaponItem && window.getItemTooltipText ? window.getItemTooltipText(syn.weapon, tooltipLevel, true) : null;
                     const fallbackTooltip = synLines.length ? `${synLabel}\n\n${synLines.join('\n')}` : synLabel;
                     const finalTooltip = escapeJournalHtml(inventoryTooltip || fallbackTooltip);
                     const escapedName = escapeJournalHtml(syn.weapon);
@@ -381,8 +375,8 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
             }))
         });
 
-        const armorSynergies = assets.items
-            .filter((assetItem) => assetItem && assetItem.defense !== undefined && !assetItem.skills && Array.isArray(assetItem.synergies))
+        const armorSynergies = (assets.armors || [])
+            .filter((assetItem) => assetItem && assetItem.defense !== undefined && !Array.isArray(assetItem.skills) && Array.isArray(assetItem.synergies))
             .flatMap((armorItem) =>
                 armorItem.synergies
                     .filter((syn) => syn.weapon === item.name)
@@ -421,6 +415,10 @@ function getJournalItemDetails(entry, previewLevel, playerLevel, assets) {
         if (item.damage) effects.push(`Deals ${item.damage} damage`);
         if (item.pstatus) effects.push(`Gains: ${journalStatusText(item.pstatus, assets)}`);
         if (item.estatus) effects.push(`Inflicts: ${journalStatusText(item.estatus, assets)}`);
+        if (item.usability) {
+            let newUsability = item.usability.replace('Purifies Statuses', 'Clears all negative status effects except 🌑.');
+            effects.push(newUsability);
+        }
 
         if (effects.length) groups.push({ title: 'Effects', lines: effects });
         if (usedInItems.length) groups.push({ title: 'Used In', items: usedInItems });
@@ -566,7 +564,7 @@ function getJournalEffectDetails(effect) {
     const extra = Object.entries(effect)
         .filter(([key]) => !['name', 'id', 'description', 'positive', 'rounds'].includes(key))
         .map(([key, value]) => {
-            if (typeof value === 'number' && value > 0 && value < 1) return `${key}: ${journalPercent(value)}`;
+            if (value > 0 && value < 1) return `${key}: ${journalPercent(value)}`;
             return `${key}: ${value}`;
         });
 
@@ -672,7 +670,10 @@ window.createJournalState = function createJournalState() {
             if (dropMatch) {
                 const dropName = (dropMatch[1] || '').trim();
                 if (dropName && dropName.toLowerCase() !== 'nothing') {
-                    const dropItem = this.assets.items.find((assetItem) => assetItem.name === dropName) || null;
+                    const dropItem = (this.assets.items.find((assetItem) => assetItem.name === dropName)
+                        || this.assets.weapons.find((assetItem) => assetItem.name === dropName)
+                        || this.assets.armors.find((assetItem) => assetItem.name === dropName)
+                    ) || null;
                     const hasItem = !!dropItem;
                     const hasChest = this.assets.chests.some((chest) => chest.name === dropName);
                     const hasArea = this.assets.areas?.some((area) => area.name === dropName);
@@ -684,9 +685,7 @@ window.createJournalState = function createJournalState() {
                         const tooltipLevel = hasItem
                             ? Math.max(minLevel, Math.min(maxLevel, previewLevel))
                             : previewLevel;
-                        const inventoryTooltip = (hasItem && typeof window.getItemTooltipText === 'function')
-                            ? window.getItemTooltipText(dropName, tooltipLevel, true)
-                            : null;
+                        const inventoryTooltip = (hasItem && window.getItemTooltipText) ? window.getItemTooltipText(dropName, tooltipLevel, true) : null;
                         const chestTooltipHtml = (!hasItem && hasChest)
                             ? this.getChestTooltipHtmlByName(dropName)
                             : null;
@@ -721,7 +720,10 @@ window.createJournalState = function createJournalState() {
 
             const itemNameToLink = quantityLineName || line.trim();
             const exactItem = !exactChest
-                ? this.assets.items.find((assetItem) => assetItem.name === itemNameToLink)
+                ? (this.assets.items.find((assetItem) => assetItem.name === itemNameToLink)
+                    || this.assets.weapons.find((assetItem) => assetItem.name === itemNameToLink)
+                    || this.assets.armors.find((assetItem) => assetItem.name === itemNameToLink)
+                )
                 : null;
             if (exactItem) {
                 const escapedItemName = escapeJournalHtml(exactItem.name);
@@ -730,13 +732,9 @@ window.createJournalState = function createJournalState() {
                 const minLevel = exactItem.minlvl !== undefined ? clampJournalLevel(exactItem.minlvl) : 1;
                 const maxLevel = exactItem.maxlvl !== undefined ? clampJournalLevel(exactItem.maxlvl) : 50;
                 const tooltipLevel = Math.max(minLevel, Math.min(maxLevel, previewLevel));
-                const itemTooltipHtml = (typeof window.getItemTooltipText === 'function')
-                    ? window.getItemTooltipText(exactItem.name, tooltipLevel, true)
-                    : `Open ${exactItem.name} in Journal`;
+                const itemTooltipHtml = window.getItemTooltipText ? window.getItemTooltipText(exactItem.name, tooltipLevel, true) : `Open ${exactItem.name} in Journal`;
                 const escapedTooltip = escapeJournalHtml(itemTooltipHtml);
-                const tooltipAttr = typeof window.getItemTooltipText === 'function'
-                    ? `data-tooltip-html='${escapedTooltip}'`
-                    : `data-tooltip='${escapedTooltip}'`;
+                const tooltipAttr = window.getItemTooltipText ? `data-tooltip-html='${escapedTooltip}'` : `data-tooltip='${escapedTooltip}'`;
                 const itemLink = `<span class="journal-drop-link" data-drop-name='${escapedItemName}' data-item-level='${tooltipLevel}' ${tooltipAttr}>${escapedItemLabel}</span>`;
                 html = replaceFirstOccurrence(html, escapedItemLabel, itemLink);
             }
@@ -745,19 +743,18 @@ window.createJournalState = function createJournalState() {
             if (equippedItemMatch) {
                 const equippedItemName = (equippedItemMatch[1] || '').trim();
                 const equippedLevel = clampJournalLevel(Number(equippedItemMatch[2] || 1));
-                const equippedItem = this.assets.items.find((assetItem) => assetItem.name === equippedItemName);
+                const equippedItem = (this.assets.items.find((assetItem) => assetItem.name === equippedItemName)
+                    || this.assets.weapons.find((assetItem) => assetItem.name === equippedItemName)
+                    || this.assets.armors.find((assetItem) => assetItem.name === equippedItemName)
+                );
                 if (equippedItem) {
                     const escapedEquippedName = escapeJournalHtml(equippedItem.name);
                     const minLevel = equippedItem.minlvl !== undefined ? clampJournalLevel(equippedItem.minlvl) : 1;
                     const maxLevel = equippedItem.maxlvl !== undefined ? clampJournalLevel(equippedItem.maxlvl) : 50;
                     const tooltipLevel = Math.max(minLevel, Math.min(maxLevel, equippedLevel));
-                    const itemTooltipHtml = (typeof window.getItemTooltipText === 'function')
-                        ? window.getItemTooltipText(equippedItem.name, tooltipLevel, true)
-                        : `Open ${equippedItem.name} in Journal`;
+                    const itemTooltipHtml = window.getItemTooltipText ? window.getItemTooltipText(equippedItem.name, tooltipLevel, true) : `Open ${equippedItem.name} in Journal`;
                     const escapedTooltip = escapeJournalHtml(itemTooltipHtml);
-                    const tooltipAttr = typeof window.getItemTooltipText === 'function'
-                        ? `data-tooltip-html='${escapedTooltip}'`
-                        : `data-tooltip='${escapedTooltip}'`;
+                    const tooltipAttr = window.getItemTooltipText ? `data-tooltip-html='${escapedTooltip}'` : `data-tooltip='${escapedTooltip}'`;
                     const itemLink = `<span class="journal-drop-link" data-drop-name='${escapedEquippedName}' data-item-level='${tooltipLevel}' ${tooltipAttr}>${escapedEquippedName}</span>`;
                     html = replaceFirstOccurrence(html, escapedEquippedName, itemLink);
                 }
@@ -786,7 +783,7 @@ window.createJournalState = function createJournalState() {
                         const statRange = (lowValue, highValue) => lowValue === highValue ? `${lowValue}` : `${lowValue} - ${highValue}`;
                         const previewLevel = clampJournalLevel(this.previewLevel || areaMinLevel);
                         const tooltipLevel = Math.max(areaMinLevel, Math.min(areaMaxLevel, previewLevel));
-                        const acc = Math.floor(((typeof getEnemyAccuracy === 'function') ? getEnemyAccuracy(enemyData, tooltipLevel) : (enemyData.accuracy || 0)) * 100);
+                        const acc = Math.floor(((getEnemyAccuracy) ? getEnemyAccuracy(enemyData, tooltipLevel) : (enemyData.accuracy || 0)) * 100);
                         const enemyTooltipText =
                             `Level ${areaMinLevel === areaMaxLevel ? `${areaMinLevel}` : `${areaMinLevel} - ${areaMaxLevel}`}\n` +
                             `${enemyData.block || 'Unknown Block'}\n` +
@@ -809,7 +806,10 @@ window.createJournalState = function createJournalState() {
         openItemByName(itemName, itemLevel = null) {
             if (!itemName) return;
 
-            const foundItem = this.assets.items.find((assetItem) => assetItem.name === itemName);
+            const foundItem = (this.assets.items.find((assetItem) => assetItem.name === itemName)
+                || this.assets.weapons.find((assetItem) => assetItem.name === itemName)
+                || this.assets.armors.find((assetItem) => assetItem.name === itemName)
+            );
             const chestIndex = this.assets.chests.findIndex((chest) => chest.name === itemName);
             if (!foundItem && chestIndex === -1) return;
 
@@ -953,24 +953,30 @@ window.createJournalState = function createJournalState() {
                 const getItemCategory = (item) => {
                     if (!item) return 'misc';
                     const isWeapon = item.attack !== undefined && Array.isArray(item.skills);
-                    const isArmor = item.defense !== undefined && !item.skills && item.alvlmult !== undefined;
+                    const isArmor = item.defense !== undefined && !Array.isArray(item.skills) && item.alvlmult !== undefined;
                     if (isWeapon) return 'weapon';
                     if (isArmor) return 'armor';
-                    if (item.name?.toLowerCase().includes('potion')) return 'consumables';
-                    if (item.name?.toLowerCase().endsWith('bomb') || item.name?.toLowerCase().endsWith('flask') || item.damage || item.estatus || (item.buff && item.rounds)) return 'throwables';
+                    if (item.id === '🧪' || item.id === '🍖') return 'consumables';
+                    if (item.id === '💣') return 'throwables';
                     if (item.chest !== undefined) return 'keys';
                     return 'misc';
                 };
 
-                let itemEntries = assets.items.map((item) => ({
+                const allItems = [
+                    ...(assets.items || []),
+                    ...(assets.weapons || []),
+                    ...(assets.armors || [])
+                ];
+
+                let itemEntries = allItems.map((item) => ({
                     key: `item:${item.name}`,
                     name: item.name,
-                    meta: item.skills ? 'Weapon' : (item.defense !== undefined ? 'Armor' : 'Item'),
+                    meta: Array.isArray(item.skills) ? 'Weapon' : (item.defense !== undefined ? 'Armor' : 'Item'),
                     kind: 'item',
                     category: getItemCategory(item),
                     raw: item
                 }));
-
+                // Only support All / Weapons / Armors sub-tabs. Chests show only on 'all'.
                 let chestEntries = assets.chests.map((chest, index) => ({
                     key: `chest:${index}`,
                     name: chest.name,
@@ -980,10 +986,60 @@ window.createJournalState = function createJournalState() {
                     raw: chest
                 }));
 
-                if (this.itemSubTab !== 'all') {
-                    itemEntries = itemEntries.filter((entry) => entry.category === this.itemSubTab);
-                    chestEntries = this.itemSubTab === 'chests' ? chestEntries : [];
+                switch (this.itemSubTab) {
+                    case 'weapon':
+                        itemEntries = itemEntries.filter((entry) => Array.isArray(entry.raw?.skills));
+                        chestEntries = [];
+                        break;
+                    case 'armor':
+                        itemEntries = itemEntries.filter((entry) => entry.raw?.defense !== undefined && !Array.isArray(entry.raw?.skills));
+                        chestEntries = [];
+                        break;
+                    case 'potions':
+                        itemEntries = itemEntries.filter((entry) => entry.raw?.id === '🧪');
+                        chestEntries = [];
+                        break;
+                    case 'eatables':
+                        itemEntries = itemEntries.filter((entry) => entry.raw?.id === '🍖');
+                        chestEntries = [];
+                        break;
+                    case 'bombs':
+                        itemEntries = itemEntries.filter((entry) => entry.raw?.id === '💣');
+                        chestEntries = [];
+                        break;
+                    case 'useables':
+                        itemEntries = itemEntries.filter((entry) => entry.raw?.id === '✨');
+                        chestEntries = [];
+                        break;
+                    case 'keys':
+                        itemEntries = itemEntries.filter((entry) => entry.raw?.id === '🗝️');
+                        chestEntries = [];
+                        break;
+                    default:
+                        break;
                 }
+
+                // If showing weapons or armors, sort by minlvl then name. Otherwise sort by id emoji order then name.
+                if (this.itemSubTab === 'weapon' || this.itemSubTab === 'armor') {
+                    itemEntries.sort((a, b) => {
+                        const aMax = a.raw?.maxlvl ?? a.raw?.minlvl ?? 1;
+                        const bMax = b.raw?.maxlvl ?? b.raw?.minlvl ?? 1;
+                        if (aMax !== bMax) return aMax - bMax;
+                        return a.name.localeCompare(b.name);
+                    });
+                } else {
+                    const idOrder = { '🧪': 0, '🍖': 1, '💣': 2, '✨': 3, '🗝️': 4 };
+                    itemEntries.sort((a, b) => {
+                        const aId = a.raw?.id ?? null;
+                        const bId = b.raw?.id ?? null;
+                        const aOrder = aId ? (idOrder[aId] ?? 99) : 99;
+                        const bOrder = bId ? (idOrder[bId] ?? 99) : 99;
+                        if (aOrder !== bOrder) return aOrder - bOrder;
+                        return a.name.localeCompare(b.name);
+                    });
+                }
+
+                chestEntries.sort((a, b) => a.name.localeCompare(b.name));
 
                 return [...itemEntries, ...chestEntries];
             }
@@ -1061,13 +1117,13 @@ window.createJournalState = function createJournalState() {
     };
 };
 
-window.openJournalItemFromInventory = function openJournalItemFromInventory(itemName, itemLevel = null) {
+window.openJournalItemFromInventory = function openJournalItemFromInventory(itemName, itemLevel = null, backTarget = 'inventory') {
     if (!itemName) return;
 
     const journalElement = document.getElementById('journal');
     const journalState = journalElement ? Alpine.$data(journalElement) : null;
-    if (journalState && typeof journalState.openItemByName === 'function') {
-        journalState.backTarget = 'inventory';
+    if (journalState && journalState.openItemByName) {
+        journalState.backTarget = backTarget || 'inventory';
         if (itemLevel !== null && itemLevel !== undefined) {
             journalState.previewLevel = clampJournalLevel(itemLevel);
         }
@@ -1076,7 +1132,7 @@ window.openJournalItemFromInventory = function openJournalItemFromInventory(item
         window.__journalPendingOpen = {
             itemName,
             itemLevel,
-            backTarget: 'inventory'
+            backTarget: backTarget || 'inventory'
         };
     }
 

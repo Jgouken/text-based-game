@@ -309,7 +309,7 @@ const AudioManager = (function () {
         let player = null;
         try { player = Alpine.$data(document.getElementById('player')) || null; } catch (e) { player = null; }
         let healthRatio = null;
-        if (player && typeof player === 'object') {
+        if (player) {
             const h = Number(player.health || 0);
             const mh = Number(player.maxHealth || player.maxhealth || 0);
             if (mh > 0) healthRatio = h / mh;
@@ -319,7 +319,7 @@ const AudioManager = (function () {
             console.debug('AudioManager.switchMainForLowHealth: player low health -> using low health track', healthRatio);
             lowHealthLocked = true;
             try { createAndStartSource(low); createAndStartSource(main); } catch (e) { }
-            setGain(low, mainVol);
+            setGain(low, mainVol + 0.2);
             setGain(main, 0);
         } else {
             console.debug('AudioManager.switchMainForLowHealth: player healthy -> using main track', healthRatio);
@@ -501,7 +501,7 @@ function playSound(name, volume) {
         const url = (name && name.includes('/')) ? name : ('assets/sounds/' + name);
         const a = new Audio(url);
         let vol = 0.5;
-        if (typeof volume !== 'undefined' && volume !== null) {
+        if (volume != null) {
             vol = Number(volume) || 0;
             if (vol > 1) vol = vol / 100;
             if (vol < 0) vol = 0;
@@ -561,7 +561,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'You can change your name by <span style="color: lightblue">double clicking</span> your name.',
                 'These loading screens can be skipped by pressing <span style="color: yellow">Enter</span>.',
                 `This game started production <span style="color: lightgreen">${getDaysAgo(1686096000000)}</span> days ago.`,
-                `Nearly every number has a <span style="color: lightblue">tooltip</span> explaining it.`,
+                `<span style="color: lightblue">Tooltips</span> throughout the game provide helpful information and equations.`,
                 `If you notice any bugs, <span style='color: lightcoral'>pretend you didn't.</span>`,
                 `This game was built with the old and young gamers in mind.`,
                 `The number <span style="color: lightcoral" data-tooltip='You found me!'>5</span> [five] is considerably the <span style="color: lightcoral">worst</span> number in this font.`,
@@ -573,9 +573,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 `The digital whiteboard of this game contains over <span style='color: lightgreen' data-tooltip='You found me!'>5000</span> words!`,
                 `This game's codebase contains over <span style='color: lightblue' data-tooltip='You found me!'>10,000</span> lines of code!`,
                 `This game was going to have a devlog series, but I felt it would lengthen its development too harshly.`,
-                `This styles code is <span style='color: lightcoral'>hardcoded</span> in pixels. :]`,
+                `The CSS code is <span style='color: lightcoral'>hardcoded</span> in pixels. :]`,
                 `This game <u style='color: lightcoral'>uses a lot of memory</u>, and this loading screen is taking it.`,
-                `There are plans to add <span style='color: yellow'>quests</span>, <span style='color: #006eff'>frost</span> status effects, and <span style='color: lightyellow'>revives</span> in an optional version.`
+                `There are plans to add <span style='color: yellow'>quests</span>, <span style='color: #006eff'>frost</span> status effects, and <span style='color: lightyellow'>revives</span> in an optional version.`,
+                `<span style="color: lightblue">Shift + Click</span> an item to open it in the <span style="color: #bb68ff">Journal</span>.`,
+                `The idea of this game was honestly out of <span style='color: lightcoral'>spite</span>.`,
+                `There are <span style="color: lightblue">${assets.weapons.length}</span> weapons, <span style="color: lightblue">${assets.armors.length}</span> armors, and <span style="color: lightblue">${assets.items.length}</span> other items in this game!`,
+                `There are <span style='color: lightcoral'>${assets.enemies.length}</span> enemies in this game.`,
+                `It's <span style='color: lightcoral'>hard</span> for computers to calculate decimals.`,
+                `This text is only here <span style='color: lightcoral'>so you stick around</span>.`,
+                `There are <span style="color: lightblue">392</span> skills in the game.`
             ];
 
             function shuffleArray(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
@@ -615,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.style.transform = 'translate(-50%, calc(-50% + 48px))';
                 shell.appendChild(el);
                 await animate(el, { fromY: 48, toY: 0, fromOpacity: 0, toOpacity: 1, dur: 900, easing: easeOutElastic });
-                await wait(2300);
+                await wait(2500);
                 const outPromise = animate(el, { fromY: 0, toY: -48, fromOpacity: 1, toOpacity: 0, dur: 600, easing: t => 1 - easeInCubic(1 - t) });
                 outPromise.then(() => { try { shell.removeChild(el); } catch (e) { } });
                 return;
@@ -891,7 +898,7 @@ function setBackgroundForLocation(location) {
     bgEl.style.backgroundSize = 'cover';
 }
 
-function startup() {
+async function startup() {
     console.log("Startup function called.");
     const saved = JSON.parse(localStorage.getItem('textBasedData'));
     const bgData = Alpine.$data(document.getElementById('background-image'));
@@ -899,8 +906,10 @@ function startup() {
     setBackgroundForLocation(loc);
     fadeOutEffect();
     try {
+        await startPlayer();
         const player = Alpine.$data(document.getElementById('player')) || {};
         AudioManager.update(player.name, loc);
+        if (player.enemy) await resumeBattle();
     } catch (e) { }
 }
 
@@ -927,9 +936,11 @@ async function startGame(name) {
         experience: player.experience,
         weaponry: { weapon: player.weaponry.weapon.name, level: player.weaponry.level },
         armory: { armor: player.armory.armor.name, level: player.armory.level },
+        enemy: null,
         pstatus: player.pstatus,
         inventory: player.inventory,
-        location: background.location
+        location: background.location,
+        activePotion: null
     }));
 }
 
@@ -949,24 +960,20 @@ async function importButton() {
 
         const requiredKeys = [
             'name', 'level', 'health', 'stamina', 'experience',
-            'weaponry', 'armory', 'pstatus', 'inventory', 'location'
+            'weaponry', 'armory', 'pstatus', 'inventory', 'location', 'activePotion'
         ];
 
         const hasRequired = requiredKeys.every(k => Object.prototype.hasOwnProperty.call(parsed, k));
 
-        const weaponryOk = parsed.weaponry && typeof parsed.weaponry === 'object' &&
-            (parsed.weaponry.weapon || (parsed.weaponry.weapon && parsed.weaponry.weapon.name)) &&
-            ('level' in parsed.weaponry);
+        const weaponryOk = parsed.weaponry && (parsed.weaponry.weapon || (parsed.weaponry.weapon && parsed.weaponry.weapon.name)) && ('level' in parsed.weaponry);
 
-        const armoryOk = parsed.armory && typeof parsed.armory === 'object' &&
-            (parsed.armory.armor || (parsed.armory.armor && parsed.armory.armor.name)) &&
-            ('level' in parsed.armory);
+        const armoryOk = parsed.armory && (parsed.armory.armor || (parsed.armory.armor && parsed.armory.armor.name)) && ('level' in parsed.armory);
 
         if (!hasRequired || !weaponryOk || !armoryOk) {
             throw new Error('Missing required fields');
         }
 
-        if (typeof parsed.name !== 'string' || typeof parsed.level !== 'number') {
+        if (!parsed.name || !Number.isFinite(parsed.level)) {
             throw new Error('Invalid field types');
         }
 
@@ -992,7 +999,8 @@ async function exportButton() {
         armory: { armor: player.armory.armor.name, level: player.armory.level },
         pstatus: player.pstatus,
         inventory: player.inventory,
-        location: background.location
+        location: background.location,
+        activePotion: player.activePotion,
     });
 
     const encrypted = CryptoJS.TripleDES.encrypt(saveData, CryptoJS.enc.Utf8.parse("TextBasedGameKeyByJgouken"), {

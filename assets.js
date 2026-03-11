@@ -423,7 +423,12 @@ function getLocalAssets() {
 				positive: false,
 				rounds: 2,
 			},
-
+			{
+				name: 'Random',
+				id: '❓',
+				positive: false,
+				description: "A random one of the other status effects.",
+			},
 		],
 
 		enemies: [
@@ -4552,8 +4557,7 @@ function getLocalAssets() {
 			}
 		],
 
-		items: [
-			// WEAPONS
+		weapons: [
 			{
 				name: "Hands",
 				maxlvl: 1,
@@ -5916,10 +5920,10 @@ function getLocalAssets() {
 						attack: false
 					}
 				]
-			},
+			}
+		],
 
-			// ARMOR
-
+		armors: [
 			{
 				name: "None",
 				description: "Go commando.",
@@ -6403,111 +6407,113 @@ function getLocalAssets() {
 					},
 				]
 			},
+		],
 
+		items: [
 			// Stamina
-			{ name: "Light Stamina Potion", stamina: 0.15, battle: true },
-			{ name: "Medium Stamina Potion", stamina: 0.3, battle: true },
-			{ name: "Heavy Stamina Potion", stamina: 0.5, battle: true },
-			{ name: "Great Stamina Potion", stamina: 0.7, battle: true },
-			{ name: "Grand Stamina Potion", stamina: 0.9, battle: true },
+			{ name: "Light Stamina Potion", stamina: 0.15, battle: true, id: '🧪' },
+			{ name: "Medium Stamina Potion", stamina: 0.3, battle: true, id: '🧪' },
+			{ name: "Heavy Stamina Potion", stamina: 0.5, battle: true, id: '🧪' },
+			{ name: "Great Stamina Potion", stamina: 0.7, battle: true, id: '🧪' },
+			{ name: "Grand Stamina Potion", stamina: 0.9, battle: true, id: '🧪' },
 
 			// Health
-			{ name: "Light Health Potion", health: 0.15, battle: true },
-			{ name: "Medium Health Potion", health: 0.25, battle: true },
-			{ name: "Heavy Health Potion", health: 0.5, battle: true },
-			{ name: "Great Health Potion", health: 0.7, battle: true },
-			{ name: "Grand Health Potion", health: 0.9, battle: true },
+			{ name: "Light Health Potion", health: 0.15, battle: true, id: '🧪' },
+			{ name: "Medium Health Potion", health: 0.25, battle: true, id: '🧪' },
+			{ name: "Heavy Health Potion", health: 0.5, battle: true, id: '🧪' },
+			{ name: "Great Health Potion", health: 0.7, battle: true, id: '🧪' },
+			{ name: "Grand Health Potion", health: 0.9, battle: true, id: '🧪' },
 
 			// Defense
-			{ name: "Light Defense Potion", def: 0.15, rounds: 3, battle: true },
-			{ name: "Medium Defense Potion", def: 0.3, rounds: 3, battle: true },
-			{ name: "Heavy Defense Potion", def: 0.5, rounds: 3, battle: true },
-			{ name: "Great Defense Potion", def: 0.7, rounds: 3, battle: true },
-			{ name: "Grand Defense Potion", def: 0.9, rounds: 3, battle: true },
+			{ name: "Light Defense Potion", def: 0.15, rounds: 3, battle: true, id: '🧪' },
+			{ name: "Medium Defense Potion", def: 0.3, rounds: 3, battle: true, id: '🧪' },
+			{ name: "Heavy Defense Potion", def: 0.5, rounds: 3, battle: true, id: '🧪' },
+			{ name: "Great Defense Potion", def: 0.7, rounds: 3, battle: true, id: '🧪' },
+			{ name: "Grand Defense Potion", def: 0.9, rounds: 3, battle: true, id: '🧪' },
 
 			// Attack
-			{ name: "Light Attack Potion", buff: 0.15, rounds: 3, battle: true },
-			{ name: "Medium Attack Potion", buff: 0.3, rounds: 3, battle: true },
-			{ name: "Heavy Attack Potion", buff: 0.5, rounds: 3, battle: true },
-			{ name: "Great Attack Potion", buff: 0.7, rounds: 3, battle: true },
-			{ name: "Grand Attack Potion", buff: 0.9, rounds: 3, battle: true },
+			{ name: "Light Attack Potion", buff: 0.15, rounds: 3, battle: true, id: '🧪' },
+			{ name: "Medium Attack Potion", buff: 0.3, rounds: 3, battle: true, id: '🧪' },
+			{ name: "Heavy Attack Potion", buff: 0.5, rounds: 3, battle: true, id: '🧪' },
+			{ name: "Great Attack Potion", buff: 0.7, rounds: 3, battle: true, id: '🧪' },
+			{ name: "Grand Attack Potion", buff: 0.9, rounds: 3, battle: true, id: '🧪' },
 
 			// Energy
-			{ name: "Light Energy Potion", health: 0.15, stamina: 0.15, battle: true },
-			{ name: "Medium Energy Potion", health: 0.15, stamina: 0.3, battle: true },
-			{ name: "Heavy Energy Potion", health: 0.15, stamina: 0.5, battle: true },
-			{ name: "Great Energy Potion", health: 0.15, stamina: 0.7, battle: true },
-			{ name: "Grand Energy Potion", health: 0.15, stamina: 0.9, battle: true },
+			{ name: "Light Energy Potion", health: 0.15, stamina: 0.15, battle: true, id: '🧪' },
+			{ name: "Medium Energy Potion", health: 0.15, stamina: 0.3, battle: true, id: '🧪' },
+			{ name: "Heavy Energy Potion", health: 0.15, stamina: 0.5, battle: true, id: '🧪' },
+			{ name: "Great Energy Potion", health: 0.15, stamina: 0.7, battle: true, id: '🧪' },
+			{ name: "Grand Energy Potion", health: 0.15, stamina: 0.9, battle: true, id: '🧪' },
 
 			// XP
-			{ name: "Light XP Potion", xp: 638 },
-			{ name: "Medium XP Potion", xp: 5740 },
-			{ name: "Heavy XP Potion", xp: 15943 },
-			{ name: "Great XP Potion", xp: 31250 },
-			{ name: "Grand XP Potion", xp: 51658 },
+			{ name: "Light XP Potion", xp: 638, id: '🧪' },
+			{ name: "Medium XP Potion", xp: 5740, id: '🧪' },
+			{ name: "Heavy XP Potion", xp: 15943, id: '🧪' },
+			{ name: "Great XP Potion", xp: 31250, id: '🧪' },
+			{ name: "Grand XP Potion", xp: 51658, id: '🧪' },
 
 			// Misc consumables / foods
-			{ name: "Purity Potion" },
-			{ name: "Milk", description: "Clears all debuffs.", battle: true },
-			{ name: "Cheese", description: "Yes, Milk + Milk = Cheese.\n\nClears all debuffs.", flatHealth: 250, craft: ['Milk', 'Milk'], battle: true  },
-			{ name: "Beef", description: "A type of red meat from a cow.", flatHealth: 350, battle: true  },
-			{ name: "Pork", description: "A type of red meat from a pig.", flatHealth: 200, battle: true  },
-			{ name: "Mutton", description: "You can't get mutton from a young sheep.", flatHealth: 150, battle: true  },
-			{ name: "Chicken", description: "A type of white meat from a chicken.", flatHealth: 100, battle: true  },
-			{ name: "Egg", description: "This isn't a dairy product, at least.", flatHealth: 50, battle: true  },
-			{ name: "Tea", description: "Herb Water.", health: 0.03, craft: ['Water Bottle', 'Green Herb'], battle: true  },
-			{ name: "Breakfast", description: "Serving it up Gary's way.", health: 0.15, craft: ['Pork', 'Egg', 'Milk'] },
-			{ name: "Shepherd's Pie", description: "Vegetables surrounded by meat in cheese, topped with mashed potato.", health: 0.25, craft: ['Mutton', 'Beef', 'Cheese', 'Green Herb'] },
-			{ name: "Meatloaf", description: "Meat mash, essentially.", health: 0.3, craft: ['Pork', 'Mutton', 'Chicken', 'Beef'] },
-			{ name: "Banquet", description: "A feast fit for a king, or at least a very hungry adventurer.", health: 0.5, craft: ['Shepherd\'s Pie', 'Meatloaf', 'Tea'] },
-			{ name: "Suspicious Eggnog", description: "Gain a random status effect.", craft: ['Egg', 'Milk'] },
-			{ name: "Bandage", description: "Patch yourself up and stop the bleeding.", health: 0.1, battle: true },
+			{ name: "Purity Potion", id: '🧪' },
+			{ name: "Milk", usability: "Purifies Statuses", purify: true, battle: true, id: '🍖' },
+			{ name: "Cheese", usability: "Purifies Statuses", purify: true, description: "Yes, Milk + Milk = Cheese.", flatHealth: 250, craft: ['Milk', 'Milk'], battle: true, id: '🍖' },
+			{ name: "Beef", description: "A type of red meat from a cow.", flatHealth: 350, battle: true, id: '🍖' },
+			{ name: "Pork", description: "A type of red meat from a pig.", flatHealth: 200, battle: true, id: '🍖' },
+			{ name: "Mutton", description: "You can't get mutton from a young sheep.", flatHealth: 150, battle: true, id: '🍖' },
+			{ name: "Chicken", description: "A type of white meat from a chicken.", flatHealth: 100, battle: true, id: '🍖' },
+			{ name: "Egg", description: "This isn't a dairy product, at least.", flatHealth: 50, battle: true, id: '🍖' },
+			{ name: "Tea", description: "Herb Water.", health: 0.03, craft: ['Water Bottle', 'Green Herb'], battle: true, id: '🍖' },
+			{ name: "Breakfast", description: "Serving it up Gary's way.", health: 0.15, craft: ['Pork', 'Egg', 'Milk'], id: '🍖' },
+			{ name: "Shepherd's Pie", description: "Vegetables surrounded by meat in cheese, topped with mashed potato.", health: 0.25, craft: ['Mutton', 'Beef', 'Cheese', 'Green Herb'], id: '🍖' },
+			{ name: "Meatloaf", description: "Meat mash, essentially.", health: 0.3, craft: ['Pork', 'Mutton', 'Chicken', 'Beef'], id: '🍖' },
+			{ name: "Banquet", description: "A feast fit for a king, or at least a very hungry adventurer.", health: 0.5, craft: ['Shepherd\'s Pie', 'Meatloaf', 'Tea'], id: '🍖' },
+			{ name: "Suspicious Eggnog", usability: "Gain [❓]", craft: ['Egg', 'Milk'], id: '🍖' },
+			{ name: "Bandage", usability: "Removes [🩸]", description: "Patch yourself up.", health: 0.1, battle: true, id: '✨' },
 
 			// Bombs / explosives
-			{ name: "Bomb" },
-			{ name: "Cluster Bomb" },
-			{ name: "Blaze Bomb" },
-			{ name: "Shrapnel Bomb" },
-			{ name: "Poison Bomb", estatus: ["💀"], battle: true },
-			{ name: "Blinding Bomb" },
-			{ name: "Sinister Bomb" },
-			{ name: "Storm Bomb" },
-			{ name: "Decay Bomb" },
-			{ name: "Unstable Bomb" },
-			{ name: "Unstable Cluster Bomb" },
-			{ name: "Unstable Shrapnel Bomb" },
+			{ name: "Bomb", battle: true, id: '💣' },
+			{ name: "Cluster Bomb", battle: true, id: '💣' },
+			{ name: "Blaze Bomb", battle: true, id: '💣' },
+			{ name: "Shrapnel Bomb", battle: true, id: '💣' },
+			{ name: "Poison Bomb", estatus: ["💀"], battle: true, id: '💣' },
+			{ name: "Blinding Bomb", battle: true, id: '💣' },
+			{ name: "Sinister Bomb", battle: true, id: '💣' },
+			{ name: "Storm Bomb", battle: true, id: '💣' },
+			{ name: "Decay Bomb", battle: true, id: '💣' },
+			{ name: "Unstable Bomb", battle: true, id: '💣' },
+			{ name: "Unstable Cluster Bomb", battle: true, id: '💣' },
+			{ name: "Unstable Shrapnel Bomb", battle: true, id: '💣' },
 
 			// Charms / utility
-			{ name: "Boss Lure" },
-			{ name: "Monster Compass" },
-			{ name: "Treasure Map" },
-			{ name: "B-Gone" },
-			{ name: "A-Frayed Compass" },
-			{ name: "Loot Charm" },
-			{ name: "Soul Charm" },
-			{ name: "Spirit Charm" },
-			{ name: "Focus Charm" },
+			{ name: "Boss Lure", id: '✨' },
+			{ name: "Monster Compass", id: '✨' },
+			{ name: "Treasure Map", id: '✨' },
+			{ name: "B-Gone", battle: true, id: '✨' },
+			{ name: "A-Frayed Compass", battle: true, id: '✨' },
+			{ name: "Loot Charm", id: '✨' },
+			{ name: "Soul Charm", id: '✨' },
+			{ name: "Spirit Charm", id: '✨' },
+			{ name: "Focus Charm", id: '✨' },
 
 			// Keys
-			{ name: "Wooden Key", sprite: "assets/keys/WoodenKey.gif", chest: 0 },
-			{ name: "Silver Key" },
-			{ name: "Gold Key" },
-			{ name: "Platinum Key", sprite: "assets/keys/PlatinumKey.gif", chest: 3 },
-			{ name: "Adamantine Key", sprite: "assets/keys/AdamantineKey.gif", chest: 4 },
+			{ name: "Wooden Key", sprite: "assets/keys/WoodenKey.gif", chest: 0, id: '🗝️' },
+			{ name: "Silver Key", sprite: "assets/keys/SilverKey.gif", chest: 1, id: '🗝️' },
+			{ name: "Gold Key", sprite: "assets/keys/GoldKey.gif", chest: 2, id: '🗝️' },
+			{ name: "Platinum Key", sprite: "assets/keys/PlatinumKey.gif", chest: 3, id: '🗝️' },
+			{ name: "Adamantine Key", sprite: "assets/keys/AdamantineKey.gif", chest: 4, id: '🗝️' },
 
 			// Cursed keys
-			{ name: "Cursed Wooden Key" },
-			{ name: "Cursed Silver Key" },
-			{ name: "Cursed Gold Key" },
-			{ name: "Cursed Platinum Key" },
-			{ name: "Cursed Adamantine Key" },
+			{ name: "Cursed Wooden Key", id: '🗝️' },
+			{ name: "Cursed Silver Key", id: '🗝️' },
+			{ name: "Cursed Gold Key", id: '🗝️' },
+			{ name: "Cursed Platinum Key", id: '🗝️' },
+			{ name: "Cursed Adamantine Key", id: '🗝️' },
 
 			// Lockpicks / tools
-			{ name: "Novice Lockpick" },
-			{ name: "Lockpick" },
-			{ name: "Master Lockpick" },
-			{ name: "Whetstone & Polish" },
-			{ name: "Hexed Whetstone & Polish" },
+			{ name: "Novice Lockpick", id: '🗝️' },
+			{ name: "Lockpick", id: '🗝️' },
+			{ name: "Master Lockpick", id: '🗝️' },
+			{ name: "Whetstone & Polish", id: '✨' },
+			{ name: "Hexed Whetstone & Polish", id: '✨' },
 
 			// Slime / corrupted / fragments / crystals / geodes
 			{ name: "Slime Goop" },
@@ -6881,7 +6887,7 @@ function getStatusIdByName(statusName) {
 function scaleEnemyStats(enemyData, level) {
 	const lvl = Math.max(1, Number(level) || 1);
 
-	const blocks = (typeof getAssets === 'function' && getAssets()) ? (getAssets().blocks || []) : [];
+	const blocks = (getAssets ? (getAssets().blocks || []) : []);
 	const block = blocks.find((entry) => entry.name === enemyData?.block);
 
 	const getBlockTierKeyLocal = (l) => {

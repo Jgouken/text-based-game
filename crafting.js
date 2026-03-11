@@ -1,5 +1,15 @@
 let draggedCraftItemName = null;
 
+function playAudioMethodOrFallback(methodName, fallbackFile) {
+	try {
+		if (window.AudioManager && AudioManager[methodName]) {
+			AudioManager[methodName]();
+			return;
+		}
+	} catch (e) { }
+	try { playSound(fallbackFile); } catch (e) { }
+}
+
 function initCraftingDragDrop() {
 	setTimeout(() => {
 		setupCraftingListeners();
@@ -11,6 +21,24 @@ function setupCraftingListeners() {
 	if (!craftingPanel) return;
 	const playerBar = document.getElementById('player');
 	const battleWeaponry = document.getElementById('battle-weaponry');
+
+	craftingPanel.addEventListener('click', (e) => {
+		if (!e.shiftKey) return;
+
+		const inventoryItem = e.target.closest('.inventory-item');
+		if (!inventoryItem) return;
+
+		const itemName = inventoryItem.querySelector('.inventory-item-name')?.textContent?.trim();
+		if (!itemName) return;
+		if (!window.openJournalItemFromInventory) return;
+
+		const player = Alpine.$data(document.getElementById('player'));
+		const itemLevel = player ? getHoveredItemLevel(player, itemName) : 1;
+
+		e.preventDefault();
+		e.stopPropagation();
+		window.openJournalItemFromInventory(itemName, itemLevel, 'crafting');
+	});
 
 	craftingPanel.addEventListener('dragstart', handleCraftingDragStart);
 	craftingPanel.addEventListener('dragend', handleCraftingDragEnd);
@@ -175,7 +203,7 @@ function applyCraftedItemDirectly(player, craftedItemData, craftedLevel) {
 	const assets = getAssets();
 	const isWeapon = craftedItemData.attack !== undefined && craftedItemData.skills;
 	const isArmor = craftedItemData.defense !== undefined && !craftedItemData.skills && craftedItemData.alvlmult !== undefined;
-	const isConsumable = craftedItemData.name.toLowerCase().includes('potion');
+	const isConsumable = Boolean(craftedItemData && (craftedItemData.flatHealth || craftedItemData.health || craftedItemData.stamina || craftedItemData.xp || craftedItemData.pstatus || craftedItemData.buff || craftedItemData.def || craftedItemData.id === '🍖' || craftedItemData.id === '🧪'));
 
 	if (isWeapon) {
 		if (player.weaponry.weapon.name !== 'Hands') {
@@ -184,7 +212,7 @@ function applyCraftedItemDirectly(player, craftedItemData, craftedLevel) {
 		player.weaponry = { weapon: craftedItemData, level: craftedLevel || 1 };
 		setPlayer();
 		showMessage(`Crafted and equipped ${craftedItemData.name}!`, 'success');
-		AudioManager.playCrafted();
+		playAudioMethodOrFallback('playCrafted', 'Crafted.mp3');
 		return true;
 	}
 
@@ -195,7 +223,7 @@ function applyCraftedItemDirectly(player, craftedItemData, craftedLevel) {
 		player.armory = { armor: craftedItemData, level: craftedLevel || 1 };
 		setPlayer();
 		showMessage(`Crafted and equipped ${craftedItemData.name}!`, 'success');
-		AudioManager.playCrafted();
+		playAudioMethodOrFallback('playCrafted', 'Crafted.mp3');
 		return true;
 	}
 
@@ -227,7 +255,7 @@ function applyCraftedItemDirectly(player, craftedItemData, craftedLevel) {
 		updateBars();
 		savePlayer();
 		showMessage(`Crafted and used ${craftedItemData.name}!`, 'success');
-		AudioManager.playCrafted();
+		playAudioMethodOrFallback('playCrafted', 'Crafted.mp3');
 		return true;
 	}
 
@@ -239,7 +267,7 @@ function getCraftDropContext() {
 
 	const assets = getAssets();
 	const player = Alpine.$data(document.getElementById('player'));
-	const craftItemData = assets.items.find(item => item.name === draggedCraftItemName);
+	const craftItemData = (assets.items.find(item => item.name === draggedCraftItemName) || assets.weapons.find(w => w.name === draggedCraftItemName) || assets.armors.find(a => a.name === draggedCraftItemName));
 
 	if (!craftItemData || !craftItemData.craft) return null;
 
@@ -248,6 +276,7 @@ function getCraftDropContext() {
 		const details = missing.length ? ` Missing: ${missing.join(', ')}` : '';
 		showMessage(details, 'warning');
 		draggedCraftItemName = null;
+		playAudioMethodOrFallback('playChestLocked', 'ChestLocked.mp3');
 		return null;
 	}
 
@@ -278,7 +307,7 @@ async function handleCraftingInventoryDrop(e) {
 	await addToInventory(context.craftItemData, context.craftedLevel);
 	await savePlayer();
 	showMessage(`Crafted ${context.craftItemData.name}!`, 'success');
-	AudioManager.playCrafted();
+	playAudioMethodOrFallback('playCrafted', 'Crafted.mp3');
 
 	draggedCraftItemName = null;
 }
@@ -289,10 +318,10 @@ function handleCraftingPlayerDragOver(e) {
 	e.dataTransfer.dropEffect = 'move';
 	const playerBar = document.getElementById('player');
 	if (draggedCraftItemName) {
-		const craftItemData = getAssets().items.find(item => item.name === draggedCraftItemName);
+		const craftItemData = (getAssets().items.find(item => item.name === draggedCraftItemName) || getAssets().weapons.find(w => w.name === draggedCraftItemName) || getAssets().armors.find(a => a.name === draggedCraftItemName));
 		const isWeapon = craftItemData && craftItemData.attack !== undefined && craftItemData.skills;
 		const isArmor = craftItemData && craftItemData.defense !== undefined && !craftItemData.skills && craftItemData.alvlmult !== undefined;
-		const isConsumable = craftItemData && craftItemData.name.toLowerCase().includes('potion');
+		const isConsumable = craftItemData && Boolean(craftItemData.flatHealth || craftItemData.health || craftItemData.stamina || craftItemData.xp || craftItemData.pstatus || craftItemData.buff || craftItemData.def || craftItemData.id === '🍖' || craftItemData.id === '🧪');
 		const hintText = (isWeapon || isArmor)
 			? 'Drop here to craft and equip'
 			: isConsumable
@@ -353,7 +382,7 @@ async function handleCraftingPlayerDrop(e) {
 	}
 
 	await savePlayer();
-	AudioManager.playCrafted();
+	playAudioMethodOrFallback('playCrafted', 'Crafted.mp3');
 
 	draggedCraftItemName = null;
 }
