@@ -626,6 +626,8 @@
                             :class="{ 'inventory-tab--active': activeTab === 'useables' }">✨ Useables</button>
                         <button @click="activeTab = 'keys'" class="inventory-tab"
                             :class="{ 'inventory-tab--active': activeTab === 'keys' }">🗝️ Keys</button>
+                        <button @click="activeTab = 'reagents'" class="inventory-tab"
+                            :class="{ 'inventory-tab--active': activeTab === 'reagents' }">🔧 Reagents</button>
                     </div>
 
                     <!-- Sort options -->
@@ -672,6 +674,7 @@
                     const isArmor = (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
                     const isPotions = id === '🧪';
                     const isEatables = id === '🍖';
+                    const isReagents = !id && it.attack === undefined && it.defense === undefined;
                     const isBombs = id === '💣';
                     const isUseables = id === '✨';
                     const isKey = id === '🗝️' || it.chest !== undefined;
@@ -681,6 +684,7 @@
                     if (activeTab === 'armors') return isArmor;
                     if (activeTab === 'potions') return isPotions;
                     if (activeTab === 'eatables') return isEatables;
+                    if (activeTab === 'reagents') return isReagents;
                     if (activeTab === 'bombs') return isBombs;
                     if (activeTab === 'useables') return isUseables;
                     if (activeTab === 'keys') return isKey;
@@ -759,15 +763,17 @@
                     const isArmor = (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
                     const isPotions = id === '🧪';
                     const isEatables = id === '🍖';
+                    const isReagents = !id && it.attack === undefined && it.defense === undefined;
                     const isBombs = id === '💣';
                     const isUseables = id === '✨';
-                    const isKey = id === '🗝️';
+                    const isKey = id === '🗝️' || it.chest !== undefined;
                     const isMiscellaneous = !isWeapon && !isArmor && !isPotions && !isEatables && !isBombs && !isUseables && !isKey;
 
                     if (activeTab === 'weapons') return isWeapon;
                     if (activeTab === 'armors') return isArmor;
                     if (activeTab === 'potions') return isPotions;
                     if (activeTab === 'eatables') return isEatables;
+                    if (activeTab === 'reagents') return isReagents;
                     if (activeTab === 'bombs') return isBombs;
                     if (activeTab === 'useables') return isUseables;
                     if (activeTab === 'keys') return isKey;
@@ -855,6 +861,10 @@
                     <button class="inventory-tab journal-controls__btn"
                         :class="{ 'inventory-tab--active': itemSubTab === 'keys' }" @click="itemSubTab = 'keys'">🗝️
                         Keys</button>
+                    <button class="inventory-tab journal-controls__btn"
+                        :class="{ 'inventory-tab--active': itemSubTab === 'reagents' }" @click="itemSubTab = 'reagents'">🔧 Reagents</button>
+                    <button class="inventory-tab journal-controls__btn"
+                        :class="{ 'inventory-tab--active': itemSubTab === 'chests' }" @click="itemSubTab = 'chests'">📦 Chests</button>
                 </div>
 
                 <div class="journal-controls journal-controls--compact" x-show="activeTab === 'enemies'">
@@ -1114,6 +1124,7 @@
                     const isArmor = (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
                     const isPotions = id === '🧪';
                     const isEatables = id === '🍖';
+                    const isReagents = !id && it.attack === undefined && it.defense === undefined;
                     const isBombs = id === '💣';
                     const isUseables = id === '✨';
                     const isKey = id === '🗝️' || it.chest !== undefined;
@@ -1123,6 +1134,7 @@
                     if (activeTab === 'armors') return isArmor;
                     if (activeTab === 'potions') return isPotions;
                     if (activeTab === 'eatables') return isEatables;
+                    if (activeTab === 'reagents') return isReagents;
                     if (activeTab === 'bombs') return isBombs;
                     if (activeTab === 'useables') return isUseables;
                     if (activeTab === 'keys') return isKey;
@@ -1202,6 +1214,7 @@
                     const isArmor = (it.defense !== undefined && !it.skills && it.alvlmult !== undefined);
                     const isPotions = id === '🧪';
                     const isEatables = id === '🍖';
+                    const isReagents = !id && it.attack === undefined && it.defense === undefined;
                     const isBombs = id === '💣';
                     const isUseables = id === '✨';
                     const isKey = id === '🗝️' || it.chest !== undefined;
@@ -1211,6 +1224,7 @@
                     if (activeTab === 'armors') return isArmor;
                     if (activeTab === 'potions') return isPotions;
                     if (activeTab === 'eatables') return isEatables;
+                    if (activeTab === 'reagents') return isReagents;
                     if (activeTab === 'bombs') return isBombs;
                     if (activeTab === 'useables') return isUseables;
                     if (activeTab === 'keys') return isKey;

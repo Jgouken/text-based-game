@@ -1003,6 +1003,10 @@ window.createJournalState = function createJournalState() {
                         itemEntries = itemEntries.filter((entry) => entry.raw?.id === '🍖');
                         chestEntries = [];
                         break;
+                    case 'reagents':
+                        itemEntries = itemEntries.filter((entry) => !entry.raw?.id && entry.raw?.attack === undefined && entry.raw?.defense === undefined);
+                        chestEntries = [];
+                        break;
                     case 'bombs':
                         itemEntries = itemEntries.filter((entry) => entry.raw?.id === '💣');
                         chestEntries = [];
@@ -1014,6 +1018,10 @@ window.createJournalState = function createJournalState() {
                     case 'keys':
                         itemEntries = itemEntries.filter((entry) => entry.raw?.id === '🗝️');
                         chestEntries = [];
+                        break;
+                    case 'chests':
+                        // Show only chests
+                        itemEntries = [];
                         break;
                     default:
                         break;
