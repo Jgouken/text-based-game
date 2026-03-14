@@ -116,29 +116,22 @@ async function savePlayer() {
         experience: player.experience,
         weaponry: { weapon: player.weaponry.weapon.name, level: player.weaponry.level },
         armory: { armor: player.armory.armor.name, level: player.armory.level },
-        enemy: (function() {
+        enemy: (function () {
             try {
                 const background = Alpine.$data(document.getElementById('background-image')) || {};
                 const encounter = Alpine.$data(document.getElementById('encounter')) || {};
-                if (background && background.enemy && encounter && encounter.battle) {
+                if (background && background.enemy && encounter && encounter.battle && !(background.enemy.name == 'Fox King' && background.enemyLevel == 1)) {
                     const battleStation = Alpine.$data(document.getElementById('battle-station')) || {};
                     return {
                         name: background.enemy.name,
                         level: background.enemyLevel || (player.enemy && player.enemy.level) || 1,
                         log: Array.isArray(encounter.log) ? encounter.log.slice() : (player.enemy && player.enemy.log) || [],
                         health: encounter.health ?? (player.enemy && player.enemy.health),
-                        maxHealth: encounter.maxHealth ?? (player.enemy && player.enemy.maxHealth),
-                        defense: encounter.defense ?? (player.enemy && player.enemy.defense),
-                        attack: encounter.attack ?? (player.enemy && player.enemy.attack),
-                        crit: encounter.crit ?? (player.enemy && player.enemy.crit),
-                        accuracy: encounter.accuracy ?? (player.enemy && player.enemy.accuracy),
                         estatus: Array.isArray(encounter.estatus) ? encounter.estatus.slice() : (player.enemy && player.enemy.estatus) || [],
-                        battle: !!encounter.battle,
                         turnManager: !!(player.enemy && player.enemy.turnManager),
                         round: Number(battleStation.round) || (player.enemy && player.enemy.round) || 1,
                         turn: !!battleStation.turn || !!(player.enemy && player.enemy.turn),
                         _regenThisRound: Number(battleStation._regenThisRound) || (player.enemy && player.enemy._regenThisRound) || 0,
-                        skills: Array.isArray(background.enemy.skills) ? background.enemy.skills.map(s => ({ name: s.name, _cooldown: s._cooldown })) : (player.enemy && player.enemy.skills) || []
                     };
                 }
             } catch (e) { }

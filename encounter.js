@@ -84,7 +84,6 @@ async function resumeBattle() {
     if (!player.enemy) return;
     const savedEnemy = player.enemy || {};
     const savedEncounter = (savedEnemy && savedEnemy.encounter) ? savedEnemy.encounter : savedEnemy;
-
     const enemyRef = assets.enemies.find(enemy => enemy.name === savedEnemy.name);
     await startBattle(enemyRef, savedEnemy.level || 1);
     try {
@@ -94,13 +93,8 @@ async function resumeBattle() {
     encounter.level = savedEnemy.level || encounter.level || 1;
     encounter.log = Array.isArray(savedEncounter.log) ? savedEncounter.log.slice() : (savedEncounter.log || encounter.log || []);
     encounter.health = savedEncounter.health ?? encounter.health ?? 1;
-    encounter.maxHealth = savedEncounter.maxHealth ?? encounter.maxHealth ?? 1;
-    encounter.defense = savedEncounter.defense ?? encounter.defense ?? 0;
-    encounter.attack = savedEncounter.attack ?? encounter.attack ?? 0;
-    encounter.crit = savedEncounter.crit ?? encounter.crit ?? 0;
-    encounter.accuracy = savedEncounter.accuracy ?? encounter.accuracy ?? 0;
     encounter.estatus = Array.isArray(savedEncounter.estatus) ? savedEncounter.estatus.slice() : (savedEncounter.estatus || encounter.estatus || []);
-    encounter.battle = savedEncounter.battle ?? true;
+    encounter.battle = true;
     try {
         const background = Alpine.$data(document.getElementById('background-image'));
         const battleStation = Alpine.$data(document.getElementById('battle-station')) || {};

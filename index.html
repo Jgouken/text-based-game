@@ -27,7 +27,7 @@
     <div alt="Background" id="background-image" class="background-image" x-init="startup()" x-data="{
             name: JSON.parse(localStorage.getItem('textBasedData'))?.name || '',
             location: 'Warhamshire',
-            screen: JSON.parse(localStorage.getItem('textBasedData'))?.name ? (JSON.parse(localStorage.getItem('textBasedData'))?.enemy?.battle ? 'encounter' : 'returning') : 'new-player',
+            screen: JSON.parse(localStorage.getItem('textBasedData'))?.name ? (JSON.parse(localStorage.getItem('textBasedData'))?.enemy?.name ? 'encounter' : 'returning') : 'new-player',
             showPlayerBar: false,
             enemy: getAssets().enemies.find(enemy => enemy.name == 'Fox King'),
             enemyLevel: 1,

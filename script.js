@@ -909,13 +909,16 @@ async function startup() {
         await startPlayer();
         const player = Alpine.$data(document.getElementById('player')) || {};
         AudioManager.update(player.name, loc);
-        if (player.enemy) await resumeBattle();
+        if (player.enemy && !(player.enemy.name == "Fox King" && player.enemy.level == 1)) await resumeBattle();
+        else player.enemy = null;
+        setPlayer();
+        savePlayer();
     } catch (e) { }
 }
 
 async function startGame(name) {
-    const player = Alpine.$data(document.getElementById('player'));
-    const background = Alpine.$data(document.getElementById('background-image'));
+    const player = Alpine.$data(document.getElementById('player')) || {};
+    const background = Alpine.$data(document.getElementById('background-image')) || {};
     Alpine.$data(document.getElementById("background-image")).name = name;
     console.log("Game started with name: " + name);
 
@@ -927,21 +930,32 @@ async function startGame(name) {
         const bg = Alpine.$data(document.getElementById('background-image'));
         AudioManager.update(playerName, bg?.location);
     } catch (e) { }
+    const assets = getAssets();
+    const defaultWeapon = assets.items.find(w => w.name == 'Hands') || assets.weapons.find(i => i && 'attack' in i) || assets.items[0];
+    const defaultArmor = assets.items.find(a => a.name == 'None') || assets.armors.find(i => i && 'defense' in i) || assets.items[0];
 
-    localStorage.setItem('textBasedData', JSON.stringify({
-        name: player.name,
-        level: player.level,
-        health: player.health,
-        stamina: player.stamina,
-        experience: player.experience,
-        weaponry: { weapon: player.weaponry.weapon.name, level: player.weaponry.level },
-        armory: { armor: player.armory.armor.name, level: player.armory.level },
+    const weaponName = player.weaponry?.weapon?.name || defaultWeapon.name;
+    const weaponLevel = player.weaponry?.level || 1;
+    const armorName = player.armory?.armor?.name || defaultArmor.name;
+    const armorLevel = player.armory?.level || 1;
+
+    const saveObj = {
+        name: name || player.name || '???',
+        level: player.level || 1,
+        health: player.health || (player.maxHealth || 500),
+        stamina: player.stamina || (player.maxStamina || 50),
+        experience: player.experience || 0,
+        weaponry: { weapon: weaponName, level: weaponLevel },
+        armory: { armor: armorName, level: armorLevel },
         enemy: null,
-        pstatus: player.pstatus,
-        inventory: player.inventory,
-        location: background.location,
+        pstatus: Array.isArray(player.pstatus) ? player.pstatus : [],
+        inventory: Array.isArray(player.inventory) ? player.inventory : [],
+        location: background.location || 'Warhamshire',
         activePotion: null
-    }));
+    };
+
+    localStorage.setItem('textBasedData', JSON.stringify(saveObj));
+    try { await startPlayer(); } catch (e) { }
 }
 
 async function importButton() {
@@ -1019,6 +1033,10 @@ async function deleteButton() {
         localStorage.removeItem('textBasedData');
         window.location.reload();
     }
+}
+
+async function quitButton() {
+    onclick = "window.open('', '_self', ''); window.close();"
 }
 
 async function howToPlay() {
