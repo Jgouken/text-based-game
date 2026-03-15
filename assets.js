@@ -4676,7 +4676,7 @@ function getLocalAssets() {
 				name: "Broken Dagger",
 				maxlvl: 10,
 				minlvl: 2,
-
+				craft: ['Iron', 'Iron', 'Cloth', 'Cloth'],
 				attack: 10,
 				attackPerLevel: 2,
 				crit: 0.2,
@@ -4717,7 +4717,7 @@ function getLocalAssets() {
 				name: "Rusty Dagger",
 				maxlvl: 10,
 				minlvl: 4,
-
+				craft: ['Broken Dagger', 'Water Bottle', 'Iron'],
 				attack: 15,
 				attackPerLevel: 2,
 				crit: 0.1,
@@ -4758,6 +4758,7 @@ function getLocalAssets() {
 				name: "Trusty Dagger",
 				maxlvl: 12,
 				minlvl: 6,
+				craft: ['Rusty Dagger', 'Whetstone', 'Cloth'],
 				description: "A clean dagger that feels reliable with a nicely sharpened edge.",
 
 				attack: 20,
@@ -5938,7 +5939,7 @@ function getLocalAssets() {
 			{
 				name: "Tattered Rags",
 				description: "Torn clothing together enough to cover the most important part and keep warm.",
-
+				craft: ['Cloth', 'Cloth', 'Cloth'],
 				defense: 10,
 				maxlvl: 10,
 				minlvl: 1,
@@ -5961,7 +5962,7 @@ function getLocalAssets() {
 			{
 				name: "Damaged Cloak",
 				description: "A brown cloak that seems to have been used extensively based on the heavily faded color and abundant tears",
-
+				craft: ['Tattered Rags', 'Cloth', 'Cloth', 'Cloth', 'Wool'],
 				defense: 14,
 				maxlvl: 10,
 				minlvl: 1,
@@ -6478,7 +6479,7 @@ function getLocalAssets() {
 			{ name: "Blinding Bomb", description: "Purified Salt is good for the heart, not the eyes.", damage: 150, estatus: ["👁️"], battle: true, craft: ['Bomb', 'Blinding Powder', 'Purified Salt'], id: '💣' },
 			{ name: "Sinister Bomb", damage: 500, estatus: ["🌑"], battle: true, craft: ['Bomb', 'Corrupted Shard', 'Goblin Blood', 'Tainted Ashes', 'Tainted Rose'], id: '💣' },
 			{ name: "Storm Bomb", damage: 350, estatus: ["💫"], battle: true, craft: ['Bomb', 'Stormshroom', 'Packed Gunpowder'], id: '💣' },
-			{ name: "Decay Bomb", damage: 400, estatus: ["🖤"], battle: true, craft: ['Bomb', 'Tainted Ashes', 'Corrupted Slime Fragment'], id: '💣' },
+			{ name: "Decay Bomb", damage: 400, estatus: ["🖤"], battle: true, craft: ['Bomb', 'Tainted Ashes', 'Corrupted Core'], id: '💣' },
 			{ name: "Unstable Bomb", damage: 1000, battle: true, craft: ['Bomb', 'Packed Gunpowder', 'Corrupted Goop', 'Tainted Ashes'], id: '💣' },
 			{ name: "Unstable Cluster Bomb", damage: 250, times: 6, battle: true, craft: ['Unstable Bomb', 'Packed Gunpowder', 'Bomb', 'Ember Core'], id: '💣' },
 			{ name: "Unstable Shrapnel Bomb", damage: 200, times: 12, estatus: ["🩸"], battle: true, craft: ['Unstable Bomb', 'Shrapnel Bomb', 'Iron', 'Reinforced Flask'], id: '💣' },
@@ -6504,32 +6505,29 @@ function getLocalAssets() {
 			{ name: "Adamantine Key", sprite: "assets/keys/AdamantineKey.gif", chest: 4, id: '🗝️' },
 
 			// Cursed keys
-			{ name: "Cursed Wooden Key", id: '🗝️' },
-			{ name: "Cursed Silver Key", id: '🗝️' },
-			{ name: "Cursed Gold Key", id: '🗝️' },
-			{ name: "Cursed Platinum Key", id: '🗝️' },
-			{ name: "Cursed Adamantine Key", id: '🗝️' },
+			{ name: "Cursed Wooden Key", id: '🗝️', craft: ['Wooden Key', 'Corrupted Goop'] },
+			{ name: "Cursed Silver Key", id: '🗝️', craft: ['Silver Key', 'Corrupted Goop'] },
+			{ name: "Cursed Gold Key", id: '🗝️', craft: ['Gold Key', 'Corrupted Goop', 'Goblin Blood'] },
+			{ name: "Cursed Platinum Key", id: '🗝️', craft: ['Platinum Key', 'Corrupted Goop', 'Corrupted Shard'] },
+			{ name: "Cursed Adamantine Key", id: '🗝️', craft: ['Adamantine Key', 'Corrupted Goop', 'Corrupted Core'] },
 
 			// Lockpicks / tools
+			{ name: "Starter Lockpick", id: '🗝️' },
 			{ name: "Novice Lockpick", id: '🗝️' },
-			{ name: "Lockpick", id: '🗝️' },
 			{ name: "Master Lockpick", id: '🗝️' },
 			{ name: "Whetstone", craft: ['Iron', 'Water Bottle', 'Cloth'], id: '✨' },
-			{ name: "Hexed Whetstone", craft: ['Whetstone', 'Corrupted Shard'], id: '✨' },
+			{ name: "Hexed Whetstone", craft: ['Whetstone', 'Corrupted Core'], id: '✨' },
 
 			// Slime / corrupted / fragments / crystals / geodes
 			{ name: "Goop" },
-			{ name: "Corrupted Goop", craft: ['Goop', 'Corrupted Shard'] },
+			{ name: "Corrupted Goop", craft: ['Goop', 'Corrupted Core'] },
 			{ name: "Slime Fragment", craft: ['Goop', 'Mana Bloom'] },
-			{ name: "Corrupted Slime Fragment", craft: ['Corrupted Goop', 'Mana Bloom'] },
 			{ name: "Slime Crystal", craft: ['Slime Fragment', 'Mana Bloom'] },
-			{ name: "Corrupted Slime Crystal", craft: ['Corrupted Slime Fragment', 'Mana Bloom'] },
 			{ name: "Slime Geode", craft: ['Slime Crystal', 'Mana Bloom'] },
-			{ name: "Corrupted Slime Geode", craft: ['Corrupted Slime Crystal', 'Mana Bloom'] },
 
 			// Corrupted / mana materials
 			{ name: "Corrupted Shard", craft: ['Corrupted Core'] },
-			{ name: "Corrupted Core" },
+			{ name: "Corrupted Core", craft: ['Corrupted Shard', 'Corrupted Shard', 'Corrupted Shard'] },
 			{ name: "Mana Bloom" },
 			{ name: "Mana Shard", craft: ['Mana Bloom', 'Enchanting Powder'] },
 			{ name: "Mana Fragment", craft: ['Mana Shard', 'Mana Shard'] },
@@ -6549,11 +6547,11 @@ function getLocalAssets() {
 			{ name: "Life Bloom", craft: ['Green Herb', 'Mana Bloom'] },
 			{ name: "Oceanshroom", craft: ['Blue Herb', 'Mana Bloom'] },
 			{ name: "Stormshroom", craft: ['Yellow Herb', 'Mana Bloom'] },
-			{ name: "Tainted Rose", craft: ['Angelic Rose', 'Goblin Blood'] },
-			{ name: "Angelic Rose", craft: ['Tainted Rose', 'Purity Potion'] },
+			{ name: "Tainted Rose", craft: ['Angelic Rose', 'Goblin Blood', 'Black Herb'] },
+			{ name: "Angelic Rose", craft: ['Tainted Rose', 'Purity Potion', 'White Herb'] },
 
 			// Misc
-			{ name: "Ember Core" },
+			{ name: "Ember Core", craft: ['Mana Core', 'Crimson Bloom'] },
 			{ name: "Iron" },
 			{ name: "Lucky Rabbit Foot" },
 			{ name: "Wool" },
@@ -6565,14 +6563,14 @@ function getLocalAssets() {
 
 			// Powders / flasks / salts / ashes / gunpowder
 			{ name: "Enchanting Powder", craft: ['Mana Bloom', 'Angelic Rose'] },
-			{ name: "Blinding Powder" },
-			{ name: "Blaze Powder" },
-			{ name: "Poison Powder", craft: ['Black Herb', 'Goblin Blood'] },
+			{ name: "Blinding Powder", craft: ['Stormshroom', 'Enchanting Powder', 'Gunpowder'] },
+			{ name: "Blaze Powder", craft: ['Crimson Bloom', 'Enchanting Powder', 'Gunpowder'] },
+			{ name: "Poison Powder", craft: ['Black Herb', 'Black Herb', 'Goblin Blood', 'Gunpowder'] },
 			{ name: "Reinforced Flask", craft: ['Empty Bottle', 'Iron', 'Iron'] },
 			{ name: "Purified Salt" },
-			{ name: "Tainted Ashes", craft: ['Tainted Rose'] },
+			{ name: "Tainted Ashes", craft: ['Tainted Rose', 'Black Herb'] },
 			{ name: "Gunpowder" },
-			{ name: "Packed Gunpowder", craft: ['Gunpowder', 'Gunpowder'] },
+			{ name: "Packed Gunpowder", craft: ['Gunpowder', 'Gunpowder', 'Gunpowder'] },
 		],
 
 		chests: [
