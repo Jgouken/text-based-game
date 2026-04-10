@@ -16,6 +16,13 @@
     src: url('https://jgouken.github.io/PRToolVersionCheck/RD%20Pixel%20Font/rhythm-doctor-pixel-font.otf.woff2') format('woff2');
 }
 
+@font-face {
+    font-family: 'Monocraft';
+    src: url('https://cdn.jsdelivr.net/gh/IdreesInc/Monocraft@main/dist/Monocraft-ttf/Monocraft.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     scrollbar-width: auto;
     scrollbar-color: #5c5c5c #050101;
@@ -883,19 +890,38 @@ input[type="submit"]:active,
     transition: all 2.0s ease-out;
 }
 
-/* Loading tips carousel (styles kept in CSS; font comes from existing Pixelify Sans) */
 #audio-loading-overlay {
     font-family: "Pixelify Sans", sans-serif;
 }
 
+.loading-screen-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: min(720px, 90vw);
+}
+
+.loading-screen-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.loading-screen-chest {
+    width: min(180px, 42vw);
+    height: auto;
+    image-rendering: auto;
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.7));
+}
+
 #loading-tips-carousel {
-    position: fixed;
-    left: 50%;
-    top: 66vh;
-    transform: translateX(-50%);
-    width: 60%;
-    max-width: 720px;
+    position: relative;
+    width: 100%;
     height: 140px;
+    margin-top: -18px;
     display: flex;
     align-items: center;
     justify-content: center;

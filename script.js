@@ -532,16 +532,35 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.style.color = 'white';
         overlay.style.fontSize = '18px';
         overlay.style.fontFamily = '"Pixelify Sans", sans-serif';
-        overlay.innerHTML = '<div style="text-align:center"><div style="width:48px;height:48px;border:4px solid rgba(255,255,255,0.15);border-top-color:white;border-radius:50%;animation:spin 1s linear infinite"></div></div>';
+
+        const chestGifOptions = [
+            'assets/chests/AdamantineChest.gif',
+            'assets/chests/GoldenChest.gif',
+            'assets/chests/IronChest.gif',
+            'assets/chests/PlatinumChest.gif',
+            'assets/chests/WoodenChest.gif',
+            'assets/keys/AdamantineKey.gif',
+            'assets/keys/GoldenKey.gif',
+            'assets/keys/IronKey.gif',
+            'assets/keys/PlatinumKey.gif',
+            'assets/keys/WoodenKey.gif'
+        ];
+
+        const randomChestGif = chestGifOptions[Math.floor(Math.random() * chestGifOptions.length)];
+        overlay.innerHTML = `
+            <div class="loading-screen-content">
+                    <img class="loading-screen-chest" src="${randomChestGif}">
+            </div>`;
 
         document.body.appendChild(overlay);
+        const loadingScreenContent = overlay.querySelector('.loading-screen-content');
 
         const carousel = document.createElement('div');
         carousel.id = 'loading-tips-carousel';
         const shell = document.createElement('div');
         shell.className = 'carousel-shell';
         carousel.appendChild(shell);
-        overlay.appendChild(carousel);
+        loadingScreenContent.appendChild(carousel);
 
         try {
             function getDaysAgo(pastTimestamp) {
