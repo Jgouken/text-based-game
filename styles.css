@@ -1057,27 +1057,27 @@ input[type="submit"]:active,
 
 .battle-station {
     position: fixed;
-    display: flex;
+    display: grid;
+    grid-template-columns: 7fr 1fr;
+    grid-template-areas: "buttons info";
     margin: 0 auto;
-    gap: 10px;
     bottom: 0;
     top: 55%;
     left: 50%;
     transform: translateX(-50%);
-    width: 90%;
-    height: 20%;
+    width: 95vw;
+    height: 20vh;
     background-color: rgba(4, 0, 39, 0.37);
     z-index: 2;
 }
 
 .battle-buttons {
-    flex: 7;
+    grid-area: buttons;
     display: flex;
     background-color: rgba(0, 0, 0, 0.5);
     margin: 10px;
     padding: 10px;
     font-family: 'Pixel-Font', sans-serif;
-    font-size: 24px;
     color: white;
     display: flex;
     flex-direction: column;
@@ -1137,13 +1137,15 @@ input[type="submit"]:active,
 }
 
 .round-info {
-    flex: 1;
+    text-align: center;
+    grid-area: info;
     background-color: rgba(0, 0, 0, 0.5);
     border: 1px solid white;
     margin: 10px;
     padding: 10px;
+    top: 10px;
     font-family: 'Pixel-Font', sans-serif;
-    font-size: 24px;
+    font-size: min(40px, 2vw);
     color: white;
     display: flex;
     flex-direction: column;
@@ -1972,12 +1974,11 @@ body.inventory-shift-open-journal .crafting-inventory-grid .inventory-item {
 
 .battle-button {
     font-family: 'Pixelify Sans', sans-serif;
-    font-size: 40px;
+    font-size: min(40px, 3vw);
 }
 
 .battle-button--small {
     font-family: 'Pixelify Sans', sans-serif;
-    font-size: 20px;
 }
 
 .battle-continue {
@@ -2000,11 +2001,6 @@ body.inventory-shift-open-journal .crafting-inventory-grid .inventory-item {
     display: flex;
     align-items: center;
     gap: 8px;
-}
-
-.round-info {
-    white-space: pre-line;
-    text-align: center;
 }
 
 .debug-grid button,
@@ -2287,4 +2283,18 @@ body.inventory-shift-open-journal .crafting-inventory-grid .inventory-item {
 
 .mute-button:hover {
     transform: translateY(-3px) scale(1.02);
+}
+
+@media (min-width: 769px) {
+    .round-info {
+        white-space: pre-line;
+    }
+}
+
+@media (max-width: 768px) {
+    .battle-station {
+        top: min(63%, 58%);
+        grid-template-columns: 1fr;
+        grid-template-areas: "buttons" "info";
+    }
 }

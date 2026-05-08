@@ -1694,8 +1694,8 @@
                     <button class="battle-item battle-button battle-continue" @click="victory()">Campfire</button>
                 </div>
                 <div class="round-info"
-                    x-text="health > 0 && Alpine.$data(document.getElementById('player')).health > 0 ? `Round ${round}\n\n${turn ? 'Your' : enemyName + `'s`} Turn` : health <= 0 ? `You Won\n\n${round} Rounds` : `You Died\n\n${round} Rounds`">
-                    Round 1\n\nYour Turn</div>
+                    x-text="health > 0 && Alpine.$data(document.getElementById('player')).health > 0 ? `Round ${round}\n-\n${turn ? 'Your' : enemyName + `'s`} Turn` : health <= 0 ? `You Won\n-\n${round} Rounds` : `You Died\n-\n${round} Rounds`">
+                    Round 1\n-\nYour Turn</div>
             </div>
         </div>
 

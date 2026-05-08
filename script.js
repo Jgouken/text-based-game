@@ -641,7 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.style.transform = 'translate(-50%, calc(-50% + 48px))';
                 shell.appendChild(el);
                 await animate(el, { fromY: 48, toY: 0, fromOpacity: 0, toOpacity: 1, dur: 900, easing: easeOutElastic });
-                await wait(2500);
+                await wait(4000);
                 const outPromise = animate(el, { fromY: 0, toY: -48, fromOpacity: 1, toOpacity: 0, dur: 600, easing: t => 1 - easeInCubic(1 - t) });
                 outPromise.then(() => { try { shell.removeChild(el); } catch (e) { } });
                 return;
@@ -665,6 +665,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     requestAnimationFrame(frame);
                 });
             }
+
             (async function cycle() {
                 while (running && overlay.parentNode) {
                     if (order.length === 0) order = shuffleArray(tips.map((v, i) => i));

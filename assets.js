@@ -6499,7 +6499,7 @@ function getLocalAssets() {
 
 			// Keys
 			{ name: "Wooden Key", sprite: "assets/keys/WoodenKey.gif", chest: 0, id: '🗝️' },
-			{ name: "Silver Key", sprite: "assets/keys/SilverKey.gif", chest: 1, id: '🗝️' },
+			{ name: "Iron Key", sprite: "assets/keys/IronKey.gif", chest: 1, id: '🗝️' },
 			{ name: "Gold Key", sprite: "assets/keys/GoldKey.gif", chest: 2, id: '🗝️' },
 			{ name: "Platinum Key", sprite: "assets/keys/PlatinumKey.gif", chest: 3, id: '🗝️' },
 			{ name: "Adamantine Key", sprite: "assets/keys/AdamantineKey.gif", chest: 4, id: '🗝️' },
@@ -6587,10 +6587,10 @@ function getLocalAssets() {
 				]
 			},
 			{
-				name: "Iron Chest",
+				name: "Silver Chest",
 				sprite: "assets/chests/IronChest.gif",
 				tier: 2,
-				key: "Iron Key",
+				key: "Silver Key",
 				drops: [
 					{
 						name: "Milk",
