@@ -121,3 +121,23 @@
         min-width: 44px;
     }
 }
+
+@media (max-width: 768px) {
+    .how-content-box {
+        height: auto;
+        max-height: 88vh;
+        padding: 14px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .how-content-box {
+        width: 98%;
+        padding: 12px 14px;
+    }
+
+    .how-point-warning,
+    .how-point-warning-text {
+        font-size: 16px;
+    }
+}

@@ -397,3 +397,30 @@ img {
         transform: rotate(360deg);
     }
 }
+
+@media (max-width: 1200px) {
+    .mute-button,
+    .music-button {
+        padding: 7px 9px;
+        font-size: 18px;
+    }
+
+    .debug {
+        max-width: 70%;
+    }
+}
+
+@media (max-width: 768px) {
+    .mute-button,
+    .music-button {
+        top: 8px;
+        left: auto;
+        right: 8px;
+        position: fixed;
+        font-size: 16px;
+    }
+
+    .music-button {
+        right: 56px;
+    }
+}
