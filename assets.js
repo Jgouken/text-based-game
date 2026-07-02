@@ -462,9 +462,21 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
+						name: null,
+						chance: 0.40
+					},
+					{
+						name: "Beef",
+						chance: 0.35
+					},
+					{
 						name: "Milk",
-						chance: 1
-					}
+						chance: 0.20
+					},
+					{
+						name: "Green Herb",
+						chance: 0.05
+					},
 				]
 			},
 			{
@@ -497,9 +509,17 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.50
+					},
+					{
+						name: "Pork",
+						chance: 0.35
+					},
+					{
+						name: "Green Herb",
+						chance: 0.10
+					},
 				]
 			},
 			{
@@ -532,9 +552,17 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.35
+					},
+					{
+						name: "Wool",
+						chance: 0.40
+					},
+					{
+						name: "Mutton",
+						chance: 0.20
+					},
 				]
 			},
 			{
@@ -567,9 +595,17 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.40
+					},
+					{
+						name: "Egg",
+						chance: 0.35
+					},
+					{
+						name: "Chicken",
+						chance: 0.25
+					},
 				]
 			},
 			{
@@ -613,9 +649,21 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.40
+					},
+					{
+						name: "Goop",
+						chance: 0.30
+					},
+					{
+						name: "Green Herb",
+						chance: 0.15
+					},
+					{
+						name: "Light Health Potion",
+						chance: 0.10
+					},
 				]
 			},
 			{
@@ -667,9 +715,21 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.40
+					},
+					{
+						name: "Goop",
+						chance: 0.30
+					},
+					{
+						name: "Red Herb",
+						chance: 0.15
+					},
+					{
+						name: "Light Attack Potion",
+						chance: 0.10
+					},
 				]
 			},
 			{
@@ -716,9 +776,21 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.40
+					},
+					{
+						name: "Goop",
+						chance: 0.30
+					},
+					{
+						name: "Blue Herb",
+						chance: 0.15
+					},
+					{
+						name: "Light Defense Potion",
+						chance: 0.10
+					},
 				]
 			},
 			{
@@ -766,9 +838,21 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.40
+					},
+					{
+						name: "Goop",
+						chance: 0.30
+					},
+					{
+						name: "Yellow Herb",
+						chance: 0.15
+					},
+					{
+						name: "Light Stamina Potion",
+						chance: 0.10
+					},
 				]
 			},
 			{
@@ -799,9 +883,37 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.35
+					},
+					{
+						name: "Mana Shard",
+						chance: 0.20
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.15
+					},
+					{
+						name: "Cloth",
+						chance: 0.10
+					},
+					{
+						name: "Empty Flask",
+						chance: 0.08
+					},
+					{
+						name: "Tattered Rags",
+						chance: 0.05
+					},
+					{
+						name: "Broken Dagger",
+						chance: 0.04
+					},
+					{
+						name: "Rusty Dagger",
+						chance: 0.03
+					},
 				]
 			},
 			{
@@ -845,9 +957,41 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.30
+					},
+					{
+						name: "Mana Shard",
+						chance: 0.20
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.15
+					},
+					{
+						name: "Cloth",
+						chance: 0.10
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.08
+					},
+					{
+						name: "Iron",
+						chance: 0.07
+					},
+					{
+						name: "Tattered Rags",
+						chance: 0.04
+					},
+					{
+						name: "Broken Dagger",
+						chance: 0.03
+					},
+					{
+						name: "Rusty Dagger",
+						chance: 0.03
+					},
 				]
 			},
 			{
@@ -894,9 +1038,49 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.35
+					},
+					{
+						name: "Starter Lockpick",
+						chance: 0.20
+					},
+					{
+						name: "Mana Shard",
+						chance: 0.12
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.10
+					},
+					{
+						name: "Ember Core",
+						chance: 0.05
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.06
+					},
+					{
+						name: "Reinforced Flask",
+						chance: 0.04
+					},
+					{
+						name: "Iron",
+						chance: 0.04
+					},
+					{
+						name: "Gunpowder",
+						chance: 0.02
+					},
+					{
+						name: "Broken Dagger",
+						chance: 0.015
+					},
+					{
+						name: "Rusty Dagger",
+						chance: 0.005
+					},
 				]
 			},
 			{
@@ -941,9 +1125,49 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.25
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.18
+					},
+					{
+						name: "Iron Sword",
+						chance: 0.12
+					},
+					{
+						name: "Cloth",
+						chance: 0.10
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.08
+					},
+					{
+						name: "Iron",
+						chance: 0.08
+					},
+					{
+						name: "Tattered Rags",
+						chance: 0.06
+					},
+					{
+						name: "Padded Clothing",
+						chance: 0.05
+					},
+					{
+						name: "Light Armor",
+						chance: 0.04
+					},
+					{
+						name: "Damaged Cloak",
+						chance: 0.03
+					},
+					{
+						name: "Trusty Dagger",
+						chance: 0.01
+					},
 				]
 			},
 			{
@@ -989,9 +1213,37 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.25
+					},
+					{
+						name: "Mana Shard",
+						chance: 0.18
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.15
+					},
+					{
+						name: "Wooden Bow",
+						chance: 0.15
+					},
+					{
+						name: "Starter Lockpick",
+						chance: 0.10
+					},
+					{
+						name: "Hunter Cloak",
+						chance: 0.08
+					},
+					{
+						name: "Leather Armor",
+						chance: 0.05
+					},
+					{
+						name: "Rusty Dagger",
+						chance: 0.04
+					},
 				]
 			},
 			{
@@ -1041,9 +1293,37 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.35
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.10
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.18
+					},
+					{
+						name: "Iron Sword",
+						chance: 0.15
+					},
+					{
+						name: "Great Sword",
+						chance: 0.08
+					},
+					{
+						name: "Iron Armor",
+						chance: 0.07
+					},
+					{
+						name: "Padded Clothing",
+						chance: 0.05
+					},
+					{
+						name: "Cloth",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -1088,9 +1368,49 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.18
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.18
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.14
+					},
+					{
+						name: "Iron",
+						chance: 0.10
+					},
+					{
+						name: "Heavy Health Potion",
+						chance: 0.08
+					},
+					{
+						name: "Heavy Attack Potion",
+						chance: 0.07
+					},
+					{
+						name: "Lumberjack Axe",
+						chance: 0.08
+					},
+					{
+						name: "Leather Armor",
+						chance: 0.06
+					},
+					{
+						name: "Branch",
+						chance: 0.05
+					},
+					{
+						name: "Cloth",
+						chance: 0.04
+					},
+					{
+						name: "Wool",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -1133,9 +1453,49 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.16
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.20
+					},
+					{
+						name: "Iron",
+						chance: 0.12
+					},
+					{
+						name: "Heavy Health Potion",
+						chance: 0.10
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.09
+					},
+					{
+						name: "Skull Crusher",
+						chance: 0.10
+					},
+					{
+						name: "Iron Armor",
+						chance: 0.08
+					},
+					{
+						name: "Branch",
+						chance: 0.06
+					},
+					{
+						name: "Cloth",
+						chance: 0.05
+					},
+					{
+						name: "Wool",
+						chance: 0.03
+					},
+					{
+						name: "Twig",
+						chance: 0.01
+					},
 				]
 			},
 			{
@@ -1180,9 +1540,17 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.30
+					},
+					{
+						name: "Corrupted Shard",
+						chance: 0.35
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.35
+					},
 				]
 			},
 			{
@@ -1229,9 +1597,37 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.18
+					},
+					{
+						name: "Corrupted Shard",
+						chance: 0.20
+					},
+					{
+						name: "Corrupted Goop",
+						chance: 0.20
+					},
+					{
+						name: "Black Herb",
+						chance: 0.12
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.10
+					},
+					{
+						name: "Branch",
+						chance: 0.08
+					},
+					{
+						name: "Twig",
+						chance: 0.07
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.05
+					},
 				]
 			},
 			{
@@ -1283,9 +1679,41 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.20
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.18
+					},
+					{
+						name: "Green Herb",
+						chance: 0.12
+					},
+					{
+						name: "Medium Health Potion",
+						chance: 0.10
+					},
+					{
+						name: "Branch",
+						chance: 0.08
+					},
+					{
+						name: "Life Bloom",
+						chance: 0.07
+					},
+					{
+						name: "Twig",
+						chance: 0.04
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.03
+					},
 				]
 			},
 			{
@@ -1338,9 +1766,41 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.20
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.18
+					},
+					{
+						name: "Red Herb",
+						chance: 0.12
+					},
+					{
+						name: "Medium Attack Potion",
+						chance: 0.10
+					},
+					{
+						name: "Branch",
+						chance: 0.08
+					},
+					{
+						name: "Crimson Bloom",
+						chance: 0.07
+					},
+					{
+						name: "Twig",
+						chance: 0.04
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.03
+					},
 				]
 			},
 			{
@@ -1387,9 +1847,41 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.20
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.18
+					},
+					{
+						name: "Blue Herb",
+						chance: 0.12
+					},
+					{
+						name: "Medium Defense Potion",
+						chance: 0.10
+					},
+					{
+						name: "Branch",
+						chance: 0.08
+					},
+					{
+						name: "Oceanshroom",
+						chance: 0.07
+					},
+					{
+						name: "Twig",
+						chance: 0.04
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.03
+					},
 				]
 			},
 			{
@@ -1437,9 +1929,41 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.20
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.18
+					},
+					{
+						name: "Yellow Herb",
+						chance: 0.12
+					},
+					{
+						name: "Medium Stamina Potion",
+						chance: 0.10
+					},
+					{
+						name: "Branch",
+						chance: 0.08
+					},
+					{
+						name: "Stormshroom",
+						chance: 0.07
+					},
+					{
+						name: "Twig",
+						chance: 0.04
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.03
+					},
 				]
 			},
 			{
@@ -1493,9 +2017,53 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.13
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.16
+					},
+					{
+						name: "Novice Lockpick",
+						chance: 0.16
+					},
+					{
+						name: "Master Lockpick",
+						chance: 0.11
+					},
+					{
+						name: "Lucky Rabbit Foot",
+						chance: 0.09
+					},
+					{
+						name: "Wool",
+						chance: 0.07
+					},
+					{
+						name: "Dual Daggers",
+						chance: 0.08
+					},
+					{
+						name: "Rogue's Cloak",
+						chance: 0.07
+					},
+					{
+						name: "Cloth",
+						chance: 0.05
+					},
+					{
+						name: "Rusty Dagger",
+						chance: 0.04
+					},
+					{
+						name: "Trusty Dagger",
+						chance: 0.03
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.01
+					},
 				]
 			},
 			{
@@ -1550,9 +2118,53 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.13
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.16
+					},
+					{
+						name: "Novice Lockpick",
+						chance: 0.16
+					},
+					{
+						name: "Master Lockpick",
+						chance: 0.11
+					},
+					{
+						name: "Lucky Rabbit Foot",
+						chance: 0.09
+					},
+					{
+						name: "Wool",
+						chance: 0.07
+					},
+					{
+						name: "Silver Dagger",
+						chance: 0.07
+					},
+					{
+						name: "Rogue's Cloak",
+						chance: 0.06
+					},
+					{
+						name: "Cloth",
+						chance: 0.05
+					},
+					{
+						name: "White Herb",
+						chance: 0.05
+					},
+					{
+						name: "Angelic Rose",
+						chance: 0.03
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -1607,9 +2219,53 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.10
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.18
+					},
+					{
+						name: "Novice Lockpick",
+						chance: 0.14
+					},
+					{
+						name: "Master Lockpick",
+						chance: 0.14
+					},
+					{
+						name: "Lucky Rabbit Foot",
+						chance: 0.09
+					},
+					{
+						name: "Dual Daggers",
+						chance: 0.09
+					},
+					{
+						name: "Wool",
+						chance: 0.07
+					},
+					{
+						name: "Assassin Cloak",
+						chance: 0.06
+					},
+					{
+						name: "Cloth",
+						chance: 0.05
+					},
+					{
+						name: "Stormshroom",
+						chance: 0.04
+					},
+					{
+						name: "Blue Herb",
+						chance: 0.03
+					},
+					{
+						name: "Trusty Dagger",
+						chance: 0.01
+					},
 				]
 			},
 			{
@@ -1666,9 +2322,53 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.10
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.18
+					},
+					{
+						name: "Novice Lockpick",
+						chance: 0.14
+					},
+					{
+						name: "Master Lockpick",
+						chance: 0.14
+					},
+					{
+						name: "Lucky Rabbit Foot",
+						chance: 0.09
+					},
+					{
+						name: "Wooden Bow",
+						chance: 0.08
+					},
+					{
+						name: "Wool",
+						chance: 0.07
+					},
+					{
+						name: "Assassin Cloak",
+						chance: 0.06
+					},
+					{
+						name: "Black Herb",
+						chance: 0.05
+					},
+					{
+						name: "Tainted Rose",
+						chance: 0.04
+					},
+					{
+						name: "Cloth",
+						chance: 0.03
+					},
+					{
+						name: "Silver Dagger",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -1720,9 +2420,45 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.13
+					},
+					{
+						name: "Corrupted Core",
+						chance: 0.22
+					},
+					{
+						name: "Corrupted Goop",
+						chance: 0.16
+					},
+					{
+						name: "Black Herb",
+						chance: 0.11
+					},
+					{
+						name: "Iron",
+						chance: 0.09
+					},
+					{
+						name: "Cursed Bone Bow",
+						chance: 0.08
+					},
+					{
+						name: "Shadow Cloak",
+						chance: 0.07
+					},
+					{
+						name: "Branch",
+						chance: 0.06
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.05
+					},
+					{
+						name: "Cloth",
+						chance: 0.03
+					},
 				]
 			},
 			{
@@ -1775,9 +2511,45 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.13
+					},
+					{
+						name: "Corrupted Core",
+						chance: 0.22
+					},
+					{
+						name: "Corrupted Goop",
+						chance: 0.16
+					},
+					{
+						name: "Black Herb",
+						chance: 0.11
+					},
+					{
+						name: "Iron",
+						chance: 0.09
+					},
+					{
+						name: "Skull Crusher",
+						chance: 0.08
+					},
+					{
+						name: "Spiked Leather Armor",
+						chance: 0.07
+					},
+					{
+						name: "Branch",
+						chance: 0.06
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.05
+					},
+					{
+						name: "Cloth",
+						chance: 0.03
+					},
 				]
 			},
 			{
@@ -1829,9 +2601,29 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.20
+					},
+					{
+						name: "Corrupted Shard",
+						chance: 0.30
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.25
+					},
+					{
+						name: "Cursed Fangs",
+						chance: 0.12
+					},
+					{
+						name: "Shadow Cloak",
+						chance: 0.08
+					},
+					{
+						name: "Spiked Leather Armor",
+						chance: 0.05
+					},
 				]
 			},
 			{
@@ -1878,9 +2670,37 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.15
+					},
+					{
+						name: "Corrupted Goop",
+						chance: 0.22
+					},
+					{
+						name: "Corrupted Shard",
+						chance: 0.20
+					},
+					{
+						name: "Black Herb",
+						chance: 0.13
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.12
+					},
+					{
+						name: "Branch",
+						chance: 0.08
+					},
+					{
+						name: "Corrupted Core",
+						chance: 0.05
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.05
+					},
 				]
 			},
 			{
@@ -1936,9 +2756,49 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.12
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.20
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.16
+					},
+					{
+						name: "Red Herb",
+						chance: 0.11
+					},
+					{
+						name: "Crimson Bloom",
+						chance: 0.09
+					},
+					{
+						name: "Heavy Health Potion",
+						chance: 0.07
+					},
+					{
+						name: "Cursed Fangs",
+						chance: 0.08
+					},
+					{
+						name: "Black Mourning",
+						chance: 0.06
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.05
+					},
+					{
+						name: "Tainted Rose",
+						chance: 0.04
+					},
+					{
+						name: "Black Herb",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2000,9 +2860,49 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.10
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.22
+					},
+					{
+						name: "Ember Core",
+						chance: 0.16
+					},
+					{
+						name: "Red Herb",
+						chance: 0.11
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.09
+					},
+					{
+						name: "Heavy Attack Potion",
+						chance: 0.07
+					},
+					{
+						name: "Evil Pulverizer",
+						chance: 0.08
+					},
+					{
+						name: "Spiked Gauntlets",
+						chance: 0.06
+					},
+					{
+						name: "Gunpowder",
+						chance: 0.05
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.04
+					},
+					{
+						name: "Black Herb",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2047,9 +2947,49 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.10
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.22
+					},
+					{
+						name: "Wool",
+						chance: 0.16
+					},
+					{
+						name: "Yellow Herb",
+						chance: 0.11
+					},
+					{
+						name: "Heavy Stamina Potion",
+						chance: 0.09
+					},
+					{
+						name: "Martial Arts",
+						chance: 0.08
+					},
+					{
+						name: "Hunter Cloak",
+						chance: 0.07
+					},
+					{
+						name: "Cloth",
+						chance: 0.06
+					},
+					{
+						name: "Branch",
+						chance: 0.05
+					},
+					{
+						name: "Lucky Rabbit Foot",
+						chance: 0.04
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2138,9 +3078,45 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.15
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.20
+					},
+					{
+						name: "Black Herb",
+						chance: 0.15
+					},
+					{
+						name: "Enchanting Powder",
+						chance: 0.12
+					},
+					{
+						name: "Poison Powder",
+						chance: 0.10
+					},
+					{
+						name: "Blinding Powder",
+						chance: 0.08
+					},
+					{
+						name: "Tainted Rose",
+						chance: 0.07
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.06
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.04
+					},
+					{
+						name: "Reinforced Flask",
+						chance: 0.03
+					},
 				]
 			},
 			{
@@ -2202,9 +3178,45 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.12
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.24
+					},
+					{
+						name: "Mana Bloom",
+						chance: 0.15
+					},
+					{
+						name: "Enchanting Powder",
+						chance: 0.12
+					},
+					{
+						name: "White Herb",
+						chance: 0.10
+					},
+					{
+						name: "Angelic Rose",
+						chance: 0.08
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.07
+					},
+					{
+						name: "Life Bloom",
+						chance: 0.06
+					},
+					{
+						name: "Map Fragment",
+						chance: 0.04
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2264,9 +3276,41 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.12
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.20
+					},
+					{
+						name: "Slime Crystal",
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.15
+					},
+					{
+						name: "Green Herb",
+						chance: 0.12
+					},
+					{
+						name: "Heavy Health Potion",
+						chance: 0.10
+					},
+					{
+						name: "Life Bloom",
+						chance: 0.07
+					},
+					{
+						name: "Branch",
+						chance: 0.04
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2328,9 +3372,41 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.12
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.20
+					},
+					{
+						name: "Slime Crystal",
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.15
+					},
+					{
+						name: "Red Herb",
+						chance: 0.12
+					},
+					{
+						name: "Heavy Attack Potion",
+						chance: 0.10
+					},
+					{
+						name: "Crimson Bloom",
+						chance: 0.07
+					},
+					{
+						name: "Branch",
+						chance: 0.04
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2385,9 +3461,41 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.12
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.20
+					},
+					{
+						name: "Slime Crystal",
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.15
+					},
+					{
+						name: "Blue Herb",
+						chance: 0.12
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.10
+					},
+					{
+						name: "Oceanshroom",
+						chance: 0.07
+					},
+					{
+						name: "Branch",
+						chance: 0.04
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2443,9 +3551,41 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.12
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.20
+					},
+					{
+						name: "Slime Crystal",
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.15
+					},
+					{
+						name: "Yellow Herb",
+						chance: 0.12
+					},
+					{
+						name: "Heavy Stamina Potion",
+						chance: 0.10
+					},
+					{
+						name: "Stormshroom",
+						chance: 0.07
+					},
+					{
+						name: "Branch",
+						chance: 0.04
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2501,9 +3641,53 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.08
+					},
+					{
+						name: "Mana Core",
+						chance: 0.20
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.16
+					},
+					{
+						name: "Red Herb",
+						chance: 0.11
+					},
+					{
+						name: "Crimson Bloom",
+						chance: 0.09
+					},
+					{
+						name: "Great Health Potion",
+						chance: 0.07
+					},
+					{
+						name: "Cursed Fangs",
+						chance: 0.08
+					},
+					{
+						name: "Walking Church",
+						chance: 0.07
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.05
+					},
+					{
+						name: "Tainted Rose",
+						chance: 0.04
+					},
+					{
+						name: "Black Herb",
+						chance: 0.03
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2565,9 +3749,53 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.08
+					},
+					{
+						name: "Mana Core",
+						chance: 0.20
+					},
+					{
+						name: "Ember Core",
+						chance: 0.16
+					},
+					{
+						name: "Red Herb",
+						chance: 0.11
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.09
+					},
+					{
+						name: "Great Attack Potion",
+						chance: 0.07
+					},
+					{
+						name: "Demonic Nunchucks",
+						chance: 0.08
+					},
+					{
+						name: "Spiked Gauntlets",
+						chance: 0.06
+					},
+					{
+						name: "Packed Gunpowder",
+						chance: 0.05
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.04
+					},
+					{
+						name: "Black Herb",
+						chance: 0.03
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.03
+					},
 				]
 			},
 			{
@@ -2612,9 +3840,53 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.08
+					},
+					{
+						name: "Mana Core",
+						chance: 0.20
+					},
+					{
+						name: "Wool",
+						chance: 0.16
+					},
+					{
+						name: "Yellow Herb",
+						chance: 0.11
+					},
+					{
+						name: "Great Stamina Potion",
+						chance: 0.09
+					},
+					{
+						name: "Martial Arts",
+						chance: 0.08
+					},
+					{
+						name: "Lumberjack Attire",
+						chance: 0.07
+					},
+					{
+						name: "Cloth",
+						chance: 0.06
+					},
+					{
+						name: "Branch",
+						chance: 0.05
+					},
+					{
+						name: "Lucky Rabbit Foot",
+						chance: 0.04
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.03
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.03
+					},
 				]
 			},
 			{
@@ -2703,9 +3975,49 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.10
+					},
+					{
+						name: "Mana Core",
+						chance: 0.20
+					},
+					{
+						name: "Black Herb",
+						chance: 0.16
+					},
+					{
+						name: "Enchanting Powder",
+						chance: 0.12
+					},
+					{
+						name: "Poison Powder",
+						chance: 0.10
+					},
+					{
+						name: "Blinding Powder",
+						chance: 0.08
+					},
+					{
+						name: "Tainted Rose",
+						chance: 0.07
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.06
+					},
+					{
+						name: "Reinforced Flask",
+						chance: 0.05
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.04
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2767,9 +4079,49 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.10
+					},
+					{
+						name: "Mana Core",
+						chance: 0.20
+					},
+					{
+						name: "Mana Bloom",
+						chance: 0.16
+					},
+					{
+						name: "Enchanting Powder",
+						chance: 0.12
+					},
+					{
+						name: "White Herb",
+						chance: 0.10
+					},
+					{
+						name: "Angelic Rose",
+						chance: 0.08
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.07
+					},
+					{
+						name: "Life Bloom",
+						chance: 0.06
+					},
+					{
+						name: "Map Fragment",
+						chance: 0.05
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.04
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2817,9 +4169,41 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.10
+					},
+					{
+						name: "Corrupted Goop",
+						chance: 0.20
+					},
+					{
+						name: "Corrupted Core",
+						chance: 0.18
+					},
+					{
+						name: "Corrupted Shard",
+						chance: 0.15
+					},
+					{
+						name: "Black Herb",
+						chance: 0.12
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.10
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.08
+					},
+					{
+						name: "Tainted Rose",
+						chance: 0.05
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -2874,9 +4258,53 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.08
+					},
+					{
+						name: "Corrupted Core",
+						chance: 0.18
+					},
+					{
+						name: "Novice Lockpick",
+						chance: 0.14
+					},
+					{
+						name: "Master Lockpick",
+						chance: 0.14
+					},
+					{
+						name: "Corrupted Goop",
+						chance: 0.11
+					},
+					{
+						name: "Lucky Rabbit Foot",
+						chance: 0.07
+					},
+					{
+						name: "Cursed Fangs",
+						chance: 0.08
+					},
+					{
+						name: "Shadow Cloak",
+						chance: 0.07
+					},
+					{
+						name: "Black Herb",
+						chance: 0.05
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.04
+					},
+					{
+						name: "Wool",
+						chance: 0.03
+					},
+					{
+						name: "Silver Dagger",
+						chance: 0.01
+					},
 				]
 			},
 			{
@@ -2936,9 +4364,53 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.08
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.20
+					},
+					{
+						name: "Iron",
+						chance: 0.16
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.11
+					},
+					{
+						name: "Branch",
+						chance: 0.09
+					},
+					{
+						name: "Skull Crusher",
+						chance: 0.10
+					},
+					{
+						name: "Iron Armor",
+						chance: 0.08
+					},
+					{
+						name: "Cloth",
+						chance: 0.06
+					},
+					{
+						name: "Wool",
+						chance: 0.05
+					},
+					{
+						name: "Heavy Health Potion",
+						chance: 0.04
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.02
+					},
+					{
+						name: "Twig",
+						chance: 0.01
+					},
 				]
 			},
 			{
@@ -2998,9 +4470,53 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.06
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.16
+					},
+					{
+						name: "Novice Lockpick",
+						chance: 0.14
+					},
+					{
+						name: "Master Lockpick",
+						chance: 0.14
+					},
+					{
+						name: "Lucky Rabbit Foot",
+						chance: 0.11
+					},
+					{
+						name: "Twin Swords",
+						chance: 0.10
+					},
+					{
+						name: "Confidence",
+						chance: 0.09
+					},
+					{
+						name: "Wool",
+						chance: 0.08
+					},
+					{
+						name: "Cloth",
+						chance: 0.05
+					},
+					{
+						name: "Silver Dagger",
+						chance: 0.04
+					},
+					{
+						name: "Map Fragment",
+						chance: 0.02
+					},
+					{
+						name: "Mana Core",
+						chance: 0.01
+					},
 				]
 			},
 			{
@@ -3076,9 +4592,57 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.06
+					},
+					{
+						name: "Mana Core",
+						chance: 0.18
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.16
+					},
+					{
+						name: "Iron",
+						chance: 0.11
+					},
+					{
+						name: "Great Sword",
+						chance: 0.10
+					},
+					{
+						name: "Holy Knight Armor",
+						chance: 0.09
+					},
+					{
+						name: "Master Lockpick",
+						chance: 0.08
+					},
+					{
+						name: "Ember Core",
+						chance: 0.07
+					},
+					{
+						name: "Cloth",
+						chance: 0.05
+					},
+					{
+						name: "Reinforced Flask",
+						chance: 0.04
+					},
+					{
+						name: "Packed Gunpowder",
+						chance: 0.03
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.02
+					},
+					{
+						name: "Iron Sword",
+						chance: 0.01
+					},
 				]
 			},
 			{
@@ -3140,9 +4704,45 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.08
+					},
+					{
+						name: "Slime Crystal",
+						chance: 0.20
+					},
+					{
+						name: "Slime Geode",
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.14
+					},
+					{
+						name: "Green Herb",
+						chance: 0.10
+					},
+					{
+						name: "Great Health Potion",
+						chance: 0.08
+					},
+					{
+						name: "Life Bloom",
+						chance: 0.07
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.06
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.05
+					},
+					{
+						name: "Mana Core",
+						chance: 0.04
+					},
 				]
 			},
 			{
@@ -3205,9 +4805,45 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.08
+					},
+					{
+						name: "Slime Crystal",
+						chance: 0.20
+					},
+					{
+						name: "Slime Geode",
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.14
+					},
+					{
+						name: "Red Herb",
+						chance: 0.10
+					},
+					{
+						name: "Great Attack Potion",
+						chance: 0.08
+					},
+					{
+						name: "Crimson Bloom",
+						chance: 0.07
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.06
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.05
+					},
+					{
+						name: "Mana Core",
+						chance: 0.04
+					},
 				]
 			},
 			{
@@ -3262,9 +4898,45 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.08
+					},
+					{
+						name: "Slime Crystal",
+						chance: 0.20
+					},
+					{
+						name: "Slime Geode",
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.14
+					},
+					{
+						name: "Blue Herb",
+						chance: 0.10
+					},
+					{
+						name: "Great Defense Potion",
+						chance: 0.08
+					},
+					{
+						name: "Oceanshroom",
+						chance: 0.07
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.06
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.05
+					},
+					{
+						name: "Mana Core",
+						chance: 0.04
+					},
 				]
 			},
 			{
@@ -3319,9 +4991,45 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.08
+					},
+					{
+						name: "Slime Crystal",
+						chance: 0.20
+					},
+					{
+						name: "Slime Geode",
+						chance: 0.18
+					},
+					{
+						name: "Goop",
+						chance: 0.14
+					},
+					{
+						name: "Yellow Herb",
+						chance: 0.10
+					},
+					{
+						name: "Great Stamina Potion",
+						chance: 0.08
+					},
+					{
+						name: "Stormshroom",
+						chance: 0.07
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.06
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.05
+					},
+					{
+						name: "Mana Core",
+						chance: 0.04
+					},
 				]
 			},
 			{
@@ -3376,9 +5084,45 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: null,
+						chance: 0.05
+					},
+					{
+						name: "Corrupted Goop",
+						chance: 0.20
+					},
+					{
+						name: "Corrupted Core",
+						chance: 0.18
+					},
+					{
+						name: "Slime Geode",
+						chance: 0.16
+					},
+					{
+						name: "Corrupted Shard",
+						chance: 0.12
+					},
+					{
+						name: "Black Herb",
+						chance: 0.10
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.08
+					},
+					{
+						name: "Slime Crystal",
+						chance: 0.05
+					},
+					{
+						name: "Tainted Rose",
+						chance: 0.04
+					},
+					{
+						name: "Mana Core",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -3458,8 +5202,48 @@ function getLocalAssets() {
 				],
 				drops: [
 					{
-						name: "Milk",
-						chance: 1
+						name: null,
+						chance: 0.05
+					},
+					{
+						name: "Mana Core",
+						chance: 0.25
+					},
+					{
+						name: "Ember Core",
+						chance: 0.18
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.14
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.12
+					},
+					{
+						name: "Grand Attack Potion",
+						chance: 0.08
+					},
+					{
+						name: "Packed Gunpowder",
+						chance: 0.07
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.05
+					},
+					{
+						name: "Crimson Bloom",
+						chance: 0.04
+					},
+					{
+						name: "Black Herb",
+						chance: 0.02
+					},
+					{
+						name: "Alectrona & Melanie",
+						chance: 0.005
 					}
 				]
 			},
@@ -6580,10 +8364,123 @@ function getLocalAssets() {
 				tier: 1,
 				key: "Wooden Key",
 				drops: [
+					// WOODEN CHEST
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: "Rusty Dagger",
+						chance: 0.12
+					},
+					{
+						name: "Trusty Dagger",
+						chance: 0.08
+					},
+					{
+						name: "Perfect Stick",
+						chance: 0.04
+					},
+					{
+						name: "Damaged Cloak",
+						chance: 0.12
+					},
+					{
+						name: "Rogue's Cloak",
+						chance: 0.08
+					},
+					{
+						name: "Perfect Leaf",
+						chance: 0.04
+					},
+					{
+						name: "Light Health Potion",
+						chance: 0.02
+					},
+					{
+						name: "Light Attack Potion",
+						chance: 0.02
+					},
+					{
+						name: "Light Defense Potion",
+						chance: 0.02
+					},
+					{
+						name: "Light Stamina Potion",
+						chance: 0.02
+					},
+					{
+						name: "Light Mana Potion",
+						chance: 0.02
+					},
+					{
+						name: "Light Experience Potion",
+						chance: 0.02
+					},
+					{
+						name: "Medium Health Potion",
+						chance: 0.01
+					},
+					{
+						name: "Medium Attack Potion",
+						chance: 0.01
+					},
+					{
+						name: "Medium Defense Potion",
+						chance: 0.01
+					},
+					{
+						name: "Medium Stamina Potion",
+						chance: 0.01
+					},
+					{
+						name: "Medium Mana Potion",
+						chance: 0.01
+					},
+					{
+						name: "Medium Experience Potion",
+						chance: 0.01
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.03
+					},
+					{
+						name: "Water Bottle",
+						chance: 0.03
+					},
+					{
+						name: "Gunpowder",
+						chance: 0.03
+					},
+					{
+						name: "Bomb",
+						chance: 0.07
+					},
+					{
+						name: "Blaze Bomb",
+						chance: 0.04
+					},
+					{
+						name: "Cluster Bomb",
+						chance: 0.04
+					},
+					{
+						name: "Twig",
+						chance: 0.03
+					},
+					{
+						name: "Branch",
+						chance: 0.02
+					},
+					{
+						name: "Cloth",
+						chance: 0.02
+					},
+					{
+						name: "Wool",
+						chance: 0.01
+					},
+					{
+						name: "Wooden Key",
+						chance: 0.02
+					},
 				]
 			},
 			{
@@ -6592,10 +8489,195 @@ function getLocalAssets() {
 				tier: 2,
 				key: "Silver Key",
 				drops: [
+					// SILVER CHEST
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: "Iron Short Sword",
+						chance: 0.10
+					},
+					{
+						name: "Dual Daggers",
+						chance: 0.05
+					},
+					{
+						name: "Dual Hatchets",
+						chance: 0.05
+					},
+					{
+						name: "Padded Clothing",
+						chance: 0.10
+					},
+					{
+						name: "Leather Armor",
+						chance: 0.10
+					},
+					{
+						name: "Light Health Potion",
+						chance: 0.015
+					},
+					{
+						name: "Light Attack Potion",
+						chance: 0.015
+					},
+					{
+						name: "Light Defense Potion",
+						chance: 0.015
+					},
+					{
+						name: "Light Stamina Potion",
+						chance: 0.015
+					},
+					{
+						name: "Light Mana Potion",
+						chance: 0.015
+					},
+					{
+						name: "Light Experience Potion",
+						chance: 0.015
+					},
+					{
+						name: "Medium Health Potion",
+						chance: 0.01
+					},
+					{
+						name: "Medium Attack Potion",
+						chance: 0.01
+					},
+					{
+						name: "Medium Defense Potion",
+						chance: 0.01
+					},
+					{
+						name: "Medium Stamina Potion",
+						chance: 0.01
+					},
+					{
+						name: "Medium Mana Potion",
+						chance: 0.01
+					},
+					{
+						name: "Medium Experience Potion",
+						chance: 0.01
+					},
+					{
+						name: "Heavy Health Potion",
+						chance: 0.005
+					},
+					{
+						name: "Heavy Attack Potion",
+						chance: 0.005
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.005
+					},
+					{
+						name: "Heavy Stamina Potion",
+						chance: 0.005
+					},
+					{
+						name: "Heavy Mana Potion",
+						chance: 0.005
+					},
+					{
+						name: "Heavy Experience Potion",
+						chance: 0.005
+					},
+					{
+						name: "Empty Bottle",
+						chance: 0.02
+					},
+					{
+						name: "Water Bottle",
+						chance: 0.02
+					},
+					{
+						name: "Reinforced Flask",
+						chance: 0.02
+					},
+					{
+						name: "Gunpowder",
+						chance: 0.02
+					},
+					{
+						name: "Purified Salt",
+						chance: 0.01
+					},
+					{
+						name: "Whetstone",
+						chance: 0.02
+					},
+					{
+						name: "Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Blaze Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Poison Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Shrapnel Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Cluster Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Blinding Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Twig",
+						chance: 0.01
+					},
+					{
+						name: "Branch",
+						chance: 0.02
+					},
+					{
+						name: "Cloth",
+						chance: 0.02
+					},
+					{
+						name: "Wool",
+						chance: 0.02
+					},
+					{
+						name: "Iron",
+						chance: 0.02
+					},
+					{
+						name: "Mana Shard",
+						chance: 0.02
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.01
+					},
+					{
+						name: "Tattered Rags",
+						chance: 0.01
+					},
+					{
+						name: "Broken Dagger",
+						chance: 0.01
+					},
+					{
+						name: "Wooden Key",
+						chance: 0.01
+					},
+					{
+						name: "Iron Key",
+						chance: 0.05
+					},
+					{
+						name: "Gold Key",
+						chance: 0.01
+					},
 				]
 			},
 			{
@@ -6604,10 +8686,275 @@ function getLocalAssets() {
 				tier: 3,
 				key: "Golden Key",
 				drops: [
+					// GOLDEN CHEST
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: "Iron Sword",
+						chance: 0.05
+					},
+					{
+						name: "Wooden Bow",
+						chance: 0.02
+					},
+					{
+						name: "Lumberjack Axe",
+						chance: 0.02
+					},
+					{
+						name: "Silver Dagger",
+						chance: 0.02
+					},
+					{
+						name: "Golden Stick",
+						chance: 0.01
+					},
+					{
+						name: "Light Armor",
+						chance: 0.05
+					},
+					{
+						name: "Hunter Cloak",
+						chance: 0.02
+					},
+					{
+						name: "Lumberjack Attire",
+						chance: 0.02
+					},
+					{
+						name: "Assassin Cloak",
+						chance: 0.02
+					},
+					{
+						name: "Confidence",
+						chance: 0.01
+					},
+					{
+						name: "Medium Health Potion",
+						chance: 0.015
+					},
+					{
+						name: "Medium Attack Potion",
+						chance: 0.015
+					},
+					{
+						name: "Medium Defense Potion",
+						chance: 0.015
+					},
+					{
+						name: "Medium Stamina Potion",
+						chance: 0.015
+					},
+					{
+						name: "Medium Mana Potion",
+						chance: 0.015
+					},
+					{
+						name: "Medium Experience Potion",
+						chance: 0.015
+					},
+					{
+						name: "Heavy Health Potion",
+						chance: 0.01
+					},
+					{
+						name: "Heavy Attack Potion",
+						chance: 0.01
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.01
+					},
+					{
+						name: "Heavy Stamina Potion",
+						chance: 0.01
+					},
+					{
+						name: "Heavy Mana Potion",
+						chance: 0.01
+					},
+					{
+						name: "Heavy Experience Potion",
+						chance: 0.01
+					},
+					{
+						name: "Great Health Potion",
+						chance: 0.005
+					},
+					{
+						name: "Great Attack Potion",
+						chance: 0.005
+					},
+					{
+						name: "Great Defense Potion",
+						chance: 0.005
+					},
+					{
+						name: "Great Stamina Potion",
+						chance: 0.005
+					},
+					{
+						name: "Great Mana Potion",
+						chance: 0.005
+					},
+					{
+						name: "Great Experience Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Health Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Attack Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Defense Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Stamina Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Mana Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Experience Potion",
+						chance: 0.005
+					},
+					{
+						name: "Reinforced Flask",
+						chance: 0.03
+					},
+					{
+						name: "Gunpowder",
+						chance: 0.02
+					},
+					{
+						name: "Packed Gunpowder",
+						chance: 0.01
+					},
+					{
+						name: "Purified Salt",
+						chance: 0.02
+					},
+					{
+						name: "Enchanting Powder",
+						chance: 0.02
+					},
+					{
+						name: "Blinding Powder",
+						chance: 0.02
+					},
+					{
+						name: "Blaze Powder",
+						chance: 0.02
+					},
+					{
+						name: "Poison Powder",
+						chance: 0.02
+					},
+					{
+						name: "Whetstone",
+						chance: 0.02
+					},
+					{
+						name: "Hexed Whetstone",
+						chance: 0.02
+					},
+					{
+						name: "Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Poison Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Shrapnel Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Blaze Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Blinding Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Sinister Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Storm Bomb",
+						chance: 0.01
+					},
+					{
+						name: "Branch",
+						chance: 0.02
+					},
+					{
+						name: "Iron",
+						chance: 0.02
+					},
+					{
+						name: "Cloth",
+						chance: 0.01
+					},
+					{
+						name: "Wool",
+						chance: 0.01
+					},
+					{
+						name: "Mana Shard",
+						chance: 0.02
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.02
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.01
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.01
+					},
+					{
+						name: "Ember Core",
+						chance: 0.01
+					},
+					{
+						name: "Lucky Rabbit Foot",
+						chance: 0.01
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.01
+					},
+					{
+						name: "Map Fragment",
+						chance: 0.01
+					},
+					{
+						name: "Iron Key",
+						chance: 0.01
+					},
+					{
+						name: "Gold Key",
+						chance: 0.02
+					},
+					{
+						name: "Platinum Key",
+						chance: 0.05
+					},
+					{
+						name: "Adamantine Key",
+						chance: 0.01
+					},
 				]
 			},
 			{
@@ -6616,10 +8963,283 @@ function getLocalAssets() {
 				tier: 4,
 				key: "Platinum Key",
 				drops: [
+					// PLATINUM CHEST
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: "Martial Arts",
+						chance: 0.02
+					},
+					{
+						name: "Chainsaw",
+						chance: 0.01
+					},
+					{
+						name: "Great Sword",
+						chance: 0.02
+					},
+					{
+						name: "Twin Swords",
+						chance: 0.02
+					},
+					{
+						name: "Spiked Gauntlets",
+						chance: 0.01
+					},
+					{
+						name: "Ninja Arts",
+						chance: 0.01
+					},
+					{
+						name: "Holy Spear",
+						chance: 0.01
+					},
+					{
+						name: "Thick Sleeveless Hoodie",
+						chance: 0.02
+					},
+					{
+						name: "Leather Apron & Mask",
+						chance: 0.01
+					},
+					{
+						name: "Iron Armor",
+						chance: 0.02
+					},
+					{
+						name: "Dragon Cloak",
+						chance: 0.02
+					},
+					{
+						name: "Spiked Leather Armor",
+						chance: 0.01
+					},
+					{
+						name: "Shinobi Garments",
+						chance: 0.01
+					},
+					{
+						name: "Shadow Cloak",
+						chance: 0.01
+					},
+					{
+						name: "Heavy Health Potion",
+						chance: 0.015
+					},
+					{
+						name: "Heavy Attack Potion",
+						chance: 0.015
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.015
+					},
+					{
+						name: "Heavy Stamina Potion",
+						chance: 0.015
+					},
+					{
+						name: "Heavy Mana Potion",
+						chance: 0.015
+					},
+					{
+						name: "Heavy Experience Potion",
+						chance: 0.015
+					},
+					{
+						name: "Great Health Potion",
+						chance: 0.01
+					},
+					{
+						name: "Great Attack Potion",
+						chance: 0.01
+					},
+					{
+						name: "Great Defense Potion",
+						chance: 0.01
+					},
+					{
+						name: "Great Stamina Potion",
+						chance: 0.01
+					},
+					{
+						name: "Great Mana Potion",
+						chance: 0.01
+					},
+					{
+						name: "Great Experience Potion",
+						chance: 0.01
+					},
+					{
+						name: "Grand Health Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Attack Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Defense Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Stamina Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Mana Potion",
+						chance: 0.005
+					},
+					{
+						name: "Grand Experience Potion",
+						chance: 0.005
+					},
+					{
+						name: "Reinforced Flask",
+						chance: 0.03
+					},
+					{
+						name: "Packed Gunpowder",
+						chance: 0.02
+					},
+					{
+						name: "Purified Salt",
+						chance: 0.02
+					},
+					{
+						name: "Enchanting Powder",
+						chance: 0.03
+					},
+					{
+						name: "Blinding Powder",
+						chance: 0.02
+					},
+					{
+						name: "Blaze Powder",
+						chance: 0.02
+					},
+					{
+						name: "Poison Powder",
+						chance: 0.02
+					},
+					{
+						name: "Whetstone",
+						chance: 0.02
+					},
+					{
+						name: "Hexed Whetstone",
+						chance: 0.03
+					},
+					{
+						name: "Poison Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Shrapnel Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Blaze Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Blinding Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Sinister Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Storm Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Decay Bomb",
+						chance: 0.01
+					},
+					{
+						name: "Unstable Bomb",
+						chance: 0.01
+					},
+					{
+						name: "Iron",
+						chance: 0.02
+					},
+					{
+						name: "Mana Fragment",
+						chance: 0.03
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.02
+					},
+					{
+						name: "Slime Fragment",
+						chance: 0.02
+					},
+					{
+						name: "Slime Crystal",
+						chance: 0.01
+					},
+					{
+						name: "Goblin Blood",
+						chance: 0.01
+					},
+					{
+						name: "Ember Core",
+						chance: 0.02
+					},
+					{
+						name: "Lucky Rabbit Foot",
+						chance: 0.01
+					},
+					{
+						name: "Soul Fragment",
+						chance: 0.02
+					},
+					{
+						name: "Map Fragment",
+						chance: 0.02
+					},
+					{
+						name: "Tainted Ashes",
+						chance: 0.01
+					},
+					{
+						name: "A-Frayed",
+						chance: 0.01
+					},
+					{
+						name: "B-Gone",
+						chance: 0.01
+					},
+					{
+						name: "Loot Charm",
+						chance: 0.01
+					},
+					{
+						name: "Soul Charm",
+						chance: 0.01
+					},
+					{
+						name: "Spirit Charm",
+						chance: 0.01
+					},
+					{
+						name: "Gold Key",
+						chance: 0.01
+					},
+					{
+						name: "Platinum Key",
+						chance: 0.03
+					},
+					{
+						name: "Adamantine Key",
+						chance: 0.03
+					},
+					{
+						name: "Cursed Wooden Key",
+						chance: 0.01
+					},
 				]
 			},
 			{
@@ -6628,10 +9248,271 @@ function getLocalAssets() {
 				tier: 5,
 				key: "Adamantine Key",
 				drops: [
+					// ADAMANTINE CHEST
 					{
-						name: "Milk",
-						chance: 1
-					}
+						name: "Skull Crusher",
+						chance: 0.02
+					},
+					{
+						name: "Cursed Bone Bow",
+						chance: 0.01
+					},
+					{
+						name: "Cursed Fangs",
+						chance: 0.03
+					},
+					{
+						name: "Evil Pulverizer",
+						chance: 0.02
+					},
+					{
+						name: "Demonic Nunchucks",
+						chance: 0.015
+					},
+					{
+						name: "Holy Arts",
+						chance: 0.01
+					},
+					{
+						name: "Orcus",
+						chance: 0.003
+					},
+					{
+						name: "Iris & Hermes",
+						chance: 0.001
+					},
+					{
+						name: "Alectrona & Melanie",
+						chance: 0.001
+					},
+					{
+						name: "Holy Knight Armor",
+						chance: 0.04
+					},
+					{
+						name: "Shadow Cloak",
+						chance: 0.02
+					},
+					{
+						name: "Blessed Gi",
+						chance: 0.02
+					},
+					{
+						name: "Sinner Jacket",
+						chance: 0.02
+					},
+					{
+						name: "Walking Church",
+						chance: 0.005
+					},
+					{
+						name: "Black Mourning",
+						chance: 0.004
+					},
+					{
+						name: "Equinox",
+						chance: 0.001
+					},
+					{
+						name: "Heavy Health Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Attack Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Defense Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Stamina Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Mana Potion",
+						chance: 0.03
+					},
+					{
+						name: "Heavy Experience Potion",
+						chance: 0.03
+					},
+					{
+						name: "Great Health Potion",
+						chance: 0.02
+					},
+					{
+						name: "Great Attack Potion",
+						chance: 0.02
+					},
+					{
+						name: "Great Defense Potion",
+						chance: 0.02
+					},
+					{
+						name: "Great Stamina Potion",
+						chance: 0.02
+					},
+					{
+						name: "Great Mana Potion",
+						chance: 0.02
+					},
+					{
+						name: "Great Experience Potion",
+						chance: 0.02
+					},
+					{
+						name: "Grand Health Potion",
+						chance: 0.01
+					},
+					{
+						name: "Grand Attack Potion",
+						chance: 0.01
+					},
+					{
+						name: "Grand Defense Potion",
+						chance: 0.01
+					},
+					{
+						name: "Grand Stamina Potion",
+						chance: 0.01
+					},
+					{
+						name: "Grand Mana Potion",
+						chance: 0.01
+					},
+					{
+						name: "Grand Experience Potion",
+						chance: 0.01
+					},
+					{
+						name: "Packed Gunpowder",
+						chance: 0.03
+					},
+					{
+						name: "Purified Salt",
+						chance: 0.03
+					},
+					{
+						name: "Enchanting Powder",
+						chance: 0.03
+					},
+					{
+						name: "Blinding Powder",
+						chance: 0.02
+					},
+					{
+						name: "Blaze Powder",
+						chance: 0.02
+					},
+					{
+						name: "Poison Powder",
+						chance: 0.02
+					},
+					{
+						name: "Hexed Whetstone",
+						chance: 0.03
+					},
+					{
+						name: "Shrapnel Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Blaze Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Blinding Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Sinister Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Storm Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Decay Bomb",
+						chance: 0.02
+					},
+					{
+						name: "Unstable Bomb",
+						chance: 0.01
+					},
+					{
+						name: "Unstable Cluster Bomb",
+						chance: 0.01
+					},
+					{
+						name: "Unstable Shrapnel Bomb",
+						chance: 0.01
+					},
+					{
+						name: "Mana Crystal",
+						chance: 0.02
+					},
+					{
+						name: "Mana Core",
+						chance: 0.01
+					},
+					{
+						name: "Slime Crystal",
+						chance: 0.01
+					},
+					{
+						name: "Slime Geode",
+						chance: 0.01
+					},
+					{
+						name: "Corrupted Shard",
+						chance: 0.01
+					},
+					{
+						name: "Corrupted Core",
+						chance: 0.01
+					},
+					{
+						name: "Mana Bloom",
+						chance: 0.01
+					},
+					{
+						name: "Boss Lure",
+						chance: 0.005
+					},
+					{
+						name: "Monster Compass",
+						chance: 0.005
+					},
+					{
+						name: "Treasure Map",
+						chance: 0.005
+					},
+					{
+						name: "Focus Charm",
+						chance: 0.005
+					},
+					{
+						name: "Platinum Key",
+						chance: 0.01
+					},
+					{
+						name: "Adamantine Key",
+						chance: 0.02
+					},
+					{
+						name: "Cursed Silver Key",
+						chance: 0.005
+					},
+					{
+						name: "Cursed Gold Key",
+						chance: 0.003
+					},
+					{
+						name: "Cursed Platinum Key",
+						chance: 0.002
+					},
 				]
 			}
 		],

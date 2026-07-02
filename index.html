@@ -959,8 +959,6 @@
                     const all = assets.items.filter(item => item.craft);
                     const filteredByTab = all.filter(item => {
                         if (this.craftTab === 'all') return true;
-                        if (this.craftTab === 'weapons') return Array.isArray(item.skills) || !!(assets.weapons.find(w => w.name === item.name));
-                        if (this.craftTab === 'armors') return (!!item.defense && !!item.alvlmult) || !!(assets.armors.find(a => a.name === item.name));
                         if (this.craftTab === 'potions') return item.id === '🧪';
                         if (this.craftTab === 'eatables') return item.id === '🍖';
                         if (this.craftTab === 'bombs') return item.id === '💣';
@@ -1019,10 +1017,6 @@
                                 @click="transition('crafting', 'returning')">Back</button>
                             <button @click="craftTab = 'all'" class="inventory-tab"
                                 :class="{ 'inventory-tab--active': craftTab === 'all' }">All</button>
-                            <button @click="craftTab = 'weapons'" class="inventory-tab"
-                                :class="{ 'inventory-tab--active': craftTab === 'weapons' }">⚔️ Weapons</button>
-                            <button @click="craftTab = 'armors'" class="inventory-tab"
-                                :class="{ 'inventory-tab--active': craftTab === 'armors' }">🛡️ Armors</button>
                             <button @click="craftTab = 'potions'" class="inventory-tab"
                                 :class="{ 'inventory-tab--active': craftTab === 'potions' }">🧪 Potions</button>
                             <button @click="craftTab = 'eatables'" class="inventory-tab"
