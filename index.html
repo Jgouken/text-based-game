@@ -862,9 +862,11 @@
                         :class="{ 'inventory-tab--active': itemSubTab === 'keys' }" @click="itemSubTab = 'keys'">🗝️
                         Keys</button>
                     <button class="inventory-tab journal-controls__btn"
-                        :class="{ 'inventory-tab--active': itemSubTab === 'reagents' }" @click="itemSubTab = 'reagents'">🔧 Reagents</button>
+                        :class="{ 'inventory-tab--active': itemSubTab === 'reagents' }"
+                        @click="itemSubTab = 'reagents'">🔧 Reagents</button>
                     <button class="inventory-tab journal-controls__btn"
-                        :class="{ 'inventory-tab--active': itemSubTab === 'chests' }" @click="itemSubTab = 'chests'">📦 Chests</button>
+                        :class="{ 'inventory-tab--active': itemSubTab === 'chests' }" @click="itemSubTab = 'chests'">📦
+                        Chests</button>
                 </div>
 
                 <div class="journal-controls journal-controls--compact" x-show="activeTab === 'enemies'">
