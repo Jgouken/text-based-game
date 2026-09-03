@@ -6990,7 +6990,7 @@ function getLocalAssets() {
 
 				skills: [
 					{
-						name: ["Back Fist", "Elbow Strike", "Hammer Fist", "Haymaker Punch", "Hook Punch", "Jab Punch", "Knife Hand Strike", "Palm Strike", "Slap", "Straight Punch", "Uppercut Punch"][Math.floor(Math.random() * 11)],
+						name: ["Back Fist", "Elbow Strike", "Hammer Fist", "Haymaker Punch", "Hook Punch", "Jab Punch", "Knife Hand Strike", "Palm Strike", "Slap", "Straight Punch", "Uppercut Punch"][Math.round(Math.random() * 11)],
 						attack: true
 					},
 					{
@@ -7674,7 +7674,7 @@ function getLocalAssets() {
 				skills: [
 					{
 						name: "Duality",
-						get damage() { return [0.66, 0.77][Math.floor(Math.random() * 2)] },
+						get damage() { return [0.66, 0.77][Math.round(Math.random() * 2)] },
 						get times() { return Math.ceil(Math.random() * 2) },
 						attack: true,
 					},
@@ -7683,8 +7683,8 @@ function getLocalAssets() {
 						cost: 111,
 						description: "Point Melanie or Alectrona upwards then unleashes its power which creates a massive blade of light or darkness before slamming it down on to the enemy and strengthening its wielder.\n\nThe output of this ability is randomized for each turn.",
 						damage: 3,
-						get estatus() { return [["🖤", "🌑", "🥀", "🌀"], ["🔥", "👁️"]][Math.floor(Math.random() * 2)] },
-						get pstatus() { return [["💢", "💨"], ["✨", "🍀", "🛡️", "🏅"]][Math.floor(Math.random() * 2)] },
+						get estatus() { return [["🖤", "🌑", "🥀", "🌀"], ["🔥", "👁️"]][Math.round(Math.random() * 2)] },
+						get pstatus() { return [["💢", "💨"], ["✨", "🍀", "🛡️", "🏅"]][Math.round(Math.random() * 2)] },
 						attack: true
 					},
 					{
@@ -8267,40 +8267,43 @@ function getLocalAssets() {
 			{ name: "Unstable Bomb", damage: 1000, battle: true, craft: ['Bomb', 'Packed Gunpowder', 'Corrupted Goop', 'Tainted Ashes'], id: '💣' },
 			{ name: "Unstable Cluster Bomb", damage: 250, times: 6, battle: true, craft: ['Unstable Bomb', 'Packed Gunpowder', 'Bomb', 'Ember Core'], id: '💣' },
 			{ name: "Unstable Shrapnel Bomb", damage: 200, times: 12, estatus: ["🩸"], battle: true, craft: ['Unstable Bomb', 'Shrapnel Bomb', 'Iron', 'Reinforced Flask'], id: '💣' },
-
+			
+			/**
+			 * Although all of these items are cool, they require a lot of work to implement and are not necessary for the core gameplay loop.
+			 * They will be added in TBG 2. Thus, these items do nothing.
+			 */
 			// Charms / utility
-			{ name: "Boss Lure", usability: "Attracts powerful bosses to your location.", craft: ['Map Fragment', 'Lucky Rabbit Foot'], id: '✨' },
-			{ name: "Monster Compass", usability: "Tracks a monster in the area to fight.", craft: ['Map Fragment', 'Iron', 'Mana Shard'], id: '✨' },
-			{ name: "Treasure Map", usability: "Find one of the chests in the area without entering battle.", craft: ['Map Fragment', 'Map Fragment', 'Map Fragment', 'Map Fragment', 'Map Fragment'], id: '✨' },
-			{ name: "B-Gone", usability: "Flee any encounter for free.", battle: true, craft: ['A-Frayed', 'Enchanting Powder', 'Reinforced Flask'], id: '✨' },
-			{ name: "A-Frayed", usability: "Flee a non-boss encounter for free.", battle: true, craft: ['Purity Potion', 'Goblin Blood', 'Corrupted Goop'], id: '✨' },
-
+			{ name: "Boss Lure", usability: "DOES NOTHING. Attracts powerful bosses to your location.", craft: ['Map Fragment', 'Lucky Rabbit Foot'], id: '✨' },
+			{ name: "Monster Compass", usability: "DOES NOTHING. Tracks a monster in the area to fight.", craft: ['Map Fragment', 'Iron', 'Mana Shard'], id: '✨' },
+			{ name: "Treasure Map", usability: "DOES NOTHING. Find one of the chests in the area without entering battle.", craft: ['Map Fragment', 'Map Fragment', 'Map Fragment', 'Map Fragment', 'Map Fragment'], id: '✨' },
+			{ name: "B-Gone", usability: "DOES NOTHING. Flee any encounter for free.", battle: true, craft: ['A-Frayed', 'Enchanting Powder', 'Reinforced Flask'], id: '✨' },
+			{ name: "A-Frayed", usability: "DOES NOTHING. Flee a non-boss encounter for free.", battle: true, craft: ['Purity Potion', 'Goblin Blood', 'Corrupted Goop'], id: '✨' },
 			// Charms can only be used one at a time.
-			{ name: "Loot Charm", usability: "Forces your next enemy to drop loot.", craft: ['Cloth', 'Lucky Rabbit Foot', 'Enchanting Powder'], id: '✨' },
-			{ name: "Soul Charm", usability: "No penalty on your next death.", craft: ['Cloth', 'Soul Fragment', 'Enchanting Powder'], id: '✨' },
-			{ name: "Spirit Charm", usability: "Doubles XP gain on next enemy.", craft: ['Cloth', 'Mana Bloom', 'Soul Fragment', 'Slime Crystal'], id: '✨' },
-			{ name: "Focus Charm", usability: "You cannot miss during your next battle.", craft: ['Cloth', 'Mana Shard', 'Enchanting Powder'], id: '✨' },
+			{ name: "Loot Charm", usability: "DOES NOTHING. Forces your next enemy to drop loot.", craft: ['Cloth', 'Lucky Rabbit Foot', 'Enchanting Powder'], id: '✨' },
+			{ name: "Soul Charm", usability: "DOES NOTHING. No penalty on your next death.", craft: ['Cloth', 'Soul Fragment', 'Enchanting Powder'], id: '✨' },
+			{ name: "Spirit Charm", usability: "DOES NOTHING. Doubles XP gain on next enemy.", craft: ['Cloth', 'Mana Bloom', 'Soul Fragment', 'Slime Crystal'], id: '✨' },
+			{ name: "Focus Charm", usability: "DOES NOTHING. You cannot miss during your next battle.", craft: ['Cloth', 'Mana Shard', 'Enchanting Powder'], id: '✨' },
 
 			// Keys
-			{ name: "Wooden Key", sprite: "assets/keys/WoodenKey.gif", chest: 0, id: '🗝️' },
-			{ name: "Iron Key", sprite: "assets/keys/IronKey.gif", chest: 1, id: '🗝️' },
-			{ name: "Gold Key", sprite: "assets/keys/GoldKey.gif", chest: 2, id: '🗝️' },
-			{ name: "Platinum Key", sprite: "assets/keys/PlatinumKey.gif", chest: 3, id: '🗝️' },
-			{ name: "Adamantine Key", sprite: "assets/keys/AdamantineKey.gif", chest: 4, id: '🗝️' },
+			{ name: "Wooden Key", sprite: "assets/keys/WoodenKey.gif", chest: 0, id: '🗝️', craft: ['White Herb', 'Cursed Wooden Key'] },
+			{ name: "Iron Key", sprite: "assets/keys/IronKey.gif", chest: 1, id: '🗝️', craft: ['Purified Salt', 'Cursed Iron Key'] },
+			{ name: "Gold Key", sprite: "assets/keys/GoldKey.gif", chest: 2, id: '🗝️', craft: ['Milk', 'Cursed Gold Key'] },
+			{ name: "Platinum Key", sprite: "assets/keys/PlatinumKey.gif", chest: 3, id: '🗝️', craft: ['Purity Potion', 'Cursed Platinum Key'] },
+			{ name: "Adamantine Key", sprite: "assets/keys/AdamantineKey.gif", chest: 4, id: '🗝️', craft: ['Angelic Rose', 'Cursed Adamantine Key'] },
 
 			// Cursed keys
-			{ name: "Cursed Wooden Key", id: '🗝️', craft: ['Wooden Key', 'Corrupted Goop'] },
-			{ name: "Cursed Silver Key", id: '🗝️', craft: ['Silver Key', 'Corrupted Goop'] },
-			{ name: "Cursed Gold Key", id: '🗝️', craft: ['Gold Key', 'Corrupted Goop', 'Goblin Blood'] },
-			{ name: "Cursed Platinum Key", id: '🗝️', craft: ['Platinum Key', 'Corrupted Goop', 'Corrupted Shard'] },
-			{ name: "Cursed Adamantine Key", id: '🗝️', craft: ['Adamantine Key', 'Corrupted Goop', 'Corrupted Core'] },
+			{ name: "Cursed Wooden Key", description: "DOES NOTHING. A cursed version of the Wooden Key. High risk, high reward.", id: '🗝️', craft: ['Wooden Key', 'Corrupted Goop'] },
+			{ name: "Cursed Iron Key", description: "DOES NOTHING. A cursed version of the Iron Key. High risk, high reward.", id: '🗝️', craft: ['Iron Key', 'Corrupted Goop'] },
+			{ name: "Cursed Gold Key", description: "DOES NOTHING. A cursed version of the Gold Key. High risk, high reward.", id: '🗝️', craft: ['Gold Key', 'Corrupted Goop', 'Goblin Blood'] },
+			{ name: "Cursed Platinum Key", description: "DOES NOTHING. A cursed version of the Platinum Key. High risk, high reward.", id: '🗝️', craft: ['Platinum Key', 'Corrupted Goop', 'Corrupted Shard'] },
+			{ name: "Cursed Adamantine Key", description: "DOES NOTHING. A cursed version of the Adamantine Key. High risk, high reward.", id: '🗝️', craft: ['Adamantine Key', 'Corrupted Goop', 'Corrupted Core'] },
 
 			// Lockpicks / tools
-			{ name: "Starter Lockpick", id: '🗝️' },
-			{ name: "Novice Lockpick", id: '🗝️' },
-			{ name: "Master Lockpick", id: '🗝️' },
-			{ name: "Whetstone", craft: ['Iron', 'Water Bottle', 'Cloth'], id: '✨' },
-			{ name: "Hexed Whetstone", craft: ['Whetstone', 'Corrupted Core'], id: '✨' },
+			{ name: "Starter Lockpick", description: "DOES NOTHING. A basic lockpick for opening simple locks.", id: '🗝️', craft: ['Iron', 'Wooden Key'] },
+			{ name: "Novice Lockpick", description: "DOES NOTHING. An improved lockpick for opening moderately difficult locks.", id: '🗝️', craft: ['Starter Lockpick', 'Iron'] },
+			{ name: "Master Lockpick", description: "DOES NOTHING. A highly advanced lockpick for opening even the most complex locks.", id: '🗝️', craft: ['Novice Lockpick', 'Iron'] },
+			// { name: "Whetstone", craft: ['Iron', 'Water Bottle', 'Cloth'], id: '✨' },
+			// { name: "Hexed Whetstone", craft: ['Whetstone', 'Corrupted Core'], id: '✨' },
 
 			// Slime / corrupted / fragments / crystals / geodes
 			{ name: "Goop" },
@@ -8484,10 +8487,10 @@ function getLocalAssets() {
 				]
 			},
 			{
-				name: "Silver Chest",
+				name: "Iron Chest",
 				sprite: "assets/chests/IronChest.gif",
 				tier: 2,
-				key: "Silver Key",
+				key: "Iron Key",
 				drops: [
 					// SILVER CHEST
 					{
@@ -8684,7 +8687,7 @@ function getLocalAssets() {
 				name: "Golden Chest",
 				sprite: "assets/chests/GoldenChest.gif",
 				tier: 3,
-				key: "Golden Key",
+				key: "Gold Key",
 				drops: [
 					// GOLDEN CHEST
 					{
@@ -9502,7 +9505,7 @@ function getLocalAssets() {
 						chance: 0.02
 					},
 					{
-						name: "Cursed Silver Key",
+						name: "Cursed Iron Key",
 						chance: 0.005
 					},
 					{
@@ -9794,16 +9797,16 @@ function scaleEnemyStats(enemyData, level) {
 		}
 
 		return {
-			health: Math.floor(healthTotal),
-			defense: Math.floor(defenseTotal),
-			attack: Math.floor(attackTotal)
+			health: Math.round(healthTotal),
+			defense: Math.round(defenseTotal),
+			attack: Math.round(attackTotal)
 		};
 	}
 
 	return {
-		health: Math.floor(((enemyData?.health || 0) + (lvl ** 1.82424)) * (1 + (lvl / 200))),
-		defense: Math.floor(((enemyData?.defense || 0) + ((lvl / 2) ** 1.82424)) * (1 + (lvl / 200))),
-		attack: Math.floor(((enemyData?.attack || 0) + ((lvl / 2) ** 1.82424)) * (1 + (lvl / 200)))
+		health: Math.round(((enemyData?.health || 0) + (lvl ** 1.82424)) * (1 + (lvl / 200))),
+		defense: Math.round(((enemyData?.defense || 0) + ((lvl / 2) ** 1.82424)) * (1 + (lvl / 200))),
+		attack: Math.round(((enemyData?.attack || 0) + ((lvl / 2) ** 1.82424)) * (1 + (lvl / 200)))
 	};
 }
 

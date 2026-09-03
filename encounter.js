@@ -65,10 +65,10 @@ function syncPlayerActivePotion(player, nextPotion = undefined) {
 
     if (value > 0) {
         if (potion.type === 'attack') {
-            appliedAttackBonus = Math.floor(player.attack * value);
+            appliedAttackBonus = Math.round(player.attack * value);
             player.attack += appliedAttackBonus;
         } else if (potion.type === 'defense') {
-            appliedDefenseBonus = Math.floor(player.defense * value);
+            appliedDefenseBonus = Math.round(player.defense * value);
             player.defense += appliedDefenseBonus;
         }
     }
@@ -123,11 +123,11 @@ async function startBattle(enemy = null, level = null) {
 
     if (location.name === 'Eternal Damnation') {
         const allEnemies = assets.enemies;
-        randomEnemy = allEnemies[Math.floor(Math.random() * allEnemies.length)].name;
+        randomEnemy = allEnemies[Math.round(Math.random() * allEnemies.length)].name;
         if (!level) level = Math.max(player.level, 50);
     } else {
         randomEnemy = randomByChance(location.enemies).name;
-        if (!level) level = enemy ? (background.enemyLevel || 1) : (Math.floor(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl));
+        if (!level) level = enemy ? (background.enemyLevel || 1) : (Math.round(Math.random() * (location.maxlvl - location.minlvl) + location.minlvl));
     }
 
     if (!enemy) enemy = assets.enemies.find(enemy => enemy.name == randomEnemy)
@@ -215,7 +215,7 @@ async function executeSkill({
         - (hasStatus(defenderStatuses, 'Fragility') ? statusByName('Fragility').armorSub : 0)
         + 1;
 
-    let damage = Math.floor((attacker.attack * damMult * (skill.damage || 1)) * (attacker.attack / (defender.defense + (defender.defense * rigid))));
+    let damage = Math.round((attacker.attack * damMult * (skill.damage || 1)) * (attacker.attack / (defender.defense + (defender.defense * rigid))));
 
     if (skill.cost && isPlayer) player.stamina -= skill.cost;
 
@@ -225,7 +225,7 @@ async function executeSkill({
     let totalDealt = 0;
 
     let skillLog;
-    let tooltip = `${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.floor(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.floor(skill.lifesteal * 100)}%\n` : ''}`;
+    let tooltip = `${skill.description ? `${skill.description}\n` : ''}${skill.cost ? `⚡${skill.cost}\n` : ''}⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n${skill.times ? `🔄️${skill.times}x\n` : ''}${skill.flatHealth ? `❤️ ${skill.flatHealth}\n` : ''}${skill.health ? `💖 ${Math.round(skill.health * 100)}%\n` : ''}${skill.lifesteal ? `💞 ${Math.round(skill.lifesteal * 100)}%\n` : ''}`;
 
     if (skill.name === "Yin and Yang") {
         tooltip += `${isPlayer ? 'Gains ' : 'Inflicts '}🖤🌑🥀🌀 or 🔥👁️\n`;
@@ -243,7 +243,7 @@ async function executeSkill({
         `<span style="color:lightblue;" data-tooltip="⚔️ ${crit ? critMult : 1} * ((${attacker.attack} * ${damMult} * ${skill.damage || 1}) * (${attacker.attack} / (${attacker.attack} + (${defender.defense} * ${rigid})))) = ${final}">⚔️${final}</span>`;
 
     const attack = () => {
-        let final = hit ? Math.floor(damage * (crit ? critMult : 1)) : 0;
+        let final = hit ? Math.round(damage * (crit ? critMult : 1)) : 0;
         defender.health -= final;
         totalDealt += final;
         if (final > 0) {
@@ -277,8 +277,7 @@ async function executeSkill({
                 `, ${hit ? (crit ? `CRIT ${damageLog(dealt)}` : `${damageLog(dealt)}`) : 'MISS'}`;
             updateBars();
         }
-    }
-    else if (skill.attack) {
+    } else if (skill.attack) {
         const dealt = attack();
         encounter.log[encounter.log.length - 1] +=
             ` on ${targetName} ${hit ? (crit ? `for CRIT ${damageLog(dealt)}` : `for ${damageLog(dealt)}`) : 'and MISSED!'}`;
@@ -294,23 +293,23 @@ async function executeSkill({
         else if (skill.flatHealth) heal = skill.flatHealth;
         else if (skill.lifesteal) heal = totalDealt * skill.lifesteal;
 
-        heal = Math.floor(heal * (crit ? critMult : 1));
+        heal = Math.round(heal * (crit ? critMult : 1));
         if (attacker.health + heal > attacker.maxHealth) heal = attacker.maxHealth - attacker.health;
 
         if (skill.health) {
-            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💖 ${attacker.maxHealth} * ${skill.health} * ${crit ? critMult : 1} = ${Math.floor(skill.health * attacker.maxHealth * (crit ? critMult : 1))}${(attacker.health + (skill.health * attacker.maxHealth * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💖${heal}</span>` }
+            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💖 ${attacker.maxHealth} * ${skill.health} * ${crit ? critMult : 1} = ${Math.round(skill.health * attacker.maxHealth * (crit ? critMult : 1))}${(attacker.health + (skill.health * attacker.maxHealth * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💖${heal}</span>` }
             encounter.log[encounter.log.length - 1] += `${crit ? 'CRIT ' : ''}${healingLog()}`
         }
         else if (skill.flatHealth) {
-            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="❤️ ${skill.flatHealth} * ${crit ? critMult : 1} = ${Math.floor(skill.flatHealth * (crit ? critMult : 1))}${(attacker.health + (skill.flatHealth * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">❤️${heal}</span>` }
+            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="❤️ ${skill.flatHealth} * ${crit ? critMult : 1} = ${Math.round(skill.flatHealth * (crit ? critMult : 1))}${(attacker.health + (skill.flatHealth * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">❤️${heal}</span>` }
             encounter.log[encounter.log.length - 1] += `${crit ? 'CRIT ' : ''}${healingLog()}`
         }
         else if (skill.lifesteal) {
-            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💞 ${totalDealt} * ${skill.lifesteal} * ${crit ? critMult : 1} = ${Math.floor(totalDealt * skill.lifesteal * (crit ? critMult : 1))}${(attacker.health + ((totalDealt * skill.lifesteal) * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💞${heal}</span>` }
+            let healingLog = () => { return `<span style="color:lightblue;" data-tooltip="💞 ${totalDealt} * ${skill.lifesteal} * ${crit ? critMult : 1} = ${Math.round(totalDealt * skill.lifesteal * (crit ? critMult : 1))}${(attacker.health + ((totalDealt * skill.lifesteal) * (crit ? critMult : 1))) > attacker.maxHealth ? '\nCapped to max health.' : ''}">💞${heal}</span>` }
             encounter.log[encounter.log.length - 1] += `${crit ? 'CRIT ' : ''}${healingLog()}`
         }
 
-        attacker.health += Math.floor(heal);
+        attacker.health += Math.round(heal);
         updateBars();
     }
 
@@ -336,7 +335,7 @@ async function executeSkill({
                     granted.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`)
                 }
             });
-            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${isPlayer ? `${skill.estatus ? ' which' : ' and'} gained ` : `${skill.estatus ? ' which' : ' and'} inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${player.name} ${hasStatus(player.pstatus, 'Malediction') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
+            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${isPlayer ? `${skill.estatus ? ' which' : ' and'} gained ` : `${skill.estatus ? ' which' : ' and'} inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${player.name} ${hasStatus(player.pstatus, 'Malediction') ? badOmenWords[Math.round(Math.random() * badOmenWords.length)] : blessingWords[Math.round(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
         }
 
         if (skill.estatus) {
@@ -360,7 +359,7 @@ async function executeSkill({
                     granted.push(`<span data-tooltip="${status} ${stasset.name}\n\n${stasset.description}">${status}</span>`);
                 }
             });
-            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${!isPlayer ? ` and gained ` : ` and inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${encounter.enemyName} ${hasStatus(encounter.estatus, 'Malediction') ? badOmenWords[Math.floor(Math.random() * badOmenWords.length)] : blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
+            encounter.log[encounter.log.length - 1] += `${granted.length > 0 ? `${!isPlayer ? ` and gained ` : ` and inflicted `}[${granted.join('')}]` : ''}${negated.length > 0 ? ` but ${encounter.enemyName} ${hasStatus(encounter.estatus, 'Malediction') ? badOmenWords[Math.round(Math.random() * badOmenWords.length)] : blessingWords[Math.round(Math.random() * blessingWords.length)]} [${negated.join('')}]` : ''}`;
         }
         if (!skill.attack && (skill.pstatus || skill.estatus || skill.health || skill.flatHealth)) AudioManager.playEffectNoAttack();
     }
@@ -383,7 +382,7 @@ async function executeSkill({
                     eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
                 }
             });
-            if (eviscerated.length > 0) encounter.log.push(`<span data-tooltip="${statId('Malediction')} Malediction\n\n${getStatusByName('Malediction').description}">${statId('Malediction')}</span> All of ${player.name}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
+            if (eviscerated.length > 0) encounter.log.push(`<span data-tooltip="${statId('Malediction')} Malediction\n\n${getStatusByName('Malediction').description}">${statId('Malediction')}</span> All of ${player.name}'s positive effects were ${badOmenWords[Math.round(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
         } else if (hasStatus(player.pstatus, 'Blessing')) {
             let cleansed = [];
             player.pstatus.slice().forEach(s => {
@@ -393,7 +392,7 @@ async function executeSkill({
                 }
             });
 
-            if (cleansed.length > 0) encounter.log.push(`<span data-tooltip="${statId('Blessing')} Blessing\n\n${getStatusByName('Blessing').description}">${statId('Blessing')}</span> All of ${player.name}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
+            if (cleansed.length > 0) encounter.log.push(`<span data-tooltip="${statId('Blessing')} Blessing\n\n${getStatusByName('Blessing').description}">${statId('Blessing')}</span> All of ${player.name}'s negative effects were ${blessingWords[Math.round(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
         }
     }
 
@@ -409,7 +408,7 @@ async function executeSkill({
                     eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
                 }
             });
-            if (eviscerated.length > 0) encounter.log.push(`<span data-tooltip="${statId('Malediction')} Malediction\n\n${getStatusByName('Malediction').description}">${statId('Malediction')}</span> All of ${encounter.enemyName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
+            if (eviscerated.length > 0) encounter.log.push(`<span data-tooltip="${statId('Malediction')} Malediction\n\n${getStatusByName('Malediction').description}">${statId('Malediction')}</span> All of ${encounter.enemyName}'s positive effects were ${badOmenWords[Math.round(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
         } else if (hasStatus(encounter.estatus, 'Blessing')) {
             let cleansed = [];
             encounter.estatus.slice().forEach(s => {
@@ -419,7 +418,7 @@ async function executeSkill({
                 }
             });
 
-            if (cleansed.length > 0) encounter.log.push(`<span data-tooltip="${statId('Blessing')} Blessing\n\n${getStatusByName('Blessing').description}">${statId('Blessing')}</span> All of ${encounter.enemyName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
+            if (cleansed.length > 0) encounter.log.push(`<span data-tooltip="${statId('Blessing')} Blessing\n\n${getStatusByName('Blessing').description}">${statId('Blessing')}</span> All of ${encounter.enemyName}'s negative effects were ${blessingWords[Math.round(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
         }
     }
 
@@ -550,18 +549,18 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {})
     const isPurifying = itemData.purify;
     const cleanseTarget = itemData.target === 'player' ? 'player' : target;
     const throwableDamage = itemData.damage !== undefined
-        ? Math.max(0, Math.floor(Number(itemData.damage) || 0))
+        ? Math.max(0, Math.round(Number(itemData.damage) || 0))
         : 0;
 
     if (itemData.health) {
-        const healAmount = Math.floor(player.maxHealth * itemData.health);
+        const healAmount = Math.round(player.maxHealth * itemData.health);
         const actualHeal = Math.min(healAmount, player.maxHealth - player.health);
         player.health += actualHeal;
         effectText.push(`gained <span style="color: lightblue;" data-tooltip="💖 ${player.maxHealth} * ${itemData.health} = ${healAmount}${healAmount > actualHeal ? '\nCapped to max health.' : ''}">💖${actualHeal}</span>`);
     }
 
     if (itemData.stamina) {
-        const staminaAmount = Math.floor(player.maxStamina * itemData.stamina);
+        const staminaAmount = Math.round(player.maxStamina * itemData.stamina);
         const actualStamina = Math.min(staminaAmount, player.maxStamina - player.stamina);
         player.stamina += actualStamina;
         effectText.push(`gained <span style="color: lightblue;" data-tooltip="⚡ ${player.maxStamina} * ${itemData.stamina} = ${staminaAmount}${staminaAmount > actualStamina ? '\nCapped to max stamina.' : ''}">⚡${actualStamina}</span>`);
@@ -583,10 +582,10 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {})
     }
 
     if (itemData.damage !== undefined) {
-        encounter.health -= throwableDamage;
+        encounter.health -= throwableDamage * (itemData.times ? itemData.times : 1);
         AudioManager.playExplosion();
         audioPlayed = true;
-        effectText.push(`dealt <span style="color: lightblue;" data-tooltip="💥${throwableDamage}\n">💥${throwableDamage}</span>`);
+        effectText.push(`dealt <span style="color: lightblue;" data-tooltip="💥${throwableDamage}\n">💥${throwableDamage * (itemData.times ? itemData.times : 1)}</span>`);
     }
 
     if (itemData.pstatus) {
@@ -625,7 +624,7 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {})
             value: itemData.buff,
             rounds: (itemData.rounds || 1) + 1
         });
-        effectText.push(`gained [<span data-tooltip="⚔️ +${Math.floor(itemData.buff * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">🧪</span>]`);
+        effectText.push(`gained [<span data-tooltip="⚔️ +${Math.round(itemData.buff * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">🧪</span>]`);
     } else if (itemData.def) {
         syncPlayerActivePotion(player, {
             id: '🧪',
@@ -634,7 +633,7 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {})
             value: itemData.def,
             rounds: (itemData.rounds || 1) + 1
         });
-        effectText.push(`gained [<span data-tooltip="🛡️ +${Math.floor(itemData.def * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">🧪</span>]`);
+        effectText.push(`gained [<span data-tooltip="🛡️ +${Math.round(itemData.def * 100)}% for ${itemData.rounds || 1} round${(itemData.rounds || 1) > 1 ? 's' : ''}.">🧪</span>]`);
     }
 
     removeFromInventory(inventoryIndex);
@@ -706,7 +705,7 @@ async function turnManager(toPlayer) {
 
             let currentLevel = player.level
             const xpMultiplier = 4.8 + (Math.max(0, assets.blocks.findIndex((entry) => entry.name === background.enemy.block)) * 0.2) - (({ 'zero': 0, 'ten': 1, 'twenty': 2, 'thirty': 3, 'forty': 4, 'fifty': 5 }[getBlockTierKey(background.enemyLevel)] || 0) * 0.3);
-            var xpdrop = Math.floor((((background.enemyLevel ** 1.2) * (encounter.maxHealth / encounter.attack)) ** 1.2) * xpMultiplier);
+            var xpdrop = Math.round((((background.enemyLevel ** 1.2) * (encounter.maxHealth / encounter.attack)) ** 1.2) * xpMultiplier);
             let xptext = `<span color="lightblue" data-tooltip='(((${background.enemyLevel}^1.2) * (${encounter.maxHealth} / ${encounter.attack}))^1.2) * ${xpMultiplier.toFixed(1)} = ${xpdrop}'>${xpdrop}</span>`;
             await new Promise(r => setTimeout(r, 200))
             encounter.log.push(`🌟 ${background.name} earned ${xptext} experience! 🌟`)
@@ -783,7 +782,7 @@ async function turnManager(toPlayer) {
             }
 
             let level = 1
-            if (loot.minlvl) level = loot.minlvl && loot.maxlvl ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
+            if (loot.minlvl) level = loot.minlvl && loot.maxlvl ? Math.round(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl) : 1;
 
             const descRaw = window.getItemTooltipText(loot.name, level, true);
 
@@ -818,7 +817,7 @@ async function turnManager(toPlayer) {
                 eviscerated.push(`<span data-tooltip="${s.id} ${s.name}\n\n${s.description}">${s.id}</span>`);
             }
         });
-        if (eviscerated.length > 0) encounter.log.push(`${statId('Malediction')} All of ${actorName}'s positive effects were ${badOmenWords[Math.floor(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
+        if (eviscerated.length > 0) encounter.log.push(`${statId('Malediction')} All of ${actorName}'s positive effects were ${badOmenWords[Math.round(Math.random() * badOmenWords.length)]} [${eviscerated.join('')}].`);
     } else if (hasStatus(actorStatuses, 'Blessing')) {
         let cleansed = [];
         actorStatuses.slice().forEach(s => {
@@ -828,7 +827,7 @@ async function turnManager(toPlayer) {
             }
         });
 
-        if (cleansed.length > 0) encounter.log.push(`${statId('Blessing')} All of ${actorName}'s negative effects were ${blessingWords[Math.floor(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
+        if (cleansed.length > 0) encounter.log.push(`${statId('Blessing')} All of ${actorName}'s negative effects were ${blessingWords[Math.round(Math.random() * blessingWords.length)]} [${cleansed.join('')}].`);
     }
 
     if (hasStatus(actorStatuses, 'Stun')) stunned = true;
@@ -836,7 +835,7 @@ async function turnManager(toPlayer) {
     for (const s of actorStatuses.slice()) {
         switch (s.id) {
             case statId('Bleed'): {
-                let damage = Math.floor(s.baseDam * s.damage);
+                let damage = Math.round(s.baseDam * s.damage);
                 encounter.log.push(`${actorName} is bleeding - <span style="color: lightblue;" data-tooltip="${statId('Bleed')} ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">${statId('Bleed')}${damage}</span>`);
                 actor.health -= damage;
                 AudioManager.playStatusEffect();
@@ -844,7 +843,7 @@ async function turnManager(toPlayer) {
                 break;
             }
             case statId('Burn'): {
-                let damage = Math.floor(s.baseDam * s.damage);
+                let damage = Math.round(s.baseDam * s.damage);
                 encounter.log.push(`${actorName} is on fire - <span style="color: lightblue;" data-tooltip="${statId('Burn')} ${s.name}\n\n${s.description}\n\n${s.damage} * ${s.baseDam} = ${damage}">${statId('Burn')}${damage}</span>`);
                 actor.health -= damage;
                 AudioManager.playStatusEffect();
@@ -852,7 +851,7 @@ async function turnManager(toPlayer) {
                 break;
             }
             case statId('Curse'): {
-                let damage = Math.floor(s.baseDam * actor.attack);
+                let damage = Math.round(s.baseDam * actor.attack);
                 encounter.log.push(`${actorName} is cursed - <span style="color: lightblue;" data-tooltip="${statId('Curse')} ${s.name}\n\n${s.description}\n\n${actor.attack} * ${s.baseDam} = ${damage}">${statId('Curse')}${damage}</span>`);
                 actor.health -= damage;
                 AudioManager.playStatusEffect();
@@ -860,7 +859,7 @@ async function turnManager(toPlayer) {
                 break;
             }
             case statId('Poison'): {
-                let damage = Math.floor(s.maxHP * actor.maxHealth);
+                let damage = Math.round(s.maxHP * actor.maxHealth);
                 encounter.log.push(`${actorName} is poisoned - <span style="color: lightblue;" data-tooltip="${statId('Poison')} ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${damage}">${statId('Poison')}${damage}</span>`);
                 actor.health -= damage;
                 AudioManager.playStatusEffect();
@@ -868,11 +867,11 @@ async function turnManager(toPlayer) {
                 break;
             }
             case statId('Regeneration'): {
-                let heal = Math.floor(s.maxHP * actor.maxHealth);
+                let heal = Math.round(s.maxHP * actor.maxHealth);
                 if (actor.health + heal > actor.maxHealth)
                     heal = actor.maxHealth - actor.health;
 
-                encounter.log.push(`${actorName} is regenerating - <span style="color: lightblue;" data-tooltip="${statId('Regeneration')} ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${Math.floor(s.maxHP * actor.maxHealth)}${actor.health + Math.floor(s.maxHP * actor.maxHealth) > actor.maxHealth ? '\nCapped to max health.' : ''}">${statId('Regeneration')}${heal}</span>`);
+                encounter.log.push(`${actorName} is regenerating - <span style="color: lightblue;" data-tooltip="${statId('Regeneration')} ${s.name}\n\n${s.description}\n\n${actor.maxHealth} * ${s.maxHP} = ${Math.round(s.maxHP * actor.maxHealth)}${actor.health + Math.round(s.maxHP * actor.maxHealth) > actor.maxHealth ? '\nCapped to max health.' : ''}">${statId('Regeneration')}${heal}</span>`);
                 actor.health += heal;
                 AudioManager.playStatusEffect();
                 await new Promise(r => setTimeout(r, 400))
@@ -888,7 +887,7 @@ async function turnManager(toPlayer) {
 
     if (toPlayer) {
         const already = battleStation._regenThisRound || 0;
-        const desiredTotal = already > 0 ? Math.round(player.maxStamina * 0.1) : Math.round(player.maxStamina * 0.05);
+        const desiredTotal = already > 0 ? Math.round(player.maxStamina * 0.05) : Math.round(player.maxStamina * 0.05);
         let staminaRegen = Math.max(0, desiredTotal - already);
         if (player.stamina + staminaRegen > player.maxStamina) staminaRegen = player.maxStamina - player.stamina;
         if (staminaRegen > 0) player.stamina += staminaRegen;
@@ -976,11 +975,12 @@ async function victory(enc = false) {
             `You're finally awake.`,
             `So, about your healing ability...`
         ]
-        notify(`${deathMessages[Math.floor(Math.random() * deathMessages.length)]}\nYour health will be replinished, but your death has been punished.`, 'warning');
+        notify(`${deathMessages[Math.round(Math.random() * deathMessages.length)]}\nYour health will be replinished, but your death has been punished.`, 'warning');
         await new Promise(resolve => setTimeout(resolve, 500));
         if (player.level > 1) player.level -= 1;
         if (player.level < 1) player.level = 1;
-        player.health = await getPlayerMaxHealth(player.level);
+        player.maxHealth = await getPlayerMaxHealth(player.level);
+        player.health = player.maxHealth;
         player.pstatus = [];
         player.experience = 0;
         player.stamina = 0;
@@ -1043,7 +1043,7 @@ async function crackChestOpen() {
         return;
     }
 
-    const keyName = chestChoice.key || foundChest.key;
+    const keyNames = chestChoice.key || foundChest.key;
     const keyIndex = player.inventory.findIndex(item => item.name === keyName && item.amount > 0);
 
     if (keyName && keyIndex < 0) {
@@ -1064,7 +1064,7 @@ async function crackChestOpen() {
         let level = 1;
         if (loot.minlvl) {
             level = loot.minlvl && loot.maxlvl
-                ? Math.floor(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl)
+                ? Math.round(Math.random() * (loot.maxlvl - loot.minlvl + 1) + loot.minlvl)
                 : loot.minlvl;
         }
 

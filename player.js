@@ -1,5 +1,5 @@
 function getRequiredXP(level) {
-    return Math.floor(((level / 0.07) ** 2) / 2);
+    return Math.round(((level / 0.07) ** 2) / 2);
 }
 
 async function resetBars(screen) {
@@ -14,10 +14,10 @@ async function updateBars() {
     const alpinePlayerData = Alpine.$data(document.getElementById(`player`));
     const alpineEnemyData = Alpine.$data(document.getElementById(`enemy`));
 
-    document.getElementById(`health`).style.width = `${alpinePlayerData.health <= alpinePlayerData.maxHealth ? Math.floor(((alpinePlayerData.health < 0.1 ? 0 : alpinePlayerData.health) / alpinePlayerData.maxHealth) * 560) : 560}px`;
-    document.getElementById(`stamina`).style.width = `${alpinePlayerData.stamina <= alpinePlayerData.maxStamina ? Math.floor(((alpinePlayerData.stamina < 0.1 ? 0 : alpinePlayerData.stamina) / alpinePlayerData.maxStamina) * 310) : 310}px`;
-    document.getElementById(`experience`).style.width = `${alpinePlayerData.experience <= getRequiredXP(alpinePlayerData.level) ? Math.floor(((alpinePlayerData.experience < 0.1 ? 0 : alpinePlayerData.experience) / getRequiredXP(alpinePlayerData.level)) * 450) : 450}px`;
-    document.getElementById(`enemy-health`).style.width = `${Math.floor(((alpineEnemyData.health < 0.1 ? 0 : alpineEnemyData.health) / alpineEnemyData.maxHealth) * 80)}%`;
+    document.getElementById(`health`).style.width = `${alpinePlayerData.health <= alpinePlayerData.maxHealth ? Math.round(((alpinePlayerData.health < 0.1 ? 0 : alpinePlayerData.health) / alpinePlayerData.maxHealth) * 560) : 560}px`;
+    document.getElementById(`stamina`).style.width = `${alpinePlayerData.stamina <= alpinePlayerData.maxStamina ? Math.round(((alpinePlayerData.stamina < 0.1 ? 0 : alpinePlayerData.stamina) / alpinePlayerData.maxStamina) * 310) : 310}px`;
+    document.getElementById(`experience`).style.width = `${alpinePlayerData.experience <= getRequiredXP(alpinePlayerData.level) ? Math.round(((alpinePlayerData.experience < 0.1 ? 0 : alpinePlayerData.experience) / getRequiredXP(alpinePlayerData.level)) * 450) : 450}px`;
+    document.getElementById(`enemy-health`).style.width = `${Math.round(((alpineEnemyData.health < 0.1 ? 0 : alpineEnemyData.health) / alpineEnemyData.maxHealth) * 80)}%`;
     AudioManager.switchMainForLowHealth();
 }
 
@@ -70,8 +70,8 @@ async function setPlayer() {
     player.maxHealth = await getPlayerMaxHealth(player.level);
     player.maxStamina = 50 + ((player.level - 1) * 5)
 
-    const baseAttack = Math.floor(75 + ((player.level - 1) * 25) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel));
-    const baseDefense = Math.floor(80 + ((player.level - 1) * 30) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult));
+    const baseAttack = Math.round(75 + ((player.level - 1) * 25) + player.weaponry.weapon.attack + ((player.weaponry.level - 1) * player.weaponry.weapon.attackPerLevel));
+    const baseDefense = Math.round(80 + ((player.level - 1) * 30) + player.armory.armor.defense + ((player.armory.level - 1) * player.armory.armor.alvlmult));
 
     const activeSynergy = player.armory.armor?.synergies?.find(syn => syn.weapon === player.weaponry.weapon.name) || null;
     const synergyAttack = Number(activeSynergy?.attack) || 0;
@@ -87,8 +87,8 @@ async function setPlayer() {
         evasion: synergyEvasion
     };
 
-    player.attack = Math.floor(baseAttack + synergyAttack)
-    player.defense = Math.floor(baseDefense + synergyDefense)
+    player.attack = Math.round(baseAttack + synergyAttack)
+    player.defense = Math.round(baseDefense + synergyDefense)
     player.crit = player.weaponry.weapon.crit + synergyCrit;
     player.critdmg = player.weaponry.weapon.critdmg;
     player.accuracy = player.weaponry.weapon.accuracy;

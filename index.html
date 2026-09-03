@@ -58,9 +58,9 @@
                 synergyBonus: { name: null, attack: 0, defense: 0, crit: 0, evasion: 0 },
                 inventory: [],
 
-                get experienceTooltip () {return `${Math.floor((this.experience/getRequiredXP(this.level)) * 100)}% XP\nGained to grow stronger.`},
-                get healthTooltip () {return `${Math.floor((this.health / this.maxHealth) * 100)}% Health\nUsed to keep you alive.`},
-                get staminaTooltip () {return `${Math.floor((this.stamina / this.maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.\nYou gain ⚡${Math.round(this.maxStamina * 0.1)} per turn.`},
+                get experienceTooltip () {return `${Math.round((this.experience/getRequiredXP(this.level)) * 100)}% XP\nGained to grow stronger.`},
+                get healthTooltip () {return `${Math.round((this.health / this.maxHealth) * 100)}% Health\nUsed to keep you alive.`},
+                get staminaTooltip () {return `${Math.round((this.stamina / this.maxStamina) * 100)}% Stamina\nUsed to cast your weapon skills.\nYou gain ⚡${Math.round(this.maxStamina * 0.05)} per turn.`},
                 get tooltipMessages () {
                     return [
                         `It's just you.`,
@@ -210,7 +210,7 @@
                             const misfortunePenalty = hasMisfortune ? getAssets().statuses.find(s => s.name === 'Misfortune').decCrit : 0;
                             const modifiedCrit = crit + luckBonus - misfortunePenalty;
                             const isModified = hasLuck || hasMisfortune;
-                            return `${Math.floor(modifiedCrit * 100)}%${isModified ? '*' : ''}`;
+                            return `${Math.round(modifiedCrit * 100)}%${isModified ? '*' : ''}`;
                         })()"></span>
                     <img src="assets/effects/Strength.png" class="mini-stat-icon">
                     <span :data-tooltip="`Critical Multiplier\nMultiplies your output on a successful crit.`"
@@ -238,7 +238,7 @@
                             const blindnessPenalty = hasBlindness ? getAssets().statuses.find(s => s.name === 'Blindness').decAcc : 0;
                             const modifiedAccuracy = accuracy + acuityBonus - blindnessPenalty;
                             const isModified = hasAcuity || hasBlindness;
-                            return `${Math.floor(modifiedAccuracy * 100)}%${isModified ? '*' : ''}`;
+                            return `${Math.round(modifiedAccuracy * 100)}%${isModified ? '*' : ''}`;
                         })()"></span>
                     <img src="assets/effects/Evasion.png" class="mini-stat-icon">
                     <span :data-tooltip="(() => {
@@ -258,7 +258,7 @@
                             const evasionBonus = hasEvasion ? getAssets().statuses.find(s => s.name === 'Evasion').decEnAcc : 0;
                             const modifiedEvasion = evasion + evasionBonus;
                             const isModified = hasEvasion;
-                            return `${Math.floor(modifiedEvasion * 100)}%${isModified ? '*' : ''}`;
+                            return `${Math.round(modifiedEvasion * 100)}%${isModified ? '*' : ''}`;
                         })()"></span>
                 </div>
                 <img :src="
@@ -272,7 +272,7 @@
                 <div class="battle-weaponry" id="battle-weaponry">
 
                     <span :data-tooltip="(() => {
-                            const baseAttack = Math.floor(75 + (((level || 1) - 1) * 25) + weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel));
+                            const baseAttack = Math.round(75 + (((level || 1) - 1) * 25) + weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel));
                             const synAttack = Number(synergyBonus?.attack) || 0;
                             const synName = synergyBonus?.name || 'Synergy';
                             return `Base Attack\n\n75 + ((${level || 1} - 1) * 25) + ${weaponry.weapon.attack} + ((${weaponry.level} - 1) * ${weaponry.weapon.attackPerLevel})${synAttack ? ` + ${synAttack} (✨ ${synName})` : ''} = ${baseAttack + synAttack}`;
@@ -285,7 +285,7 @@
                         const multiplier = 1 + rigidityBonus - fragilityPenalty;
                         const isModified = hasRigidity || hasFragility;
 
-                        const baseDefense = Math.floor(80 + (((level || 1) - 1) * 30) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult));
+                        const baseDefense = Math.round(80 + (((level || 1) - 1) * 30) + armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult));
                         const synDefense = Number(synergyBonus?.defense) || 0;
                         const synName = synergyBonus?.name || 'Synergy';
                         let tooltip = `Base Defense\n\n80 + ((${level || 1} - 1) * 30) + ${armory.armor.defense} + ((${armory.level} - 1) * ${armory.armor.alvlmult})${synDefense ? ` + ${synDefense} (✨ ${synName})` : ''} = ${baseDefense + synDefense}`;
@@ -293,7 +293,7 @@
                             tooltip += `\n${defense}`;
                             if (hasRigidity) tooltip += ` * ${(1 + rigidityBonus).toFixed(2)} [${getStatusIdByName('Rigidity')}]`;
                             if (hasFragility) tooltip += ` * ${(1 - fragilityPenalty).toFixed(2)} [${getStatusIdByName('Fragility')}]`;
-                            tooltip += ` = ${Math.floor(defense * multiplier)}`;
+                            tooltip += ` = ${Math.round(defense * multiplier)}`;
                         }
                         return tooltip;
                     })()" x-text="(() => {
@@ -302,32 +302,32 @@
                             const rigidityBonus = hasRigidity ? getAssets().statuses.find(s => s.name === 'Rigidity').armorAdd : 0;
                             const fragilityPenalty = hasFragility ? getAssets().statuses.find(s => s.name === 'Fragility').armorSub : 0;
                             const multiplier = 1 + rigidityBonus - fragilityPenalty;
-                            const modifiedDefense = Math.floor(defense * multiplier);
+                            const modifiedDefense = Math.round(defense * multiplier);
                             const isModified = hasRigidity || hasFragility;
                             return `🛡️${isModified ? modifiedDefense + '*' : defense}`;
                         })()"></span>
                     <span draggable="true"
                         :style="armory.armor ?.synergies.some(syn => syn.weapon == weaponry.weapon.name) ?? false ? `text-decoration: underline; cursor: grab;` : `cursor: grab;`"
-                        :data-tooltip="`${weaponry.weapon.description}\n⚔️${Math.floor(weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel))} 🍀${Math.floor(weaponry.weapon.crit * 100)}% ⚔️${weaponry.weapon.critdmg}x 🎯${Math.floor(weaponry.weapon.accuracy * 100)}%`"
+                        :data-tooltip="`${weaponry.weapon.description}\n⚔️${Math.round(weaponry.weapon.attack + ((weaponry.level - 1) * weaponry.weapon.attackPerLevel))} 🍀${Math.round(weaponry.weapon.crit * 100)}% ⚔️${weaponry.weapon.critdmg}x 🎯${Math.round(weaponry.weapon.accuracy * 100)}%`"
                         x-text="`${weaponry.weapon.name} (${weaponry.level})`"></span>
                     <span draggable="true"
                         :style="armory.armor ?.synergies.some(syn => syn.weapon == weaponry.weapon.name) ?? false ? `text-decoration: underline; cursor: grab;` : `cursor: grab;`"
-                        :data-tooltip="`${armory.armor.description}\n🛡️${Math.floor(armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult))} 💨${Math.floor(armory.armor.evasion * 100)}%`"
+                        :data-tooltip="`${armory.armor.description}\n🛡️${Math.round(armory.armor.defense + ((armory.level - 1) * armory.armor.alvlmult))} 💨${Math.round(armory.armor.evasion * 100)}%`"
                         x-text="`${armory.armor.name} (${armory.level})`"></span>
                 </div>
             </div>
             <div class="pstatus-effects">
                 <span x-show="pstatus.some(status => status.id == getStatusIdByName('Bleed'))"
-                    :data-tooltip="`${getStatusIdByName('Bleed')} ${pstatus.find(s => s.id == getStatusIdByName('Bleed')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Bleed')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Bleed')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Bleed')).description}\n\n${pstatus.find(s => s.id == getStatusIdByName('Bleed')).damage} * ${pstatus.find(s => s.id == getStatusIdByName('Bleed')).baseDam} = ${Math.floor(pstatus.find(s => s.id == getStatusIdByName('Bleed')).damage * pstatus.find(s => s.id == getStatusIdByName('Bleed')).baseDam)}`"
+                    :data-tooltip="`${getStatusIdByName('Bleed')} ${pstatus.find(s => s.id == getStatusIdByName('Bleed')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Bleed')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Bleed')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Bleed')).description}\n\n${pstatus.find(s => s.id == getStatusIdByName('Bleed')).damage} * ${pstatus.find(s => s.id == getStatusIdByName('Bleed')).baseDam} = ${Math.round(pstatus.find(s => s.id == getStatusIdByName('Bleed')).damage * pstatus.find(s => s.id == getStatusIdByName('Bleed')).baseDam)}`"
                     x-text="getStatusIdByName('Bleed')"></span>
                 <span x-show="pstatus.some(status => status.id == getStatusIdByName('Blindness'))"
                     :data-tooltip="`${getStatusIdByName('Blindness')} ${pstatus.find(s => s.id == getStatusIdByName('Blindness')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Blindness')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Blindness')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Blindness')).description}`"
                     x-text="getStatusIdByName('Blindness')"></span>
                 <span x-show="pstatus.some(status => status.id == getStatusIdByName('Burn'))"
-                    :data-tooltip="`${getStatusIdByName('Burn')} ${pstatus.find(s => s.id == getStatusIdByName('Burn')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Burn')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Burn')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Burn')).description}\n\n${pstatus.find(s => s.id == getStatusIdByName('Burn')).damage} * ${pstatus.find(s => s.id == getStatusIdByName('Burn')).baseDam} = ${Math.floor(pstatus.find(s => s.id == getStatusIdByName('Burn')).damage * pstatus.find(s => s.id == getStatusIdByName('Burn')).baseDam)}`"
+                    :data-tooltip="`${getStatusIdByName('Burn')} ${pstatus.find(s => s.id == getStatusIdByName('Burn')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Burn')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Burn')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Burn')).description}\n\n${pstatus.find(s => s.id == getStatusIdByName('Burn')).damage} * ${pstatus.find(s => s.id == getStatusIdByName('Burn')).baseDam} = ${Math.round(pstatus.find(s => s.id == getStatusIdByName('Burn')).damage * pstatus.find(s => s.id == getStatusIdByName('Burn')).baseDam)}`"
                     x-text="getStatusIdByName('Burn')"></span>
                 <span x-show="pstatus.some(status => status.id == getStatusIdByName('Curse'))"
-                    :data-tooltip="`${getStatusIdByName('Curse')} ${pstatus.find(s => s.id == getStatusIdByName('Curse')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Curse')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Curse')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Curse')).description}\n\n${pstatus.find(s => s.id == getStatusIdByName('Curse')).damage} * ${pstatus.find(s => s.id == getStatusIdByName('Curse')).baseDam} = ${Math.floor(pstatus.find(s => s.id == getStatusIdByName('Curse')).damage * pstatus.find(s => s.id == getStatusIdByName('Curse')).baseDam)}`"
+                    :data-tooltip="`${getStatusIdByName('Curse')} ${pstatus.find(s => s.id == getStatusIdByName('Curse')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Curse')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Curse')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Curse')).description}\n\n${pstatus.find(s => s.id == getStatusIdByName('Curse')).damage} * ${pstatus.find(s => s.id == getStatusIdByName('Curse')).baseDam} = ${Math.round(pstatus.find(s => s.id == getStatusIdByName('Curse')).damage * pstatus.find(s => s.id == getStatusIdByName('Curse')).baseDam)}`"
                     x-text="getStatusIdByName('Curse')"></span>
                 <span x-show="pstatus.some(status => status.id == getStatusIdByName('Empowerment'))"
                     :data-tooltip="`${getStatusIdByName('Empowerment')} ${pstatus.find(s => s.id == getStatusIdByName('Empowerment')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Empowerment')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Empowerment')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Empowerment')).description}`"
@@ -336,7 +336,7 @@
                     :data-tooltip="`${getStatusIdByName('Evasion')} ${pstatus.find(s => s.id == getStatusIdByName('Evasion')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Evasion')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Evasion')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Evasion')).description}`"
                     x-text="getStatusIdByName('Evasion')"></span>
                 <span x-show="pstatus.some(status => status.id == getStatusIdByName('Poison'))"
-                    :data-tooltip="`${getStatusIdByName('Poison')} ${pstatus.find(s => s.id == getStatusIdByName('Poison')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Poison')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Poison')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Poison')).description}\n\n${maxHealth} * ${pstatus.find(s => s.id == getStatusIdByName('Poison')).maxHP} = ${Math.floor(maxHealth * pstatus.find(s => s.id == getStatusIdByName('Poison')).maxHP)}`"
+                    :data-tooltip="`${getStatusIdByName('Poison')} ${pstatus.find(s => s.id == getStatusIdByName('Poison')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Poison')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Poison')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Poison')).description}\n\n${maxHealth} * ${pstatus.find(s => s.id == getStatusIdByName('Poison')).maxHP} = ${Math.round(maxHealth * pstatus.find(s => s.id == getStatusIdByName('Poison')).maxHP)}`"
                     x-text="getStatusIdByName('Poison')"></span>
                 <span x-show="pstatus.some(status => status.id == getStatusIdByName('Acuity'))"
                     :data-tooltip="`${getStatusIdByName('Acuity')} ${pstatus.find(s => s.id == getStatusIdByName('Acuity')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Acuity')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Acuity')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Acuity')).description}`"
@@ -351,7 +351,7 @@
                     :data-tooltip="`${getStatusIdByName('Luck')} ${pstatus.find(s => s.id == getStatusIdByName('Luck')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Luck')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Luck')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Luck')).description}`"
                     x-text="getStatusIdByName('Luck')"></span>
                 <span x-show="pstatus.some(status => status.id == getStatusIdByName('Regeneration'))"
-                    :data-tooltip="`${getStatusIdByName('Regeneration')} ${pstatus.find(s => s.id == getStatusIdByName('Regeneration')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Regeneration')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Regeneration')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Regeneration')).description}\n\n${maxHealth} * ${pstatus.find(s => s.id == getStatusIdByName('Regeneration')).maxHP} = ${Math.floor(pstatus.find(s => s.id == getStatusIdByName('Regeneration')).maxHP * maxHealth)}`"
+                    :data-tooltip="`${getStatusIdByName('Regeneration')} ${pstatus.find(s => s.id == getStatusIdByName('Regeneration')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Regeneration')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Regeneration')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Regeneration')).description}\n\n${maxHealth} * ${pstatus.find(s => s.id == getStatusIdByName('Regeneration')).maxHP} = ${Math.round(pstatus.find(s => s.id == getStatusIdByName('Regeneration')).maxHP * maxHealth)}`"
                     x-text="getStatusIdByName('Regeneration')"></span>
                 <span x-show="pstatus.some(status => status.id == getStatusIdByName('Strength'))"
                     :data-tooltip="`${getStatusIdByName('Strength')} ${pstatus.find(s => s.id == getStatusIdByName('Strength')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Strength')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Strength')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Strength')).description}`"
@@ -375,7 +375,7 @@
                     :data-tooltip="`${getStatusIdByName('Malediction')} ${pstatus.find(s => s.id == getStatusIdByName('Malediction')).name} - ${pstatus.find(s => s.id == getStatusIdByName('Malediction')).rounds} round${pstatus.find(s => s.id == getStatusIdByName('Malediction')).rounds > 1 ? 's' : ''} remaining\n\n${pstatus.find(s => s.id == getStatusIdByName('Malediction')).description}`"
                     x-text="getStatusIdByName('Malediction')"></span>
                 <span x-show="activePotion && activePotion.rounds > 0"
-                    :data-tooltip="`🧪 ${activePotion.name || 'Potion Effect'} - ${activePotion.rounds} round${activePotion.rounds > 1 ? 's' : ''} remaining\n\n${activePotion.type === 'attack' ? `⚔️ +${Math.floor((activePotion.value || 0) * 100)}%` : `🛡️ +${Math.floor((activePotion.value || 0) * 100)}%`}`">🧪</span>
+                    :data-tooltip="`🧪 ${activePotion.name || 'Potion Effect'} - ${activePotion.rounds} round${activePotion.rounds > 1 ? 's' : ''} remaining\n\n${activePotion.type === 'attack' ? `⚔️ +${Math.round((activePotion.value || 0) * 100)}%` : `🛡️ +${Math.round((activePotion.value || 0) * 100)}%`}`">🧪</span>
                 <span x-show="health <= 0" data-tooltip="You are dead.">☠️</span>
             </div>
         </div>
@@ -1390,12 +1390,12 @@
                     const berserkBonus = hasBerserk ? getAssets().statuses.find(s => s.name === 'Berserk').damAdd : 0;
                     const weaknessPenalty = hasWeakness ? getAssets().statuses.find(s => s.name === 'Weakness').damReduc : 0;
                     const attackMultiplier = 1 + empowermentBonus + strengthBonus + berserkBonus - weaknessPenalty;
-                    const modifiedAttack = Math.floor(this.attack * attackMultiplier);
+                    const modifiedAttack = Math.round(this.attack * attackMultiplier);
 
                     const rigidityBonus = hasRigidity ? getAssets().statuses.find(s => s.name === 'Rigidity').armorAdd : 0;
                     const fragilityPenalty = hasFragility ? getAssets().statuses.find(s => s.name === 'Fragility').armorSub : 0;
                     const defenseMultiplier = 1 + rigidityBonus - fragilityPenalty;
-                    const modifiedDefense = Math.floor(this.defense * defenseMultiplier);
+                    const modifiedDefense = Math.round(this.defense * defenseMultiplier);
 
                     const acuityBonus = hasAcuity ? getAssets().statuses.find(s => s.name === 'Acuity').incAcc : 0;
                     const blindnessPenalty = hasBlindness ? getAssets().statuses.find(s => s.name === 'Blindness').decAcc : 0;
@@ -1424,7 +1424,7 @@
                         tooltip += ` = ${modifiedDefense}`;
                     }
 
-                    tooltip += `\n🎯 ${Math.floor(( (hasAcuity || hasBlindness) ? modifiedAccuracy : this.accuracy) * 100)}%`;
+                    tooltip += `\n🎯 ${Math.round(( (hasAcuity || hasBlindness) ? modifiedAccuracy : this.accuracy) * 100)}%`;
                     if (hasAcuity || hasBlindness) {
                         tooltip += `\n  ${this.accuracy}`;
                         if (hasAcuity) tooltip += ` + ${acuityBonus} [${getStatusIdByName('Acuity')}]`;
@@ -1432,7 +1432,7 @@
                         tooltip += ` = ${modifiedAccuracy}`;
                     }
 
-                    tooltip += `\n🍀 ${Math.floor(((hasLuck || hasMisfortune) ? modifiedCrit : this.crit) * 100)}%`;
+                    tooltip += `\n🍀 ${Math.round(((hasLuck || hasMisfortune) ? modifiedCrit : this.crit) * 100)}%`;
                     if (hasLuck || hasMisfortune) {
                         tooltip += `\n  ${this.crit}`;
                         if (hasLuck) tooltip += ` + ${luckBonus} [${getStatusIdByName('Luck')}]`;
@@ -1463,23 +1463,23 @@
             }">
             <div class="enemy" id="enemy">
                 <div class="enemy-level" x-text="`Level ${enemyLevel} ${enemy.block}`"
-                    :data-tooltip="`💖 ${enemy.health} → ${maxHealth}\n⚔️ ${enemy.attack} → ${attack}\n🛡️ ${enemy.defense} → ${defense}\n🎯 ${Math.floor((enemy.accuracy || 0) * 100)}% → ${Math.floor(getEnemyAccuracy(enemy, enemyLevel) * 100)}%\n🍀 ${Math.floor((enemy.crit || 0) * 100)}% → ${Math.floor(getEnemyCrit(enemy, enemyLevel) * 100)}%`">
+                    :data-tooltip="`💖 ${enemy.health} → ${maxHealth}\n⚔️ ${enemy.attack} → ${attack}\n🛡️ ${enemy.defense} → ${defense}\n🎯 ${Math.round((enemy.accuracy || 0) * 100)}% → ${Math.round(getEnemyAccuracy(enemy, enemyLevel) * 100)}%\n🍀 ${Math.round((enemy.crit || 0) * 100)}% → ${Math.round(getEnemyCrit(enemy, enemyLevel) * 100)}%`">
                     Jgouken & SavorySam</div>
                 <div class="enemy-top-spacing enemy-top-spacing--small">
                     <div class="enemy-name" x-text="enemy.name" :data-tooltip="buildTooltip()">
                         ???</div>
                     <div class="estatus-effects">
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Bleed'))"
-                            :data-tooltip="`${getStatusIdByName('Bleed')} ${estatus.find(s => s.id == getStatusIdByName('Bleed')).name} - ${estatus.find(s => s.id == getStatusIdByName('Bleed')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Bleed')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Bleed')).description}\n\n${estatus.find(s => s.id == getStatusIdByName('Bleed')).damage} * ${estatus.find(s => s.id == getStatusIdByName('Bleed')).baseDam} = ${Math.floor(estatus.find(s => s.id == getStatusIdByName('Bleed')).damage * estatus.find(s => s.id == getStatusIdByName('Bleed')).baseDam)}`"
+                            :data-tooltip="`${getStatusIdByName('Bleed')} ${estatus.find(s => s.id == getStatusIdByName('Bleed')).name} - ${estatus.find(s => s.id == getStatusIdByName('Bleed')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Bleed')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Bleed')).description}\n\n${estatus.find(s => s.id == getStatusIdByName('Bleed')).damage} * ${estatus.find(s => s.id == getStatusIdByName('Bleed')).baseDam} = ${Math.round(estatus.find(s => s.id == getStatusIdByName('Bleed')).damage * estatus.find(s => s.id == getStatusIdByName('Bleed')).baseDam)}`"
                             x-text="getStatusIdByName('Bleed')"></span>
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Blindness'))"
                             :data-tooltip="`${getStatusIdByName('Blindness')} ${estatus.find(s => s.id == getStatusIdByName('Blindness')).name} - ${estatus.find(s => s.id == getStatusIdByName('Blindness')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Blindness')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Blindness')).description}`"
                             x-text="getStatusIdByName('Blindness')"></span>
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Burn'))"
-                            :data-tooltip="`${getStatusIdByName('Burn')} ${estatus.find(s => s.id == getStatusIdByName('Burn')).name} - ${estatus.find(s => s.id == getStatusIdByName('Burn')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Burn')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Burn')).description}\n\n${estatus.find(s => s.id == getStatusIdByName('Burn')).damage} * ${estatus.find(s => s.id == getStatusIdByName('Burn')).baseDam} = ${Math.floor(estatus.find(s => s.id == getStatusIdByName('Burn')).damage * estatus.find(s => s.id == getStatusIdByName('Burn')).baseDam)}`"
+                            :data-tooltip="`${getStatusIdByName('Burn')} ${estatus.find(s => s.id == getStatusIdByName('Burn')).name} - ${estatus.find(s => s.id == getStatusIdByName('Burn')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Burn')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Burn')).description}\n\n${estatus.find(s => s.id == getStatusIdByName('Burn')).damage} * ${estatus.find(s => s.id == getStatusIdByName('Burn')).baseDam} = ${Math.round(estatus.find(s => s.id == getStatusIdByName('Burn')).damage * estatus.find(s => s.id == getStatusIdByName('Burn')).baseDam)}`"
                             x-text="getStatusIdByName('Burn')"></span>
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Curse'))"
-                            :data-tooltip="`${getStatusIdByName('Curse')} ${estatus.find(s => s.id == getStatusIdByName('Curse')).name} - ${estatus.find(s => s.id == getStatusIdByName('Curse')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Curse')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Curse')).description}\n\n${estatus.find(s => s.id == getStatusIdByName('Curse')).damage} * ${estatus.find(s => s.id == getStatusIdByName('Curse')).baseDam} = ${Math.floor(estatus.find(s => s.id == getStatusIdByName('Curse')).damage * estatus.find(s => s.id == getStatusIdByName('Curse')).baseDam)}`"
+                            :data-tooltip="`${getStatusIdByName('Curse')} ${estatus.find(s => s.id == getStatusIdByName('Curse')).name} - ${estatus.find(s => s.id == getStatusIdByName('Curse')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Curse')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Curse')).description}\n\n${estatus.find(s => s.id == getStatusIdByName('Curse')).damage} * ${estatus.find(s => s.id == getStatusIdByName('Curse')).baseDam} = ${Math.round(estatus.find(s => s.id == getStatusIdByName('Curse')).damage * estatus.find(s => s.id == getStatusIdByName('Curse')).baseDam)}`"
                             x-text="getStatusIdByName('Curse')"></span>
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Empowerment'))"
                             :data-tooltip="`${getStatusIdByName('Empowerment')} ${estatus.find(s => s.id == getStatusIdByName('Empowerment')).name} - ${estatus.find(s => s.id == getStatusIdByName('Empowerment')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Empowerment')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Empowerment')).description}`"
@@ -1488,7 +1488,7 @@
                             :data-tooltip="`${getStatusIdByName('Evasion')} ${estatus.find(s => s.id == getStatusIdByName('Evasion')).name} - ${estatus.find(s => s.id == getStatusIdByName('Evasion')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Evasion')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Evasion')).description}`"
                             x-text="getStatusIdByName('Evasion')"></span>
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Poison'))"
-                            :data-tooltip="`${getStatusIdByName('Poison')} ${estatus.find(s => s.id == getStatusIdByName('Poison')).name} - ${estatus.find(s => s.id == getStatusIdByName('Poison')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Poison')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Poison')).description}\n\n${maxHealth} * ${estatus.find(s => s.id == getStatusIdByName('Poison')).maxHP} = ${Math.floor(maxHealth * estatus.find(s => s.id == getStatusIdByName('Poison')).maxHP)}`"
+                            :data-tooltip="`${getStatusIdByName('Poison')} ${estatus.find(s => s.id == getStatusIdByName('Poison')).name} - ${estatus.find(s => s.id == getStatusIdByName('Poison')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Poison')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Poison')).description}\n\n${maxHealth} * ${estatus.find(s => s.id == getStatusIdByName('Poison')).maxHP} = ${Math.round(maxHealth * estatus.find(s => s.id == getStatusIdByName('Poison')).maxHP)}`"
                             x-text="getStatusIdByName('Poison')"></span>
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Acuity'))"
                             :data-tooltip="`${getStatusIdByName('Acuity')} ${estatus.find(s => s.id == getStatusIdByName('Acuity')).name} - ${estatus.find(s => s.id == getStatusIdByName('Acuity')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Acuity')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Acuity')).description}`"
@@ -1500,7 +1500,7 @@
                             :data-tooltip="`${getStatusIdByName('Luck')} ${estatus.find(s => s.id == getStatusIdByName('Luck')).name} - ${estatus.find(s => s.id == getStatusIdByName('Luck')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Luck')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Luck')).description}`"
                             x-text="getStatusIdByName('Luck')"></span>
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Regeneration'))"
-                            :data-tooltip="`${getStatusIdByName('Regeneration')} ${estatus.find(s => s.id == getStatusIdByName('Regeneration')).name} - ${estatus.find(s => s.id == getStatusIdByName('Regeneration')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Regeneration')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Regeneration')).description}\n\n${maxHealth} * ${estatus.find(s => s.id == getStatusIdByName('Regeneration')).maxHP} = ${Math.floor(estatus.find(s => s.id == getStatusIdByName('Regeneration')).maxHP * maxHealth)}`"
+                            :data-tooltip="`${getStatusIdByName('Regeneration')} ${estatus.find(s => s.id == getStatusIdByName('Regeneration')).name} - ${estatus.find(s => s.id == getStatusIdByName('Regeneration')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Regeneration')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Regeneration')).description}\n\n${maxHealth} * ${estatus.find(s => s.id == getStatusIdByName('Regeneration')).maxHP} = ${Math.round(estatus.find(s => s.id == getStatusIdByName('Regeneration')).maxHP * maxHealth)}`"
                             x-text="getStatusIdByName('Regeneration')"></span>
                         <span x-show="estatus.some(status => status.id == getStatusIdByName('Strength'))"
                             :data-tooltip="`${getStatusIdByName('Strength')} ${estatus.find(s => s.id == getStatusIdByName('Strength')).name} - ${estatus.find(s => s.id == getStatusIdByName('Strength')).rounds} round${estatus.find(s => s.id == getStatusIdByName('Strength')).rounds > 1 ? 's' : ''} remaining\n\n${estatus.find(s => s.id == getStatusIdByName('Strength')).description}`"
@@ -1573,10 +1573,10 @@
                         <button class="battle-base-attack battle-button"
                             :style="`background-color: ${turn ? 'rgb(253, 113, 113)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(245, 17, 17); cursor: ${turn ? 'pointer' : 'not-allowed'};`"
                             x-text="weapon.skills[0].name" :disabled="!turn" @click="skill(0)"
-                            :data-tooltip="`${weapon.skills[0].description ? `${weapon.skills[0].description}\n` : ''}${weapon.skills[0].cost ? `⚡${weapon.skills[0].cost}\n` : ''}⚔️ x${weapon.skills[0].attack ? (weapon.skills[0].damage || 1) : 0}\n${weapon.skills[0].times ? `🔄️${weapon.skills[0].times}x\n` : ''}${weapon.skills[0].flatHealth ? `❤️ ${weapon.skills[0].flatHealth}\n` : ''}${weapon.skills[0].health ? `💖 ${Math.floor(weapon.skills[0].health * 100)}%\n` : ''}${weapon.skills[0].lifesteal ? `💞 ${Math.floor(weapon.skills[0].lifesteal * 100)}%\n` : ''}${weapon.skills[0].pstatus ? `Gains ${weapon.skills[0].pstatus.join('')}\n` : ''}${weapon.skills[0].estatus ? 'Inflicts ' + weapon.skills[0].estatus.join('') : ''}`">Attack</button>
+                            :data-tooltip="`${weapon.skills[0].description ? `${weapon.skills[0].description}\n` : ''}${weapon.skills[0].cost ? `⚡${weapon.skills[0].cost}\n` : ''}⚔️ x${weapon.skills[0].attack ? (weapon.skills[0].damage || 1) : 0}\n${weapon.skills[0].times ? `🔄️${weapon.skills[0].times}x\n` : ''}${weapon.skills[0].flatHealth ? `❤️ ${weapon.skills[0].flatHealth}\n` : ''}${weapon.skills[0].health ? `💖 ${Math.round(weapon.skills[0].health * 100)}%\n` : ''}${weapon.skills[0].lifesteal ? `💞 ${Math.round(weapon.skills[0].lifesteal * 100)}%\n` : ''}${weapon.skills[0].pstatus ? `Gains ${weapon.skills[0].pstatus.join('')}\n` : ''}${weapon.skills[0].estatus ? 'Inflicts ' + weapon.skills[0].estatus.join('') : ''}`">Attack</button>
                         <button class="battle-pass battle-button"
                             :style="`background-color: ${turn ? 'rgb(42, 143, 201)' : 'rgb(55, 55, 55)'}; border: 5px solid rgb(6, 0, 88); cursor: ${turn ? 'pointer' : 'not-allowed'};`"
-                            :data-tooltip="`Skip your turn but gain⚡${Math.round(Alpine.$data(player).maxStamina * 0.1)}`"
+                            :data-tooltip="`Skip your turn but gain⚡${Math.round(Alpine.$data(player).maxStamina * 0.05)}`"
                             :disabled="!turn" @click="skill(-1)">Pass</button>
                         <button class="battle-item battle-button"
                             :style="`background-color: ${turn && consumables.length > 0 ? 'rgb(138, 233, 138)' : 'rgb(55, 55, 55)'}; color: black; border: 5px solid rgb(0, 97, 21); cursor: ${turn && consumables.length > 0 ? 'pointer' : 'not-allowed'};`"
@@ -1637,8 +1637,8 @@
                                         tooltip += `⚔️ x${skill.attack ? (skill.damage || 1) : 0}\n`;
                                         if (skill.times) tooltip += `🔄️${skill.times}x\n`;
                                         if (skill.flatHealth) tooltip += `❤️ ${skill.flatHealth}\n`;
-                                        if (skill.health) tooltip += `💖 ${Math.floor(skill.health * 100)}%\n`;
-                                        if (skill.lifesteal) tooltip += `💞 ${Math.floor(skill.lifesteal * 100)}%\n`;
+                                        if (skill.health) tooltip += `💖 ${Math.round(skill.health * 100)}%\n`;
+                                        if (skill.lifesteal) tooltip += `💞 ${Math.round(skill.lifesteal * 100)}%\n`;
                                         if (skill.name === 'Yin and Yang') {
                                             tooltip += 'Inflicts 🖤🌑🥀🌀 or 🔥👁️\nGains ✨🍀🛡️🏅 or 💢💨';
                                         } else {
@@ -1660,7 +1660,7 @@
                                 <button class="battle-skill2 battle-button" id="battle-skill2"
                                     :style="`${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); cursor: ${ (Alpine.$data(player).stamina < weapon.skills[2].cost || !turn) ? 'not-allowed' : 'pointer' };`"
                                     :disabled="Alpine.$data(player).stamina < weapon.skills[2].cost || !turn"
-                                    :data-tooltip="`${weapon.skills[2].description ? `${weapon.skills[2].description}\n` : ''}${weapon.skills[2].cost ? `⚡${weapon.skills[2].cost}\n` : ''}⚔️ x${weapon.skills[2].attack ? (weapon.skills[2].damage || 1) : 0}\n${weapon.skills[2].times ? `🔄️${weapon.skills[2].times}x\n` : ''}${weapon.skills[2].flatHealth ? `❤️ ${weapon.skills[2].flatHealth}\n` : ''}${weapon.skills[2].health ? `💖 ${Math.floor(weapon.skills[2].health * 100)}%\n` : ''}${weapon.skills[2].lifesteal ? `💞 ${Math.floor(weapon.skills[2].lifesteal * 100)}%\n` : ''}${weapon.skills[2].pstatus ? `Gains ${weapon.skills[2].pstatus.join('')}\n` : ''}${weapon.skills[2].estatus ? 'Inflicts ' + weapon.skills[2].estatus.join('') : ''}`"
+                                    :data-tooltip="`${weapon.skills[2].description ? `${weapon.skills[2].description}\n` : ''}${weapon.skills[2].cost ? `⚡${weapon.skills[2].cost}\n` : ''}⚔️ x${weapon.skills[2].attack ? (weapon.skills[2].damage || 1) : 0}\n${weapon.skills[2].times ? `🔄️${weapon.skills[2].times}x\n` : ''}${weapon.skills[2].flatHealth ? `❤️ ${weapon.skills[2].flatHealth}\n` : ''}${weapon.skills[2].health ? `💖 ${Math.round(weapon.skills[2].health * 100)}%\n` : ''}${weapon.skills[2].lifesteal ? `💞 ${Math.round(weapon.skills[2].lifesteal * 100)}%\n` : ''}${weapon.skills[2].pstatus ? `Gains ${weapon.skills[2].pstatus.join('')}\n` : ''}${weapon.skills[2].estatus ? 'Inflicts ' + weapon.skills[2].estatus.join('') : ''}`"
                                     x-text="weapon.skills[2].name" @click="skill(2)">
                                     ?
                                 </button>
@@ -1674,7 +1674,7 @@
                                 <button class="battle-skill3 battle-button" id="battle-skill3"
                                     :style="`${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'background-color: rgb(55, 55, 55)' : 'background-color: rgb(20, 5, 228)' }; color: white; border: 5px solid rgb(1, 0, 88); cursor: ${ (Alpine.$data(player).stamina < weapon.skills[3].cost || !turn) ? 'not-allowed' : 'pointer' };`"
                                     :disabled="Alpine.$data(player).stamina < weapon.skills[3].cost || !turn"
-                                    :data-tooltip="`${weapon.skills[3].description ? `${weapon.skills[3].description}\n` : ''}${weapon.skills[3].cost ? `⚡${weapon.skills[3].cost}\n` : ''}⚔️ x${weapon.skills[3].attack ? (weapon.skills[3].damage || 1) : 0}\n${weapon.skills[3].times ? `🔄️${weapon.skills[3].times}x\n` : ''}${weapon.skills[3].flatHealth ? `❤️ ${weapon.skills[3].flatHealth}\n` : ''}${weapon.skills[3].health ? `💖 ${Math.floor(weapon.skills[3].health * 100)}%\n` : ''}${weapon.skills[3].lifesteal ? `💞 ${Math.floor(weapon.skills[3].lifesteal * 100)}%\n` : ''}${weapon.skills[3].pstatus ? `Gains ${weapon.skills[3].pstatus.join('')}\n` : ''}${weapon.skills[3].estatus ? 'Inflicts ' + weapon.skills[3].estatus.join('') : ''}`"
+                                    :data-tooltip="`${weapon.skills[3].description ? `${weapon.skills[3].description}\n` : ''}${weapon.skills[3].cost ? `⚡${weapon.skills[3].cost}\n` : ''}⚔️ x${weapon.skills[3].attack ? (weapon.skills[3].damage || 1) : 0}\n${weapon.skills[3].times ? `🔄️${weapon.skills[3].times}x\n` : ''}${weapon.skills[3].flatHealth ? `❤️ ${weapon.skills[3].flatHealth}\n` : ''}${weapon.skills[3].health ? `💖 ${Math.round(weapon.skills[3].health * 100)}%\n` : ''}${weapon.skills[3].lifesteal ? `💞 ${Math.round(weapon.skills[3].lifesteal * 100)}%\n` : ''}${weapon.skills[3].pstatus ? `Gains ${weapon.skills[3].pstatus.join('')}\n` : ''}${weapon.skills[3].estatus ? 'Inflicts ' + weapon.skills[3].estatus.join('') : ''}`"
                                     x-text="weapon.skills[3].name" @click="skill(3)">
                                 </button>
                                 <span class="battle-skill3-cost battle-skill-cost" id="battle-skill3-cost"

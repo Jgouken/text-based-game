@@ -783,7 +783,7 @@ window.createJournalState = function createJournalState() {
                         const statRange = (lowValue, highValue) => lowValue === highValue ? `${lowValue}` : `${lowValue} - ${highValue}`;
                         const previewLevel = clampJournalLevel(this.previewLevel || areaMinLevel);
                         const tooltipLevel = Math.max(areaMinLevel, Math.min(areaMaxLevel, previewLevel));
-                        const acc = Math.floor(((getEnemyAccuracy) ? getEnemyAccuracy(enemyData, tooltipLevel) : (enemyData.accuracy || 0)) * 100);
+                        const acc = Math.round(((getEnemyAccuracy) ? getEnemyAccuracy(enemyData, tooltipLevel) : (enemyData.accuracy || 0)) * 100);
                         const enemyTooltipText =
                             `Level ${areaMinLevel === areaMaxLevel ? `${areaMinLevel}` : `${areaMinLevel} - ${areaMaxLevel}`}\n` +
                             `${enemyData.block || 'Unknown Block'}\n` +
@@ -791,7 +791,7 @@ window.createJournalState = function createJournalState() {
                             `⚔️ ${statRange(lowStats.attack, highStats.attack)}\n` +
                             `🛡️ ${statRange(lowStats.defense, highStats.defense)}\n` +
                             `🎯 ${acc}%\n` +
-                            `🍀 ${Math.floor(enemyData.crit * 100)}%`;
+                            `🍀 ${Math.round(enemyData.crit * 100)}%`;
                         const escapedEnemyName = escapeJournalHtml(enemyName);
                         const enemyTooltip = escapeJournalHtml(enemyTooltipText);
                         const enemyLink = `<span class="journal-area-enemy-link" data-enemy-name="${escapedEnemyName}" data-tooltip="${enemyTooltip}">${escapedEnemyName}</span>`;

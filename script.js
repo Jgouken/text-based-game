@@ -377,7 +377,7 @@ const AudioManager = (function () {
     }
 
     function playRandomHit() {
-        const idx = Math.floor(Math.random() * 4) + 1;
+        const idx = Math.round(Math.random() * 4) + 1;
         playOneShot(`hitHurt${idx}.mp3`, 0.9);
     }
 
@@ -546,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'assets/keys/WoodenKey.gif'
         ];
 
-        const randomChestGif = chestGifOptions[Math.floor(Math.random() * chestGifOptions.length)];
+        const randomChestGif = chestGifOptions[Math.round(Math.random() * chestGifOptions.length)];
         overlay.innerHTML = `
             <div class="loading-screen-content">
                     <img class="loading-screen-chest" src="${randomChestGif}">
@@ -571,7 +571,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 pastDate.setUTCHours(0, 0, 0, 0);
                 const timeDifference = now.getTime() - pastDate.getTime();
                 const millisecondsPerDay = 1000 * 60 * 60 * 24;
-                const daysAgo = Math.floor(timeDifference / millisecondsPerDay);
+                const daysAgo = Math.round(timeDifference / millisecondsPerDay);
 
                 return daysAgo;
             }
@@ -604,7 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `There are <span style="color: lightblue">392</span> skills in the game.`
             ];
 
-            function shuffleArray(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
+            function shuffleArray(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.round(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
 
             function easeOutElastic(t) {
                 const c4 = (2 * Math.PI) / 3;

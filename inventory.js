@@ -152,7 +152,11 @@ function getItemMetaText(itemName, level = 1) {
     if (item.buff) parts.push(`⚔️ +${Math.round(item.buff * 100)}% for ${item.rounds ? `${item.rounds} turns` : '1 turn'}`);
     if (item.xp) parts.push(`🌟 ${item.xp} XP`);
     if (item.chest) parts.push(`Opens ${assets.chests[item.chest].name}`);
-    if (item.damage) parts.push(`💥 ${item.damage}`);
+    if (item.damage) {
+        let damageText = `💥 ${item.damage}`;
+        damageText += item.times ? ` x${item.times} 🔁` : '';
+        parts.push(damageText);
+    };
     if (item.pstatus) parts.push(`Gain ${item.pstatus.join(', ')}`);
     if (item.estatus) parts.push(`Inflicts ${item.estatus.join(', ')}`);
 
@@ -194,18 +198,18 @@ function getItemTooltipText(itemName, level = 1, useColors = false) {
 
     if (item.attack !== undefined || item.defense !== undefined || item.maxlvl !== undefined) {
         if (item.attack !== undefined) {
-            const hoveredAttack = Math.floor(item.attack + ((itemLevel - 1) * item.attackPerLevel));
-            const hoveredCrit = Math.floor(item.crit * 100);
+            const hoveredAttack = Math.round(item.attack + ((itemLevel - 1) * item.attackPerLevel));
+            const hoveredCrit = Math.round(item.crit * 100);
             const hoveredCritdmg = item.critdmg;
-            const hoveredAccuracy = Math.floor(item.accuracy * 100);
+            const hoveredAccuracy = Math.round(item.accuracy * 100);
 
             if (player?.weaponry?.weapon) {
                 const currentWeapon = player.weaponry.weapon;
                 const currentLevel = player.weaponry.level ?? 1;
-                const currentAttack = Math.floor(currentWeapon.attack + ((currentLevel - 1) * currentWeapon.attackPerLevel));
-                const currentCrit = Math.floor(currentWeapon.crit * 100);
+                const currentAttack = Math.round(currentWeapon.attack + ((currentLevel - 1) * currentWeapon.attackPerLevel));
+                const currentCrit = Math.round(currentWeapon.crit * 100);
                 const currentCritdmg = currentWeapon.critdmg;
-                const currentAccuracy = Math.floor(currentWeapon.accuracy * 100);
+                const currentAccuracy = Math.round(currentWeapon.accuracy * 100);
 
                 parts.push(`⚔️ ${hoveredAttack} ${formatDiffText(hoveredAttack - currentAttack)}`);
                 parts.push(`🍀 ${hoveredCrit}% ${formatDiffText(hoveredCrit - currentCrit, '%')}`);
@@ -213,14 +217,14 @@ function getItemTooltipText(itemName, level = 1, useColors = false) {
                 parts.push(`🎯 ${hoveredAccuracy}% ${formatDiffText(hoveredAccuracy - currentAccuracy, '%')}`);
             }
         } else if (item.defense !== undefined) {
-            const hoveredDefense = Math.floor(item.defense + ((itemLevel - 1) * item.alvlmult));
-            const hoveredEvasion = Math.floor(item.evasion * 100);
+            const hoveredDefense = Math.round(item.defense + ((itemLevel - 1) * item.alvlmult));
+            const hoveredEvasion = Math.round(item.evasion * 100);
 
             if (player?.armory?.armor) {
                 const currentArmor = player.armory.armor;
                 const currentLevel = player.armory.level ?? 1;
-                const currentDefense = Math.floor(currentArmor.defense + ((currentLevel - 1) * currentArmor.alvlmult));
-                const currentEvasion = Math.floor(currentArmor.evasion * 100);
+                const currentDefense = Math.round(currentArmor.defense + ((currentLevel - 1) * currentArmor.alvlmult));
+                const currentEvasion = Math.round(currentArmor.evasion * 100);
 
                 parts.push(`🛡️ ${hoveredDefense} ${formatDiffText(hoveredDefense - currentDefense)}`);
                 parts.push(`💨 ${hoveredEvasion}% ${formatDiffText(hoveredEvasion - currentEvasion, '%')}`);
@@ -285,8 +289,8 @@ window.getItemTooltipText = getItemTooltipText;
 function getSynergyBonusesText(synergy) {
     const bonuses = [];
     if (synergy.defense) bonuses.push(`🛡️ +${synergy.defense} `);
-    if (synergy.evasion) bonuses.push(`💨 +${Math.floor(synergy.evasion * 100)}%`);
-    if (synergy.crit) bonuses.push(`🍀 +${Math.floor(synergy.crit * 100)}%`);
+    if (synergy.evasion) bonuses.push(`💨 +${Math.round(synergy.evasion * 100)}%`);
+    if (synergy.crit) bonuses.push(`🍀 +${Math.round(synergy.crit * 100)}%`);
     if (synergy.attack) bonuses.push(`⚔️ +${synergy.attack}`);
     return bonuses.join(' | ');
 }
@@ -959,19 +963,19 @@ function consumeItem(itemData) {
     const player = Alpine.$data(document.getElementById('player'));
 
     if (itemData.flatHealth) {
-        const healAmount = Math.floor(itemData.flatHealth);
+        const healAmount = Math.round(itemData.flatHealth);
         player.health = Math.min(player.health + healAmount, player.maxHealth);
         showMessage(`Restored ${healAmount} HP!`, 'success');
     }
 
     if (itemData.health) {
-        const healAmount = Math.floor(player.maxHealth * itemData.health);
+        const healAmount = Math.round(player.maxHealth * itemData.health);
         player.health = Math.min(player.health + healAmount, player.maxHealth);
         showMessage(`Restored ${healAmount} HP!`, 'success');
     }
 
     if (itemData.stamina) {
-        const staminaAmount = Math.floor(player.maxStamina * itemData.stamina);
+        const staminaAmount = Math.round(player.maxStamina * itemData.stamina);
         player.stamina = Math.min(player.stamina + staminaAmount, player.maxStamina);
         showMessage(`Restored ${staminaAmount} Stamina!`, 'success');
     }

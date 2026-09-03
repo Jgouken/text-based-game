@@ -179,7 +179,7 @@ function rollCraftedItemLevel(itemData) {
 	const maxLevel = itemData?.maxlvl ?? minLevel;
 
 	if (maxLevel <= minLevel) return minLevel;
-	return Math.floor(Math.random() * (maxLevel - minLevel + 1)) + minLevel;
+	return Math.round(Math.random() * (maxLevel - minLevel + 1)) + minLevel;
 }
 
 function consumeCraftIngredients(player, craftList) {
@@ -229,12 +229,12 @@ function applyCraftedItemDirectly(player, craftedItemData, craftedLevel) {
 
 	if (isConsumable) {
 		if (craftedItemData.health) {
-			const healAmount = Math.floor(player.maxHealth * craftedItemData.health);
+			const healAmount = Math.round(player.maxHealth * craftedItemData.health);
 			player.health = Math.min(player.health + healAmount, player.maxHealth);
 		}
 
 		if (craftedItemData.stamina) {
-			const staminaAmount = Math.floor(player.maxStamina * craftedItemData.stamina);
+			const staminaAmount = Math.round(player.maxStamina * craftedItemData.stamina);
 			player.stamina = Math.min(player.stamina + staminaAmount, player.maxStamina);
 		}
 
