@@ -585,7 +585,7 @@ async function useBattleConsumableByInventoryIndex(inventoryIndex, options = {})
         encounter.health -= throwableDamage * (itemData.times ? itemData.times : 1);
         AudioManager.playExplosion();
         audioPlayed = true;
-        effectText.push(`dealt <span style="color: lightblue;" data-tooltip="💥${throwableDamage}\n">💥${throwableDamage * (itemData.times ? itemData.times : 1)}</span>`);
+        effectText.push(`dealt <span style="color: lightblue;" data-tooltip="💥${throwableDamage}${itemData.times ? ` x${itemData.times} 🔁` : ''}\n">💥${throwableDamage * (itemData.times ? itemData.times : 1)}</span>`);
     }
 
     if (itemData.pstatus) {
